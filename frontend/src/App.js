@@ -999,11 +999,11 @@ const EmpathyTrainingApp = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-green-500" />
-                  Wöchentliche Trainingspläne
+                  NEUROBOND Wochentraining
                 </CardTitle>
                 <CardDescription>
-                  Basierend auf Neurowissenschaft und Paartherapie (EFT, Gottman) bekommst du wöchentliche Trainingspläne, 
-                  um eure Bindung nachhaltig zu stärken.
+                  Wissenschaftlich fundierte Trainingspläne basierend auf EFT und Gottman-Methode. 
+                  Wöchentliche Bindungsübungen für nachhaltiges Beziehungswachstum.
                   {user?.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
                 </CardDescription>
               </CardHeader>
