@@ -496,6 +496,103 @@ async def save_dialog_session(session_data: DialogSession):
     await db.dialog_sessions.insert_one(session_dict)
     return session_data
 
+@api_router.post("/weekly-training-plan")
+async def generate_weekly_training_plan(request: WeeklyPlanRequest):
+    """Generate personalized weekly training plan based on EFT and Gottman methods"""
+    try:
+        # Calculate current week number (can be customized)
+        current_week = request.week_number or ((datetime.now().isocalendar()[1]) % 52) + 1
+        
+        # Initialize AI chat for weekly plan generation
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"weekly_plan_{uuid.uuid4()}",
+            system_message=f"""Du bist ein Experte für Paartherapie, spezialisiert auf EFT (Emotionally Focused Therapy) und die Gottman-Methode. 
+            
+            Erstelle einen wissenschaftlich fundierten, spielerischen Wochentrainingsplan für das Paar {request.partner1_name} und {request.partner2_name}.
+            
+            Der Plan soll folgende Struktur haben:
+            
+            📅 WOCHE {current_week}: [Thema der Woche]
+            
+            🧠 WISSENSCHAFTLICHE BASIS:
+            - EFT oder Gottman Prinzip erklären
+            - Warum diese Übungen neurobiologisch wirken
+            
+            📋 TÄGLICHE ÜBUNGEN (7 Tage):
+            Tag 1-7: Jeweils eine konkrete, umsetzbare Übung pro Tag
+            
+            💫 PAAR-CHALLENGES (2-3 Challenges):
+            - Spielerische Aufgaben für beide Partner
+            - Messbare Ziele
+            
+            🤔 REFLEXIONSFRAGEN:
+            - 3-4 tiefere Fragen zur Woche
+            
+            📊 ERFOLGSMESSUNG:
+            - Konkrete Metriken
+            
+            Mache es spielerisch, motivierend und wissenschaftlich fundiert. Verwende Emojis und eine positive Sprache."""
+        ).with_model("openai", "gpt-4o")
+        
+        # Create context message
+        context = f"Woche {current_week} für {request.partner1_name} und {request.partner2_name}"
+        if request.current_challenges:
+            context += f". Aktuelle Herausforderungen: {request.current_challenges}"
+        
+        user_message = UserMessage(
+            text=f"""Erstelle einen wissenschaftlich fundierten Wochentrainingsplan für {context}.
+            
+            Fokussiere auf EFT und Gottman-Prinzipien und mache es praktisch umsetzbar."""
+        )
+        
+        # Get AI response
+        response = await chat.send_message(user_message)
+        
+        # Parse the response into structured format (simplified for now)
+        plan_data = {
+            "user_id": request.user_id,
+            "week_number": current_week,
+            "title": f"Bindungstraining Woche {current_week}",
+            "theme": "EFT & Gottman basierte Übungen",
+            "scientific_basis": "Emotionally Focused Therapy und Gottman-Methode",
+            "daily_exercises": [
+                {"day": i, "exercise": f"Tag {i} Übung", "completed": False} 
+                for i in range(1, 8)
+            ],
+            "couple_challenges": [
+                {"id": "challenge_1", "title": "Paar-Challenge 1", "completed": False},
+                {"id": "challenge_2", "title": "Paar-Challenge 2", "completed": False}
+            ],
+            "reflection_questions": [
+                "Reflexionsfrage 1", "Reflexionsfrage 2", "Reflexionsfrage 3"
+            ],
+            "success_metrics": [
+                "Metrik 1", "Metrik 2", "Metrik 3"
+            ]
+        }
+        
+        return {"plan": response, "structured_data": plan_data, "success": True}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Weekly plan generation failed: {str(e)}")
+
+@api_router.post("/weekly-progress", response_model=WeeklyProgress)
+async def save_weekly_progress(progress_data: WeeklyProgress):
+    """Save weekly training progress"""
+    progress_dict = prepare_for_mongo(progress_data.dict())
+    await db.weekly_progress.insert_one(progress_dict)
+    return progress_data
+
+@api_router.get("/weekly-progress/{user_id}/{week_number}")
+async def get_weekly_progress(user_id: str, week_number: int):
+    """Get weekly progress for specific user and week"""
+    progress = await db.weekly_progress.find_one({
+        "user_id": user_id, 
+        "week_number": week_number
+    })
+    return WeeklyProgress(**progress) if progress else None
+
 @api_router.get("/dialog-sessions/{user_id}")
 async def get_dialog_sessions(user_id: str):
     """Get all dialog sessions for a user"""
