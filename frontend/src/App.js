@@ -612,10 +612,10 @@ const EmpathyTrainingApp = () => {
               <Heart className="w-8 h-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-              Empathie Meisterschaft
+              NEUROBOND
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Werde zum Experten für emotionale Verbindung in deiner Beziehung
+              Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen
             </CardDescription>
           </CardHeader>
           <CardContent>
