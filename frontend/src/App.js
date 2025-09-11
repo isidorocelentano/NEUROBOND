@@ -35,6 +35,11 @@ const EmpathyTrainingApp = () => {
   const [dialogAnalysis, setDialogAnalysis] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [dialogSessions, setDialogSessions] = useState([]);
+  
+  // Weekly Training Plan States
+  const [currentWeekPlan, setCurrentWeekPlan] = useState(null);
+  const [weeklyProgress, setWeeklyProgress] = useState({});
+  const [loadingWeeklyPlan, setLoadingWeeklyPlan] = useState(false);
 
   useEffect(() => {
     fetchStages();
