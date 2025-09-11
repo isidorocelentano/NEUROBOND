@@ -403,6 +403,73 @@ async def get_user_progress(user_id: str):
     progress_list = await db.progress.find({"user_id": user_id}).to_list(length=None)
     return [UserProgress(**p) for p in progress_list]
 
+@api_router.post("/dialog-analysis")
+async def analyze_dialog(request: DialogAnalysisRequest):
+    """Analyze couple's dialog patterns and provide real-time suggestions"""
+    try:
+        # Format the dialog for AI analysis
+        dialog_text = "\n".join([
+            f"{msg['speaker']}: {msg['message']}" 
+            for msg in request.dialog_messages
+        ])
+        
+        # Initialize AI chat for dialog analysis
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"dialog_{uuid.uuid4()}",
+            system_message=f"""Du bist ein Experte für Paarkommunikation und Dialog-Coaching. 
+            Analysiere das Gespräch zwischen {request.partner1_name} und {request.partner2_name}.
+            
+            Gib eine strukturierte Analyse mit folgenden Punkten:
+            
+            🔍 GESPRÄCHSMUSTER-ANALYSE:
+            - Kommunikationsstil beider Partner
+            - Reaktionsmuster und Triggers
+            - Positive und problematische Dynamiken
+            
+            💡 ECHTZEIT-VERBESSERUNGSVORSCHLÄGE:
+            - Konkrete Verbesserungen für beide Partner
+            - Alternative Formulierungen für kritische Aussagen
+            - Empathische Reaktionsmöglichkeiten
+            
+            🌟 VERBINDUNGSPOTENTIAL:
+            - Was funktioniert gut im Gespräch?
+            - Wie können Missverständnisse vermieden werden?
+            - Nächste Schritte für bessere Verbindung
+            
+            Sei konstruktiv, einfühlsam und gib praktische, sofort umsetzbare Tipps."""
+        ).with_model("openai", "gpt-4o")
+        
+        # Create user message with dialog
+        user_message = UserMessage(
+            text=f"""Bitte analysiere dieses Gespräch zwischen {request.partner1_name} und {request.partner2_name}:
+
+{dialog_text}
+
+Gib eine detaillierte Analyse mit konkreten Verbesserungsvorschlägen."""
+        )
+        
+        # Get AI response
+        response = await chat.send_message(user_message)
+        
+        return {"analysis": response, "success": True}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Dialog analysis failed: {str(e)}")
+
+@api_router.post("/dialog-session", response_model=DialogSession)
+async def save_dialog_session(session_data: DialogSession):
+    """Save dialog session with analysis"""
+    session_dict = prepare_for_mongo(session_data.dict())
+    await db.dialog_sessions.insert_one(session_dict)
+    return session_data
+
+@api_router.get("/dialog-sessions/{user_id}")
+async def get_dialog_sessions(user_id: str):
+    """Get all dialog sessions for a user"""
+    sessions = await db.dialog_sessions.find({"user_id": user_id}).to_list(length=None)
+    return [DialogSession(**session) for session in sessions]
+
 @api_router.post("/generate-scenario")
 async def generate_custom_scenario(request: dict):
     """Generate a new scenario based on user's situation"""
