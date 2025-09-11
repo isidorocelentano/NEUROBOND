@@ -1228,9 +1228,9 @@ const EmpathyTrainingApp = () => {
           <TabsContent value="progress">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle>Deine Übungshistorie</CardTitle>
+                <CardTitle>NEUROBOND Trainingshistorie</CardTitle>
                 <CardDescription>
-                  Übersicht über alle deine Antworten und das AI-Feedback
+                  Übersicht über alle deine Übungen, Dialog-Sessions und Wochenfortschritte
                 </CardDescription>
               </CardHeader>
               <CardContent>
