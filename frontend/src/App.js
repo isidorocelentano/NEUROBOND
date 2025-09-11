@@ -89,6 +89,7 @@ const EmpathyTrainingApp = () => {
         stage_number: stageNumber
       });
       setAiFeedback(feedbackResponse.data.feedback);
+      setAiFeedbackGiven(true);
       
       // Save progress
       await axios.post(`${API}/progress`, {
@@ -105,6 +106,7 @@ const EmpathyTrainingApp = () => {
     } catch (error) {
       console.error('Error getting AI feedback:', error);
       setAiFeedback('Entschuldigung, es gab ein Problem beim Abrufen des Feedbacks. Versuche es später erneut.');
+      setAiFeedbackGiven(true);
     }
     setLoading(false);
   };
