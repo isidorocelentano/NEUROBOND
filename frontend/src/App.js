@@ -830,10 +830,10 @@ const EmpathyTrainingApp = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="w-5 h-5 text-blue-500" />
-                  Dialog-Coaching für Paare
+                  NEUROBOND Dialog-Coaching
                 </CardTitle>
                 <CardDescription>
-                  Haltet euer echtes Gespräch fest und erhaltet sofortige Analyse eurer Kommunikationsmuster. 
+                  Haltet euer echtes Gespräch fest und erhaltet sofortige KI-Analyse eurer Kommunikationsmuster. 
                   {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
                 </CardDescription>
               </CardHeader>
