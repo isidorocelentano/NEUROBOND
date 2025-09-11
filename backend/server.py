@@ -68,6 +68,20 @@ class AIFeedbackRequest(BaseModel):
     user_response: str
     stage_number: int
 
+class DialogAnalysisRequest(BaseModel):
+    dialog_messages: List[dict]
+    partner1_name: str
+    partner2_name: str
+
+class DialogSession(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    partner1_name: str
+    partner2_name: str
+    messages: List[dict]
+    analysis: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # Helper functions
 def prepare_for_mongo(data):
     if isinstance(data, dict):
