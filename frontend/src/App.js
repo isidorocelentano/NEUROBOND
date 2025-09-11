@@ -186,6 +186,46 @@ const EmpathyTrainingApp = () => {
     setCurrentMessage('');
   };
 
+  // Weekly Training Plan Functions
+  const generateWeeklyPlan = async () => {
+    setLoadingWeeklyPlan(true);
+    try {
+      const response = await axios.post(`${API}/weekly-training-plan`, {
+        user_id: user.id,
+        partner1_name: user?.name || 'Partner 1',
+        partner2_name: user?.partner_name || 'Partner 2',
+        current_challenges: 'Kommunikation und Empathie stärken'
+      });
+      
+      setCurrentWeekPlan(response.data.plan);
+    } catch (error) {
+      console.error('Error generating weekly plan:', error);
+    }
+    setLoadingWeeklyPlan(false);
+  };
+
+  const markExerciseComplete = async (exerciseId, type) => {
+    // Update local state and save to backend
+    const updatedProgress = {
+      ...weeklyProgress,
+      [exerciseId]: true
+    };
+    setWeeklyProgress(updatedProgress);
+    
+    // Here you could save to backend
+    try {
+      await axios.post(`${API}/weekly-progress`, {
+        user_id: user.id,
+        week_number: new Date().getWeek(),
+        completed_exercises: Object.keys(updatedProgress).filter(key => updatedProgress[key]),
+        overall_rating: null,
+        notes: ''
+      });
+    } catch (error) {
+      console.error('Error saving progress:', error);
+    }
+  };
+
   const calculateStageProgress = (stageNumber) => {
     const stageAttempts = userProgress.filter(p => p.stage_number === stageNumber);
     const stage = stages.find(s => s.stage_number === stageNumber);
