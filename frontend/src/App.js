@@ -53,6 +53,19 @@ const EmpathyTrainingApp = () => {
     }
   }, []);
 
+  // Load weekly plan on component mount
+  useEffect(() => {
+    if (user && !showOnboarding) {
+      generateWeeklyPlan();
+    }
+  }, [user, showOnboarding]);
+
+  // Helper function to get current week
+  Date.prototype.getWeek = function() {
+    const onejan = new Date(this.getFullYear(), 0, 1);
+    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  };
+
   // Reset AI feedback state when new scenario is selected
   useEffect(() => {
     if (selectedScenario) {
