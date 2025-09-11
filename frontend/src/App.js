@@ -24,8 +24,7 @@ const EmpathyTrainingApp = () => {
   const [userResponse, setUserResponse] = useState('');
   const [aiFeedback, setAiFeedback] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userProgress, setUserProgress] = useState([]);
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [aiFeedbackGiven, setAiFeedbackGiven] = useState(false);
 
   useEffect(() => {
     fetchStages();
@@ -38,6 +37,15 @@ const EmpathyTrainingApp = () => {
       fetchUserProgress(userData.id);
     }
   }, []);
+
+  // Reset AI feedback state when new scenario is selected
+  useEffect(() => {
+    if (selectedScenario) {
+      setAiFeedback('');
+      setAiFeedbackGiven(false);
+      setUserResponse('');
+    }
+  }, [selectedScenario]);
 
   const fetchStages = async () => {
     try {
