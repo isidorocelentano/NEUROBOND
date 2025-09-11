@@ -994,6 +994,237 @@ const EmpathyTrainingApp = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="weekly" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-green-500" />
+                  Wöchentliche Trainingspläne
+                </CardTitle>
+                <CardDescription>
+                  Basierend auf Neurowissenschaft und Paartherapie (EFT, Gottman) bekommst du wöchentliche Trainingspläne, 
+                  um eure Bindung nachhaltig zu stärken.
+                  {user?.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                
+                {/* Current Week Overview */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Card className="border-l-4 border-l-green-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Clock className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Aktuelle Woche</span>
+                      </div>
+                      <p className="text-2xl font-bold text-green-600">
+                        Woche {new Date().getWeek()}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-l-4 border-l-blue-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckSquare className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium">Fortschritt</span>
+                      </div>
+                      <p className="text-2xl font-bold text-blue-600">
+                        {Object.values(weeklyProgress).filter(Boolean).length}/7
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-l-4 border-l-purple-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Award className="w-4 h-4 text-purple-600" />
+                        <span className="font-medium">Punkte</span>
+                      </div>
+                      <p className="text-2xl font-bold text-purple-600">
+                        {Object.values(weeklyProgress).filter(Boolean).length * 10}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Generate New Plan Button */}
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={generateWeeklyPlan}
+                    disabled={loadingWeeklyPlan}
+                    className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-3"
+                  >
+                    {loadingWeeklyPlan ? (
+                      <>
+                        <Clock className="w-4 h-4 mr-2 animate-spin" />
+                        Erstelle personalisierten Plan...
+                      </>
+                    ) : (
+                      <>
+                        <Zap className="w-4 h-4 mr-2" />
+                        Neuen Wochenplan generieren
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Weekly Plan Display */}
+                {currentWeekPlan && (
+                  <Card className="border-l-4 border-l-green-500">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-green-700">
+                        <Brain className="w-5 h-5" />
+                        Dein persönlicher Wochenplan
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="prose prose-sm max-w-none">
+                        <div className="whitespace-pre-wrap text-gray-700">{currentWeekPlan}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Daily Exercise Tracker (Example) */}
+                <Card className="bg-gradient-to-r from-green-50 to-blue-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-green-700">
+                      <CheckSquare className="w-5 h-5" />
+                      Tägliche Übungen - Diese Woche
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-3">
+                      {[
+                        { id: 'day1', title: 'Tag 1: Dankbarkeits-Ritual', description: '3 Minuten: Teilt 3 Dinge, für die ihr dankbar seid' },
+                        { id: 'day2', title: 'Tag 2: Aktives Zuhören', description: '10 Minuten: Erzählt euch gegenseitig vom Tag, ohne zu unterbrechen' },
+                        { id: 'day3', title: 'Tag 3: Körperliche Nähe', description: '5 Minuten: Kuschelt bewusst ohne Ablenkung' },
+                        { id: 'day4', title: 'Tag 4: Komplimente-Challenge', description: 'Gebt euch mindestens 2 ehrliche Komplimente' },
+                        { id: 'day5', title: 'Tag 5: Gemeinsame Aktivität', description: '20 Minuten: Macht etwas zusammen, was beiden Spaß macht' },
+                        { id: 'day6', title: 'Tag 6: Konfliktstil reflektieren', description: 'Sprecht über euren letzten Streit - was lief gut/schlecht?' },
+                        { id: 'day7', title: 'Tag 7: Zukunfts-Vision', description: 'Träumt gemeinsam: Wie soll euer Leben in 5 Jahren aussehen?' }
+                      ].map(exercise => (
+                        <div key={exercise.id} className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                          <div className="flex-1">
+                            <h4 className="font-medium text-sm">{exercise.title}</h4>
+                            <p className="text-xs text-gray-600 mt-1">{exercise.description}</p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant={weeklyProgress[exercise.id] ? "default" : "outline"}
+                            onClick={() => markExerciseComplete(exercise.id)}
+                            className="ml-4"
+                          >
+                            {weeklyProgress[exercise.id] ? (
+                              <>
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Erledigt
+                              </>
+                            ) : (
+                              'Markieren'
+                            )}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Couple Challenges */}
+                <Card className="bg-gradient-to-r from-purple-50 to-pink-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-700">
+                      <Heart className="w-5 h-5" />
+                      Paar-Challenges dieser Woche
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {[
+                        {
+                          id: 'challenge1',
+                          title: '💕 Date-Night Challenge',
+                          description: 'Plant und führt ein 2-stündiges Date durch - ohne Handys!',
+                          points: 50,
+                          difficulty: 'Mittel'
+                        },
+                        {
+                          id: 'challenge2',
+                          title: '🌟 Überraschungs-Challenge',
+                          description: 'Überrascht euren Partner mit etwas Kleinem, aber Durchdachtem',
+                          points: 30,
+                          difficulty: 'Einfach'
+                        }
+                      ].map(challenge => (
+                        <div key={challenge.id} className="p-4 bg-white rounded-lg border">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium">{challenge.title}</h4>
+                            <Badge variant="outline">{challenge.points} Punkte</Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-3">{challenge.description}</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-gray-500">Schwierigkeit: {challenge.difficulty}</span>
+                            <Button
+                              size="sm"
+                              variant={weeklyProgress[challenge.id] ? "default" : "outline"}
+                              onClick={() => markExerciseComplete(challenge.id)}
+                            >
+                              {weeklyProgress[challenge.id] ? (
+                                <>
+                                  <CheckCircle className="w-4 h-4 mr-1" />
+                                  Geschafft!
+                                </>
+                              ) : (
+                                'Challenge annehmen'
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Scientific Background */}
+                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-700">
+                      <Brain className="w-5 h-5" />
+                      Wissenschaftlicher Hintergrund
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <Heart className="w-4 h-4 text-red-500" />
+                          EFT (Emotionally Focused Therapy)
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          Entwickelt von Dr. Sue Johnson. Fokussiert auf die emotionale Bindung zwischen Partnern 
+                          und hilft dabei, sichere Bindungsmuster zu entwickeln. Basiert auf Bindungstheorie und 
+                          ist wissenschaftlich als eine der effektivsten Paartherapien belegt.
+                        </p>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <Users className="w-4 h-4 text-blue-500" />
+                          Gottman-Methode
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          Basiert auf über 40 Jahren Forschung von Dr. John Gottman. Identifiziert die "Vier Reiter 
+                          der Apokalypse" in Beziehungen und bietet praktische Werkzeuge für bessere Kommunikation, 
+                          Konfliktlösung und Intimität.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="progress">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
