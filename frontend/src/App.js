@@ -709,10 +709,10 @@ const EmpathyTrainingApp = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Empathie Meisterschaft
+            NEUROBOND
           </h1>
           <p className="text-gray-600 text-lg">
-            Willkommen zurück, {user?.name}! {user?.partner_name && `Trainiere für deine Beziehung mit ${user.partner_name}.`}
+            Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
           </p>
         </div>
 
