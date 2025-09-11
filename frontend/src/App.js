@@ -678,6 +678,28 @@ const EmpathyTrainingApp = () => {
             ))}
           </TabsContent>
 
+          <TabsContent value="feelings" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-rose-500" />
+                  Gefühlslexikon für empathische Kommunikation
+                </CardTitle>
+                <CardDescription>
+                  Lerne, Gefühle zu erkennen, zu verstehen und einfühlsam darauf zu reagieren. 
+                  {user?.partner_name && ` Verstehe ${user.partner_name} besser und stärke eure Verbindung.`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {FEELINGS_DATA.map((feeling) => (
+                    <FeelingCard key={feeling.id} feeling={feeling} />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="progress">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
