@@ -124,6 +124,63 @@ const EmpathyTrainingApp = () => {
     return scoreMatch ? parseInt(scoreMatch[1] || scoreMatch[2] || scoreMatch[3]) : 5;
   };
 
+  // Dialog Coaching Functions
+  const addDialogMessage = () => {
+    if (!currentMessage.trim()) return;
+    
+    const newMessage = {
+      id: Date.now(),
+      speaker: currentSpeaker === 'partner1' ? user?.name || 'Partner 1' : user?.partner_name || 'Partner 2',
+      message: currentMessage,
+      timestamp: new Date(),
+      speakerType: currentSpeaker
+    };
+    
+    setDialogMessages(prev => [...prev, newMessage]);
+    setCurrentMessage('');
+  };
+
+  const analyzeDialog = async () => {
+    if (dialogMessages.length < 2) {
+      alert('Bitte füge mindestens 2 Nachrichten hinzu, um eine Analyse zu erhalten.');
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const response = await axios.post(`${API}/dialog-analysis`, {
+        dialog_messages: dialogMessages.map(msg => ({
+          speaker: msg.speaker,
+          message: msg.message
+        })),
+        partner1_name: user?.name || 'Partner 1',
+        partner2_name: user?.partner_name || 'Partner 2'
+      });
+      
+      setDialogAnalysis(response.data.analysis);
+      
+      // Save dialog session
+      await axios.post(`${API}/dialog-session`, {
+        user_id: user.id,
+        partner1_name: user?.name || 'Partner 1',
+        partner2_name: user?.partner_name || 'Partner 2',
+        messages: dialogMessages,
+        analysis: response.data.analysis
+      });
+      
+    } catch (error) {
+      console.error('Error analyzing dialog:', error);
+      setDialogAnalysis('Entschuldigung, es gab ein Problem bei der Dialog-Analyse. Versuche es später erneut.');
+    }
+    setIsAnalyzing(false);
+  };
+
+  const clearDialog = () => {
+    setDialogMessages([]);
+    setDialogAnalysis('');
+    setCurrentMessage('');
+  };
+
   const calculateStageProgress = (stageNumber) => {
     const stageAttempts = userProgress.filter(p => p.stage_number === stageNumber);
     const stage = stages.find(s => s.stage_number === stageNumber);
