@@ -129,6 +129,345 @@ const EmpathyTrainingApp = () => {
     return <IconComponent className="w-6 h-6" />;
   };
 
+  // Feelings Data
+  const FEELINGS_DATA = [
+    {
+      id: "stress",
+      name: "Stress / Überforderung",
+      description: "Ein Zustand emotionaler und körperlicher Anspannung durch zu viele Anforderungen.",
+      signs: [
+        "Schnelles Sprechen oder Schweigen",
+        "Unruhige Körperhaltung, Zappeln",
+        "Seufzen, tiefe Atemzüge",
+        "Angespannte Gesichtszüge",
+        "Hektische Bewegungen"
+      ],
+      attention: [
+        "Achte auf Veränderungen im Verhalten",
+        "Beobachte körperliche Anspannung",
+        "Höre auf den Tonfall in der Stimme",
+        "Achte auf Rückzugsverhalten"
+      ],
+      needs: [
+        "Entlastung und Unterstützung",
+        "Verständnis und Mitgefühl",
+        "Ruhe und Entspannung",
+        "Struktur und Klarheit"
+      ],
+      empathic_responses: [
+        "Ich sehe, dass du gerade viel um die Ohren hast",
+        "Das scheint wirklich stressig zu sein für dich",
+        "Wie kann ich dir helfen, etwas Druck rauszunehmen?",
+        "Soll ich dir etwas abnehmen, damit du durchatmen kannst?"
+      ]
+    },
+    {
+      id: "sadness",
+      name: "Traurigkeit / Enttäuschung",
+      description: "Ein Gefühl der Niedergeschlagenheit, oft ausgelöst durch Verlust oder unerfüllte Erwartungen.",
+      signs: [
+        "Gesenkter Blick, wenig Augenkontakt",
+        "Leisere Stimme oder Schweigen",
+        "Hängende Schultern",
+        "Tränen oder kämpfen gegen Tränen",
+        "Rückzug, weniger Aktivität"
+      ],
+      attention: [
+        "Beachte Veränderungen in der Körpersprache",
+        "Höre auf das, was nicht gesagt wird",
+        "Achte auf Rückzug und Isolation",
+        "Bemerke unterdrückte Emotionen"
+      ],
+      needs: [
+        "Trost und emotionale Nähe",
+        "Verstanden und gehört werden",
+        "Zeit zum Trauern",
+        "Sicherheit und Geborgenheit"
+      ],
+      empathic_responses: [
+        "Ich sehe, dass du traurig bist. Das tut mir leid",
+        "Es ist okay, traurig zu sein. Deine Gefühle sind wichtig",
+        "Möchtest du darüber reden oder soll ich einfach da sein?",
+        "Du musst das nicht alleine durchstehen"
+      ]
+    },
+    {
+      id: "anger",
+      name: "Wut / Ärger",
+      description: "Eine starke emotionale Reaktion auf Ungerechtigkeit, Frustration oder Grenzverletzungen.",
+      signs: [
+        "Laute Stimme oder betonte Stille",
+        "Angestrengte Körperhaltung",
+        "Schnelle, ruckartige Bewegungen",
+        "Rotes Gesicht, angespannte Kiefer",
+        "Vermeidung von Blickkontakt"
+      ],
+      attention: [
+        "Erkenne die Ursache hinter der Wut",
+        "Achte auf unterdrückte Frustration",
+        "Bemerke Gerechtigkeitsbedürfnis",
+        "Unterscheide zwischen Wut und Verletzung"
+      ],
+      needs: [
+        "Gehört und verstanden werden",
+        "Gerechtigkeit und Fairness",
+        "Respekt für Grenzen",
+        "Raum für Emotionen"
+      ],
+      empathic_responses: [
+        "Ich sehe, dass dich etwas richtig ärgert",
+        "Du hast ein Recht darauf, wütend zu sein",
+        "Erzähl mir, was dich so aufbringt",
+        "Deine Gefühle sind berechtigt und wichtig"
+      ]
+    },
+    {
+      id: "anxiety",
+      name: "Angst / Sorge",
+      description: "Ein Gefühl der Ungewissheit und Befürchtung vor möglichen negativen Ereignissen.",
+      signs: [
+        "Unruhiges Verhalten, Nervosität",
+        "Schnelles Sprechen oder Stammeln",
+        "Körperliche Anspannung",
+        "Katastrophendenken verbalisieren",
+        "Kontrollierende Verhaltensweisen"
+      ],
+      attention: [
+        "Höre auf wiederholte Sorgen",
+        "Bemerke körperliche Anzeichen von Stress",
+        "Achte auf Vermeidungsverhalten",
+        "Erkenne übermäßige Vorsicht"
+      ],
+      needs: [
+        "Sicherheit und Beruhigung",
+        "Unterstützung und Rückhalt",
+        "Informationen und Klarheit",
+        "Vertrauen und Zuversicht"
+      ],
+      empathic_responses: [
+        "Ich verstehe, dass du dir Sorgen machst",
+        "Es ist natürlich, dass dich das beschäftigt",
+        "Lass uns gemeinsam schauen, wie wir damit umgehen können",
+        "Du bist nicht allein mit deinen Ängsten"
+      ]
+    },
+    {
+      id: "loneliness",
+      name: "Einsamkeit / Isolation",
+      description: "Das Gefühl der Trennung und des Nicht-Verbunden-Seins mit anderen Menschen.",
+      signs: [
+        "Rückzug aus sozialen Aktivitäten",
+        "Weniger Kommunikation",
+        "Melancholische Stimmung",
+        "Bedürfnis nach Aufmerksamkeit",
+        "Selbstzweifel äußern"
+      ],
+      attention: [
+        "Bemerke sozialen Rückzug",
+        "Achte auf Veränderungen in der Kommunikation",
+        "Höre auf indirekte Bitten um Nähe",
+        "Erkenne Selbstisolierung"
+      ],
+      needs: [
+        "Verbindung und Nähe",
+        "Aufmerksamkeit und Interesse",
+        "Zugehörigkeit und Akzeptanz",
+        "Bedeutungsvolle Gespräche"
+      ],
+      empathic_responses: [
+        "Ich bin hier für dich, du bist nicht allein",
+        "Mir ist aufgefallen, dass du dich zurückziehst",
+        "Deine Gesellschaft ist mir wichtig",
+        "Lass uns mehr Zeit miteinander verbringen"
+      ]
+    },
+    {
+      id: "frustration",
+      name: "Frustration / Ohnmacht",
+      description: "Das Gefühl der Machtlosigkeit, wenn Ziele blockiert oder Erwartungen nicht erfüllt werden.",
+      signs: [
+        "Seufzen und Augenrollen",
+        "Wiederholende Versuche",
+        "Aufgeben von Bemühungen",
+        "Gereizte oder resignierte Stimmung",
+        "Körperliche Verspannungen"
+      ],
+      attention: [
+        "Erkenne wiederholte erfolglose Versuche",
+        "Achte auf Resignation und Aufgeben",
+        "Bemerke körperliche Anspannung",
+        "Höre auf Selbstkritik"
+      ],
+      needs: [
+        "Handlungsfähigkeit und Kontrolle",
+        "Unterstützung und Hilfe",
+        "Anerkennung der Bemühungen",
+        "Alternative Lösungswege"
+      ],
+      empathic_responses: [
+        "Das muss frustrierend sein, wenn nichts klappt",
+        "Ich sehe, wie sehr du dich anstrengst",
+        "Lass uns gemeinsam nach anderen Wegen suchen",
+        "Deine Bemühungen sind nicht umsonst"
+      ]
+    },
+    {
+      id: "joy",
+      name: "Freude / Begeisterung",
+      description: "Ein positives Gefühl der Zufriedenheit, des Glücks und der Lebendigkeit.",
+      signs: [
+        "Lächeln und strahlende Augen",
+        "Lebhafte Körpersprache",
+        "Schnelleres, begeistertes Sprechen",
+        "Aufrechte Haltung",
+        "Teilen wollen von Erlebnissen"
+      ],
+      attention: [
+        "Nimm die Begeisterung wahr",
+        "Achte auf den Wunsch zu teilen",
+        "Bemerke erhöhte Energie",
+        "Erkenne das Bedürfnis nach Bestätigung"
+      ],
+      needs: [
+        "Teilhabe und Mitfreude",
+        "Anerkennung und Bestätigung",
+        "Gemeinschaft und Verbindung",
+        "Ausdruck und Teilen"
+      ],
+      empathic_responses: [
+        "Ich freue mich mit dir! Das ist wunderbar!",
+        "Deine Begeisterung ist ansteckend",
+        "Erzähl mir mehr davon, ich höre gerne zu",
+        "Es macht mich glücklich, dich so strahlend zu sehen"
+      ]
+    },
+    {
+      id: "guilt",
+      name: "Schuld / Scham",
+      description: "Negative Gefühle über eigenes Verhalten oder die eigene Person.",
+      signs: [
+        "Vermeidung von Blickkontakt",
+        "Selbstvorwürfe und Entschuldigungen",
+        "Geduckter Körperhaltung",
+        "Leise oder zögernde Stimme",
+        "Rechtfertigendes Verhalten"
+      ],
+      attention: [
+        "Höre auf Selbstkritik und Vorwürfe",
+        "Bemerke Rechtfertigungsversuche",
+        "Achte auf Vermeidungsverhalten",
+        "Erkenne übermäßige Entschuldigungen"
+      ],
+      needs: [
+        "Vergebung und Verständnis",
+        "Selbstakzeptanz",
+        "Wiedergutmachung und Lösung",
+        "Selbstmitgefühl"
+      ],
+      empathic_responses: [
+        "Jeder macht Fehler, das ist menschlich",
+        "Du bist trotzdem ein wertvoller Mensch",
+        "Was können wir tun, um es besser zu machen?",
+        "Ich urteile nicht über dich"
+      ]
+    }
+  ];
+
+  // Feelings Card Component
+  const FeelingCard = ({ feeling }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    return (
+      <Card className="mb-4 hover:shadow-lg transition-shadow">
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Heart className="w-5 h-5 text-rose-500" />
+              {feeling.name}
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? 'Weniger' : 'Mehr'}
+            </Button>
+          </CardTitle>
+          <CardDescription>
+            {feeling.description}
+          </CardDescription>
+        </CardHeader>
+        
+        {expanded && (
+          <CardContent className="space-y-6">
+            {/* Anzeichen */}
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Eye className="w-4 h-4 text-blue-600" />
+                <h4 className="font-medium text-blue-800">Wie macht sich das Gefühl bemerkbar?</h4>
+              </div>
+              <ul className="space-y-1">
+                {feeling.signs.map((sign, index) => (
+                  <li key={index} className="text-blue-700 text-sm flex items-start gap-2">
+                    <span className="text-blue-500 mt-1.5 w-1 h-1 bg-blue-500 rounded-full flex-shrink-0"></span>
+                    {sign}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Worauf achten */}
+            <div className="p-4 bg-amber-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Target className="w-4 h-4 text-amber-600" />
+                <h4 className="font-medium text-amber-800">Worauf solltest du achten?</h4>
+              </div>
+              <ul className="space-y-1">
+                {feeling.attention.map((point, index) => (
+                  <li key={index} className="text-amber-700 text-sm flex items-start gap-2">
+                    <span className="text-amber-500 mt-1.5 w-1 h-1 bg-amber-500 rounded-full flex-shrink-0"></span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Bedürfnisse */}
+            <div className="p-4 bg-purple-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Brain className="w-4 h-4 text-purple-600" />
+                <h4 className="font-medium text-purple-800">Welche Bedürfnisse liegen dahinter?</h4>
+              </div>
+              <ul className="space-y-1">
+                {feeling.needs.map((need, index) => (
+                  <li key={index} className="text-purple-700 text-sm flex items-start gap-2">
+                    <span className="text-purple-500 mt-1.5 w-1 h-1 bg-purple-500 rounded-full flex-shrink-0"></span>
+                    {need}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Einfühlsame Reaktionen */}
+            <div className="p-4 bg-green-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Lightbulb className="w-4 h-4 text-green-600" />
+                <h4 className="font-medium text-green-800">Einfühlsame Reaktionen - Das kannst du sagen:</h4>
+              </div>
+              <div className="space-y-2">
+                {feeling.empathic_responses.map((response, index) => (
+                  <div key={index} className="p-2 bg-green-100 rounded text-green-700 text-sm italic">
+                    "{response}"
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+    );
+  };
+
   // Onboarding Component
   const OnboardingForm = () => {
     const [formData, setFormData] = useState({
