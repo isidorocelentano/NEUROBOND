@@ -808,10 +808,10 @@ const EmpathyTrainingApp = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-rose-500" />
-                  Gefühlslexikon für empathische Kommunikation
+                  NEUROBOND Gefühlslexikon
                 </CardTitle>
                 <CardDescription>
-                  Lerne, Gefühle zu erkennen, zu verstehen und einfühlsam darauf zu reagieren. 
+                  Wissenschaftlich fundiertes Wissen über Emotionen und empathische Kommunikation. 
                   {user?.partner_name && ` Verstehe ${user.partner_name} besser und stärke eure Verbindung.`}
                 </CardDescription>
               </CardHeader>
