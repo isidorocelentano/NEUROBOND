@@ -428,7 +428,7 @@ const EmpathyTrainingApp = () => {
                   )}
 
                   {/* 4. Falsche Reaktion (wird nur nach AI Feedback gezeigt) */}
-                  {aiFeedback && (
+                  {aiFeedbackGiven && (
                     <div className="space-y-3">
                       <div className="p-4 bg-red-50 border-l-4 border-red-400 rounded-lg">
                         <p className="font-medium text-red-800 mb-2">❌ Beispiel einer problematischen Reaktion:</p>
