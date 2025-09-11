@@ -381,29 +381,21 @@ const EmpathyTrainingApp = () => {
                 </DialogHeader>
                 
                 <div className="space-y-4">
+                  {/* 1. Situation beschreiben */}
                   <div className="p-4 bg-blue-50 rounded-lg">
-                    <p className="font-medium text-blue-800 mb-2">Situation:</p>
+                    <p className="font-medium text-blue-800 mb-2">📋 Situation:</p>
                     <p className="text-blue-700">{selectedScenario.context}</p>
                   </div>
 
-                  <div className="p-4 bg-red-50 border-l-4 border-red-400 rounded-lg">
-                    <p className="font-medium text-red-800 mb-2">❌ Falsche Reaktion:</p>
-                    <p className="text-red-700">{selectedScenario.wrong_reaction}</p>
-                  </div>
-
-                  <div className="p-4 bg-green-50 border-l-4 border-green-400 rounded-lg">
-                    <p className="font-medium text-green-800 mb-2">✅ Ideale Reaktion:</p>
-                    <p className="text-green-700">{selectedScenario.ideal_reaction}</p>
-                  </div>
-
+                  {/* 2. User Response Feld */}
                   <div className="space-y-2">
-                    <Label htmlFor="response">Wie würdest du reagieren?</Label>
+                    <Label htmlFor="response" className="text-lg font-medium">💭 Wie würdest du reagieren?</Label>
                     <Textarea
                       id="response"
-                      placeholder="Schreibe hier deine Reaktion..."
+                      placeholder="Schreibe hier deine Reaktion auf diese Situation..."
                       value={userResponse}
                       onChange={(e) => setUserResponse(e.target.value)}
-                      className="min-h-[100px]"
+                      className="min-h-[120px]"
                     />
                   </div>
 
@@ -412,13 +404,35 @@ const EmpathyTrainingApp = () => {
                     disabled={!userResponse.trim() || loading}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
                   >
-                    {loading ? 'AI analysiert...' : 'AI-Feedback erhalten'}
+                    {loading ? 'AI analysiert...' : 'Deine Reaktion bewerten lassen'}
                   </Button>
 
+                  {/* 3. AI Feedback Bewertung */}
                   {aiFeedback && (
                     <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
-                      <p className="font-medium text-yellow-800 mb-2">🤖 AI-Coach Feedback:</p>
+                      <p className="font-medium text-yellow-800 mb-2">🤖 Bewertung deiner Reaktion:</p>
                       <div className="text-yellow-700 whitespace-pre-wrap">{aiFeedback}</div>
+                    </div>
+                  )}
+
+                  {/* 4. Falsche Reaktion (wird nur nach AI Feedback gezeigt) */}
+                  {aiFeedback && (
+                    <div className="space-y-3">
+                      <div className="p-4 bg-red-50 border-l-4 border-red-400 rounded-lg">
+                        <p className="font-medium text-red-800 mb-2">❌ Beispiel einer problematischen Reaktion:</p>
+                        <p className="text-red-700">{selectedScenario.wrong_reaction}</p>
+                      </div>
+
+                      <div className="p-4 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                        <p className="font-medium text-green-800 mb-2">✅ Beispiel einer idealen Reaktion:</p>
+                        <p className="text-green-700">{selectedScenario.ideal_reaction}</p>
+                        {selectedScenario.effect && (
+                          <div className="mt-3 p-3 bg-green-100 rounded-lg">
+                            <p className="text-sm font-medium text-green-800 mb-1">🌟 Positive Wirkung:</p>
+                            <p className="text-green-700 text-sm">{selectedScenario.effect}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
