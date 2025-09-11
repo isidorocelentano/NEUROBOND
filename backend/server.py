@@ -82,6 +82,38 @@ class DialogSession(BaseModel):
     analysis: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class WeeklyPlanRequest(BaseModel):
+    user_id: str
+    partner1_name: str
+    partner2_name: str
+    week_number: Optional[int] = None
+    current_challenges: Optional[str] = None
+
+class WeeklyTrainingPlan(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    week_number: int
+    title: str
+    theme: str
+    scientific_basis: str
+    daily_exercises: List[dict]
+    couple_challenges: List[dict]
+    reflection_questions: List[str]
+    success_metrics: List[str]
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class WeeklyProgress(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    week_number: int
+    plan_id: str
+    completed_exercises: List[str] = []
+    couple_challenge_status: dict = {}
+    reflection_answers: dict = {}
+    overall_rating: Optional[int] = None
+    notes: Optional[str] = None
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # Helper functions
 def prepare_for_mongo(data):
     if isinstance(data, dict):
