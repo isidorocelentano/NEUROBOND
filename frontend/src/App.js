@@ -766,6 +766,175 @@ const EmpathyTrainingApp = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="dialogue" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-blue-500" />
+                  Dialog-Coaching für Paare
+                </CardTitle>
+                <CardDescription>
+                  Haltet euer echtes Gespräch fest und erhaltet sofortige Analyse eurer Kommunikationsmuster. 
+                  {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                
+                {/* Dialog Input Section */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Button
+                        variant={currentSpeaker === 'partner1' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setCurrentSpeaker('partner1')}
+                        className="flex items-center gap-2"
+                      >
+                        <User className="w-4 h-4" />
+                        {user?.name || 'Partner 1'}
+                      </Button>
+                      <Button
+                        variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setCurrentSpeaker('partner2')}
+                        className="flex items-center gap-2"
+                      >
+                        <UserCheck className="w-4 h-4" />
+                        {user?.partner_name || 'Partner 2'}
+                      </Button>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="dialog-message">
+                        Was sagt {currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2')}?
+                      </Label>
+                      <Textarea
+                        id="dialog-message"
+                        placeholder="Schreibt hier, was in eurem Gespräch gesagt wurde..."
+                        value={currentMessage}
+                        onChange={(e) => setCurrentMessage(e.target.value)}
+                        className="min-h-[100px]"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            addDialogMessage();
+                          }
+                        }}
+                      />
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button onClick={addDialogMessage} disabled={!currentMessage.trim()} className="flex items-center gap-2">
+                        <Send className="w-4 h-4" />
+                        Nachricht hinzufügen
+                      </Button>
+                      <Button variant="outline" onClick={clearDialog} disabled={dialogMessages.length === 0}>
+                        Dialog löschen
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Dialog Display */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Euer Gespräch ({dialogMessages.length} Nachrichten)</h4>
+                      <Button 
+                        onClick={analyzeDialog} 
+                        disabled={dialogMessages.length < 2 || isAnalyzing}
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                      >
+                        {isAnalyzing ? 'Analysiert...' : 'Dialog analysieren'}
+                      </Button>
+                    </div>
+                    
+                    <div className="max-h-96 overflow-y-auto space-y-2 p-4 bg-gray-50 rounded-lg">
+                      {dialogMessages.length === 0 ? (
+                        <p className="text-gray-500 text-center py-8">
+                          Noch keine Nachrichten. Beginnt euer Gespräch zu dokumentieren!
+                        </p>
+                      ) : (
+                        dialogMessages.map((msg) => (
+                          <div key={msg.id} className={`p-3 rounded-lg ${
+                            msg.speakerType === 'partner1' 
+                              ? 'bg-blue-100 ml-0 mr-12' 
+                              : 'bg-green-100 ml-12 mr-0'
+                          }`}>
+                            <div className="flex items-center gap-2 mb-1">
+                              {msg.speakerType === 'partner1' ? (
+                                <User className="w-4 h-4 text-blue-600" />
+                              ) : (
+                                <UserCheck className="w-4 h-4 text-green-600" />
+                              )}
+                              <span className="font-medium text-sm">{msg.speaker}</span>
+                              <span className="text-xs text-gray-500">
+                                {new Date(msg.timestamp).toLocaleTimeString('de-DE', { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit' 
+                                })}
+                              </span>
+                            </div>
+                            <p className="text-sm">{msg.message}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Analysis Section */}
+                {dialogAnalysis && (
+                  <div className="mt-6">
+                    <Card className="border-l-4 border-l-purple-500">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-purple-700">
+                          <Brain className="w-5 h-5" />
+                          KI-Analyse eures Gesprächs
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="prose prose-sm max-w-none">
+                          <div className="whitespace-pre-wrap text-gray-700">{dialogAnalysis}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
+                {/* Tips Section */}
+                <Card className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-700">
+                      <Lightbulb className="w-5 h-5" />
+                      Tipps für bessere Dialog-Dokumentation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <h5 className="font-medium mb-2">✅ So geht's richtig:</h5>
+                        <ul className="space-y-1 text-gray-600">
+                          <li>• Dokumentiert echte Gespräche zeitnah</li>
+                          <li>• Seid ehrlich und authentisch</li>
+                          <li>• Fügt auch Emotionen und Tonfall hinzu</li>
+                          <li>• Mindestens 4-6 Gesprächsschritte für gute Analyse</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h5 className="font-medium mb-2">🎯 Beispiel-Dialog:</h5>
+                        <div className="text-gray-600 italic text-xs">
+                          <p><strong>Linda:</strong> "Du hörst mir nicht zu, wenn ich von der Arbeit erzähle"</p>
+                          <p><strong>Adam:</strong> "Doch, ich höre schon zu"</p>
+                          <p><strong>Linda:</strong> "Dann erzähl mir, was ich gesagt habe"</p>
+                          <p><strong>Adam:</strong> "Du warst gestresst..."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="progress">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
