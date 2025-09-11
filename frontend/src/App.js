@@ -27,6 +27,14 @@ const EmpathyTrainingApp = () => {
   const [userProgress, setUserProgress] = useState([]);
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [aiFeedbackGiven, setAiFeedbackGiven] = useState(false);
+  
+  // Dialog Coaching States
+  const [dialogMessages, setDialogMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [currentSpeaker, setCurrentSpeaker] = useState('partner1'); // partner1 or partner2
+  const [dialogAnalysis, setDialogAnalysis] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [dialogSessions, setDialogSessions] = useState([]);
 
   useEffect(() => {
     fetchStages();
