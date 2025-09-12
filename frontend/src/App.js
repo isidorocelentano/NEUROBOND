@@ -883,16 +883,13 @@ const EmpathyTrainingApp = () => {
       <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-violet-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm shadow-2xl border-0">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-20 h-20 flex items-center justify-center">
+            <div className="mx-auto flex items-center justify-center">
               <img 
-                src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/7sgrpbdt_NEUROBOND%20LOGO.jpg" 
+                src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
                 alt="NEUROBOND Logo" 
-                className="w-full h-full object-contain"
+                className="h-16 w-auto object-contain"
               />
             </div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-              NEUROBOND
-            </CardTitle>
             <CardDescription className="text-gray-600">
               Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen
             </CardDescription>
