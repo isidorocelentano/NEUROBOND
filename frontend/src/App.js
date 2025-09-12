@@ -58,10 +58,11 @@ const EmpathyTrainingApp = () => {
     }
   }, []);
 
-  // Load weekly plan on component mount
+  // Load weekly plan and community cases on component mount
   useEffect(() => {
     if (user && !showOnboarding) {
       generateWeeklyPlan();
+      fetchCommunityCases();
     }
   }, [user, showOnboarding]);
 
