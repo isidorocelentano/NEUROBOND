@@ -1026,14 +1026,58 @@ const EmpathyTrainingApp = () => {
 
         {/* Training Stages */}
         <Tabs defaultValue="stages" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="stages">Training Stufen</TabsTrigger>
-            <TabsTrigger value="feelings">Gefühlslexikon</TabsTrigger>
-            <TabsTrigger value="dialogue">Dialog-Coaching</TabsTrigger>
-            <TabsTrigger value="community">Community Cases</TabsTrigger>
-            <TabsTrigger value="weekly">Wöchentliche Pläne</TabsTrigger>
-            <TabsTrigger value="progress">Mein Fortschritt</TabsTrigger>
-          </TabsList>
+          <div className="mb-6">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-1 h-auto p-1 bg-gray-100 rounded-xl">
+              <TabsTrigger 
+                value="stages" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Target className="w-4 h-4" />
+                <span className="hidden sm:inline">Training</span>
+                <span className="sm:hidden">Stufen</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="feelings" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Heart className="w-4 h-4" />
+                <span className="hidden sm:inline">Gefühle</span>
+                <span className="sm:hidden">Lexikon</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="dialogue" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">Dialog</span>
+                <span className="sm:hidden">Coach</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="community" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">Community</span>
+                <span className="sm:hidden">Cases</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="weekly" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Calendar className="w-4 h-4" />
+                <span className="hidden sm:inline">Wochen</span>
+                <span className="sm:hidden">Pläne</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="progress" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Trophy className="w-4 h-4" />
+                <span className="hidden sm:inline">Fortschritt</span>
+                <span className="sm:hidden">Stats</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
           
           <TabsContent value="stages" className="space-y-6">
             {stages.map((stage) => (
