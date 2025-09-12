@@ -1000,6 +1000,27 @@ const EmpathyTrainingApp = () => {
                         <div className="prose prose-sm max-w-none">
                           <div className="whitespace-pre-wrap text-gray-700">{dialogAnalysis}</div>
                         </div>
+                        
+                        {/* Community Contribution Option */}
+                        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium text-blue-800">💡 Der Community helfen</h4>
+                              <p className="text-sm text-blue-600 mt-1">
+                                Möchtet ihr euren Dialog anonymisiert mit anderen NEUROBOND-Paaren teilen? 
+                                Andere können von euren Erfahrungen lernen.
+                              </p>
+                            </div>
+                            <Button
+                              onClick={() => createCommunityCase('current_session')}
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              size="sm"
+                            >
+                              <Shield className="w-4 h-4 mr-2" />
+                              Anonymisiert teilen
+                            </Button>
+                          </div>
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
