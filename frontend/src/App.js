@@ -908,6 +908,14 @@ const EmpathyTrainingApp = () => {
             <p className="text-sm">
               © 2024 NEUROBOND. Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen.
             </p>
+            <div className="mt-4 pt-4 border-t border-gray-300">
+              <div className="text-xs text-gray-500 space-y-1">
+                <p><strong>Impressum:</strong></p>
+                <p>MYSYMP AG</p>
+                <p>6207 Nottwil, Switzerland</p>
+                <p>E-Mail: <a href="mailto:info@neurobond.ch" className="text-blue-600 hover:underline">info@neurobond.ch</a></p>
+              </div>
+            </div>
           </footer>
         </div>
       </div>
