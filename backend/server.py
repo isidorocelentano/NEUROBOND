@@ -603,6 +603,168 @@ async def save_weekly_progress(progress_data: WeeklyProgress):
     await db.weekly_progress.insert_one(progress_dict)
     return progress_data
 
+@api_router.post("/create-community-case")
+async def create_community_case(request: CommunityCaseCreate):
+    """Anonymize dialog session and create community case"""
+    try:
+        # Get the dialog session
+        dialog_session = await db.dialog_sessions.find_one({"id": request.dialogue_session_id})
+        if not dialog_session:
+            raise HTTPException(status_code=404, detail="Dialog session not found")
+        
+        # Anonymize the dialogue
+        anonymized_messages = []
+        for msg in dialog_session["messages"]:
+            anonymized_msg = {
+                "speaker": "Partner A" if msg["speakerType"] == "partner1" else "Partner B",
+                "message": anonymize_message(msg["message"]),
+                "timestamp": msg["timestamp"]
+            }
+            anonymized_messages.append(anonymized_msg)
+        
+        # Generate AI solution and analysis
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"community_case_{uuid.uuid4()}",
+            system_message="""Du bist ein Experte für Paarkommunikation. Analysiere diesen anonymisierten Dialog und erstelle:
+            
+            1. Eine prägnante Fallbeschreibung
+            2. Konkrete Lösungsvorschläge 
+            3. Kommunikationsmuster-Analyse
+            4. Schwierigkeitsgrad-Einschätzung
+            
+            Fokussiere auf lehrreiche Aspekte für andere Paare."""
+        ).with_model("openai", "gpt-4o")
+        
+        dialog_text = "\n".join([f"{msg['speaker']}: {msg['message']}" for msg in anonymized_messages])
+        
+        user_message = UserMessage(
+            text=f"""Analysiere diesen anonymisierten Paar-Dialog und erstelle einen Lösungsvorschlag:
+
+{dialog_text}
+
+Erstelle:
+- Kurze Situationsbeschreibung (2-3 Sätze)
+- 3-4 konkrete Lösungsansätze
+- Hauptkommunikationsmuster
+- Schwierigkeitsgrad (Einfach/Mittel/Schwer)"""
+        )
+        
+        ai_response = await chat.send_message(user_message)
+        
+        # Determine category based on content
+        category = determine_category(dialog_text)
+        
+        # Create community case
+        community_case = CommunityCase(
+            title=f"Kommunikationsfall: {category}",
+            category=category,
+            anonymized_dialogue=anonymized_messages,
+            original_context="Anonymisiert für Datenschutz",
+            anonymized_context=f"Ein Paar diskutiert über {category.lower()}",
+            ai_solution=ai_response,
+            communication_patterns=extract_patterns(dialog_text),
+            difficulty_level=determine_difficulty(dialog_text),
+            votes=0,
+            helpful_count=0,
+            is_featured=False
+        )
+        
+        # Save to database
+        case_dict = prepare_for_mongo(community_case.dict())
+        await db.community_cases.insert_one(case_dict)
+        
+        return {"success": True, "case_id": community_case.id, "message": "Community Case erfolgreich erstellt"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Community case creation failed: {str(e)}")
+
+@api_router.get("/community-cases")
+async def get_community_cases():
+    """Get all community cases for learning"""
+    try:
+        cases = await db.community_cases.find().sort("helpful_count", -1).to_list(length=50)
+        return [CommunityCase(**case) for case in cases]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch community cases: {str(e)}")
+
+@api_router.post("/community-case/{case_id}/helpful")
+async def mark_case_helpful(case_id: str):
+    """Mark a community case as helpful"""
+    try:
+        result = await db.community_cases.update_one(
+            {"id": case_id},
+            {"$inc": {"helpful_count": 1}}
+        )
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Case not found")
+        return {"success": True, "message": "Als hilfreich markiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to mark as helpful: {str(e)}")
+
+def anonymize_message(message: str) -> str:
+    """Anonymize personal information in messages"""
+    import re
+    
+    # Replace common names with placeholders
+    common_names = ["Adam", "Linda", "Maria", "Peter", "Anna", "Max", "Sarah", "Tom", "Julia", "Michael"]
+    for name in common_names:
+        message = re.sub(rf'\b{name}\b', 'Partner', message, flags=re.IGNORECASE)
+    
+    # Replace specific personal details
+    message = re.sub(r'\b\d{1,2}\.\d{1,2}\.\d{4}\b', '[Datum]', message)  # Dates
+    message = re.sub(r'\b\d{3,4}[-\s]?\d{3,4}\b', '[Telefon]', message)   # Phone numbers
+    message = re.sub(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', '[E-Mail]', message)  # Emails
+    
+    return message
+
+def determine_category(dialog_text: str) -> str:
+    """Determine the category of the dialog"""
+    categories = {
+        "Stress & Arbeit": ["stress", "arbeit", "job", "müde", "überfordert"],
+        "Kommunikation": ["verstehen", "zuhören", "reden", "sprechen"],
+        "Haushaltstreibung": ["haushalt", "aufräumen", "putzen", "kochen"],
+        "Zeit & Aufmerksamkeit": ["zeit", "aufmerksamkeit", "handy", "fernsehen"],
+        "Gefühle": ["traurig", "wütend", "verletzt", "glücklich", "angst"]
+    }
+    
+    dialog_lower = dialog_text.lower()
+    for category, keywords in categories.items():
+        if any(keyword in dialog_lower for keyword in keywords):
+            return category
+    
+    return "Allgemeine Kommunikation"
+
+def extract_patterns(dialog_text: str) -> List[str]:
+    """Extract communication patterns from dialog"""
+    patterns = []
+    
+    if "immer" in dialog_text.lower() or "nie" in dialog_text.lower():
+        patterns.append("Verallgemeinerungen")
+    if "aber" in dialog_text.lower():
+        patterns.append("Defensives Verhalten")
+    if "verstehen" in dialog_text.lower():
+        patterns.append("Verständnis-Bedürfnis")
+    if any(word in dialog_text.lower() for word in ["hilfe", "unterstützen", "helfen"]):
+        patterns.append("Unterstützungs-Wunsch")
+    
+    return patterns if patterns else ["Grundlegende Kommunikation"]
+
+def determine_difficulty(dialog_text: str) -> str:
+    """Determine difficulty level of the case"""
+    complex_indicators = ["nicht verstehen", "immer", "nie", "wütend", "verletzt"]
+    simple_indicators = ["danke", "verstehe", "gut", "okay"]
+    
+    complex_count = sum(1 for indicator in complex_indicators if indicator in dialog_text.lower())
+    simple_count = sum(1 for indicator in simple_indicators if indicator in dialog_text.lower())
+    
+    if complex_count > simple_count + 1:
+        return "Schwer"
+    elif complex_count > simple_count:
+        return "Mittel"
+    else:
+        return "Einfach"
+
 @api_router.get("/weekly-progress/{user_id}/{week_number}")
 async def get_weekly_progress(user_id: str, week_number: int):
     """Get weekly progress for specific user and week"""
