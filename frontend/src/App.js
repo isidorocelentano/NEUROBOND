@@ -1037,7 +1037,7 @@ const EmpathyTrainingApp = () => {
         {/* Training Stages */}
         <Tabs defaultValue="stages" className="w-full">
           <div className="mb-6">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-1 h-auto p-1 bg-gray-100 rounded-xl">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-1 h-auto p-1 bg-gray-100 rounded-xl">
               <TabsTrigger 
                 value="stages" 
                 className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
@@ -1077,6 +1077,14 @@ const EmpathyTrainingApp = () => {
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">Wochen</span>
                 <span className="sm:hidden">Pläne</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="contact" 
+                className="flex flex-col items-center gap-1 py-3 px-2 text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                <span className="hidden sm:inline">Kontakt</span>
+                <span className="sm:hidden">Help</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="progress" 
