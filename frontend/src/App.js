@@ -1061,6 +1061,261 @@ const EmpathyTrainingApp = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="community" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-indigo-500" />
+                  NEUROBOND Community Cases
+                </CardTitle>
+                <CardDescription>
+                  Lerne von anonymisierten Dialogen anderer Paare. Entdecke bewährte Lösungsansätze 
+                  für häufige Kommunikationsherausforderungen.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                
+                {/* Stats Overview */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Card className="border-l-4 border-l-indigo-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <TrendingUp className="w-4 h-4 text-indigo-600" />
+                        <span className="font-medium">Verfügbare Cases</span>
+                      </div>
+                      <p className="text-2xl font-bold text-indigo-600">
+                        {communityCases.length}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-l-4 border-l-green-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <ThumbsUp className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Community Bewertungen</span>
+                      </div>
+                      <p className="text-2xl font-bold text-green-600">
+                        {communityCases.reduce((sum, c) => sum + c.helpful_count, 0)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-l-4 border-l-purple-500">
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Shield className="w-4 h-4 text-purple-600" />
+                        <span className="font-medium">Anonymisiert & Sicher</span>
+                      </div>
+                      <p className="text-sm text-purple-600 font-medium">
+                        100% Datenschutz
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Load Community Cases Button */}
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={fetchCommunityCases}
+                    disabled={loadingCases}
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-8 py-3"
+                  >
+                    {loadingCases ? (
+                      <>
+                        <Clock className="w-4 h-4 mr-2 animate-spin" />
+                        Lade Community Cases...
+                      </>
+                    ) : (
+                      <>
+                        <Users className="w-4 h-4 mr-2" />
+                        Community Cases laden
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Community Cases Display */}
+                {communityCases.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Verfügbare Community Cases</h3>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {communityCases.map((communityCase) => (
+                        <Card key={communityCase.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="text-lg">{communityCase.title}</CardTitle>
+                              <Badge variant="outline">{communityCase.difficulty_level}</Badge>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className="bg-indigo-100 text-indigo-700">{communityCase.category}</Badge>
+                              <div className="flex items-center gap-1 text-sm text-gray-500">
+                                <ThumbsUp className="w-3 h-3" />
+                                {communityCase.helpful_count}
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm text-gray-600 mb-4">{communityCase.anonymized_context}</p>
+                            
+                            {/* Sample Dialog Preview */}
+                            <div className="bg-gray-50 p-3 rounded-lg mb-4">
+                              <p className="text-xs font-medium text-gray-700 mb-2">Dialog-Vorschau:</p>
+                              {communityCase.anonymized_dialogue.slice(0, 2).map((msg, idx) => (
+                                <div key={idx} className="text-xs text-gray-600 mb-1">
+                                  <strong>{msg.speaker}:</strong> {msg.message.substring(0, 100)}...
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Communication Patterns */}
+                            <div className="mb-4">
+                              <p className="text-xs font-medium text-gray-700 mb-2">Kommunikationsmuster:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {communityCase.communication_patterns.map((pattern, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-xs">
+                                    {pattern}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <Button
+                                size="sm"
+                                onClick={() => setSelectedCase(communityCase)}
+                                className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                              >
+                                Lösung anzeigen
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => markCaseHelpful(communityCase.id)}
+                                className="flex items-center gap-1"
+                              >
+                                <ThumbsUp className="w-3 h-3" />
+                                Hilfreich
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* No Cases Message */}
+                {communityCases.length === 0 && !loadingCases && (
+                  <div className="text-center py-8">
+                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Noch keine Community Cases verfügbar. Sei der Erste und teile einen Dialog!
+                    </p>
+                  </div>
+                )}
+
+                {/* Information about anonymization */}
+                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-700">
+                      <Shield className="w-5 h-5" />
+                      Datenschutz & Anonymisierung
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <h5 className="font-medium mb-2">🔒 Wie wir anonymisieren:</h5>
+                        <ul className="space-y-1 text-gray-600">
+                          <li>• Alle Namen werden durch "Partner A/B" ersetzt</li>
+                          <li>• Persönliche Details werden entfernt</li>
+                          <li>• Nur Kommunikationsmuster bleiben erhalten</li>
+                          <li>• KI erstellt allgemeine Lösungsvorschläge</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h5 className="font-medium mb-2">🌟 Community Nutzen:</h5>
+                        <ul className="space-y-1 text-gray-600">
+                          <li>• Lerne von ähnlichen Situationen</li>
+                          <li>• Bewährte Lösungsansätze entdecken</li>
+                          <li>• Kommunikationsmuster verstehen</li>
+                          <li>• Anderen Paaren helfen</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Case Detail Modal */}
+          <Dialog open={!!selectedCase} onOpenChange={() => setSelectedCase(null)}>
+            <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+              {selectedCase && (
+                <>
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Users className="w-5 h-5 text-indigo-500" />
+                      {selectedCase.title}
+                    </DialogTitle>
+                    <DialogDescription>
+                      Kategorie: {selectedCase.category} | Schwierigkeit: {selectedCase.difficulty_level}
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="space-y-4">
+                    {/* Full Dialog */}
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-medium mb-3">Anonymisierter Dialog:</h4>
+                      <div className="space-y-2">
+                        {selectedCase.anonymized_dialogue.map((msg, idx) => (
+                          <div key={idx} className={`p-3 rounded-lg ${
+                            msg.speaker === 'Partner A' 
+                              ? 'bg-blue-100 ml-0 mr-12' 
+                              : 'bg-green-100 ml-12 mr-0'
+                          }`}>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium text-sm">{msg.speaker}</span>
+                              <span className="text-xs text-gray-500">
+                                {new Date(msg.timestamp).toLocaleTimeString('de-DE', { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit' 
+                                })}
+                              </span>
+                            </div>
+                            <p className="text-sm">{msg.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* AI Solution */}
+                    <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                      <h4 className="font-medium text-yellow-800 mb-2">🤖 KI-Lösungsvorschlag:</h4>
+                      <div className="text-yellow-700 whitespace-pre-wrap text-sm">
+                        {selectedCase.ai_solution}
+                      </div>
+                    </div>
+
+                    {/* Communication Patterns */}
+                    <div className="p-4 bg-purple-50 rounded-lg">
+                      <h4 className="font-medium text-purple-800 mb-2">📊 Erkannte Kommunikationsmuster:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedCase.communication_patterns.map((pattern, idx) => (
+                          <Badge key={idx} className="bg-purple-200 text-purple-800">
+                            {pattern}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
+
           <TabsContent value="weekly" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
