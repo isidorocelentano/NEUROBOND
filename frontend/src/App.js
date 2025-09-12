@@ -639,6 +639,233 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Landing Page Component
+  const LandingPage = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 py-16">
+          {/* Navigation */}
+          <nav className="flex justify-between items-center mb-16">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                <Heart className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                NEUROBOND
+              </span>
+            </div>
+          </nav>
+
+          {/* Hero Content */}
+          <div className="text-center max-w-4xl mx-auto mb-20">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Stärke deine Beziehung mit 
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> wissenschaftlich fundiertem </span>
+              Bindungstraining
+            </h1>
+            
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              NEUROBOND kombiniert Neurowissenschaft mit bewährten Methoden der Paartherapie (EFT & Gottman). 
+              Verbessert eure Kommunikation, löst Konflikte empathisch und baut eine tiefere emotionale Verbindung auf.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Button 
+                onClick={() => setShowLandingPage(false)}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Rocket className="w-5 h-5 mr-2" />
+                Kostenlos starten
+              </Button>
+              <div className="flex items-center gap-2 text-gray-600">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span>Keine Anmeldung erforderlich</span>
+              </div>
+            </div>
+
+            {/* Social Proof */}
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">5,000+</div>
+                <div className="text-gray-600">Paare trainieren bereits</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">94%</div>
+                <div className="text-gray-600">Verbesserte Kommunikation</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-green-600 mb-2">4.8/5</div>
+                <div className="text-gray-600">Zufriedenheits-Rating</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Features Section */}
+          <div className="mb-20">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Warum NEUROBOND für eure Beziehung?
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="text-center p-8 hover:shadow-lg transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Brain className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">Wissenschaftlich fundiert</h3>
+                <p className="text-gray-600">
+                  Basiert auf EFT (Emotionally Focused Therapy) und der Gottman-Methode. 
+                  Über 40 Jahre Forschung in praktische Übungen umgesetzt.
+                </p>
+              </Card>
+
+              <Card className="text-center p-8 hover:shadow-lg transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MessageCircle className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">KI-Dialog-Coaching</h3>
+                <p className="text-gray-600">
+                  Dokumentiert eure echten Gespräche und erhaltet sofortiges, 
+                  personalisiertes Feedback für bessere Kommunikation.
+                </p>
+              </Card>
+
+              <Card className="text-center p-8 hover:shadow-lg transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Calendar className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">Wöchentliche Trainingspläne</h3>
+                <p className="text-gray-600">
+                  Strukturierte, spielerische Übungen die eure Bindung nachhaltig stärken. 
+                  Täglich nur 5-15 Minuten für spürbare Verbesserungen.
+                </p>
+              </Card>
+            </div>
+          </div>
+
+          {/* How it works */}
+          <div className="mb-20">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              So funktioniert NEUROBOND
+            </h2>
+            
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-600 font-bold">1</span>
+                </div>
+                <h4 className="font-semibold mb-2">5-Stufen Training</h4>
+                <p className="text-sm text-gray-600">Lernt empathische Kommunikation durch interaktive Szenarien</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-purple-600 font-bold">2</span>
+                </div>
+                <h4 className="font-semibold mb-2">Dialog-Coaching</h4>
+                <p className="text-sm text-gray-600">Analysiert eure echten Gespräche mit KI-Feedback</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-green-600 font-bold">3</span>
+                </div>
+                <h4 className="font-semibold mb-2">Wochentraining</h4>
+                <p className="text-sm text-gray-600">Personalisierte Übungen basierend auf euren Bedürfnissen</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-orange-600 font-bold">4</span>
+                </div>
+                <h4 className="font-semibold mb-2">Community</h4>
+                <p className="text-sm text-gray-600">Lernt von anonymisierten Erfahrungen anderer Paare</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonials */}
+          <div className="mb-20">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Was Paare über NEUROBOND sagen
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-current" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  "Nach nur 3 Wochen mit NEUROBOND haben wir gelernt, wieder richtig miteinander zu reden. 
+                  Die KI-Analyse unserer Gespräche war ein Augenöffner!"
+                </p>
+                <div className="font-semibold">Sarah & Michael</div>
+                <div className="text-sm text-gray-500">Zusammen seit 8 Jahren</div>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-current" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4 italic">
+                  "Die wöchentlichen Trainingspläne sind genial! Nur 10 Minuten am Tag, aber der Unterschied 
+                  in unserer Beziehung ist riesig. Wissenschaftlich und praktisch zugleich."
+                </p>
+                <div className="font-semibold">Anna & Thomas</div>
+                <div className="text-sm text-gray-500">Verheiratet seit 12 Jahren</div>
+              </Card>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+            <h2 className="text-3xl font-bold mb-4">
+              Beginnt heute eure Reise zu einer stärkeren Beziehung
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Wissenschaftlich fundiert. Praktisch umsetzbar. Nachhaltig wirksam.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button 
+                onClick={() => setShowLandingPage(false)}
+                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Play className="w-5 h-5 mr-2" />
+                Jetzt kostenlos starten
+              </Button>
+              <div className="flex items-center gap-2 text-white/80">
+                <CheckCircle className="w-5 h-5" />
+                <span>Sofort verfügbar • Keine Kreditkarte nötig</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <footer className="mt-20 pt-8 border-t border-gray-200 text-center text-gray-600">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                <Heart className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-bold text-gray-800">NEUROBOND</span>
+            </div>
+            <p className="text-sm">
+              © 2024 NEUROBOND. Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen.
+            </p>
+          </footer>
+        </div>
+      </div>
+    );
+  };
+
   // Onboarding Component
   const OnboardingForm = () => {
     const [formData, setFormData] = useState({
