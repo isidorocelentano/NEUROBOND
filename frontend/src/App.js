@@ -108,6 +108,7 @@ const EmpathyTrainingApp = () => {
       setUser(newUser);
       localStorage.setItem('empathy_user', JSON.stringify(newUser));
       setShowOnboarding(false);
+      setShowLandingPage(false);
       return newUser;
     } catch (error) {
       console.error('Error creating user:', error);
