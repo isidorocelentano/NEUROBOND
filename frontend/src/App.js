@@ -952,21 +952,16 @@ const EmpathyTrainingApp = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <p className="text-sm font-medium text-gray-700 mb-2">Kontext:</p>
-              <p className="text-gray-600">{scenario.context}</p>
-            </div>
-            
-            <div className="p-3 bg-red-50 border-l-4 border-red-400 rounded-lg">
-              <p className="text-sm font-medium text-red-700 mb-2">❌ Falsche Reaktion:</p>
-              <p className="text-red-600">{scenario.wrong_reaction}</p>
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm font-medium text-blue-700 mb-2">📋 Situation:</p>
+              <p className="text-blue-600">{scenario.context}</p>
             </div>
             
             <Button 
               onClick={() => setSelectedScenario(scenario)}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              Szenario üben
+              Deine Reaktion eingeben
             </Button>
           </div>
         </CardContent>
