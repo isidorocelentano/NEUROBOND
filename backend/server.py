@@ -114,6 +114,25 @@ class WeeklyProgress(BaseModel):
     notes: Optional[str] = None
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class CommunityCase(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    category: str
+    anonymized_dialogue: List[dict]
+    original_context: str
+    anonymized_context: str
+    ai_solution: str
+    communication_patterns: List[str]
+    difficulty_level: str  # Einfach, Mittel, Schwer
+    votes: int = 0
+    helpful_count: int = 0
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    is_featured: bool = False
+
+class CommunityCaseCreate(BaseModel):
+    dialogue_session_id: str
+    user_consent: bool = True
+
 # Helper functions
 def prepare_for_mongo(data):
     if isinstance(data, dict):
