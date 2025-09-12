@@ -55,6 +55,7 @@ const EmpathyTrainingApp = () => {
       const userData = JSON.parse(savedUser);
       setUser(userData);
       setShowOnboarding(false);
+      setShowLandingPage(false);
       fetchUserProgress(userData.id);
     }
   }, []);
