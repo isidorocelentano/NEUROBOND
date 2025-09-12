@@ -1865,12 +1865,15 @@ const EmpathyTrainingApp = () => {
                     </div>
                   )}
 
-                  {/* 4. Falsche Reaktion (wird nur nach AI Feedback gezeigt) */}
+                  {/* 4. Falsche und ideale Reaktion (wird nur nach AI Feedback gezeigt) */}
                   {aiFeedbackGiven && (
                     <div className="space-y-3">
                       <div className="p-4 bg-red-50 border-l-4 border-red-400 rounded-lg">
                         <p className="font-medium text-red-800 mb-2">❌ Beispiel einer problematischen Reaktion:</p>
                         <p className="text-red-700">{selectedScenario.wrong_reaction}</p>
+                        <p className="text-xs text-red-600 mt-2 italic">
+                          💡 So solltest du NICHT reagieren - dies kann die Situation verschlimmern.
+                        </p>
                       </div>
 
                       <div className="p-4 bg-green-50 border-l-4 border-green-400 rounded-lg">
@@ -1882,6 +1885,13 @@ const EmpathyTrainingApp = () => {
                             <p className="text-green-700 text-sm">{selectedScenario.effect}</p>
                           </div>
                         )}
+                      </div>
+                      
+                      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-sm text-blue-700">
+                          <strong>💭 Reflexion:</strong> Vergleiche deine ursprüngliche Antwort mit diesen Beispielen. 
+                          Was kannst du für zukünftige ähnliche Situationen mitnehmen?
+                        </p>
                       </div>
                     </div>
                   )}
