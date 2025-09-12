@@ -244,6 +244,45 @@ const EmpathyTrainingApp = () => {
     }
   };
 
+  // Community Cases Functions
+  const fetchCommunityCases = async () => {
+    setLoadingCases(true);
+    try {
+      const response = await axios.get(`${API}/community-cases`);
+      setCommunityCases(response.data);
+    } catch (error) {
+      console.error('Error fetching community cases:', error);
+    }
+    setLoadingCases(false);
+  };
+
+  const markCaseHelpful = async (caseId) => {
+    try {
+      await axios.post(`${API}/community-case/${caseId}/helpful`);
+      // Refresh cases to show updated helpful count
+      fetchCommunityCases();
+    } catch (error) {
+      console.error('Error marking case as helpful:', error);
+    }
+  };
+
+  const createCommunityCase = async (dialogSessionId) => {
+    try {
+      const response = await axios.post(`${API}/create-community-case`, {
+        dialogue_session_id: dialogSessionId,
+        user_consent: true
+      });
+      
+      if (response.data.success) {
+        alert('Dialog erfolgreich anonymisiert und zur Community hinzugefügt!');
+        fetchCommunityCases(); // Refresh the cases
+      }
+    } catch (error) {
+      console.error('Error creating community case:', error);
+      alert('Fehler beim Erstellen des Community Cases');
+    }
+  };
+
   const calculateStageProgress = (stageNumber) => {
     const stageAttempts = userProgress.filter(p => p.stage_number === stageNumber);
     const stage = stages.find(s => s.stage_number === stageNumber);
