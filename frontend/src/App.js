@@ -854,9 +854,11 @@ const EmpathyTrainingApp = () => {
           {/* Footer */}
           <footer className="mt-20 pt-8 border-t border-gray-200 text-center text-gray-600">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                <Heart className="w-4 h-4 text-white" />
-              </div>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/7sgrpbdt_NEUROBOND%20LOGO.jpg" 
+                alt="NEUROBOND Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <span className="font-bold text-gray-800">NEUROBOND</span>
             </div>
             <p className="text-sm">
