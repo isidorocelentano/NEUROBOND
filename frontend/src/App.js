@@ -297,6 +297,44 @@ const EmpathyTrainingApp = () => {
     }
   };
 
+  // Contact Form Functions
+  const handleContactFormChange = (e) => {
+    const { name, value } = e.target;
+    setContactForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const submitContactForm = async (e) => {
+    e.preventDefault();
+    setContactSubmitting(true);
+    
+    try {
+      // Simulate form submission - in production, you'd send to a backend
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Here you would normally send the email via your backend
+      console.log('Contact form submitted:', contactForm);
+      
+      setContactSubmitted(true);
+      setContactForm({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setContactSubmitted(false), 5000);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      alert('Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut.');
+    }
+    
+    setContactSubmitting(false);
+  };
+
   const calculateStageProgress = (stageNumber) => {
     const stageAttempts = userProgress.filter(p => p.stage_number === stageNumber);
     const stage = stages.find(s => s.stage_number === stageNumber);
