@@ -1889,6 +1889,193 @@ const EmpathyTrainingApp = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="contact" className="space-y-6">
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                  Kontakt & Support
+                </CardTitle>
+                <CardDescription>
+                  Haben Sie Fragen zu NEUROBOND oder benötigen Unterstützung? 
+                  Wir helfen Ihnen gerne weiter!
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                
+                {/* Contact Information */}
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Kontakt-Informationen</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <Mail className="w-5 h-5 text-blue-500" />
+                        <div>
+                          <p className="font-medium">E-Mail</p>
+                          <a 
+                            href="mailto:info@neurobond.ch" 
+                            className="text-blue-600 hover:underline"
+                          >
+                            info@neurobond.ch
+                          </a>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-3">
+                        <MapPin className="w-5 h-5 text-blue-500" />
+                        <div>
+                          <p className="font-medium">Adresse</p>
+                          <p className="text-gray-600">
+                            MYSYMP AG<br />
+                            6207 Nottwil<br />
+                            Switzerland
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Häufige Fragen</h3>
+                    <div className="space-y-3">
+                      <div className="p-3 bg-blue-50 rounded-lg">
+                        <p className="font-medium text-blue-800 text-sm">Wie kann ich mein Training fortsetzen?</p>
+                        <p className="text-blue-600 text-sm mt-1">
+                          Ihre Fortschritte werden automatisch gespeichert. Loggen Sie sich einfach wieder ein.
+                        </p>
+                      </div>
+                      <div className="p-3 bg-green-50 rounded-lg">
+                        <p className="font-medium text-green-800 text-sm">Ist NEUROBOND wissenschaftlich fundiert?</p>
+                        <p className="text-green-600 text-sm mt-1">
+                          Ja, basiert auf EFT und Gottman-Methode mit über 40 Jahren Forschung.
+                        </p>
+                      </div>
+                      <div className="p-3 bg-purple-50 rounded-lg">
+                        <p className="font-medium text-purple-800 text-sm">Kann ich NEUROBOND mit meinem Partner nutzen?</p>
+                        <p className="text-purple-600 text-sm mt-1">
+                          Absolut! NEUROBOND ist speziell für Paare entwickelt worden.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Form */}
+                <div className="border-t pt-8">
+                  <h3 className="text-lg font-semibold mb-4">Nachricht senden</h3>
+                  
+                  {contactSubmitted && (
+                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <p className="text-green-800 font-medium">Nachricht erfolgreich gesendet!</p>
+                      </div>
+                      <p className="text-green-600 text-sm mt-1">
+                        Wir werden uns schnellstmöglich bei Ihnen melden.
+                      </p>
+                    </div>
+                  )}
+                  
+                  <form onSubmit={submitContactForm} className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="contact-name">Name *</Label>
+                        <Input
+                          id="contact-name"
+                          name="name"
+                          type="text"
+                          placeholder="Ihr Name"
+                          value={contactForm.name}
+                          onChange={handleContactFormChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="contact-email">E-Mail *</Label>
+                        <Input
+                          id="contact-email"
+                          name="email"
+                          type="email"
+                          placeholder="ihre.email@example.com"
+                          value={contactForm.email}
+                          onChange={handleContactFormChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="contact-subject">Betreff</Label>
+                      <Input
+                        id="contact-subject"
+                        name="subject"
+                        type="text"
+                        placeholder="Worum geht es?"
+                        value={contactForm.subject}
+                        onChange={handleContactFormChange}
+                        className="mt-1"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="contact-message">Nachricht *</Label>
+                      <Textarea
+                        id="contact-message"
+                        name="message"
+                        placeholder="Beschreiben Sie Ihr Anliegen..."
+                        value={contactForm.message}
+                        onChange={handleContactFormChange}
+                        required
+                        className="mt-1 min-h-[120px]"
+                      />
+                    </div>
+                    
+                    <Button 
+                      type="submit" 
+                      disabled={contactSubmitting || !contactForm.name || !contactForm.email || !contactForm.message}
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                    >
+                      {contactSubmitting ? (
+                        <>
+                          <Clock className="w-4 h-4 mr-2 animate-spin" />
+                          Wird gesendet...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          Nachricht senden
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </div>
+
+                {/* Additional Information */}
+                <div className="border-t pt-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="font-semibold mb-3">Datenschutz</h4>
+                      <p className="text-sm text-gray-600">
+                        Ihre Daten werden vertraulich behandelt und nur zur Bearbeitung 
+                        Ihrer Anfrage verwendet. Weitere Informationen finden Sie in 
+                        unserer Datenschutzerklärung.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-3">Antwortzeit</h4>
+                      <p className="text-sm text-gray-600">
+                        Wir bemühen uns, alle Anfragen innerhalb von 24 Stunden zu beantworten. 
+                        Bei technischen Problemen können Sie uns auch direkt per E-Mail erreichen.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="progress">
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
