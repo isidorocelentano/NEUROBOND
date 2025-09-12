@@ -983,15 +983,12 @@ const EmpathyTrainingApp = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="flex items-center justify-center mb-4">
             <img 
-              src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/7sgrpbdt_NEUROBOND%20LOGO.jpg" 
+              src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
               alt="NEUROBOND Logo" 
-              className="w-16 h-16 object-contain"
+              className="h-12 md:h-16 w-auto object-contain"
             />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              NEUROBOND
-            </h1>
           </div>
           <p className="text-gray-600 text-lg">
             Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
