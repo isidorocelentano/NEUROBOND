@@ -974,6 +974,10 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  if (showLandingPage) {
+    return <LandingPage />;
+  }
+
   if (showOnboarding) {
     return <OnboardingForm />;
   }
