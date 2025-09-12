@@ -27,6 +27,7 @@ const EmpathyTrainingApp = () => {
   const [userProgress, setUserProgress] = useState([]);
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [aiFeedbackGiven, setAiFeedbackGiven] = useState(false);
+  const [showLandingPage, setShowLandingPage] = useState(true);
   
   // Dialog Coaching States
   const [dialogMessages, setDialogMessages] = useState([]);
