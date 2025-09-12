@@ -46,6 +46,16 @@ const EmpathyTrainingApp = () => {
   const [communityCases, setCommunityCases] = useState([]);
   const [loadingCases, setLoadingCases] = useState(false);
   const [selectedCase, setSelectedCase] = useState(null);
+  
+  // Contact Form States
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSubmitted, setContactSubmitted] = useState(false);
 
   useEffect(() => {
     fetchStages();
