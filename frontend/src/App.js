@@ -40,6 +40,11 @@ const EmpathyTrainingApp = () => {
   const [currentWeekPlan, setCurrentWeekPlan] = useState(null);
   const [weeklyProgress, setWeeklyProgress] = useState({});
   const [loadingWeeklyPlan, setLoadingWeeklyPlan] = useState(false);
+  
+  // Community Cases States
+  const [communityCases, setCommunityCases] = useState([]);
+  const [loadingCases, setLoadingCases] = useState(false);
+  const [selectedCase, setSelectedCase] = useState(null);
 
   useEffect(() => {
     fetchStages();
