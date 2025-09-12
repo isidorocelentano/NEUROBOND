@@ -747,10 +747,11 @@ const EmpathyTrainingApp = () => {
 
         {/* Training Stages */}
         <Tabs defaultValue="stages" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="stages">Training Stufen</TabsTrigger>
             <TabsTrigger value="feelings">Gefühlslexikon</TabsTrigger>
             <TabsTrigger value="dialogue">Dialog-Coaching</TabsTrigger>
+            <TabsTrigger value="community">Community Cases</TabsTrigger>
             <TabsTrigger value="weekly">Wöchentliche Pläne</TabsTrigger>
             <TabsTrigger value="progress">Mein Fortschritt</TabsTrigger>
           </TabsList>
