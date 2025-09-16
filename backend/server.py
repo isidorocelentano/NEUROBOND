@@ -427,10 +427,30 @@ async def get_training_stages():
     return [TrainingStage(**stage) for stage in TRAINING_STAGES_DATA]
 
 @api_router.get("/stages/{stage_number}", response_model=TrainingStage)
-async def get_training_stage(stage_number: int):
+async def get_training_stage(stage_number: int, user_id: Optional[str] = None):
     stage_data = next((s for s in TRAINING_STAGES_DATA if s["stage_number"] == stage_number), None)
     if not stage_data:
         raise HTTPException(status_code=404, detail="Stage not found")
+    
+    # Check if user has premium access
+    has_premium = False
+    if user_id:
+        user = await db.users.find_one({"id": user_id})
+        if user:
+            user_obj = User(**user)
+            has_premium = check_premium_access(user_obj)
+    
+    # Limit scenarios for free users
+    if not has_premium:
+        free_limit = get_free_scenarios_limit(stage_number)
+        if free_limit > 0:
+            stage_data = stage_data.copy()
+            stage_data["scenarios"] = stage_data["scenarios"][:free_limit]
+        else:
+            # Return empty scenarios for non-accessible stages
+            stage_data = stage_data.copy()
+            stage_data["scenarios"] = []
+    
     return TrainingStage(**stage_data)
 
 @api_router.post("/ai-feedback")
