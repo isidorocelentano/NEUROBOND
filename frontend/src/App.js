@@ -1448,38 +1448,78 @@ const EmpathyTrainingApp = () => {
                         {getStageIcon(stage.stage_number)}
                       </div>
                       <div>
-                        <CardTitle className="text-xl">
+                        <CardTitle className="text-xl flex items-center gap-2">
                           Stufe {stage.stage_number}: {stage.title}
+                          {stage.stage_number > 1 && subscriptionStatus === 'free' && (
+                            <Lock className="w-4 h-4 text-yellow-500" />
+                          )}
                         </CardTitle>
                         <CardDescription className="mt-1">
                           {stage.description}
                         </CardDescription>
                       </div>
                     </div>
-                    <Badge variant="secondary">
-                      {stage.scenarios.length} Szenarien
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">
+                        {stage.stage_number === 1 && subscriptionStatus === 'free' 
+                          ? '5 kostenlose Szenarien' 
+                          : `${stage.scenarios.length} Szenarien`
+                        }
+                      </Badge>
+                      {stage.stage_number > 1 && subscriptionStatus === 'free' && (
+                        <Badge className="bg-yellow-100 text-yellow-800">PRO</Badge>
+                      )}
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {stage.scenarios.slice(0, 2).map((scenario) => (
-                      <ScenarioCard 
-                        key={scenario.id} 
-                        scenario={scenario} 
-                        stageNumber={stage.stage_number}
-                      />
-                    ))}
-                  </div>
-                  {stage.scenarios.length > 2 && (
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setCurrentStage(stage)}
-                      className="w-full mt-4"
-                    >
-                      Alle {stage.scenarios.length} Szenarien anzeigen
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                  {hasAccessToFeature('other_stages') || stage.stage_number === 1 ? (
+                    <>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {stage.scenarios.slice(0, hasAccessToFeature('stage_1_scenarios', 999) ? 999 : 5).map((scenario, index) => (
+                          <ScenarioCard 
+                            key={scenario.id} 
+                            scenario={scenario} 
+                            stageNumber={stage.stage_number}
+                            isLocked={stage.stage_number === 1 && !hasAccessToFeature('stage_1_scenarios', index)}
+                          />
+                        ))}
+                      </div>
+                      {stage.scenarios.length > 2 && hasAccessToFeature('other_stages') && (
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setCurrentStage(stage)}
+                          className="w-full mt-4"
+                        >
+                          Alle {stage.scenarios.length} Szenarien anzeigen
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      )}
+                      {stage.stage_number === 1 && subscriptionStatus === 'free' && stage.scenarios.length > 5 && (
+                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-yellow-800">
+                                {stage.scenarios.length - 5} weitere Szenarien verfügbar
+                              </p>
+                              <p className="text-xs text-yellow-600">
+                                Upgraden Sie zu PRO für alle Inhalte
+                              </p>
+                            </div>
+                            <Button 
+                              size="sm"
+                              onClick={() => setShowUpgradeModal(true)}
+                              className="bg-yellow-500 hover:bg-yellow-600 text-white"
+                            >
+                              <Crown className="w-3 h-3 mr-1" />
+                              PRO
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <PremiumLock featureType="stages" />
                   )}
                 </CardContent>
               </Card>
