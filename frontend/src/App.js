@@ -1311,9 +1311,39 @@ const EmpathyTrainingApp = () => {
               className="h-12 md:h-16 w-auto object-contain"
             />
           </div>
-          <p className="text-gray-600 text-lg">
-            Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
-          </p>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <p className="text-gray-600 text-lg">
+              Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
+            </p>
+            {subscriptionStatus === 'active' && (
+              <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                <Crown className="w-4 h-4" />
+                PRO
+              </div>
+            )}
+          </div>
+          {subscriptionStatus === 'free' && (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="text-left">
+                  <p className="text-sm font-medium text-blue-800">
+                    🚀 Sie nutzen die kostenlose Version
+                  </p>
+                  <p className="text-xs text-blue-600">
+                    Upgraden Sie zu PRO für alle Features
+                  </p>
+                </div>
+                <Button 
+                  size="sm"
+                  onClick={() => setShowUpgradeModal(true)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                >
+                  <Crown className="w-3 h-3 mr-1" />
+                  PRO
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Progress Overview */}
