@@ -1263,13 +1263,14 @@ const EmpathyTrainingApp = () => {
   };
 
   // Scenario Practice Component
-  const ScenarioCard = ({ scenario, stageNumber }) => {
+  const ScenarioCard = ({ scenario, stageNumber, isLocked = false }) => {
     return (
-      <Card className="mb-4 hover:shadow-lg transition-shadow">
+      <Card className={`mb-4 transition-shadow ${isLocked ? 'opacity-60' : 'hover:shadow-lg'}`}>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Target className="w-5 h-5 text-blue-500" />
             {scenario.situation}
+            {isLocked && <Lock className="w-4 h-4 text-yellow-500" />}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -1279,12 +1280,22 @@ const EmpathyTrainingApp = () => {
               <p className="text-blue-600">{scenario.context}</p>
             </div>
             
-            <Button 
-              onClick={() => setSelectedScenario(scenario)}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Deine Reaktion eingeben
-            </Button>
+            {isLocked ? (
+              <Button 
+                onClick={() => setShowUpgradeModal(true)}
+                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                PRO upgraden für Zugang
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => setSelectedScenario(scenario)}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Deine Reaktion eingeben
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
