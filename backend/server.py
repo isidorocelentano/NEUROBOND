@@ -36,18 +36,37 @@ SUBSCRIPTION_PACKAGES = {
     "yearly": {"amount": 100.00, "currency": "chf", "name": "NEUROBOND PRO Yearly"}
 }
 
-# Define Models
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     email: str
     partner_name: Optional[str] = None
+    subscription_status: str = "free"  # free, active, cancelled, expired
+    subscription_type: Optional[str] = None  # monthly, yearly
+    subscription_expires_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserCreate(BaseModel):
     name: str
     email: str
     partner_name: Optional[str] = None
+
+class PaymentTransaction(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    session_id: str
+    payment_id: Optional[str] = None
+    amount: float
+    currency: str
+    package_type: str  # monthly, yearly
+    payment_status: str = "pending"  # pending, paid, failed, expired
+    metadata: Optional[Dict] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CheckoutRequest(BaseModel):
+    package_type: str  # monthly or yearly
+    origin_url: str
 
 class TrainingStage(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
