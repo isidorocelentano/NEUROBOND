@@ -56,6 +56,12 @@ const EmpathyTrainingApp = () => {
   });
   const [contactSubmitting, setContactSubmitting] = useState(false);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  
+  // Subscription States
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('monthly');
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState('free'); // free, active, cancelled, expired
 
   useEffect(() => {
     fetchStages();
