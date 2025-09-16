@@ -1874,8 +1874,6 @@ const EmpathyTrainingApp = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="contact" className="space-y-6">
