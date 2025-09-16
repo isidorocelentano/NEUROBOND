@@ -1661,7 +1661,6 @@ const EmpathyTrainingApp = () => {
               </Card>
             )}
           </TabsContent>
-              <CardContent className="space-y-6">
                 
                 {/* Current Week Overview */}
                 <div className="grid md:grid-cols-3 gap-4">
