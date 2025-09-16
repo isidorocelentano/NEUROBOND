@@ -2105,6 +2105,9 @@ const EmpathyTrainingApp = () => {
           </TabsContent>
         </Tabs>
 
+        {/* Upgrade Modal */}
+        <UpgradeModal />
+
         {/* Scenario Practice Dialog */}
         <Dialog open={!!selectedScenario} onOpenChange={() => setSelectedScenario(null)}>
           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
