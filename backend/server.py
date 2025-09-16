@@ -28,6 +28,13 @@ api_router = APIRouter(prefix="/api")
 
 # AI Chat Configuration
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
+STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
+
+# Subscription Packages
+SUBSCRIPTION_PACKAGES = {
+    "monthly": {"amount": 10.00, "currency": "chf", "name": "NEUROBOND PRO Monthly"},
+    "yearly": {"amount": 100.00, "currency": "chf", "name": "NEUROBOND PRO Yearly"}
+}
 
 # Define Models
 class User(BaseModel):
