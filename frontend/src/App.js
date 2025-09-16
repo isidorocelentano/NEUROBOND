@@ -1010,6 +1010,183 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Subscription Upgrade Modal Component
+  const UpgradeModal = () => {
+    return (
+      <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Crown className="w-5 h-5 text-yellow-500" />
+              NEUROBOND PRO upgraden
+            </DialogTitle>
+            <DialogDescription>
+              Schalten Sie alle Premium-Features frei und vertiefen Sie Ihr Bindungstraining
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {/* Plan Selection */}
+            <div className="space-y-3">
+              <div 
+                className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                  selectedPlan === 'monthly' 
+                    ? 'border-blue-500 bg-blue-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => setSelectedPlan('monthly')}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold">Monatlich</p>
+                    <p className="text-sm text-gray-600">Flexibel, jederzeit kündbar</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-blue-600">CHF 10</p>
+                    <p className="text-xs text-gray-500">/Monat</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div 
+                className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                  selectedPlan === 'yearly' 
+                    ? 'border-green-500 bg-green-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => setSelectedPlan('yearly')}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold">Jährlich</p>
+                    <p className="text-sm text-gray-600">2 Monate kostenlos!</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-green-600">CHF 100</p>
+                    <p className="text-xs text-gray-500">/Jahr</p>
+                    <div className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded mt-1">
+                      CHF 20 sparen
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pro Features */}
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-semibold mb-3">PRO Features:</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Alle 5 Trainingsstufen (100+ Szenarien)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Vollständiges Gefühlslexikon</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Unbegrenztes Dialog-Coaching</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Wöchentliche Trainingspläne</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Community Cases</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Persönlicher AI-Coach</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="flex items-center justify-center gap-4 py-3 border-t">
+              <div className="text-xs text-gray-500">Sichere Zahlung mit:</div>
+              <div className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-gray-400" />
+                <span className="text-xs text-gray-500">Visa, Mastercard, PayPal, TWINT</span>
+              </div>
+            </div>
+
+            <Button 
+              onClick={() => initiateUpgrade(selectedPlan)}
+              disabled={paymentProcessing}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+            >
+              {paymentProcessing ? (
+                <>
+                  <Clock className="w-4 h-4 mr-2 animate-spin" />
+                  Wird verarbeitet...
+                </>
+              ) : (
+                <>
+                  <Crown className="w-4 h-4 mr-2" />
+                  Jetzt PRO werden
+                </>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  // Premium Feature Lock Component
+  const PremiumLock = ({ featureType }) => {
+    const getFeatureDetails = () => {
+      switch (featureType) {
+        case 'stages':
+          return {
+            title: 'Erweiterte Trainingsstufen',
+            description: 'Schalten Sie Stufe 2-5 mit über 80 zusätzlichen Szenarien frei'
+          };
+        case 'dialog':
+          return {
+            title: 'Dialog-Coaching',
+            description: 'Analysieren Sie Ihre echten Gespräche mit KI-gestütztem Feedback'
+          };
+        case 'weekly':
+          return {
+            title: 'Wöchentliche Trainingspläne',
+            description: 'Personalisierte, wissenschaftlich fundierte Wochenprogramme'
+          };
+        case 'community':
+          return {
+            title: 'Community Cases',
+            description: 'Lernen Sie von anonymisierten Erfahrungen anderer Paare'
+          };
+        default:
+          return {
+            title: 'Premium Feature',
+            description: 'Dieses Feature ist nur für PRO-Mitglieder verfügbar'
+          };
+      }
+    };
+
+    const details = getFeatureDetails();
+
+    return (
+      <div className="text-center py-12 px-6">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-6">
+          <Lock className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{details.title}</h3>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">{details.description}</p>
+        <Button 
+          onClick={() => setShowUpgradeModal(true)}
+          className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3"
+        >
+          <Crown className="w-4 h-4 mr-2" />
+          Jetzt upgraden
+        </Button>
+      </div>
+    );
+  };
+
   // Onboarding Component
   const OnboardingForm = () => {
     const [formData, setFormData] = useState({
