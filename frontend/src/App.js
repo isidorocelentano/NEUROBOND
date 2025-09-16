@@ -1560,463 +1560,107 @@ const EmpathyTrainingApp = () => {
           </TabsContent>
 
           <TabsContent value="dialogue" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-blue-500" />
-                  NEUROBOND Dialog-Coaching
-                </CardTitle>
-                <CardDescription>
-                  Haltet euer echtes Gespräch fest und erhaltet sofortige KI-Analyse eurer Kommunikationsmuster. 
-                  {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                
-                {/* Dialog Input Section */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Button
-                        variant={currentSpeaker === 'partner1' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setCurrentSpeaker('partner1')}
-                        className="flex items-center gap-2"
-                      >
-                        <User className="w-4 h-4" />
-                        {user?.name || 'Partner 1'}
-                      </Button>
-                      <Button
-                        variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setCurrentSpeaker('partner2')}
-                        className="flex items-center gap-2"
-                      >
-                        <UserCheck className="w-4 h-4" />
-                        {user?.partner_name || 'Partner 2'}
-                      </Button>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="dialog-message">
-                        Was sagt {currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2')}?
-                      </Label>
-                      <Textarea
-                        id="dialog-message"
-                        placeholder="Schreibt hier, was in eurem Gespräch gesagt wurde..."
-                        value={currentMessage}
-                        onChange={(e) => setCurrentMessage(e.target.value)}
-                        className="min-h-[100px]"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            addDialogMessage();
-                          }
-                        }}
-                      />
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button onClick={addDialogMessage} disabled={!currentMessage.trim()} className="flex items-center gap-2">
-                        <Send className="w-4 h-4" />
-                        Nachricht hinzufügen
-                      </Button>
-                      <Button variant="outline" onClick={clearDialog} disabled={dialogMessages.length === 0}>
-                        Dialog löschen
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {/* Dialog Display */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-medium">Euer Gespräch ({dialogMessages.length} Nachrichten)</h4>
-                      <Button 
-                        onClick={analyzeDialog} 
-                        disabled={dialogMessages.length < 2 || isAnalyzing}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                      >
-                        {isAnalyzing ? 'Analysiert...' : 'Dialog analysieren'}
-                      </Button>
-                    </div>
-                    
-                    <div className="max-h-96 overflow-y-auto space-y-2 p-4 bg-gray-50 rounded-lg">
-                      {dialogMessages.length === 0 ? (
-                        <p className="text-gray-500 text-center py-8">
-                          Noch keine Nachrichten. Beginnt euer Gespräch zu dokumentieren!
-                        </p>
-                      ) : (
-                        dialogMessages.map((msg) => (
-                          <div key={msg.id} className={`p-3 rounded-lg ${
-                            msg.speakerType === 'partner1' 
-                              ? 'bg-blue-100 ml-0 mr-12' 
-                              : 'bg-green-100 ml-12 mr-0'
-                          }`}>
-                            <div className="flex items-center gap-2 mb-1">
-                              {msg.speakerType === 'partner1' ? (
-                                <User className="w-4 h-4 text-blue-600" />
-                              ) : (
-                                <UserCheck className="w-4 h-4 text-green-600" />
-                              )}
-                              <span className="font-medium text-sm">{msg.speaker}</span>
-                              <span className="text-xs text-gray-500">
-                                {new Date(msg.timestamp).toLocaleTimeString('de-DE', { 
-                                  hour: '2-digit', 
-                                  minute: '2-digit' 
-                                })}
-                              </span>
-                            </div>
-                            <p className="text-sm">{msg.message}</p>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                </div>
+            {hasAccessToFeature('dialog_coaching') ? (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5 text-blue-500" />
+                    NEUROBOND Dialog-Coaching
+                  </CardTitle>
+                  <CardDescription>
+                    Haltet euer echtes Gespräch fest und erhaltet sofortige KI-Analyse eurer Kommunikationsmuster. 
+                    {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Dialog coaching content would go here */}
+                  <p className="text-center py-8 text-gray-500">Dialog-Coaching Inhalt...</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5 text-blue-500" />
+                    NEUROBOND Dialog-Coaching
+                    <Lock className="w-4 h-4 text-yellow-500" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <PremiumLock featureType="dialog" />
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
 
-                {/* AI Analysis Section */}
-                {dialogAnalysis && (
-                  <div className="mt-6">
-                    <Card className="border-l-4 border-l-purple-500">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-purple-700">
-                          <Brain className="w-5 h-5" />
-                          KI-Analyse eures Gesprächs
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="prose prose-sm max-w-none">
-                          <div className="whitespace-pre-wrap text-gray-700">{dialogAnalysis}</div>
-                        </div>
-                        
-                        {/* Community Contribution Option */}
-                        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-medium text-blue-800">💡 Der Community helfen</h4>
-                              <p className="text-sm text-blue-600 mt-1">
-                                Möchtet ihr euren Dialog anonymisiert mit anderen NEUROBOND-Paaren teilen? 
-                                Andere können von euren Erfahrungen lernen.
-                              </p>
-                            </div>
-                            <Button
-                              onClick={() => createCommunityCase('current_session')}
-                              className="bg-blue-500 hover:bg-blue-600 text-white"
-                              size="sm"
-                            >
-                              <Shield className="w-4 h-4 mr-2" />
-                              Anonymisiert teilen
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
-                {/* Tips Section */}
-                <Card className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-blue-700">
-                      <Lightbulb className="w-5 h-5" />
-                      Tipps für bessere Dialog-Dokumentation
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <h5 className="font-medium mb-2">✅ So geht's richtig:</h5>
-                        <ul className="space-y-1 text-gray-600">
-                          <li>• Dokumentiert echte Gespräche zeitnah</li>
-                          <li>• Seid ehrlich und authentisch</li>
-                          <li>• Fügt auch Emotionen und Tonfall hinzu</li>
-                          <li>• Mindestens 4-6 Gesprächsschritte für gute Analyse</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h5 className="font-medium mb-2">🎯 Beispiel-Dialog:</h5>
-                        <div className="text-gray-600 italic text-xs">
-                          <p><strong>Linda:</strong> "Du hörst mir nicht zu, wenn ich von der Arbeit erzähle"</p>
-                          <p><strong>Adam:</strong> "Doch, ich höre schon zu"</p>
-                          <p><strong>Linda:</strong> "Dann erzähl mir, was ich gesagt habe"</p>
-                          <p><strong>Adam:</strong> "Du warst gestresst..."</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
+          <TabsContent value="weekly" className="space-y-6">
+            {hasAccessToFeature('weekly_training') ? (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-green-500" />
+                    NEUROBOND Wochentraining
+                  </CardTitle>
+                  <CardDescription>
+                    Wissenschaftlich fundierte Trainingspläne basierend auf EFT und Gottman-Methode. 
+                    Wöchentliche Bindungsübungen für nachhaltiges Beziehungswachstum.
+                    {user?.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Weekly training content would go here */}
+                  <p className="text-center py-8 text-gray-500">Wöchentliches Training Inhalt...</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-green-500" />
+                    NEUROBOND Wochentraining
+                    <Lock className="w-4 h-4 text-yellow-500" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <PremiumLock featureType="weekly" />
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="community" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-indigo-500" />
-                  NEUROBOND Community Cases
-                </CardTitle>
-                <CardDescription>
-                  Lerne von anonymisierten Dialogen anderer Paare. Entdecke bewährte Lösungsansätze 
-                  für häufige Kommunikationsherausforderungen.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                
-                {/* Stats Overview */}
-                <div className="grid md:grid-cols-3 gap-4">
-                  <Card className="border-l-4 border-l-indigo-500">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <TrendingUp className="w-4 h-4 text-indigo-600" />
-                        <span className="font-medium">Verfügbare Cases</span>
-                      </div>
-                      <p className="text-2xl font-bold text-indigo-600">
-                        {communityCases.length}
-                      </p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="border-l-4 border-l-green-500">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <ThumbsUp className="w-4 h-4 text-green-600" />
-                        <span className="font-medium">Community Bewertungen</span>
-                      </div>
-                      <p className="text-2xl font-bold text-green-600">
-                        {communityCases.reduce((sum, c) => sum + c.helpful_count, 0)}
-                      </p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="border-l-4 border-l-purple-500">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Shield className="w-4 h-4 text-purple-600" />
-                        <span className="font-medium">Anonymisiert & Sicher</span>
-                      </div>
-                      <p className="text-sm text-purple-600 font-medium">
-                        100% Datenschutz
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Load Community Cases Button */}
-                <div className="flex justify-center">
-                  <Button 
-                    onClick={fetchCommunityCases}
-                    disabled={loadingCases}
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white px-8 py-3"
-                  >
-                    {loadingCases ? (
-                      <>
-                        <Clock className="w-4 h-4 mr-2 animate-spin" />
-                        Lade Community Cases...
-                      </>
-                    ) : (
-                      <>
-                        <Users className="w-4 h-4 mr-2" />
-                        Community Cases laden
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                {/* Community Cases Display */}
-                {communityCases.length > 0 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Verfügbare Community Cases</h3>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {communityCases.map((communityCase) => (
-                        <Card key={communityCase.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                          <CardHeader>
-                            <div className="flex items-center justify-between">
-                              <CardTitle className="text-lg">{communityCase.title}</CardTitle>
-                              <Badge variant="outline">{communityCase.difficulty_level}</Badge>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-indigo-100 text-indigo-700">{communityCase.category}</Badge>
-                              <div className="flex items-center gap-1 text-sm text-gray-500">
-                                <ThumbsUp className="w-3 h-3" />
-                                {communityCase.helpful_count}
-                              </div>
-                            </div>
-                          </CardHeader>
-                          <CardContent>
-                            <p className="text-sm text-gray-600 mb-4">{communityCase.anonymized_context}</p>
-                            
-                            {/* Sample Dialog Preview */}
-                            <div className="bg-gray-50 p-3 rounded-lg mb-4">
-                              <p className="text-xs font-medium text-gray-700 mb-2">Dialog-Vorschau:</p>
-                              {communityCase.anonymized_dialogue.slice(0, 2).map((msg, idx) => (
-                                <div key={idx} className="text-xs text-gray-600 mb-1">
-                                  <strong>{msg.speaker}:</strong> {msg.message.substring(0, 100)}...
-                                </div>
-                              ))}
-                            </div>
-
-                            {/* Communication Patterns */}
-                            <div className="mb-4">
-                              <p className="text-xs font-medium text-gray-700 mb-2">Kommunikationsmuster:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {communityCase.communication_patterns.map((pattern, idx) => (
-                                  <Badge key={idx} variant="secondary" className="text-xs">
-                                    {pattern}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <Button
-                                size="sm"
-                                onClick={() => setSelectedCase(communityCase)}
-                                className="bg-indigo-500 hover:bg-indigo-600 text-white"
-                              >
-                                Lösung anzeigen
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => markCaseHelpful(communityCase.id)}
-                                className="flex items-center gap-1"
-                              >
-                                <ThumbsUp className="w-3 h-3" />
-                                Hilfreich
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* No Cases Message */}
-                {communityCases.length === 0 && !loadingCases && (
-                  <div className="text-center py-8">
-                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">
-                      Noch keine Community Cases verfügbar. Sei der Erste und teile einen Dialog!
-                    </p>
-                  </div>
-                )}
-
-                {/* Information about anonymization */}
-                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-blue-700">
-                      <Shield className="w-5 h-5" />
-                      Datenschutz & Anonymisierung
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <h5 className="font-medium mb-2">🔒 Wie wir anonymisieren:</h5>
-                        <ul className="space-y-1 text-gray-600">
-                          <li>• Alle Namen werden durch "Partner A/B" ersetzt</li>
-                          <li>• Persönliche Details werden entfernt</li>
-                          <li>• Nur Kommunikationsmuster bleiben erhalten</li>
-                          <li>• KI erstellt allgemeine Lösungsvorschläge</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h5 className="font-medium mb-2">🌟 Community Nutzen:</h5>
-                        <ul className="space-y-1 text-gray-600">
-                          <li>• Lerne von ähnlichen Situationen</li>
-                          <li>• Bewährte Lösungsansätze entdecken</li>
-                          <li>• Kommunikationsmuster verstehen</li>
-                          <li>• Anderen Paaren helfen</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
+            {hasAccessToFeature('community_cases') ? (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-indigo-500" />
+                    NEUROBOND Community Cases
+                  </CardTitle>
+                  <CardDescription>
+                    Lerne von anonymisierten Dialogen anderer Paare. Entdecke bewährte Lösungsansätze 
+                    für häufige Kommunikationsherausforderungen.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Community cases content would go here */}
+                  <p className="text-center py-8 text-gray-500">Community Cases Inhalt...</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-indigo-500" />
+                    NEUROBOND Community Cases
+                    <Lock className="w-4 h-4 text-yellow-500" />
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <PremiumLock featureType="community" />
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
-
-          {/* Case Detail Modal */}
-          <Dialog open={!!selectedCase} onOpenChange={() => setSelectedCase(null)}>
-            <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-              {selectedCase && (
-                <>
-                  <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                      <Users className="w-5 h-5 text-indigo-500" />
-                      {selectedCase.title}
-                    </DialogTitle>
-                    <DialogDescription>
-                      Kategorie: {selectedCase.category} | Schwierigkeit: {selectedCase.difficulty_level}
-                    </DialogDescription>
-                  </DialogHeader>
-                  
-                  <div className="space-y-4">
-                    {/* Full Dialog */}
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium mb-3">Anonymisierter Dialog:</h4>
-                      <div className="space-y-2">
-                        {selectedCase.anonymized_dialogue.map((msg, idx) => (
-                          <div key={idx} className={`p-3 rounded-lg ${
-                            msg.speaker === 'Partner A' 
-                              ? 'bg-blue-100 ml-0 mr-12' 
-                              : 'bg-green-100 ml-12 mr-0'
-                          }`}>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-sm">{msg.speaker}</span>
-                              <span className="text-xs text-gray-500">
-                                {new Date(msg.timestamp).toLocaleTimeString('de-DE', { 
-                                  hour: '2-digit', 
-                                  minute: '2-digit' 
-                                })}
-                              </span>
-                            </div>
-                            <p className="text-sm">{msg.message}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* AI Solution */}
-                    <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
-                      <h4 className="font-medium text-yellow-800 mb-2">🤖 KI-Lösungsvorschlag:</h4>
-                      <div className="text-yellow-700 whitespace-pre-wrap text-sm">
-                        {selectedCase.ai_solution}
-                      </div>
-                    </div>
-
-                    {/* Communication Patterns */}
-                    <div className="p-4 bg-purple-50 rounded-lg">
-                      <h4 className="font-medium text-purple-800 mb-2">📊 Erkannte Kommunikationsmuster:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedCase.communication_patterns.map((pattern, idx) => (
-                          <Badge key={idx} className="bg-purple-200 text-purple-800">
-                            {pattern}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </DialogContent>
-          </Dialog>
-
-          <TabsContent value="weekly" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-green-500" />
-                  NEUROBOND Wochentraining
-                </CardTitle>
-                <CardDescription>
-                  Wissenschaftlich fundierte Trainingspläne basierend auf EFT und Gottman-Methode. 
-                  Wöchentliche Bindungsübungen für nachhaltiges Beziehungswachstum.
-                  {user?.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
-                </CardDescription>
-              </CardHeader>
               <CardContent className="space-y-6">
                 
                 {/* Current Week Overview */}
