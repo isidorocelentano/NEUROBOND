@@ -341,6 +341,88 @@ const EmpathyTrainingApp = () => {
     setContactSubmitting(false);
   };
 
+  // Subscription Functions
+  const initiateUpgrade = async (planType) => {
+    setPaymentProcessing(true);
+    try {
+      const originUrl = window.location.origin;
+      const response = await axios.post(`${API}/checkout/session`, {
+        package_type: planType,
+        origin_url: originUrl
+      });
+      
+      if (response.data.success) {
+        // Store session info for polling
+        localStorage.setItem('payment_session_id', response.data.session_id);
+        localStorage.setItem('payment_plan_type', planType);
+        // Redirect to Stripe
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error('Error initiating payment:', error);
+      alert('Fehler beim Starten der Zahlung. Bitte versuchen Sie es später erneut.');
+    }
+    setPaymentProcessing(false);
+  };
+
+  const checkPaymentStatus = async (sessionId) => {
+    try {
+      const response = await axios.get(`${API}/checkout/status/${sessionId}`);
+      if (response.data.payment_status === 'paid') {
+        setSubscriptionStatus('active');
+        localStorage.removeItem('payment_session_id');
+        localStorage.removeItem('payment_plan_type');
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error checking payment status:', error);
+      return false;
+    }
+  };
+
+  const pollPaymentStatus = async (sessionId, attempts = 0) => {
+    const maxAttempts = 5;
+    if (attempts >= maxAttempts) return false;
+    
+    const success = await checkPaymentStatus(sessionId);
+    if (success) return true;
+    
+    // Continue polling
+    setTimeout(() => pollPaymentStatus(sessionId, attempts + 1), 2000);
+    return false;
+  };
+
+  // Check for returning payment on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId) {
+      pollPaymentStatus(sessionId);
+    }
+  }, []);
+
+  const hasAccessToFeature = (featureType, itemIndex = 0) => {
+    if (subscriptionStatus === 'active') return true;
+    
+    // Free tier limitations
+    switch (featureType) {
+      case 'stage_1_scenarios':
+        return itemIndex < 5; // First 5 scenarios of stage 1
+      case 'other_stages':
+        return false; // No access to stages 2-5
+      case 'dialog_coaching':
+        return false; // No access to dialog coaching
+      case 'weekly_training':
+        return false; // No access to weekly training
+      case 'community_cases':
+        return false; // No access to community cases
+      default:
+        return true;
+    }
+  };
+
   const calculateStageProgress = (stageNumber) => {
     const stageAttempts = userProgress.filter(p => p.stage_number === stageNumber);
     const stage = stages.find(s => s.stage_number === stageNumber);
