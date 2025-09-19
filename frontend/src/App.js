@@ -423,15 +423,7 @@ const EmpathyTrainingApp = () => {
 
   useEffect(() => {
     fetchStages();
-    // Check if user exists in localStorage
-    const savedUser = localStorage.getItem('empathy_user');
-    if (savedUser) {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
-      setShowOnboarding(false);
-      setShowLandingPage(false);
-      fetchUserProgress(userData.id);
-    }
+    // Don't auto-login - users must explicitly login with email
   }, []);
 
   // Load essential data only, with fallbacks
