@@ -3,6 +3,9 @@ import sys
 import json
 from datetime import datetime
 import uuid
+import base64
+import io
+from PIL import Image
 
 class EmpathyTrainingAPITester:
     def __init__(self, base_url="https://neurobond-pro.preview.emergentagent.com"):
