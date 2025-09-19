@@ -2919,6 +2919,346 @@ class EmpathyTrainingAPITester:
         self.tests_run += 1
         return False
 
+    # ===== CRITICAL DEBUG TESTS FOR LOGIN AND AVATAR UPLOAD =====
+    
+    def test_login_system_user_by_email_endpoint(self):
+        """CRITICAL: Test the new /api/user/by-email/{email} endpoint for login"""
+        print("\n🔍 CRITICAL DEBUG: Testing Login System - User by Email Endpoint...")
+        
+        # First create a test user to lookup
+        test_email = f"login.test.{datetime.now().strftime('%H%M%S')}@example.com"
+        user_data = {
+            "name": "Login Test User",
+            "email": test_email,
+            "partner_name": "Test Partner"
+        }
+        
+        # Create user first
+        create_success, create_response = self.run_test(
+            "Create User for Login Test",
+            "POST",
+            "users",
+            200,
+            data=user_data
+        )
+        
+        if create_success and 'id' in create_response:
+            user_id = create_response['id']
+            print(f"   ✅ Test user created with ID: {user_id}")
+            
+            # Now test the by-email endpoint
+            success, response = self.run_test(
+                "Login System - Get User by Email",
+                "GET",
+                f"user/by-email/{test_email}",
+                200
+            )
+            
+            if success:
+                if 'id' in response and response['id'] == user_id:
+                    print(f"   ✅ User lookup by email successful")
+                    print(f"   ✅ Returned correct user ID: {user_id}")
+                    print(f"   ✅ Email: {response.get('email', 'N/A')}")
+                    print(f"   ✅ Name: {response.get('name', 'N/A')}")
+                    return True
+                else:
+                    print(f"   ❌ User lookup returned wrong data")
+                    return False
+            else:
+                print(f"   ❌ User lookup by email failed")
+                return False
+        else:
+            print(f"   ❌ Failed to create test user for login test")
+            return False
+
+    def test_login_system_nonexistent_email(self):
+        """Test login system with non-existent email"""
+        nonexistent_email = f"nonexistent.{datetime.now().strftime('%H%M%S')}@example.com"
+        
+        success, response = self.run_test(
+            "Login System - Non-existent Email",
+            "GET",
+            f"user/by-email/{nonexistent_email}",
+            404  # Should return 404 for non-existent user
+        )
+        
+        if success:
+            print("   ✅ Non-existent email properly returns 404")
+            return True
+        else:
+            print("   ❌ Non-existent email handling failed")
+            return False
+
+    def test_login_system_sample_emails(self):
+        """Test login system with sample email addresses"""
+        print("\n🔍 Testing Login System with Sample Email Addresses...")
+        
+        # Create multiple test users with different email formats
+        test_users = [
+            {"name": "Adam Mueller", "email": "adam.mueller@example.com", "partner_name": "Linda"},
+            {"name": "Sarah Schmidt", "email": "sarah.schmidt@gmail.com", "partner_name": "Thomas"},
+            {"name": "Michael Weber", "email": "m.weber@company.de", "partner_name": "Anna"}
+        ]
+        
+        created_users = []
+        all_successful = True
+        
+        # Create test users
+        for user_data in test_users:
+            success, response = self.run_test(
+                f"Create Sample User - {user_data['name']}",
+                "POST",
+                "users",
+                200,
+                data=user_data
+            )
+            
+            if success and 'id' in response:
+                created_users.append({
+                    'id': response['id'],
+                    'email': user_data['email'],
+                    'name': user_data['name']
+                })
+                print(f"   ✅ Created user: {user_data['name']} ({user_data['email']})")
+            else:
+                print(f"   ❌ Failed to create user: {user_data['name']}")
+                all_successful = False
+        
+        # Test lookup for each created user
+        for user in created_users:
+            success, response = self.run_test(
+                f"Lookup User by Email - {user['email']}",
+                "GET",
+                f"user/by-email/{user['email']}",
+                200
+            )
+            
+            if success and response.get('id') == user['id']:
+                print(f"   ✅ Successfully found user: {user['name']}")
+            else:
+                print(f"   ❌ Failed to lookup user: {user['name']}")
+                all_successful = False
+        
+        return all_successful
+
+    def test_avatar_upload_system_debug(self):
+        """CRITICAL: Test avatar upload system with comprehensive debugging"""
+        print("\n🔍 CRITICAL DEBUG: Avatar Upload System Testing...")
+        
+        # First create a test user
+        test_email = f"avatar.test.{datetime.now().strftime('%H%M%S')}@example.com"
+        user_data = {
+            "name": "Avatar Test User",
+            "email": test_email,
+            "partner_name": "Test Partner"
+        }
+        
+        create_success, create_response = self.run_test(
+            "Create User for Avatar Test",
+            "POST",
+            "users",
+            200,
+            data=user_data
+        )
+        
+        if not create_success or 'id' not in create_response:
+            print("   ❌ Failed to create test user for avatar upload")
+            return False
+        
+        user_id = create_response['id']
+        print(f"   ✅ Test user created with ID: {user_id}")
+        
+        # Create a test image (simple 100x100 red square)
+        try:
+            from PIL import Image
+            import io
+            
+            # Create a simple test image
+            test_image = Image.new('RGB', (100, 100), color='red')
+            image_buffer = io.BytesIO()
+            test_image.save(image_buffer, format='JPEG')
+            image_buffer.seek(0)
+            image_data = image_buffer.getvalue()
+            
+            print(f"   ✅ Created test image: {len(image_data)} bytes")
+            
+            # Test avatar upload using multipart/form-data
+            import requests
+            
+            url = f"{self.api_url}/user/{user_id}/avatar"
+            files = {'file': ('test_avatar.jpg', image_data, 'image/jpeg')}
+            
+            print(f"   🔍 Testing avatar upload to: {url}")
+            
+            try:
+                response = requests.post(url, files=files, timeout=30)
+                print(f"   Status: {response.status_code}")
+                
+                if response.status_code == 200:
+                    response_data = response.json()
+                    print(f"   ✅ Avatar upload successful")
+                    print(f"   ✅ Response: {response_data.get('message', 'N/A')}")
+                    
+                    # Verify avatar was stored
+                    if 'avatar' in response_data:
+                        avatar_data = response_data['avatar']
+                        if avatar_data.startswith('data:image/jpeg;base64,'):
+                            print(f"   ✅ Avatar data format correct")
+                            print(f"   ✅ Avatar data length: {len(avatar_data)} characters")
+                            
+                            # Test retrieving the avatar
+                            get_success, get_response = self.run_test(
+                                "Get User Avatar",
+                                "GET",
+                                f"user/{user_id}/avatar",
+                                200
+                            )
+                            
+                            if get_success and 'avatar' in get_response:
+                                print(f"   ✅ Avatar retrieval successful")
+                                return True
+                            else:
+                                print(f"   ❌ Avatar retrieval failed")
+                                return False
+                        else:
+                            print(f"   ❌ Invalid avatar data format")
+                            return False
+                    else:
+                        print(f"   ❌ No avatar data in response")
+                        return False
+                else:
+                    print(f"   ❌ Avatar upload failed: {response.text}")
+                    return False
+                    
+            except Exception as e:
+                print(f"   ❌ Avatar upload request failed: {str(e)}")
+                return False
+                
+        except Exception as e:
+            print(f"   ❌ Failed to create test image: {str(e)}")
+            return False
+
+    def test_backend_service_status_comprehensive(self):
+        """CRITICAL: Comprehensive backend service status check"""
+        print("\n🔍 CRITICAL: Comprehensive Backend Service Status Check...")
+        
+        # Test basic connectivity
+        try:
+            import requests
+            response = requests.get(f"{self.base_url}/api/stages", timeout=10)
+            
+            if response.status_code == 200:
+                print("   ✅ Backend service is responding")
+                print(f"   ✅ Response time: {response.elapsed.total_seconds():.2f}s")
+            else:
+                print(f"   ❌ Backend service returned status: {response.status_code}")
+                return False
+                
+        except requests.exceptions.ConnectionError:
+            print("   ❌ Backend service connection failed")
+            return False
+        except requests.exceptions.Timeout:
+            print("   ❌ Backend service timeout")
+            return False
+        except Exception as e:
+            print(f"   ❌ Backend service error: {str(e)}")
+            return False
+        
+        # Test MongoDB connectivity
+        success, response = self.run_test(
+            "MongoDB Connectivity Test",
+            "GET",
+            "stages",
+            200
+        )
+        
+        if success:
+            print("   ✅ MongoDB connection working")
+        else:
+            print("   ❌ MongoDB connection issues")
+            return False
+        
+        # Test FastAPI server status
+        try:
+            response = requests.get(f"{self.base_url}/docs", timeout=10)
+            if response.status_code == 200:
+                print("   ✅ FastAPI documentation accessible")
+            else:
+                print("   ⚠️  FastAPI docs not accessible (may be disabled)")
+        except:
+            print("   ⚠️  FastAPI docs check failed")
+        
+        return True
+
+    def run_critical_debug_tests(self):
+        """Run critical debug tests for login and avatar upload issues"""
+        print("🚨 CRITICAL DEBUG: Login and Avatar Upload System Testing")
+        print("=" * 70)
+        print("🎯 Focus: User reports login and image upload completely broken")
+        print("🔍 Testing: /api/user/by-email/{email} and avatar upload endpoints")
+        print("=" * 70)
+        
+        # Backend service status first
+        if not self.test_backend_service_status_comprehensive():
+            print("🚨 CRITICAL: Backend service issues detected!")
+            return False
+        
+        # Login system tests
+        print("\n" + "="*50)
+        print("🔐 LOGIN SYSTEM DEBUG TESTS")
+        print("="*50)
+        
+        login_tests = [
+            self.test_login_system_user_by_email_endpoint,
+            self.test_login_system_nonexistent_email,
+            self.test_login_system_sample_emails
+        ]
+        
+        login_passed = 0
+        for test in login_tests:
+            if test():
+                login_passed += 1
+        
+        print(f"\n🔐 LOGIN TESTS: {login_passed}/{len(login_tests)} passed")
+        
+        # Avatar upload system tests
+        print("\n" + "="*50)
+        print("🖼️  AVATAR UPLOAD SYSTEM DEBUG TESTS")
+        print("="*50)
+        
+        avatar_tests = [
+            self.test_avatar_upload_system_debug
+        ]
+        
+        avatar_passed = 0
+        for test in avatar_tests:
+            if test():
+                avatar_passed += 1
+        
+        print(f"\n🖼️  AVATAR TESTS: {avatar_passed}/{len(avatar_tests)} passed")
+        
+        # Summary
+        total_tests = len(login_tests) + len(avatar_tests)
+        total_passed = login_passed + avatar_passed
+        
+        print("\n" + "="*70)
+        print("🏁 CRITICAL DEBUG TESTING COMPLETE")
+        print("="*70)
+        print(f"📊 Total Tests: {total_tests}")
+        print(f"✅ Passed: {total_passed}")
+        print(f"❌ Failed: {total_tests - total_passed}")
+        print(f"📈 Success Rate: {(total_passed/total_tests)*100:.1f}%")
+        
+        if total_passed == total_tests:
+            print("🎉 ALL CRITICAL TESTS PASSED!")
+            print("✅ Login and Avatar Upload systems are working correctly")
+        else:
+            print("⚠️  CRITICAL ISSUES DETECTED!")
+            print("❌ Some login or avatar upload functionality is broken")
+        
+        return total_passed == total_tests
+
+
 def main():
     print("🚀 Starting Empathy Training App Backend API Tests")
     print("🚨 URGENT FOCUS: Avatar Upload Functionality Testing")
