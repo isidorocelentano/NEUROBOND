@@ -495,28 +495,32 @@ const EmpathyTrainingApp = () => {
               )}
             </div>
 
-            {/* Speech Button */}
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={startSpeechRecognition}
-              disabled={disabled || isListening}
-              className={`h-8 w-8 p-0 ${
-                isListening 
-                  ? 'text-red-500 animate-pulse hover:bg-red-50' 
-                  : 'text-blue-500 hover:bg-blue-50'
-              }`}
-              title={`Spracheingabe (${speechLanguages.find(l => l.code === speechLanguage)?.name || 'Deutsch'})`}
-            >
-              {isListening ? (
-                <MicOff className="w-4 h-4" />
-              ) : (
-                <Mic className="w-4 h-4" />
-              )}
-            </Button>
-          </div>
-        )}
+          {/* Speech Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={startSpeechRecognition}
+            disabled={disabled || isListening || !speechSupported}
+            className={`h-8 w-8 p-0 ${
+              isListening 
+                ? 'text-red-500 animate-pulse hover:bg-red-50' 
+                : speechSupported 
+                  ? 'text-blue-500 hover:bg-blue-50'
+                  : 'text-gray-400'
+            }`}
+            title={speechSupported 
+              ? `Spracheingabe (${speechLanguages.find(l => l.code === speechLanguage)?.name || 'Deutsch'})`
+              : 'Spracherkennung nicht verfügbar'
+            }
+          >
+            {isListening ? (
+              <MicOff className="w-4 h-4" />
+            ) : (
+              <Mic className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
       </div>
     );
   };
