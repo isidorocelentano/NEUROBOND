@@ -60,6 +60,10 @@ const EmpathyTrainingApp = () => {
   const [speechLanguage, setSpeechLanguage] = useState('de-DE');
   const [speechSupported, setSpeechSupported] = useState(false);
   
+  // Avatar States
+  const [userAvatar, setUserAvatar] = useState(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  
   // Contact Form States
   const [contactForm, setContactForm] = useState({
     name: '',
