@@ -2947,6 +2947,9 @@ const EmpathyTrainingApp = () => {
           </div>
         </div>
       )}
+
+      {/* Login Modal */}
+      <LoginModal />
     </div>
   );
 };
