@@ -458,20 +458,19 @@ const EmpathyTrainingApp = () => {
           name={name}
         />
         
-        {speechSupported && (
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
-            {/* Language Selector */}
-            <div className="relative">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowLanguageSelect(!showLanguageSelect)}
-                className="h-8 w-8 p-0 hover:bg-gray-100"
-                disabled={disabled || isListening}
-              >
-                <Globe className="w-4 h-4 text-gray-500" />
-              </Button>
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+          {/* Language Selector */}
+          <div className="relative">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => speechSupported ? setShowLanguageSelect(!showLanguageSelect) : showNotification('Spracherkennung nicht verfügbar', 'warning')}
+              className="h-8 w-8 p-0 hover:bg-gray-100"
+              disabled={disabled || isListening}
+            >
+              <Globe className={`w-4 h-4 ${speechSupported ? 'text-blue-500' : 'text-gray-400'}`} />
+            </Button>
               
               {showLanguageSelect && (
                 <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-36">
