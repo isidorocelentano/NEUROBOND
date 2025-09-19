@@ -249,8 +249,10 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Login Modal Component
+  // Simple Login Modal Component
   const LoginModal = () => {
+    if (!showLogin) return null;
+
     const [email, setEmail] = useState('');
     const [isLogging, setIsLogging] = useState(false);
 
@@ -267,29 +269,29 @@ const EmpathyTrainingApp = () => {
     };
 
     return (
-      <Dialog open={showLogin} onOpenChange={setShowLogin}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">Bei NEUROBOND anmelden</DialogTitle>
-            <p className="text-center text-gray-600">
-              Geben Sie Ihre E-Mail-Adresse ein, um sich anzumelden
-            </p>
-          </DialogHeader>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <h2 className="text-xl font-bold text-center mb-2">Bei NEUROBOND anmelden</h2>
+          <p className="text-center text-gray-600 mb-6">
+            Geben Sie Ihre E-Mail-Adresse ein, um sich anzumelden
+          </p>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="login-email">E-Mail-Adresse</Label>
-              <SpeechInput
+              <Input
+                id="login-email"
+                type="email"
                 value={email}
-                onChange={setEmail}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="ihre.email@example.com"
-                name="login-email"
                 className="mt-1"
                 disabled={isLogging}
+                required
               />
             </div>
             
-            <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 space-y-2 space-y-reverse sm:space-y-0">
+            <div className="flex gap-3">
               <Button 
                 type="button" 
                 variant="outline" 
@@ -298,30 +300,21 @@ const EmpathyTrainingApp = () => {
                   setEmail('');
                 }}
                 disabled={isLogging}
+                className="flex-1"
               >
                 Abbrechen
               </Button>
               <Button 
                 type="submit" 
                 disabled={isLogging || !email.trim()}
-                className="w-full sm:w-auto"
+                className="flex-1"
               >
-                {isLogging ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Anmelden...
-                  </>
-                ) : (
-                  <>
-                    <ArrowRight className="w-4 h-4 mr-2" />
-                    Anmelden
-                  </>
-                )}
+                {isLogging ? 'Anmelden...' : 'Anmelden'}
               </Button>
             </div>
           </form>
           
-          <div className="text-center pt-4 border-t">
+          <div className="text-center pt-4 border-t mt-4">
             <p className="text-sm text-gray-600">
               Noch kein Konto? 
               <button
@@ -336,8 +329,8 @@ const EmpathyTrainingApp = () => {
               </button>
             </p>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </div>
     );
   };
 
