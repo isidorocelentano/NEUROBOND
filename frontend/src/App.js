@@ -842,7 +842,7 @@ const EmpathyTrainingApp = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      if (error.response?.status === 404) {
+      if (error.response && error.response.status === 404) {
         showNotification('Kein Benutzer mit dieser E-Mail gefunden. Bitte registrieren Sie sich zuerst.', 'warning');
       } else {
         showNotification('Fehler beim Anmelden. Bitte versuchen Sie es erneut.', 'error');
