@@ -408,7 +408,10 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Login and Avatar Upload System Debug Complete"
+    - "Frontend Testing After LoginModal Fix"
+    - "Speech Control and Multi-language Support Verification"
+    - "Complete User Journey Testing"
+    - "Stripe Payment Flow Verification"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
