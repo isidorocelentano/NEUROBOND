@@ -54,6 +54,10 @@ const EmpathyTrainingApp = () => {
   // Notification States
   const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
   
+  // Speech Recognition States
+  const [speechLanguage, setSpeechLanguage] = useState('de-DE');
+  const [speechSupported, setSpeechSupported] = useState(false);
+  
   // Contact Form States
   const [contactForm, setContactForm] = useState({
     name: '',
