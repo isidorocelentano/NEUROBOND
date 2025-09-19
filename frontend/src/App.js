@@ -2970,8 +2970,8 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       
-      {/* Login Modal - Available from any page */}
-      {showLogin && <LoginModal />}
+      {/* Login Modal - Temporarily disabled for debugging */}
+      {/* {showLogin && <LoginModal />} */}
     </div>
   );
 };
