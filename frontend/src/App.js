@@ -2246,58 +2246,147 @@ const EmpathyTrainingApp = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
-              alt="NEUROBOND Logo" 
-              className="h-12 md:h-16 w-auto object-contain"
-            />
-          </div>
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              {/* User Avatar */}
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
-                {user?.avatar ? (
-                  <img 
-                    src={user.avatar} 
-                    alt={`${user.name} Avatar`}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <UserCircle className="w-full h-full text-gray-400" />
-                )}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Modern Header */}
+        <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              {/* Logo & User Info */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                    <p className="text-xs text-gray-500">Bindungstraining</p>
+                  </div>
+                </div>
+                
+                {/* User Profile */}
+                <div className="hidden md:flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/20">
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
+                    {user?.avatar ? (
+                      <img 
+                        src={user.avatar} 
+                        alt={`${user.name} Avatar`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <UserCircle className="w-full h-full text-gray-400" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Hallo, {user?.name}!</p>
+                    {user?.partner_name && (
+                      <p className="text-xs text-gray-600">{user.name} & {user.partner_name}</p>
+                    )}
+                  </div>
+                </div>
               </div>
               
+              {/* Status & Controls */}
               <div className="flex items-center gap-3">
-                <p className="text-gray-600 text-lg">
-                  Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
-                </p>
-                {subscriptionStatus === 'active' && (
-                  <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                {/* Subscription Status */}
+                {subscriptionStatus === 'active' ? (
+                  <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1.5 rounded-full text-sm font-medium">
                     <Crown className="w-4 h-4" />
                     PRO
                   </div>
+                ) : (
+                  <div className="flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium">
+                    <Rocket className="w-4 h-4" />
+                    Kostenlos
+                  </div>
                 )}
+                
+                {/* Language Indicator */}
+                <div className="hidden sm:flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-xl px-3 py-1.5 border border-white/20">
+                  <Mic className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm">{speechLanguages.find(l => l.code === speechLanguage)?.flag}</span>
+                  <span className="text-xs text-gray-600 hidden lg:block">
+                    {speechSupported ? speechLanguages.find(l => l.code === speechLanguage)?.name : 'Nicht unterstützt'}
+                  </span>
+                </div>
+                
+                {/* Logout Button */}
+                <Button 
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="text-gray-600 hover:text-red-600 hover:bg-red-50"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                  <span className="hidden sm:inline ml-2">Abmelden</span>
+                </Button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-md text-xs text-gray-600">
-                <Mic className="w-3 h-3" />
-                <span>{speechLanguages.find(l => l.code === speechLanguage)?.flag}</span>
-                <span>{speechSupported ? speechLanguages.find(l => l.code === speechLanguage)?.name : 'Nicht unterstützt'}</span>
+          </div>
+        </header>
+
+        <div className="container mx-auto px-4 py-8">
+          {/* Welcome Section */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Willkommen zurück, {user?.name}! 👋
+            </h2>
+            {user?.partner_name && (
+              <p className="text-xl text-gray-600 mb-6">
+                Stärkt eure Bindung - <span className="font-semibold">{user.name}</span> und <span className="font-semibold">{user.partner_name}</span>
+              </p>
+            )}
+            
+            {/* Quick Stats */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-blue-600">
+                  {userProgress.filter(p => p.stage_number === 1).length}
+                </div>
+                <div className="text-sm text-gray-600">Szenarien absolviert</div>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleLogout}
-                className="flex items-center gap-2"
-              >
-                <ArrowRight className="w-4 h-4 rotate-180" />
-                Abmelden
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-green-600">
+                  {Math.round((userProgress.filter(p => p.stage_number === 1).length / 5) * 100)}%
+                </div>
+                <div className="text-sm text-gray-600">Fortschritt</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-purple-600">
+                  {stages.length}
+                </div>
+                <div className="text-sm text-gray-600">Stufen verfügbar</div>
+              </div>
+            </div>
+            
+            {/* Subscription Status Banner */}
+            {subscriptionStatus !== 'active' && (
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl p-6 mb-8 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Rocket className="w-5 h-5" />
+                    <span className="font-semibold">Sie nutzen die kostenlose Version</span>
+                  </div>
+                  <p className="text-blue-100 mb-4">
+                    Upgraden Sie zu PRO für alle Features und das komplette Trainingsprogramm.
+                  </p>
+                  <Button 
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="bg-white text-purple-700 hover:bg-gray-100 font-semibold px-6 py-2 rounded-xl"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    Jetzt upgraden
+                  </Button>
+                </div>
+              </div>
+            )}
               </Button>
             </div>
           </div>
