@@ -2465,8 +2465,9 @@ def main():
     
     # Print final results
     print("\n" + "=" * 80)
-    print("📧 CONTACT FORM EMAIL FUNCTIONALITY TEST RESULTS (FASTAPI-MAIL)")
+    print("💳 PAYMENT METHODS CONFIGURATION TEST RESULTS")
     print("=" * 80)
+    print(f"💳 Payment Methods: {payment_tests_passed}/{payment_tests_total} tests completed")
     print(f"📧 Email Functionality: {email_tests_passed}/{email_tests_total} tests completed")
     print(f"🔍 Contact Investigation: {contact_investigation_passed}/{contact_investigation_total} tests completed")
     print(f"📋 Contact Functional: {contact_functional_passed}/{contact_functional_total} tests passed")
