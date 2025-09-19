@@ -1607,13 +1607,12 @@ const EmpathyTrainingApp = () => {
               </div>
               <div>
                 <Label htmlFor="partner_name">Name deines Partners (optional)</Label>
-                <Input
-                  id="partner_name"
-                  type="text"
-                  placeholder="z.B. Linda"
+                <SpeechInput
                   value={formData.partner_name}
-                  onChange={(e) => setFormData({...formData, partner_name: e.target.value})}
+                  onChange={(value) => setFormData({...formData, partner_name: value})}
+                  placeholder="z.B. Linda"
                   className="mt-1"
+                  name="partner_name"
                 />
               </div>
               <Button type="submit" className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200">
