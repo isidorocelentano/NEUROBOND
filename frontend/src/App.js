@@ -735,6 +735,55 @@ const EmpathyTrainingApp = () => {
     }
   };
 
+  // Login/Logout Functions
+  const handleLogin = async (email) => {
+    try {
+      const response = await axios.get(`${API}/user/by-email/${encodeURIComponent(email)}`);
+      
+      if (response.data) {
+        const userData = response.data;
+        setUser(userData);
+        setUserAvatar(userData.avatar);
+        localStorage.setItem('empathy_user', JSON.stringify(userData));
+        setShowLogin(false);
+        setShowLandingPage(false);
+        setShowOnboarding(false);
+        fetchUserProgress(userData.id);
+        showNotification(`Willkommen zurück, ${userData.name}!`, 'success');
+      } else {
+        showNotification('Kein Benutzer mit dieser E-Mail gefunden', 'error');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      if (error.response?.status === 404) {
+        showNotification('Kein Benutzer mit dieser E-Mail gefunden. Bitte registrieren Sie sich zuerst.', 'warning');
+      } else {
+        showNotification('Fehler beim Anmelden. Bitte versuchen Sie es erneut.', 'error');
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    // Complete logout - clear everything
+    localStorage.removeItem('empathy_user');
+    setUser(null);
+    setUserAvatar(null);
+    setShowLandingPage(true);
+    setShowOnboarding(false);
+    setShowLogin(false);
+    setUserProgress([]);
+    setDialogMessages([]);
+    setDialogAnalysis('');
+    setSubscriptionStatus('free');
+    setSelectedScenario(null);
+    setCurrentStage(1);
+    setUserResponse('');
+    setAiResponse('');
+    setLoading(false);
+    
+    showNotification('Erfolgreich abgemeldet', 'success');
+  };
+
   // Contact Form Functions
   const handleContactFormChange = (e) => {
     const { name, value } = e.target;
