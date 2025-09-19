@@ -1462,14 +1462,36 @@ const EmpathyTrainingApp = () => {
                 </div>
               </div>
             </div>
-            
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              NEUROBOND kombiniert Neurowissenschaft mit bewährten Methoden der Paartherapie (EFT & Gottman). 
-              Verbessert eure Kommunikation, löst Konflikte empathisch und baut eine tiefere emotionale Verbindung auf.
-            </p>
+
+            {/* Feature Highlights */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Brain className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">KI-Feedback</h3>
+                <p className="text-gray-600 text-sm">Personalisierte Bewertungen und Verbesserungsvorschläge für eure Kommunikation</p>
+              </div>
+              
+              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Mic className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Sprachsteuerung</h3>
+                <p className="text-gray-600 text-sm">6 Sprachen unterstützt - einfach sprechen statt tippen</p>
+              </div>
+              
+              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Strukturiertes Training</h3>
+                <p className="text-gray-600 text-sm">5 aufeinander aufbauende Stufen für nachhaltige Beziehungsverbesserung</p>
+              </div>
+            </div>
 
             {/* Call-to-Action Options */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
               {/* Free Trial Option */}
               <div className="p-6 bg-white rounded-2xl shadow-lg border-2 border-gray-100 hover:border-blue-300 transition-all duration-300">
                 <div className="text-center">
