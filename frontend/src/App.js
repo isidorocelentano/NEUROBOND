@@ -1553,24 +1553,35 @@ const EmpathyTrainingApp = () => {
                 </div>
               )}
             </div>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => {
-                // Clear user data and return to landing page
-                localStorage.removeItem('empathy_user');
-                setUser(null);
-                setShowLandingPage(true);
-                setUserProgress([]);
-                setDialogMessages([]);
-                setDialogAnalysis('');
-                setSubscriptionStatus('free');
-              }}
-              className="flex items-center gap-2"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-              Abmelden
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setShowLandingPage(true)}
+                className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" />
+                Startseite
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  // Clear user data and return to landing page
+                  localStorage.removeItem('empathy_user');
+                  setUser(null);
+                  setShowLandingPage(true);
+                  setUserProgress([]);
+                  setDialogMessages([]);
+                  setDialogAnalysis('');
+                  setSubscriptionStatus('free');
+                }}
+                className="flex items-center gap-2"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" />
+                Abmelden
+              </Button>
+            </div>
           </div>
           {subscriptionStatus === 'free' && (
             <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
