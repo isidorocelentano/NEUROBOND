@@ -192,8 +192,8 @@ const EmpathyTrainingApp = () => {
     return (
       <div className="relative">
         <InputComponent
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+          value={value || ''}
+          onChange={handleChange}
           placeholder={placeholder}
           className={`pr-20 ${className}`}
           disabled={disabled}
