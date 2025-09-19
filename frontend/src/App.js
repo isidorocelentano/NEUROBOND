@@ -2012,11 +2012,13 @@ const EmpathyTrainingApp = () => {
                     </div>
                     
                     <div className="flex gap-2">
-                      <Textarea
+                      <SpeechInput
                         placeholder={`Was sagt ${currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2')}?`}
                         value={currentMessage}
-                        onChange={(e) => setCurrentMessage(e.target.value)}
+                        onChange={setCurrentMessage}
+                        multiline={true}
                         className="flex-1"
+                        name="dialog-message"
                       />
                       <Button
                         onClick={() => {
