@@ -1353,50 +1353,115 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Landing Page Component
+  // Modern Landing Page Component
   const LandingPage = () => {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        {/* Hero Section */}
-        <div className="container mx-auto px-4 py-16">
-          {/* Navigation */}
-          <nav className="flex justify-between items-center mb-16">
-            <div className="flex items-center gap-2">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
-                alt="NEUROBOND Logo" 
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            
-            {/* Login Button - immer anzeigen */}
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline"
-                onClick={() => setShowLogin(true)}
-                className="flex items-center gap-2"
-              >
-                <User className="w-4 h-4" />
-                Anmelden
-              </Button>
-              <Button 
-                variant="default"
-                onClick={() => setShowOnboarding(true)}
-                className="flex items-center gap-2"
-              >
-                <UserCheck className="w-4 h-4" />
-                Registrieren
-              </Button>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative z-10">
+          {/* Modern Navigation */}
+          <nav className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                    <p className="text-xs text-gray-500">Bindungstraining</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowLogin(true)}
+                    className="text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Anmelden
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={() => setShowOnboarding(true)}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Rocket className="w-4 h-4 mr-2" />
+                    Jetzt starten
+                  </Button>
+                </div>
+              </div>
             </div>
           </nav>
 
-          {/* Hero Content */}
-          <div className="text-center max-w-4xl mx-auto mb-20">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Stärke deine Beziehung mit 
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> wissenschaftlich fundiertem </span>
-              Bindungstraining
-            </h1>
+          {/* Hero Section */}
+          <div className="container mx-auto px-4 py-16 lg:py-24">
+            {/* Hero Content */}
+            <div className="text-center max-w-4xl mx-auto mb-16">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <Sparkles className="w-4 h-4" />
+                Wissenschaftlich fundiert
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                Stärke deine 
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"> Beziehung </span>
+                mit KI-gestütztem Training
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+                NEUROBOND kombiniert Neurowissenschaft mit bewährten Methoden der 
+                Paartherapie (EFT & Gottman). Verbessert eure Kommunikation, löst Konflikte 
+                empathisch und baut eine tiefere emotionale Verbindung auf.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <Button 
+                  size="lg"
+                  onClick={() => setShowLandingPage(false)}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <Play className="w-6 h-6 mr-3" />
+                  Kostenlos ausprobieren
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => {
+                    setShowLandingPage(false);
+                    setTimeout(() => setShowUpgradeModal(true), 1000);
+                  }}
+                  className="border-2 border-purple-300 text-purple-700 hover:bg-purple-50 px-6 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <Crown className="w-6 h-6 mr-3" />
+                  PRO Version entdecken
+                </Button>
+              </div>
+
+              {/* Social Proof */}
+              <div className="flex items-center justify-center gap-6 text-gray-500 text-sm">
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                  <span>4.9/5 Bewertung</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  <span>1000+ glückliche Paare</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  <span>100% Datenschutz</span>
+                </div>
+              </div>
+            </div>
             
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               NEUROBOND kombiniert Neurowissenschaft mit bewährten Methoden der Paartherapie (EFT & Gottman). 
