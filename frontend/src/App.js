@@ -17,8 +17,10 @@ import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckC
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Initialize Stripe
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+// Initialize Stripe with error handling
+const stripePromise = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+  : Promise.resolve(null);
 
 const EmpathyTrainingApp = () => {
   const [user, setUser] = useState(null);
