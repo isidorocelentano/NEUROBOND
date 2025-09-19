@@ -1956,48 +1956,112 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Onboarding Component
+  // Modern Onboarding Component
   const OnboardingForm = () => {
     const [formData, setFormData] = useState({
       name: '',
       email: '',
       partner_name: ''
     });
+    const [currentStep, setCurrentStep] = useState(1);
 
     const handleSubmit = (e) => {
       e.preventDefault();
       createUser(formData);
     };
 
+    const nextStep = () => {
+      if (currentStep < 3) setCurrentStep(currentStep + 1);
+    };
+
+    const prevStep = () => {
+      if (currentStep > 1) setCurrentStep(currentStep - 1);
+    };
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-violet-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm shadow-2xl border-0">
-          <CardHeader className="text-center space-y-4">
-            <div className="mx-auto flex items-center justify-center">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
-                alt="NEUROBOND Logo" 
-                className="h-16 w-auto object-contain"
-              />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative z-10 w-full max-w-lg">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                <Heart className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                <p className="text-sm text-gray-500">Bindungstraining</p>
+              </div>
             </div>
-            <CardDescription className="text-gray-600">
-              Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-4">
-                {/* Avatar Upload Section */}
-                <div className="flex justify-center mb-6">
-                  <AvatarUpload 
-                    userId="temp-user" 
-                    currentAvatar={userAvatar}
-                    onAvatarUpdate={setUserAvatar}
-                  />
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Willkommen!</h2>
+            <p className="text-gray-600">Lass uns dein persönliches Profil erstellen</p>
+          </div>
+
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-center mb-8">
+            {[1, 2, 3].map((step) => (
+              <div key={step} className="flex items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+                  step <= currentStep 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
+                    : 'bg-gray-200 text-gray-500'
+                }`}>
+                  {step < currentStep ? <CheckCircle className="w-5 h-5" /> : step}
                 </div>
-                
-                <div>
-                  <Label htmlFor="name">Dein Name</Label>
+                {step < 3 && (
+                  <div className={`w-16 h-1 mx-2 rounded-full transition-all ${
+                    step < currentStep ? 'bg-gradient-to-r from-blue-600 to-purple-600' : 'bg-gray-200'
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Form Card */}
+          <Card className="bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 rounded-3xl overflow-hidden">
+            <CardContent className="p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Step 1: Avatar */}
+                {currentStep === 1 && (
+                  <div className="text-center space-y-6">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Wähle dein Profilbild</h3>
+                      <p className="text-gray-600 text-sm">Optional - du kannst dies auch später hinzufügen</p>
+                    </div>
+                    
+                    <AvatarUpload 
+                      userId="temp-user" 
+                      currentAvatar={userAvatar}
+                      onAvatarUpdate={setUserAvatar}
+                    />
+
+                    <Button 
+                      type="button"
+                      onClick={nextStep}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-2xl font-semibold"
+                    >
+                      Weiter
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </div>
+                )}
+
+                {/* Step 2: Personal Info */}
+                {currentStep === 2 && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Persönliche Angaben</h3>
+                      <p className="text-gray-600 text-sm">Damit wir dich persönlich ansprechen können</p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="name" className="text-gray-700 font-medium">Dein Name *</Label>
                   <SpeechInput
                     value={formData.name}
                     onChange={(value) => setFormData({...formData, name: value})}
