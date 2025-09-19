@@ -82,6 +82,171 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
+  // Speech Recognition Configuration
+  const speechLanguages = [
+    { code: 'de-DE', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'de-CH', name: 'Schweizerdeutsch', flag: '🇨🇭' },
+    { code: 'en-US', name: 'English', flag: '🇺🇸' },
+    { code: 'fr-FR', name: 'Français', flag: '🇫🇷' },
+    { code: 'es-ES', name: 'Español', flag: '🇪🇸' },
+    { code: 'it-IT', name: 'Italiano', flag: '🇮🇹' }
+  ];
+
+  // Check speech recognition support
+  useEffect(() => {
+    const checkSpeechSupport = () => {
+      if (typeof window !== 'undefined') {
+        setSpeechSupported(
+          'webkitSpeechRecognition' in window || 
+          'SpeechRecognition' in window
+        );
+      }
+    };
+    checkSpeechSupport();
+  }, []);
+
+  // Speech Input Component
+  const SpeechInput = ({ value, onChange, placeholder, multiline = false, className = "", disabled = false, name = "" }) => {
+    const [isListening, setIsListening] = useState(false);
+    const [showLanguageSelect, setShowLanguageSelect] = useState(false);
+
+    const startSpeechRecognition = () => {
+      if (!speechSupported) {
+        showNotification('Spracherkennung wird von Ihrem Browser nicht unterstützt', 'warning');
+        return;
+      }
+
+      try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.lang = speechLanguage;
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          setIsListening(true);
+          showNotification('Hörzu... Bitte sprechen Sie jetzt', 'info');
+        };
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          const currentValue = value || '';
+          const newValue = currentValue ? `${currentValue} ${transcript}` : transcript;
+          onChange(newValue);
+          showNotification('Spracheingabe erfolgreich!', 'success');
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          let errorMessage = 'Fehler bei der Spracherkennung';
+          switch(event.error) {
+            case 'no-speech':
+              errorMessage = 'Keine Sprache erkannt. Bitte versuchen Sie es erneut.';
+              break;
+            case 'audio-capture':
+              errorMessage = 'Mikrofon nicht verfügbar. Bitte prüfen Sie die Berechtigungen.';
+              break;
+            case 'not-allowed':
+              errorMessage = 'Mikrofon-Zugriff verweigert. Bitte aktivieren Sie die Berechtigung.';
+              break;
+            case 'network':
+              errorMessage = 'Netzwerkfehler. Bitte prüfen Sie Ihre Internetverbindung.';
+              break;
+          }
+          showNotification(errorMessage, 'error');
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+
+        recognition.start();
+      } catch (error) {
+        console.error('Speech recognition error:', error);
+        showNotification('Fehler beim Starten der Spracherkennung', 'error');
+        setIsListening(false);
+      }
+    };
+
+    const InputComponent = multiline ? Textarea : Input;
+    
+    return (
+      <div className="relative">
+        <InputComponent
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`pr-20 ${className}`}
+          disabled={disabled}
+          name={name}
+        />
+        
+        {speechSupported && (
+          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+            {/* Language Selector */}
+            <div className="relative">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowLanguageSelect(!showLanguageSelect)}
+                className="h-8 w-8 p-0 hover:bg-gray-100"
+                disabled={disabled || isListening}
+              >
+                <Globe className="w-4 h-4 text-gray-500" />
+              </Button>
+              
+              {showLanguageSelect && (
+                <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-36">
+                  {speechLanguages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      onClick={() => {
+                        setSpeechLanguage(lang.code);
+                        setShowLanguageSelect(false);
+                        showNotification(`Sprache geändert zu ${lang.name}`, 'success');
+                      }}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2 ${
+                        speechLanguage === lang.code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                      }`}
+                    >
+                      <span>{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Speech Button */}
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={startSpeechRecognition}
+              disabled={disabled || isListening}
+              className={`h-8 w-8 p-0 ${
+                isListening 
+                  ? 'text-red-500 animate-pulse hover:bg-red-50' 
+                  : 'text-blue-500 hover:bg-blue-50'
+              }`}
+              title={`Spracheingabe (${speechLanguages.find(l => l.code === speechLanguage)?.name || 'Deutsch'})`}
+            >
+              {isListening ? (
+                <MicOff className="w-4 h-4" />
+              ) : (
+                <Mic className="w-4 h-4" />
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   useEffect(() => {
     fetchStages();
     // Check if user exists in localStorage
