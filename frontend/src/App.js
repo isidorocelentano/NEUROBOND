@@ -2335,14 +2335,13 @@ const EmpathyTrainingApp = () => {
                     
                     <div>
                       <Label htmlFor="contact-message">Nachricht *</Label>
-                      <Textarea
-                        id="contact-message"
-                        name="message"
-                        placeholder="Beschreiben Sie Ihr Anliegen..."
+                      <SpeechInput
                         value={contactForm.message}
-                        onChange={handleContactFormChange}
-                        required
+                        onChange={(value) => setContactForm(prev => ({...prev, message: value}))}
+                        placeholder="Beschreiben Sie Ihr Anliegen..."
+                        multiline={true}
                         className="mt-1 min-h-[120px]"
+                        name="contact-message"
                       />
                     </div>
                     
