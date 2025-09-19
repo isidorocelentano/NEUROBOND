@@ -1587,14 +1587,12 @@ const EmpathyTrainingApp = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label htmlFor="name">Dein Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="z.B. Adam"
+                <SpeechInput
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  required
+                  onChange={(value) => setFormData({...formData, name: value})}
+                  placeholder="z.B. Adam"
                   className="mt-1"
+                  name="name"
                 />
               </div>
               <div>
