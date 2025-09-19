@@ -538,7 +538,10 @@ const EmpathyTrainingApp = () => {
 
   const createUser = async (userData) => {
     try {
-      const response = await axios.post(`${API}/users`, userData);
+      const response = await axios.post(`${API}/users`, {
+        ...userData,
+        avatar: userAvatar  // Include avatar in user creation
+      });
       const newUser = response.data;
       setUser(newUser);
       localStorage.setItem('empathy_user', JSON.stringify(newUser));
