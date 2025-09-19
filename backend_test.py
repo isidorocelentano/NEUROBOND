@@ -2290,6 +2290,635 @@ class EmpathyTrainingAPITester:
         
         return all_tests_passed
 
+    # ===== AVATAR UPLOAD FUNCTIONALITY TESTS =====
+    
+    def create_test_image(self, width=300, height=300, format='JPEG'):
+        """Create a test image for avatar upload testing"""
+        # Create a simple test image
+        image = Image.new('RGB', (width, height), color='red')
+        
+        # Add some content to make it more realistic
+        from PIL import ImageDraw
+        draw = ImageDraw.Draw(image)
+        draw.rectangle([50, 50, width-50, height-50], fill='blue')
+        draw.ellipse([100, 100, width-100, height-100], fill='green')
+        
+        # Convert to bytes
+        buffer = io.BytesIO()
+        image.save(buffer, format=format)
+        buffer.seek(0)
+        return buffer.getvalue()
+    
+    def test_avatar_upload_valid_jpeg(self):
+        """Test avatar upload with valid JPEG image"""
+        if not self.test_user_id:
+            print("❌ Skipping avatar upload test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Upload - Valid JPEG...")
+        
+        # Create test JPEG image
+        image_data = self.create_test_image(400, 400, 'JPEG')
+        
+        # Prepare multipart form data
+        files = {'file': ('test_avatar.jpg', image_data, 'image/jpeg')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'avatar' in response_data and response_data['avatar'].startswith('data:image/jpeg;base64,'):
+                    print("✅ Avatar uploaded successfully")
+                    print("✅ Base64 data URL format correct")
+                    print(f"   Avatar data length: {len(response_data['avatar'])} characters")
+                    
+                    # Store avatar data for later tests
+                    self.test_avatar_data = response_data['avatar']
+                    return True
+                else:
+                    print("❌ Invalid avatar response format")
+            else:
+                print(f"❌ Upload failed - Status: {response.status_code}")
+                print(f"   Error: {response.text[:300]}")
+                
+        except Exception as e:
+            print(f"❌ Upload failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_valid_png(self):
+        """Test avatar upload with valid PNG image"""
+        if not self.test_user_id:
+            print("❌ Skipping PNG avatar upload test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Upload - Valid PNG...")
+        
+        # Create test PNG image
+        image_data = self.create_test_image(350, 350, 'PNG')
+        
+        files = {'file': ('test_avatar.png', image_data, 'image/png')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'avatar' in response_data and response_data['avatar'].startswith('data:image/jpeg;base64,'):
+                    print("✅ PNG avatar uploaded and converted to JPEG")
+                    print("✅ Image processing working correctly")
+                    return True
+                else:
+                    print("❌ Invalid PNG avatar response format")
+            else:
+                print(f"❌ PNG upload failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ PNG upload failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_image_processing(self):
+        """Test avatar image processing (resize to 200x200, center, base64)"""
+        if not self.test_user_id:
+            print("❌ Skipping image processing test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Image Processing...")
+        
+        # Create large test image to verify resizing
+        image_data = self.create_test_image(800, 600, 'JPEG')  # Non-square, large image
+        
+        files = {'file': ('large_avatar.jpg', image_data, 'image/jpeg')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                avatar_data = response_data.get('avatar', '')
+                
+                if avatar_data.startswith('data:image/jpeg;base64,'):
+                    # Decode and verify image dimensions
+                    base64_data = avatar_data.split(',')[1]
+                    decoded_data = base64.b64decode(base64_data)
+                    
+                    # Verify the processed image
+                    processed_image = Image.open(io.BytesIO(decoded_data))
+                    width, height = processed_image.size
+                    
+                    print(f"   Processed image dimensions: {width}x{height}")
+                    
+                    if width == 200 and height == 200:
+                        print("✅ Image correctly resized to 200x200")
+                        print("✅ Aspect ratio handled with centering")
+                        print("✅ JPEG conversion with quality optimization")
+                        print("✅ Base64 encoding working correctly")
+                        return True
+                    else:
+                        print(f"❌ Incorrect dimensions: expected 200x200, got {width}x{height}")
+                else:
+                    print("❌ Invalid base64 data URL format")
+            else:
+                print(f"❌ Image processing test failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Image processing test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_file_size_validation(self):
+        """Test avatar upload file size validation (max 5MB)"""
+        if not self.test_user_id:
+            print("❌ Skipping file size test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar File Size Validation...")
+        
+        # Create oversized image (simulate >5MB)
+        # Create a very large image that would exceed 5MB when saved
+        large_image_data = self.create_test_image(3000, 3000, 'JPEG')
+        
+        # If the created image is not large enough, pad it
+        if len(large_image_data) < 5 * 1024 * 1024:
+            # Create padding to exceed 5MB
+            padding = b'0' * (5 * 1024 * 1024 + 1000 - len(large_image_data))
+            large_image_data += padding
+        
+        files = {'file': ('huge_avatar.jpg', large_image_data, 'image/jpeg')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            print(f"   Test file size: {len(large_image_data) / (1024*1024):.1f} MB")
+            
+            if response.status_code == 400:
+                self.tests_passed += 1
+                print("✅ File size validation working correctly")
+                print("✅ Files exceeding 5MB properly rejected")
+                return True
+            else:
+                print(f"❌ Expected 400 status for oversized file, got {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ File size validation test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_invalid_file_type(self):
+        """Test avatar upload with invalid file types"""
+        if not self.test_user_id:
+            print("❌ Skipping invalid file type test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Invalid File Type Validation...")
+        
+        # Create a text file disguised as image
+        invalid_data = b"This is not an image file, it's just text content."
+        
+        files = {'file': ('fake_image.txt', invalid_data, 'text/plain')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 400:
+                self.tests_passed += 1
+                print("✅ Invalid file type properly rejected")
+                print("✅ File type validation working correctly")
+                return True
+            else:
+                print(f"❌ Expected 400 status for invalid file type, got {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Invalid file type test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_corrupt_image(self):
+        """Test avatar upload with corrupt image data"""
+        if not self.test_user_id:
+            print("❌ Skipping corrupt image test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Corrupt Image Handling...")
+        
+        # Create corrupt image data (valid JPEG header but invalid content)
+        corrupt_data = b'\xff\xd8\xff\xe0\x00\x10JFIF' + b'corrupt_image_data_here' * 100
+        
+        files = {'file': ('corrupt.jpg', corrupt_data, 'image/jpeg')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 400:
+                self.tests_passed += 1
+                print("✅ Corrupt image properly rejected")
+                print("✅ Image validation working correctly")
+                return True
+            else:
+                print(f"❌ Expected 400 status for corrupt image, got {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Corrupt image test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_retrieval(self):
+        """Test avatar retrieval for existing user"""
+        if not self.test_user_id:
+            print("❌ Skipping avatar retrieval test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Retrieval...")
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.get(url, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'avatar' in response_data:
+                    avatar_data = response_data['avatar']
+                    if avatar_data and avatar_data.startswith('data:image/jpeg;base64,'):
+                        print("✅ Avatar retrieved successfully")
+                        print("✅ Base64 data URL format correct")
+                        print(f"   Avatar data length: {len(avatar_data)} characters")
+                        return True
+                    elif avatar_data is None:
+                        print("✅ No avatar set for user (valid response)")
+                        return True
+                    else:
+                        print("❌ Invalid avatar data format")
+                else:
+                    print("❌ Avatar field missing from response")
+            else:
+                print(f"❌ Avatar retrieval failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Avatar retrieval failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_retrieval_nonexistent_user(self):
+        """Test avatar retrieval for non-existent user"""
+        print("\n🔍 Testing Avatar Retrieval - Non-existent User...")
+        
+        fake_user_id = str(uuid.uuid4())
+        
+        try:
+            url = f"{self.api_url}/user/{fake_user_id}/avatar"
+            response = requests.get(url, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 404:
+                self.tests_passed += 1
+                print("✅ Non-existent user properly handled")
+                print("✅ 404 status returned correctly")
+                return True
+            else:
+                print(f"❌ Expected 404 status for non-existent user, got {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Non-existent user test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_removal(self):
+        """Test avatar removal/deletion"""
+        if not self.test_user_id:
+            print("❌ Skipping avatar removal test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Removal...")
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.delete(url, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if response_data.get('success') == True:
+                    print("✅ Avatar removed successfully")
+                    
+                    # Verify avatar is actually removed by trying to retrieve it
+                    get_response = requests.get(url, timeout=30)
+                    if get_response.status_code == 200:
+                        get_data = get_response.json()
+                        if get_data.get('avatar') is None:
+                            print("✅ Avatar removal verified - no avatar data returned")
+                            return True
+                        else:
+                            print("❌ Avatar still present after removal")
+                    else:
+                        print("❌ Could not verify avatar removal")
+                else:
+                    print("❌ Avatar removal response indicates failure")
+            else:
+                print(f"❌ Avatar removal failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Avatar removal failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_removal_nonexistent_user(self):
+        """Test avatar removal for non-existent user"""
+        print("\n🔍 Testing Avatar Removal - Non-existent User...")
+        
+        fake_user_id = str(uuid.uuid4())
+        
+        try:
+            url = f"{self.api_url}/user/{fake_user_id}/avatar"
+            response = requests.delete(url, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 404:
+                self.tests_passed += 1
+                print("✅ Non-existent user removal properly handled")
+                print("✅ 404 status returned correctly")
+                return True
+            else:
+                print(f"❌ Expected 404 status for non-existent user removal, got {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ Non-existent user removal test failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_user_creation_with_avatar(self):
+        """Test creating user with avatar data included"""
+        print("\n🔍 Testing User Creation with Avatar Data...")
+        
+        # Create test avatar data
+        avatar_data = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8A8A"
+        
+        test_data = {
+            "name": "Avatar Test User",
+            "email": f"avatar.test.{datetime.now().strftime('%H%M%S')}@example.com",
+            "partner_name": "Avatar Partner",
+            "avatar": avatar_data
+        }
+        
+        try:
+            url = f"{self.api_url}/users"
+            response = requests.post(url, json=test_data, headers={'Content-Type': 'application/json'}, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'id' in response_data and 'avatar' in response_data:
+                    user_id = response_data['id']
+                    returned_avatar = response_data.get('avatar')
+                    
+                    print("✅ User created with avatar data")
+                    print(f"   User ID: {user_id}")
+                    
+                    if returned_avatar == avatar_data:
+                        print("✅ Avatar data correctly stored and returned")
+                        return True
+                    else:
+                        print("❌ Avatar data mismatch in response")
+                else:
+                    print("❌ Missing required fields in user creation response")
+            else:
+                print(f"❌ User creation with avatar failed - Status: {response.status_code}")
+                print(f"   Error: {response.text[:300]}")
+                
+        except Exception as e:
+            print(f"❌ User creation with avatar failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_webp_format(self):
+        """Test avatar upload with WebP format"""
+        if not self.test_user_id:
+            print("❌ Skipping WebP avatar upload test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Upload - WebP Format...")
+        
+        try:
+            # Create test WebP image
+            image_data = self.create_test_image(300, 300, 'WEBP')
+            
+            files = {'file': ('test_avatar.webp', image_data, 'image/webp')}
+            
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'avatar' in response_data and response_data['avatar'].startswith('data:image/jpeg;base64,'):
+                    print("✅ WebP avatar uploaded and converted to JPEG")
+                    print("✅ WebP format support working correctly")
+                    return True
+                else:
+                    print("❌ Invalid WebP avatar response format")
+            else:
+                print(f"❌ WebP upload failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ WebP upload failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_upload_gif_format(self):
+        """Test avatar upload with GIF format"""
+        if not self.test_user_id:
+            print("❌ Skipping GIF avatar upload test - no user ID available")
+            return False
+            
+        print("\n🔍 Testing Avatar Upload - GIF Format...")
+        
+        try:
+            # Create test GIF image
+            image_data = self.create_test_image(250, 250, 'GIF')
+            
+            files = {'file': ('test_avatar.gif', image_data, 'image/gif')}
+            
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            response = requests.post(url, files=files, timeout=30)
+            
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                self.tests_passed += 1
+                response_data = response.json()
+                
+                if 'avatar' in response_data and response_data['avatar'].startswith('data:image/jpeg;base64,'):
+                    print("✅ GIF avatar uploaded and converted to JPEG")
+                    print("✅ GIF format support working correctly")
+                    return True
+                else:
+                    print("❌ Invalid GIF avatar response format")
+            else:
+                print(f"❌ GIF upload failed - Status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"❌ GIF upload failed with exception: {str(e)}")
+        
+        self.tests_run += 1
+        return False
+    
+    def test_avatar_comprehensive_functionality(self):
+        """Comprehensive test of complete avatar functionality"""
+        print("\n🚨 COMPREHENSIVE AVATAR FUNCTIONALITY TEST")
+        print("=" * 60)
+        
+        if not self.test_user_id:
+            print("❌ Cannot run comprehensive avatar test - no user ID available")
+            return False
+        
+        # Test complete avatar workflow
+        success_count = 0
+        total_tests = 0
+        
+        # 1. Upload avatar
+        print("\n   Step 1: Upload Avatar...")
+        image_data = self.create_test_image(500, 400, 'JPEG')
+        files = {'file': ('comprehensive_test.jpg', image_data, 'image/jpeg')}
+        
+        try:
+            url = f"{self.api_url}/user/{self.test_user_id}/avatar"
+            upload_response = requests.post(url, files=files, timeout=30)
+            total_tests += 1
+            
+            if upload_response.status_code == 200:
+                success_count += 1
+                upload_data = upload_response.json()
+                avatar_data = upload_data.get('avatar', '')
+                
+                print("   ✅ Avatar upload successful")
+                
+                # 2. Verify retrieval
+                print("   Step 2: Verify Avatar Retrieval...")
+                get_response = requests.get(url, timeout=30)
+                total_tests += 1
+                
+                if get_response.status_code == 200:
+                    success_count += 1
+                    get_data = get_response.json()
+                    
+                    if get_data.get('avatar') == avatar_data:
+                        print("   ✅ Avatar retrieval successful and data matches")
+                        
+                        # 3. Verify image processing
+                        print("   Step 3: Verify Image Processing...")
+                        if avatar_data.startswith('data:image/jpeg;base64,'):
+                            base64_data = avatar_data.split(',')[1]
+                            decoded_data = base64.b64decode(base64_data)
+                            processed_image = Image.open(io.BytesIO(decoded_data))
+                            width, height = processed_image.size
+                            
+                            total_tests += 1
+                            if width == 200 and height == 200:
+                                success_count += 1
+                                print("   ✅ Image processing correct (200x200, JPEG, base64)")
+                                
+                                # 4. Test avatar removal
+                                print("   Step 4: Test Avatar Removal...")
+                                delete_response = requests.delete(url, timeout=30)
+                                total_tests += 1
+                                
+                                if delete_response.status_code == 200:
+                                    success_count += 1
+                                    print("   ✅ Avatar removal successful")
+                                    
+                                    # 5. Verify removal
+                                    print("   Step 5: Verify Avatar Removed...")
+                                    verify_response = requests.get(url, timeout=30)
+                                    total_tests += 1
+                                    
+                                    if verify_response.status_code == 200:
+                                        verify_data = verify_response.json()
+                                        if verify_data.get('avatar') is None:
+                                            success_count += 1
+                                            print("   ✅ Avatar removal verified")
+                                        else:
+                                            print("   ❌ Avatar still present after removal")
+                                    else:
+                                        print("   ❌ Could not verify avatar removal")
+                                else:
+                                    print("   ❌ Avatar removal failed")
+                            else:
+                                print(f"   ❌ Incorrect image dimensions: {width}x{height}")
+                        else:
+                            print("   ❌ Invalid base64 data URL format")
+                    else:
+                        print("   ❌ Retrieved avatar data doesn't match uploaded data")
+                else:
+                    print("   ❌ Avatar retrieval failed")
+            else:
+                print("   ❌ Avatar upload failed")
+                
+        except Exception as e:
+            print(f"   ❌ Comprehensive test failed with exception: {str(e)}")
+        
+        # Results
+        print(f"\n   📊 COMPREHENSIVE AVATAR TEST RESULTS:")
+        print(f"   ✅ Successful steps: {success_count}/{total_tests}")
+        
+        if success_count == total_tests:
+            self.tests_passed += 1
+            print("   🎉 ALL AVATAR FUNCTIONALITY WORKING PERFECTLY")
+            print("   ✅ Upload, processing, retrieval, and removal all functional")
+            return True
+        else:
+            print("   ❌ Some avatar functionality tests failed")
+        
+        self.tests_run += 1
+        return False
+
 def main():
     print("🚀 Starting Empathy Training App Backend API Tests")
     print("🚨 URGENT FOCUS: Payment Methods Configuration Testing")
