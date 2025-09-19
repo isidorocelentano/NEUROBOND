@@ -778,7 +778,7 @@ const EmpathyTrainingApp = () => {
     setSelectedScenario(null);
     setCurrentStage(1);
     setUserResponse('');
-    setAiResponse('');
+    setAiFeedback('');
     setLoading(false);
     
     showNotification('Erfolgreich abgemeldet', 'success');
