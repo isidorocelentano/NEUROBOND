@@ -127,7 +127,7 @@ const EmpathyTrainingApp = () => {
 
       // Show preview
       if (typeof window !== 'undefined' && window.FileReader) {
-        const reader = new FileReader();
+        const reader = new window.FileReader();
         reader.onload = (e) => setPreviewImage(e.target.result);
         reader.readAsDataURL(file);
       }
