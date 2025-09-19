@@ -231,6 +231,18 @@ backend:
         -agent: "testing"
         -comment: "✅ STRIPE PAYMENT METHODS CONFIGURATION VERIFIED: Comprehensive testing of payment methods configuration completed successfully. FINDINGS: ✅ PAYPAL SUPPORT: PayPal correctly configured and available for subscription payments alongside credit cards ✅ TWINT LIMITATION IDENTIFIED: TWINT cannot be used in subscription mode (Stripe limitation) - only supports one-time payments ✅ CORRECT CONFIGURATION: Backend properly configured with payment_method_types=['card', 'paypal'] for subscription mode ✅ SWISS CURRENCY: CHF currency correctly configured with proper Swiss VAT (8.1%) applied ✅ BILLING ADDRESS: Collection enabled for payment processing ✅ DACH REGION: Shipping addresses supported for CH, DE, AT, FR, IT. VERIFICATION: 9/9 payment methods tests passed. Monthly package: CHF 10.81 (10.00 + 8.1% VAT), Yearly package: CHF 108.10 (100.00 + 8.1% VAT). Configuration is CORRECT for subscription-based business model. TWINT exclusion is intentional and proper due to Stripe's subscription mode limitations."
 
+  - task: "Updated Round CHF Pricing Verification"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "🎯 ROUND CHF PRICING VERIFICATION COMPLETED: Comprehensive testing of updated subscription pricing successful. CRITICAL VERIFICATION RESULTS: ✅ ROUND PRICING CONFIRMED: Monthly subscription exactly CHF 10.00 (1000 cents), Yearly subscription exactly CHF 100.00 (10000 cents) ✅ PAYMENT METHODS: Only 'card' and 'paypal' available (TWINT correctly removed for subscriptions) ✅ PACKAGE NAMES: Correct round prices displayed - 'NEUROBOND PRO Monthly (CHF 10.00 inkl. MWST)' and 'NEUROBOND PRO Yearly (CHF 100.00 inkl. MWST)' ✅ SWISS CURRENCY: CHF configured correctly with subscription mode ✅ BILLING ADDRESSES: Swiss billing addresses supported (DACH region: CH, DE, AT, FR, IT) ✅ TWINT REMOVAL: Properly removed due to Stripe subscription limitations (TWINT doesn't support recurring payments). VERIFICATION: 15/15 pricing tests passed with 100% success rate. Professional round pricing implementation complete - no more confusing decimal amounts (10.81, 108.10). Users now see clean CHF 10.00/100.00 pricing. PayPal + Credit Cards provide comprehensive payment coverage for Swiss customers."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
