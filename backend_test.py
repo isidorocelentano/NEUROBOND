@@ -2474,6 +2474,21 @@ def main():
     print(f"🎯 Stripe Preview: {stripe_tests_passed}/{stripe_tests_total} tests passed")
     print(f"📊 Overall Backend: {tester.tests_passed}/{tester.tests_run} tests passed")
     
+    # Payment methods findings summary
+    print("\n💳 PAYMENT METHODS CONFIGURATION FINDINGS:")
+    if payment_tests_passed == payment_tests_total:
+        print("✅ PAYMENT METHODS: PayPal and TWINT available alongside credit cards")
+        print("✅ BILLING ADDRESS: Collection enabled for TWINT requirements")
+        print("✅ SWISS CURRENCY: CHF currency correctly configured")
+        print("✅ SWISS VAT: 8.1% VAT properly applied to pricing")
+        print("✅ DACH REGION: Shipping addresses supported for CH, DE, AT, FR, IT")
+        print("✅ SUBSCRIPTION MODE: Proper subscription configuration implemented")
+        print("✅ CONFIGURATION: All payment method requirements satisfied")
+    else:
+        print("❌ PAYMENT METHODS: Some payment configuration tests failed")
+        print("❌ CONFIGURATION ISSUES: Check Stripe payment method settings")
+        print("❌ INTEGRATION PROBLEMS: Payment method configuration may be incomplete")
+    
     # Email functionality findings summary
     print("\n📧 EMAIL FUNCTIONALITY FINDINGS:")
     if email_tests_passed == email_tests_total:
