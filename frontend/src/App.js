@@ -1718,6 +1718,13 @@ const EmpathyTrainingApp = () => {
               )}
             </div>
             <div className="flex items-center gap-2">
+              {speechSupported && (
+                <div className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-md text-xs text-gray-600">
+                  <Mic className="w-3 h-3" />
+                  <span>{speechLanguages.find(l => l.code === speechLanguage)?.flag}</span>
+                  <span>{speechLanguages.find(l => l.code === speechLanguage)?.name}</span>
+                </div>
+              )}
               <Button 
                 variant="ghost" 
                 size="sm"
