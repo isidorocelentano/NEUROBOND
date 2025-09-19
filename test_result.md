@@ -219,6 +219,18 @@ backend:
         -agent: "testing"
         -comment: "✅ STRIPE WHITE SCREEN ISSUE COMPLETELY RESOLVED: Implemented comprehensive fix using native Stripe library instead of limited emergentintegrations wrapper. FIXES APPLIED: 1) ✅ Fixed Swiss VAT calculation (CHF 10.00 → CHF 10.81) - amounts now correct at 1081 cents monthly, 10810 cents yearly 2) ✅ Added subscription mode configuration - sessions now properly created as 'subscription' type 3) ✅ Added payment_method_types ['card'] - card payments now explicitly enabled 4) ✅ Fixed webhook URL to use HTTPS instead of HTTP 5) ✅ Implemented proper line_items with recurring intervals for subscriptions. VERIFICATION: All 6/6 tests passed. Session validation confirms all critical parameters present: mode='subscription', payment_method_types=['card'], correct amounts with Swiss VAT, proper currency (CHF), HTTPS webhooks. Backend configuration issues completely resolved - white screen was caused by missing subscription parameters, not preview environment limitations."
 
+  - task: "Stripe Payment Methods Configuration (PayPal and TWINT)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "✅ STRIPE PAYMENT METHODS CONFIGURATION VERIFIED: Comprehensive testing of payment methods configuration completed successfully. FINDINGS: ✅ PAYPAL SUPPORT: PayPal correctly configured and available for subscription payments alongside credit cards ✅ TWINT LIMITATION IDENTIFIED: TWINT cannot be used in subscription mode (Stripe limitation) - only supports one-time payments ✅ CORRECT CONFIGURATION: Backend properly configured with payment_method_types=['card', 'paypal'] for subscription mode ✅ SWISS CURRENCY: CHF currency correctly configured with proper Swiss VAT (8.1%) applied ✅ BILLING ADDRESS: Collection enabled for payment processing ✅ DACH REGION: Shipping addresses supported for CH, DE, AT, FR, IT. VERIFICATION: 9/9 payment methods tests passed. Monthly package: CHF 10.81 (10.00 + 8.1% VAT), Yearly package: CHF 108.10 (100.00 + 8.1% VAT). Configuration is CORRECT for subscription-based business model. TWINT exclusion is intentional and proper due to Stripe's subscription mode limitations."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
