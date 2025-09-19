@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -11,10 +12,13 @@ import { Badge } from './components/ui/badge';
 import { Progress } from './components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog';
-import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckCircle, BookOpen, Eye, Lightbulb, MessageCircle, Send, User, UserCheck, Calendar, Clock, Award, Zap, CheckSquare, Shield, ThumbsUp, TrendingUp, Play, ChevronRight, Rocket, Mail, Phone, MapPin, Crown, Lock, CreditCard } from 'lucide-react';
+import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckCircle, BookOpen, Eye, Lightbulb, MessageCircle, Send, User, UserCheck, Calendar, Clock, Award, Zap, CheckSquare, Shield, ThumbsUp, TrendingUp, Play, ChevronRight, Rocket, Mail, Phone, MapPin, Crown, Lock, CreditCard, X, AlertTriangle, Info } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// Initialize Stripe
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const EmpathyTrainingApp = () => {
   const [user, setUser] = useState(null);
@@ -47,6 +51,9 @@ const EmpathyTrainingApp = () => {
   const [loadingCases, setLoadingCases] = useState(false);
   const [selectedCase, setSelectedCase] = useState(null);
   
+  // Notification States
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
+  
   // Contact Form States
   const [contactForm, setContactForm] = useState({
     name: '',
@@ -63,6 +70,14 @@ const EmpathyTrainingApp = () => {
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState('free'); // free, active, cancelled, expired
 
+  // Helper function to show notifications
+  const showNotification = (message, type = 'info') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'info' });
+    }, 4000);
+  };
+
   useEffect(() => {
     fetchStages();
     // Check if user exists in localStorage
@@ -76,12 +91,47 @@ const EmpathyTrainingApp = () => {
     }
   }, []);
 
-  // Load weekly plan and community cases on component mount
+  // Load essential data only, with fallbacks
   useEffect(() => {
-    if (user && !showOnboarding) {
-      generateWeeklyPlan();
-      fetchCommunityCases();
-    }
+    const loadEssentialData = async () => {
+      if (user && !showOnboarding) {
+        try {
+          // Only load stages - most critical for training
+          await fetchStages();
+          
+          // Load user progress after a delay
+          setTimeout(async () => {
+            try {
+              await fetchUserProgress(user.id);
+            } catch (error) {
+              console.log('User progress not available, using empty progress');
+            }
+          }, 2000);
+          
+          // Load community cases after another delay
+          setTimeout(async () => {
+            try {
+              await fetchCommunityCases();
+            } catch (error) {
+              console.log('Community cases not available');
+            }
+          }, 4000);
+        } catch (error) {
+          console.error('Error loading stages:', error);
+          // Create fallback stages if API fails
+          setStages([
+            {
+              stage_number: 1,
+              title: "Ideale Reaktionen: Vom Rückzug zur Verbindung",
+              description: "Training Stage 1 - Kostenlos verfügbar",
+              scenarios: []
+            }
+          ]);
+        }
+      }
+    };
+    
+    loadEssentialData();
   }, [user, showOnboarding]);
 
   // Helper function to get current week
@@ -101,10 +151,36 @@ const EmpathyTrainingApp = () => {
 
   const fetchStages = async () => {
     try {
-      const response = await axios.get(`${API}/stages`);
-      setStages(response.data);
+      const response = await axios.get(`${API}/stages`, {
+        timeout: 10000,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.data && Array.isArray(response.data)) {
+        setStages(response.data);
+      } else {
+        throw new Error('Invalid stages data');
+      }
     } catch (error) {
       console.error('Error fetching stages:', error);
+      // Set fallback stages for basic functionality
+      setStages([{
+        stage_number: 1,
+        title: "Ideale Reaktionen: Vom Rückzug zur Verbindung",
+        description: "Entwickle empathische Kommunikationsfähigkeiten für deine Beziehung",
+        scenarios: [
+          {
+            id: "fallback_1",
+            title: "Kommunikations-Szenario",
+            description: "Fallback-Szenario für Training",
+            situation: "Training wird geladen...",
+            problematic_reaction: "Bitte warten...",
+            ideal_reaction: "System lädt..."
+          }
+        ]
+      }]);
     }
   };
 
@@ -185,7 +261,7 @@ const EmpathyTrainingApp = () => {
 
   const analyzeDialog = async () => {
     if (dialogMessages.length < 2) {
-      alert('Bitte füge mindestens 2 Nachrichten hinzu, um eine Analyse zu erhalten.');
+      showNotification('Bitte füge mindestens 2 Nachrichten hinzu, um eine Analyse zu erhalten.', 'warning');
       return;
     }
 
@@ -288,18 +364,32 @@ const EmpathyTrainingApp = () => {
 
   const createCommunityCase = async (dialogSessionId) => {
     try {
-      const response = await axios.post(`${API}/create-community-case`, {
-        dialogue_session_id: dialogSessionId,
+      // Get the temporary dialog session from localStorage
+      const tempDialogSession = localStorage.getItem('temp_dialog_session');
+      if (!tempDialogSession) {
+        showNotification('Kein Dialog zum Teilen gefunden', 'error');
+        return;
+      }
+
+      const dialogData = JSON.parse(tempDialogSession);
+      
+      const response = await axios.post(`${API}/create-community-case-direct`, {
+        messages: dialogData.messages,
         user_consent: true
       });
       
       if (response.data.success) {
-        alert('Dialog erfolgreich anonymisiert und zur Community hinzugefügt!');
+        showNotification('Dialog erfolgreich anonymisiert und zur Community hinzugefügt!', 'success');
         fetchCommunityCases(); // Refresh the cases
+        // Clear the temporary dialog session
+        localStorage.removeItem('temp_dialog_session');
+        // Clear current dialog
+        setDialogMessages([]);
+        setDialogAnalysis('');
       }
     } catch (error) {
       console.error('Error creating community case:', error);
-      alert('Fehler beim Erstellen des Community Cases');
+      showNotification('Fehler beim Erstellen des Community Cases', 'error');
     }
   };
 
@@ -317,25 +407,29 @@ const EmpathyTrainingApp = () => {
     setContactSubmitting(true);
     
     try {
-      // Simulate form submission - in production, you'd send to a backend
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Here you would normally send the email via your backend
-      console.log('Contact form submitted:', contactForm);
-      
-      setContactSubmitted(true);
-      setContactForm({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+      const response = await axios.post(`${API}/contact`, {
+        name: contactForm.name,
+        email: contactForm.email,
+        subject: contactForm.subject,
+        message: contactForm.message
       });
       
-      // Reset success message after 5 seconds
-      setTimeout(() => setContactSubmitted(false), 5000);
+      if (response.data.success) {
+        showNotification(response.data.message, 'success');
+        setContactSubmitted(true);
+        setContactForm({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => setContactSubmitted(false), 5000);
+      }
     } catch (error) {
       console.error('Error submitting contact form:', error);
-      alert('Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut.');
+      showNotification('Fehler beim Senden der Nachricht. Bitte versuchen Sie es später erneut.', 'error');
     }
     
     setContactSubmitting(false);
@@ -352,15 +446,21 @@ const EmpathyTrainingApp = () => {
       });
       
       if (response.data.success) {
+        // Show loading notification before redirect
+        showNotification('Weiterleitung zu Stripe Checkout...', 'info');
+        
         // Store session info for polling
         localStorage.setItem('payment_session_id', response.data.session_id);
         localStorage.setItem('payment_plan_type', planType);
-        // Redirect to Stripe
-        window.location.href = response.data.url;
+        
+        // Small delay to show notification, then redirect
+        setTimeout(() => {
+          window.location.href = response.data.url;
+        }, 1000);
       }
     } catch (error) {
       console.error('Error initiating payment:', error);
-      alert('Fehler beim Starten der Zahlung. Bitte versuchen Sie es später erneut.');
+      showNotification('Fehler beim Starten der Zahlung. Bitte versuchen Sie es später erneut.', 'error');
     }
     setPaymentProcessing(false);
   };
@@ -805,17 +905,90 @@ const EmpathyTrainingApp = () => {
               Verbessert eure Kommunikation, löst Konflikte empathisch und baut eine tiefere emotionale Verbindung auf.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button 
-                onClick={() => setShowLandingPage(false)}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <Rocket className="w-5 h-5 mr-2" />
-                Kostenlos starten
-              </Button>
-              <div className="flex items-center gap-2 text-gray-600">
-                <CheckCircle className="w-5 h-5 text-green-500" />
-                <span>Keine Anmeldung erforderlich</span>
+            {/* Call-to-Action Options */}
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+              {/* Free Trial Option */}
+              <div className="p-6 bg-white rounded-2xl shadow-lg border-2 border-gray-100 hover:border-blue-300 transition-all duration-300">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Play className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Kostenlos testen</h3>
+                  <p className="text-gray-600 mb-6">
+                    Starte mit 5 kostenlosen Trainings-Szenarien und dem Gefühlslexikon. 
+                    Perfekt um NEUROBOND kennenzulernen.
+                  </p>
+                  <ul className="text-sm text-gray-600 mb-6 space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>5 Gratis Trainings-Szenarien</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>Gefühlslexikon-Zugang</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>Keine Anmeldung erforderlich</span>
+                    </li>
+                  </ul>
+                  <Button 
+                    onClick={() => setShowLandingPage(false)}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 text-lg font-semibold rounded-xl"
+                  >
+                    <Rocket className="w-5 h-5 mr-2" />
+                    Kostenlos starten
+                  </Button>
+                </div>
+              </div>
+
+              {/* Pro Version Option */}
+              <div className="p-6 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl shadow-lg border-2 border-purple-300 relative overflow-hidden">
+                <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold">
+                  BELIEBT
+                </div>
+                <div className="text-center text-white">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Crown className="w-8 h-8 text-yellow-300" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">Direkt PRO starten</h3>
+                  <p className="text-purple-100 mb-6">
+                    Sofortiger Zugang zu allen Premium-Features und dem kompletten Trainingsprogramm.
+                  </p>
+                  <ul className="text-sm text-purple-100 mb-6 space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-yellow-300" />
+                      <span>Alle 5 Trainingsstufen (100+ Szenarien)</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-yellow-300" />
+                      <span>Dialog-Coaching mit KI-Analyse</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-yellow-300" />
+                      <span>Wöchentliche Trainingspläne</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-yellow-300" />
+                      <span>Community Cases & Support</span>
+                    </li>
+                  </ul>
+                  <div className="mb-4">
+                    <div className="text-3xl font-bold mb-1">CHF 10.00</div>
+                    <div className="text-purple-200 text-sm">pro Monat (inkl. MWST)</div>
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      setShowLandingPage(false);
+                      // Wait a moment for the app to load, then show upgrade modal
+                      setTimeout(() => setShowUpgradeModal(true), 1000);
+                    }}
+                    className="w-full bg-white text-purple-700 hover:bg-gray-100 py-3 text-lg font-semibold rounded-xl"
+                  >
+                    <Crown className="w-5 h-5 mr-2" />
+                    PRO Version starten
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -1042,8 +1215,8 @@ const EmpathyTrainingApp = () => {
                     <p className="text-sm text-gray-600">Flexibel, jederzeit kündbar</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-600">CHF 10</p>
-                    <p className="text-xs text-gray-500">/Monat</p>
+                    <p className="text-2xl font-bold text-blue-600">CHF 10.00</p>
+                    <p className="text-xs text-gray-500">/Monat (incl. MWST)</p>
                   </div>
                 </div>
               </div>
@@ -1062,10 +1235,10 @@ const EmpathyTrainingApp = () => {
                     <p className="text-sm text-gray-600">2 Monate kostenlos!</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600">CHF 100</p>
-                    <p className="text-xs text-gray-500">/Jahr</p>
+                    <p className="text-2xl font-bold text-green-600">CHF 100.00</p>
+                    <p className="text-xs text-gray-500">/Jahr (incl. MWST)</p>
                     <div className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded mt-1">
-                      CHF 20 sparen
+                      CHF 20.00 sparen
                     </div>
                   </div>
                 </div>
@@ -1302,12 +1475,32 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  if (showLandingPage) {
+  // Check for test mode in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const isTestMode = urlParams.get('test') === 'true';
+
+  if (showLandingPage && !isTestMode) {
     return <LandingPage />;
   }
 
-  if (showOnboarding) {
+  if (showOnboarding && !isTestMode) {
     return <OnboardingForm />;
+  }
+
+  // For test mode, create a default user if none exists
+  if (isTestMode && !user) {
+    const testUser = {
+      id: 'test-user-' + Date.now(),
+      name: 'Test User',
+      email: 'test@example.com',
+      partner_name: 'Test Partner'
+    };
+    setUser(testUser);
+    localStorage.setItem('empathy_user', JSON.stringify(testUser));
+    setShowOnboarding(false);
+    setShowLandingPage(false);
+    // Ensure test user is free user
+    setSubscriptionStatus('free');
   }
 
   return (
@@ -1322,16 +1515,36 @@ const EmpathyTrainingApp = () => {
               className="h-12 md:h-16 w-auto object-contain"
             />
           </div>
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <p className="text-gray-600 text-lg">
-              Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
-            </p>
-            {subscriptionStatus === 'active' && (
-              <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                <Crown className="w-4 h-4" />
-                PRO
-              </div>
-            )}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <p className="text-gray-600 text-lg">
+                Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
+              </p>
+              {subscriptionStatus === 'active' && (
+                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                  <Crown className="w-4 h-4" />
+                  PRO
+                </div>
+              )}
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                // Clear user data and return to landing page
+                localStorage.removeItem('empathy_user');
+                setUser(null);
+                setShowLandingPage(true);
+                setUserProgress([]);
+                setDialogMessages([]);
+                setDialogAnalysis('');
+                setSubscriptionStatus('free');
+              }}
+              className="flex items-center gap-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Abmelden
+            </Button>
           </div>
           {subscriptionStatus === 'free' && (
             <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -1496,7 +1709,7 @@ const EmpathyTrainingApp = () => {
                           />
                         ))}
                       </div>
-                      {stage.scenarios.length > 2 && hasAccessToFeature('other_stages') && (
+                      {stage.scenarios.length > 2 && (stage.stage_number === 1 || hasAccessToFeature('other_stages')) && (
                         <Button 
                           variant="outline" 
                           onClick={() => setCurrentStage(stage)}
@@ -1572,9 +1785,142 @@ const EmpathyTrainingApp = () => {
                     {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  {/* Dialog coaching content would go here */}
-                  <p className="text-center py-8 text-gray-500">Dialog-Coaching Inhalt...</p>
+                <CardContent className="space-y-6">
+                  {/* Dialog Entry Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <User className="w-5 h-5 text-blue-500" />
+                      <span className="font-medium">Neuen Dialog hinzufügen</span>
+                    </div>
+                    
+                    <div className="flex gap-2 mb-4">
+                      <Button
+                        variant={currentSpeaker === 'partner1' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setCurrentSpeaker('partner1')}
+                      >
+                        {user?.name || 'Partner 1'}
+                      </Button>
+                      <Button
+                        variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setCurrentSpeaker('partner2')}
+                      >
+                        {user?.partner_name || 'Partner 2'}
+                      </Button>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Textarea
+                        placeholder={`Was sagt ${currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2')}?`}
+                        value={currentMessage}
+                        onChange={(e) => setCurrentMessage(e.target.value)}
+                        className="flex-1"
+                      />
+                      <Button
+                        onClick={() => {
+                          if (currentMessage.trim()) {
+                            const newMessage = {
+                              id: Date.now().toString(),
+                              speakerType: currentSpeaker,
+                              speaker: currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2'),
+                              message: currentMessage.trim(),
+                              timestamp: new Date().toISOString()
+                            };
+                            setDialogMessages([...dialogMessages, newMessage]);
+                            setCurrentMessage('');
+                          }
+                        }}
+                        disabled={!currentMessage.trim()}
+                      >
+                        <Send className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Dialog Messages Display */}
+                  {dialogMessages.length > 0 && (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-semibold">Aktueller Dialog</h4>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={analyzeDialog}
+                            disabled={dialogMessages.length < 2 || isAnalyzing}
+                          >
+                            {isAnalyzing ? (
+                              <>
+                                <Clock className="w-4 h-4 mr-2 animate-spin" />
+                                Analysiert...
+                              </>
+                            ) : (
+                              <>
+                                <Brain className="w-4 h-4 mr-2" />
+                                Analysieren
+                              </>
+                            )}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              if (dialogMessages.length >= 2) {
+                                // Create a temporary dialog session for sharing
+                                const dialogSession = {
+                                  id: Date.now().toString(),
+                                  messages: dialogMessages,
+                                  created_at: new Date().toISOString()
+                                };
+                                // Store temporarily for community sharing
+                                localStorage.setItem('temp_dialog_session', JSON.stringify(dialogSession));
+                                createCommunityCase(dialogSession.id);
+                              }
+                            }}
+                            disabled={dialogMessages.length < 2}
+                          >
+                            <Users className="w-4 h-4 mr-2" />
+                            Anonymisiert teilen
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="max-h-60 overflow-y-auto space-y-3 p-4 bg-gray-50 rounded-lg">
+                        {dialogMessages.map((msg) => (
+                          <div key={msg.id} className={`flex ${msg.speakerType === 'partner1' ? 'justify-start' : 'justify-end'}`}>
+                            <div className={`max-w-[80%] p-3 rounded-lg ${
+                              msg.speakerType === 'partner1' 
+                                ? 'bg-blue-100 text-blue-900' 
+                                : 'bg-green-100 text-green-900'
+                            }`}>
+                              <div className="font-semibold text-sm">{msg.speaker}</div>
+                              <div>{msg.message}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setDialogMessages([]);
+                          setDialogAnalysis('');
+                        }}
+                      >
+                        Dialog löschen
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* AI Analysis Results */}
+                  {dialogAnalysis && (
+                    <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                      <h4 className="font-semibold text-yellow-800 mb-2">🤖 KI-Analyse eures Dialogs:</h4>
+                      <div className="text-yellow-700 whitespace-pre-line">{dialogAnalysis}</div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ) : (
@@ -1889,7 +2235,7 @@ const EmpathyTrainingApp = () => {
         </Tabs>
 
         {/* Upgrade Modal */}
-        <UpgradeModal />
+        {showUpgradeModal && <UpgradeModal />}
 
         {/* Scenario Practice Dialog */}
         <Dialog open={!!selectedScenario} onOpenChange={() => setSelectedScenario(null)}>
@@ -2008,6 +2354,24 @@ const EmpathyTrainingApp = () => {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Notification */}
+      {notification.show && (
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm ${
+          notification.type === 'success' ? 'bg-green-500 text-white' :
+          notification.type === 'error' ? 'bg-red-500 text-white' :
+          notification.type === 'warning' ? 'bg-yellow-500 text-black' :
+          'bg-blue-500 text-white'
+        }`}>
+          <div className="flex items-center gap-2">
+            {notification.type === 'success' && <CheckCircle className="w-5 h-5" />}
+            {notification.type === 'error' && <X className="w-5 h-5" />}
+            {notification.type === 'warning' && <AlertTriangle className="w-5 h-5" />}
+            {notification.type === 'info' && <Info className="w-5 h-5" />}
+            <span>{notification.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
