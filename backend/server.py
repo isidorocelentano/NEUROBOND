@@ -61,6 +61,7 @@ class User(BaseModel):
     name: str
     email: str
     partner_name: Optional[str] = None
+    avatar: Optional[str] = None  # Base64 encoded image or URL
     subscription_status: str = "free"  # free, active, cancelled, expired
     subscription_type: Optional[str] = None  # monthly, yearly
     subscription_expires_at: Optional[datetime] = None
