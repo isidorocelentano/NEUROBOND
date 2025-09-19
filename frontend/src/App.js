@@ -98,6 +98,150 @@ const EmpathyTrainingApp = () => {
     { code: 'it-IT', name: 'Italiano', flag: '🇮🇹' }
   ];
 
+  // Avatar Upload Component
+  const AvatarUpload = ({ userId, currentAvatar, onAvatarUpdate }) => {
+    const [previewImage, setPreviewImage] = useState(currentAvatar);
+    const [isUploading, setIsUploading] = useState(false);
+    const fileInputRef = useRef(null);
+
+    const handleFileSelect = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        showNotification('Nur JPEG, PNG, GIF und WebP Bilder sind erlaubt', 'error');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showNotification('Bild ist zu groß. Maximum 5MB erlaubt', 'error');
+        return;
+      }
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (e) => setPreviewImage(e.target.result);
+      reader.readAsDataURL(file);
+
+      // Upload avatar
+      await uploadAvatar(file);
+    };
+
+    const uploadAvatar = async (file) => {
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await axios.post(`${API}/user/${userId}/avatar`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.data.success) {
+          setUserAvatar(response.data.avatar);
+          setPreviewImage(response.data.avatar);
+          onAvatarUpdate(response.data.avatar);
+          showNotification('Avatar erfolgreich hochgeladen!', 'success');
+        }
+      } catch (error) {
+        console.error('Avatar upload error:', error);
+        showNotification('Fehler beim Hochladen des Avatars', 'error');
+        setPreviewImage(currentAvatar); // Reset preview
+      } finally {
+        setIsUploading(false);
+      }
+    };
+
+    const removeAvatar = async () => {
+      try {
+        const response = await axios.delete(`${API}/user/${userId}/avatar`);
+        if (response.data.success) {
+          setUserAvatar(null);
+          setPreviewImage(null);
+          onAvatarUpdate(null);
+          showNotification('Avatar entfernt', 'success');
+        }
+      } catch (error) {
+        console.error('Avatar removal error:', error);
+        showNotification('Fehler beim Entfernen des Avatars', 'error');
+      }
+    };
+
+    return (
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300 flex items-center justify-center">
+            {previewImage ? (
+              <img 
+                src={previewImage} 
+                alt="Avatar" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <UserCircle className="w-16 h-16 text-gray-400" />
+            )}
+          </div>
+          
+          {isUploading && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+            </div>
+          )}
+          
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="flex items-center gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Bild hochladen
+          </Button>
+          
+          {previewImage && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={removeAvatar}
+              disabled={isUploading}
+              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+            >
+              <X className="w-4 h-4" />
+              Entfernen
+            </Button>
+          )}
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center max-w-48">
+          JPEG, PNG, GIF oder WebP. Max 5MB. Wird automatisch auf 200x200px skaliert.
+        </p>
+      </div>
+    );
+  };
   // Check speech recognition support
   useEffect(() => {
     const checkSpeechSupport = () => {
