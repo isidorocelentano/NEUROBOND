@@ -1262,6 +1262,126 @@ async def send_contact_email(request: ContactFormRequest, background_tasks: Back
         logger.error(f"Contact form error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Fehler beim Senden der Nachricht: {str(e)}")
 
+# ===== AVATAR UPLOAD ENDPOINTS =====
+
+def process_avatar_image(image_data: bytes) -> str:
+    """Process uploaded image: resize, optimize, and convert to base64"""
+    try:
+        # Open image with PIL
+        image = Image.open(io.BytesIO(image_data))
+        
+        # Convert to RGB if necessary (handles RGBA, etc.)
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+        
+        # Resize to a standard avatar size (200x200) while maintaining aspect ratio
+        image.thumbnail((200, 200), Image.Resampling.LANCZOS)
+        
+        # Create a square canvas and center the image
+        square_size = 200
+        square_image = Image.new('RGB', (square_size, square_size), (255, 255, 255))
+        
+        # Calculate position to center the image
+        x = (square_size - image.width) // 2
+        y = (square_size - image.height) // 2
+        square_image.paste(image, (x, y))
+        
+        # Convert to base64
+        buffer = io.BytesIO()
+        square_image.save(buffer, format='JPEG', quality=85, optimize=True)
+        buffer.seek(0)
+        
+        # Encode to base64
+        image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        return f"data:image/jpeg;base64,{image_base64}"
+        
+    except Exception as e:
+        logger.error(f"Error processing avatar image: {str(e)}")
+        raise HTTPException(status_code=400, detail="Invalid image format")
+
+@api_router.post("/user/{user_id}/avatar")
+async def upload_avatar(user_id: str, file: UploadFile = File(...)):
+    """Upload and set user avatar"""
+    try:
+        # Validate file type
+        allowed_types = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+        if file.content_type not in allowed_types:
+            raise HTTPException(status_code=400, detail=f"Invalid file type. Allowed: {', '.join(allowed_types)}")
+        
+        # Validate file size (max 5MB)
+        max_size = 5 * 1024 * 1024  # 5MB
+        contents = await file.read()
+        if len(contents) > max_size:
+            raise HTTPException(status_code=400, detail="File too large. Maximum size is 5MB")
+        
+        # Process the image
+        avatar_base64 = process_avatar_image(contents)
+        
+        # Update user in database
+        result = await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"avatar": avatar_base64}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {
+            "success": True,
+            "message": "Avatar uploaded successfully",
+            "avatar": avatar_base64
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Avatar upload error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Avatar upload failed: {str(e)}")
+
+@api_router.delete("/user/{user_id}/avatar")
+async def remove_avatar(user_id: str):
+    """Remove user avatar"""
+    try:
+        result = await db.users.update_one(
+            {"id": user_id},
+            {"$unset": {"avatar": ""}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {
+            "success": True,
+            "message": "Avatar removed successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Avatar removal error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Avatar removal failed: {str(e)}")
+
+@api_router.get("/user/{user_id}/avatar")
+async def get_user_avatar(user_id: str):
+    """Get user avatar"""
+    try:
+        user = await db.users.find_one({"id": user_id})
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        avatar = user.get("avatar")
+        if not avatar:
+            return {"avatar": None}
+        
+        return {"avatar": avatar}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Get avatar error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get avatar: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
