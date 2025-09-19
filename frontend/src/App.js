@@ -2312,15 +2312,12 @@ const EmpathyTrainingApp = () => {
                       </div>
                       <div>
                         <Label htmlFor="contact-email">E-Mail *</Label>
-                        <Input
-                          id="contact-email"
-                          name="email"
-                          type="email"
-                          placeholder="ihre.email@example.com"
+                        <SpeechInput
                           value={contactForm.email}
-                          onChange={handleContactFormChange}
-                          required
+                          onChange={(value) => setContactForm(prev => ({...prev, email: value}))}
+                          placeholder="ihre.email@example.com"
                           className="mt-1"
+                          name="contact-email"
                         />
                       </div>
                     </div>
