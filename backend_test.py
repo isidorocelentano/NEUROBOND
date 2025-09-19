@@ -2294,7 +2294,31 @@ def main():
     
     tester = EmpathyTrainingAPITester()
     
-    # Run NEW contact form email functionality tests FIRST (FastAPI-Mail integration)
+    # Run PRIORITY payment methods configuration tests FIRST
+    payment_methods_tests = [
+        tester.test_stripe_payment_methods_configuration,
+        tester.test_stripe_twint_billing_address_requirement,
+        tester.test_stripe_swiss_currency_configuration,
+        tester.test_stripe_dach_region_shipping,
+        tester.test_stripe_payment_methods_comprehensive,
+    ]
+    
+    print("\n💳 PRIORITY: Payment Methods Configuration Tests")
+    print("=" * 60)
+    
+    payment_tests_passed = 0
+    payment_tests_total = len(payment_methods_tests)
+    
+    for test in payment_methods_tests:
+        try:
+            if test():
+                payment_tests_passed += 1
+        except Exception as e:
+            print(f"❌ Payment methods test failed with exception: {str(e)}")
+    
+    print(f"\n💳 Payment Methods Tests: {payment_tests_passed}/{payment_tests_total} tests completed")
+    
+    # Run NEW contact form email functionality tests (FastAPI-Mail integration)
     contact_form_email_tests = [
         tester.test_contact_form_email_configuration_loading,
         tester.test_contact_form_background_task_execution,
