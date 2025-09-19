@@ -1427,7 +1427,7 @@ const EmpathyTrainingApp = () => {
                 <Button 
                   size="lg"
                   onClick={() => setShowLandingPage(false)}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
                 >
                   <Play className="w-6 h-6 mr-3" />
                   Kostenlos ausprobieren
@@ -1439,7 +1439,7 @@ const EmpathyTrainingApp = () => {
                     setShowLandingPage(false);
                     setTimeout(() => setShowUpgradeModal(true), 1000);
                   }}
-                  className="border-2 border-purple-300 text-purple-700 hover:bg-purple-50 px-6 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="border-2 border-purple-300 text-purple-700 hover:bg-purple-50 px-6 py-4 text-lg font-semibold rounded-2xl shadow-lg transition-all duration-300"
                 >
                   <Crown className="w-6 h-6 mr-3" />
                   PRO Version entdecken
