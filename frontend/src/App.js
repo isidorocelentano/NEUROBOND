@@ -265,7 +265,7 @@ const EmpathyTrainingApp = () => {
             e.preventDefault();
             const formData = new FormData(e.target);
             const email = formData.get('email');
-            if (email?.trim()) {
+            if (email && email.trim()) {
               handleLogin(email.trim());
             } else {
               showNotification('Bitte geben Sie Ihre E-Mail-Adresse ein', 'warning');
