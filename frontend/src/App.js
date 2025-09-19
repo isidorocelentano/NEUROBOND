@@ -177,6 +177,18 @@ const EmpathyTrainingApp = () => {
 
     const InputComponent = multiline ? Textarea : Input;
     
+    // Safety check for onChange function
+    const handleChange = (e) => {
+      try {
+        const value = e && e.target ? e.target.value : e;
+        if (typeof onChange === 'function') {
+          onChange(value);
+        }
+      } catch (error) {
+        console.error('Input change error:', error);
+      }
+    };
+    
     return (
       <div className="relative">
         <InputComponent
