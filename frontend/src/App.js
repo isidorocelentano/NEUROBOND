@@ -2419,6 +2419,59 @@ const EmpathyTrainingApp = () => {
           </TabsContent>
 
           <TabsContent value="contact" className="space-y-6">
+            {/* Profile Section */}
+            <Card>
+              <CardHeader>
+                <h3 className="text-xl font-semibold text-gray-900">Mein Profil</h3>
+                <p className="text-gray-600">Verwalten Sie Ihre persönlichen Daten</p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center gap-6">
+                  <div className="flex-shrink-0">
+                    <AvatarUpload 
+                      userId={user?.id} 
+                      currentAvatar={user?.avatar}
+                      onAvatarUpdate={(newAvatar) => {
+                        setUser(prev => ({ ...prev, avatar: newAvatar }));
+                        // Update localStorage
+                        const updatedUser = { ...user, avatar: newAvatar };
+                        localStorage.setItem('empathy_user', JSON.stringify(updatedUser));
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 space-y-3">
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Name</Label>
+                      <p className="text-lg text-gray-900">{user?.name}</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">E-Mail</Label>
+                      <p className="text-lg text-gray-900">{user?.email}</p>
+                    </div>
+                    {user?.partner_name && (
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Partner</Label>
+                        <p className="text-lg text-gray-900">{user.partner_name}</p>
+                      </div>
+                    )}
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Status</Label>
+                      <div className="flex items-center gap-2">
+                        {subscriptionStatus === 'active' ? (
+                          <Badge className="bg-yellow-100 text-yellow-800">
+                            <Crown className="w-3 h-3 mr-1" />
+                            PRO Mitglied
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline">Kostenlose Version</Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
