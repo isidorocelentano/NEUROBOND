@@ -249,24 +249,9 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Simple Login Modal Component
+  // Simple Login Modal Component  
   const LoginModal = () => {
     if (!showLogin) return null;
-
-    const [email, setEmail] = useState('');
-    const [isLogging, setIsLogging] = useState(false);
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      if (!email.trim()) {
-        showNotification('Bitte geben Sie Ihre E-Mail-Adresse ein', 'warning');
-        return;
-      }
-
-      setIsLogging(true);
-      await handleLogin(email.trim());
-      setIsLogging(false);
-    };
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -276,17 +261,24 @@ const EmpathyTrainingApp = () => {
             Geben Sie Ihre E-Mail-Adresse ein, um sich anzumelden
           </p>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const email = formData.get('email');
+            if (email?.trim()) {
+              handleLogin(email.trim());
+            } else {
+              showNotification('Bitte geben Sie Ihre E-Mail-Adresse ein', 'warning');
+            }
+          }} className="space-y-4">
             <div>
               <Label htmlFor="login-email">E-Mail-Adresse</Label>
               <Input
                 id="login-email"
+                name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 placeholder="ihre.email@example.com"
                 className="mt-1"
-                disabled={isLogging}
                 required
               />
             </div>
@@ -295,21 +287,16 @@ const EmpathyTrainingApp = () => {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => {
-                  setShowLogin(false);
-                  setEmail('');
-                }}
-                disabled={isLogging}
+                onClick={() => setShowLogin(false)}
                 className="flex-1"
               >
                 Abbrechen
               </Button>
               <Button 
                 type="submit" 
-                disabled={isLogging || !email.trim()}
                 className="flex-1"
               >
-                {isLogging ? 'Anmelden...' : 'Anmelden'}
+                Anmelden
               </Button>
             </div>
           </form>
