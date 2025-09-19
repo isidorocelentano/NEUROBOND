@@ -1759,16 +1759,26 @@ const EmpathyTrainingApp = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Dein Name</Label>
-                <SpeechInput
-                  value={formData.name}
-                  onChange={(value) => setFormData({...formData, name: value})}
-                  placeholder="z.B. Adam"
-                  className="mt-1"
-                  name="name"
-                />
-              </div>
+              <div className="space-y-4">
+                {/* Avatar Upload Section */}
+                <div className="flex justify-center mb-6">
+                  <AvatarUpload 
+                    userId="temp-user" 
+                    currentAvatar={userAvatar}
+                    onAvatarUpdate={setUserAvatar}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="name">Dein Name</Label>
+                  <SpeechInput
+                    value={formData.name}
+                    onChange={(value) => setFormData({...formData, name: value})}
+                    placeholder="z.B. Adam"
+                    className="mt-1"
+                    name="name"
+                  />
+                </div>
               <div>
                 <Label htmlFor="email">E-Mail</Label>
                 <SpeechInput
