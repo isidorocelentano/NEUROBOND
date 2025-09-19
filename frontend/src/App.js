@@ -890,6 +890,21 @@ const EmpathyTrainingApp = () => {
                 className="h-12 w-auto object-contain"
               />
             </div>
+            
+            {/* Back to App Button - nur anzeigen wenn User bereits registriert ist */}
+            {user && (
+              <div className="flex items-center gap-4">
+                <span className="text-gray-600 text-sm">Willkommen zurück, {user.name}!</span>
+                <Button 
+                  variant="outline"
+                  onClick={() => setShowLandingPage(false)}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  Zur App
+                </Button>
+              </div>
+            )}
           </nav>
 
           {/* Hero Content */}
