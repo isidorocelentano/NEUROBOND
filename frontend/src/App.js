@@ -1457,7 +1457,7 @@ const EmpathyTrainingApp = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold text-green-600">CHF 100.00</p>
-                    <p className="text-xs text-gray-500">/Jahr (incl. MWST)</p>
+                    <p className="text-xs text-gray-500">/Jahr (inkl. MWST)</p>
                     <div className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded mt-1">
                       CHF 20.00 sparen
                     </div>
