@@ -971,7 +971,7 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
         # Create checkout session with proper subscription configuration
         session = stripe.checkout.Session.create(
             mode='subscription',  # CRITICAL: Set mode to subscription
-            payment_method_types=['card'],  # CRITICAL: Specify payment methods
+            payment_method_types=['card', 'paypal', 'twint'],  # Support Card, PayPal, and TWINT
             line_items=[{
                 'price_data': {
                     'currency': package["currency"],
