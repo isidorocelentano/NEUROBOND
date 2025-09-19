@@ -1502,8 +1502,8 @@ const EmpathyTrainingApp = () => {
   };
 
   // Check for test mode in URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const isTestMode = urlParams.get('test') === 'true';
+  const isTestMode = typeof window !== 'undefined' && 
+    new URLSearchParams(window.location.search).get('test') === 'true';
 
   if (showLandingPage && !isTestMode) {
     return <LandingPage />;
