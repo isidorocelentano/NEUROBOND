@@ -64,6 +64,10 @@ const EmpathyTrainingApp = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
   
+  // Login States
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  
   // Contact Form States
   const [contactForm, setContactForm] = useState({
     name: '',
