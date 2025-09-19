@@ -2969,6 +2969,9 @@ const App = () => {
           <Route path="/" element={<EmpathyTrainingApp />} />
         </Routes>
       </BrowserRouter>
+      
+      {/* Login Modal - Available from any page */}
+      <LoginModal />
     </div>
   );
 };
