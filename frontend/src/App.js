@@ -1375,20 +1375,25 @@ const EmpathyTrainingApp = () => {
               />
             </div>
             
-            {/* Back to App Button - nur anzeigen wenn User bereits registriert ist */}
-            {user && (
-              <div className="flex items-center gap-4">
-                <span className="text-gray-600 text-sm">Willkommen zurück, {user.name}!</span>
-                <Button 
-                  variant="outline"
-                  onClick={() => setShowLandingPage(false)}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  Zur App
-                </Button>
-              </div>
-            )}
+            {/* Login Button - immer anzeigen */}
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline"
+                onClick={() => setShowLogin(true)}
+                className="flex items-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                Anmelden
+              </Button>
+              <Button 
+                variant="default"
+                onClick={() => setShowOnboarding(true)}
+                className="flex items-center gap-2"
+              >
+                <UserCheck className="w-4 h-4" />
+                Registrieren
+              </Button>
+            </div>
           </nav>
 
           {/* Hero Content */}
