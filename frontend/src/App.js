@@ -2963,8 +2963,8 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       
-      {/* Login Modal - Temporarily disabled for debugging */}
-      {/* {showLogin && <LoginModal />} */}
+      {/* Login Modal */}
+      <LoginModal />
     </div>
   );
 };
