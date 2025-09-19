@@ -246,6 +246,99 @@ const EmpathyTrainingApp = () => {
       </div>
     );
   };
+
+  // Login Modal Component
+  const LoginModal = () => {
+    const [email, setEmail] = useState('');
+    const [isLogging, setIsLogging] = useState(false);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!email.trim()) {
+        showNotification('Bitte geben Sie Ihre E-Mail-Adresse ein', 'warning');
+        return;
+      }
+
+      setIsLogging(true);
+      await handleLogin(email.trim());
+      setIsLogging(false);
+    };
+
+    return (
+      <Dialog open={showLogin} onOpenChange={setShowLogin}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Bei NEUROBOND anmelden</DialogTitle>
+            <p className="text-center text-gray-600">
+              Geben Sie Ihre E-Mail-Adresse ein, um sich anzumelden
+            </p>
+          </DialogHeader>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="login-email">E-Mail-Adresse</Label>
+              <SpeechInput
+                value={email}
+                onChange={setEmail}
+                placeholder="ihre.email@example.com"
+                name="login-email"
+                className="mt-1"
+                disabled={isLogging}
+              />
+            </div>
+            
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 space-y-2 space-y-reverse sm:space-y-0">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => {
+                  setShowLogin(false);
+                  setEmail('');
+                }}
+                disabled={isLogging}
+              >
+                Abbrechen
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={isLogging || !email.trim()}
+                className="w-full sm:w-auto"
+              >
+                {isLogging ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Anmelden...
+                  </>
+                ) : (
+                  <>
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Anmelden
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+          
+          <div className="text-center pt-4 border-t">
+            <p className="text-sm text-gray-600">
+              Noch kein Konto? 
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLogin(false);
+                  setShowOnboarding(true);
+                }}
+                className="ml-2 text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Hier registrieren
+              </button>
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   // Check speech recognition support
   useEffect(() => {
     const checkSpeechSupport = () => {
