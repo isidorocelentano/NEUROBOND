@@ -384,7 +384,7 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Stripe Payment Methods Configuration Testing Complete"
+    - "Updated Round CHF Pricing Verification Complete"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
