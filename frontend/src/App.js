@@ -2062,38 +2062,114 @@ const EmpathyTrainingApp = () => {
                     <div className="space-y-4">
                       <div>
                         <Label htmlFor="name" className="text-gray-700 font-medium">Dein Name *</Label>
-                  <SpeechInput
-                    value={formData.name}
-                    onChange={(value) => setFormData({...formData, name: value})}
-                    placeholder="z.B. Adam"
-                    className="mt-1"
-                    name="name"
-                  />
-                </div>
-              <div>
-                <Label htmlFor="email">E-Mail</Label>
-                <SpeechInput
-                  value={formData.email}
-                  onChange={(value) => setFormData({...formData, email: value})}
-                  placeholder="adam@example.com"
-                  className="mt-1"
-                  name="email"
-                />
-              </div>
-              <div>
-                <Label htmlFor="partner_name">Name deines Partners (optional)</Label>
-                <SpeechInput
-                  value={formData.partner_name}
-                  onChange={(value) => setFormData({...formData, partner_name: value})}
-                  placeholder="z.B. Linda"
-                  className="mt-1"
-                  name="partner_name"
-                />
-              </div>
-              </div>
-              <Button type="submit" className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200">
-                NEUROBOND starten
-              </Button>
+                        <SpeechInput
+                          value={formData.name}
+                          onChange={(value) => setFormData({...formData, name: value})}
+                          placeholder="z.B. Adam"
+                          className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
+                          name="name"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="email" className="text-gray-700 font-medium">E-Mail-Adresse *</Label>
+                        <SpeechInput
+                          value={formData.email}
+                          onChange={(value) => setFormData({...formData, email: value})}
+                          placeholder="adam@example.com"
+                          className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
+                          name="email"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <Button 
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                        className="flex-1 py-3 rounded-2xl border-gray-300"
+                      >
+                        <ArrowRight className="w-5 h-5 mr-2 rotate-180" />
+                        Zurück
+                      </Button>
+                      <Button 
+                        type="button"
+                        onClick={nextStep}
+                        disabled={!formData.name || !formData.email}
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-2xl font-semibold"
+                      >
+                        Weiter
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Partner Info & Finish */}
+                {currentStep === 3 && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Fast geschafft!</h3>
+                      <p className="text-gray-600 text-sm">Optional: Name deines Partners für personalisierte Szenarien</p>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="partner_name" className="text-gray-700 font-medium">Name deines Partners</Label>
+                      <SpeechInput
+                        value={formData.partner_name}
+                        onChange={(value) => setFormData({...formData, partner_name: value})}
+                        placeholder="z.B. Linda (optional)"
+                        className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
+                        name="partner_name"
+                      />
+                    </div>
+
+                    <div className="p-4 bg-blue-50 rounded-2xl">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Sparkles className="w-5 h-5 text-blue-600" />
+                        <h4 className="font-semibold text-blue-900">Du erhältst Zugang zu:</h4>
+                      </div>
+                      <ul className="text-sm text-blue-700 space-y-1">
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          5 kostenlose Trainings-Szenarien
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          Gefühlslexikon mit 50+ Emotionen
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          KI-gestütztes Feedback
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          6-sprachige Sprachsteuerung
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <Button 
+                        type="button"
+                        variant="outline"
+                        onClick={prevStep}
+                        className="flex-1 py-3 rounded-2xl border-gray-300"
+                      >
+                        <ArrowRight className="w-5 h-5 mr-2 rotate-180" />
+                        Zurück
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-2xl font-semibold"
+                      >
+                        <Rocket className="w-5 h-5 mr-2" />
+                        NEUROBOND starten
+                      </Button>
+                    </div>
+                  </div>
+                )}
             </form>
           </CardContent>
         </Card>
