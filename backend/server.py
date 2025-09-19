@@ -1382,6 +1382,25 @@ async def get_user_avatar(user_id: str):
         logger.error(f"Get avatar error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to get avatar: {str(e)}")
 
+@api_router.get("/user/by-email/{email}")
+async def get_user_by_email(email: str):
+    """Get user by email address for login"""
+    try:
+        user = await db.users.find_one({"email": email})
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Convert MongoDB document to User model
+        user_data = User(**user)
+        return user_data
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Get user by email error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get user: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
