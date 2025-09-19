@@ -2818,6 +2818,9 @@ const EmpathyTrainingApp = () => {
 
         {/* Upgrade Modal */}
         {showUpgradeModal && <UpgradeModal />}
+        
+        {/* Login Modal */}
+        <LoginModal />
 
         {/* Scenario Practice Dialog */}
         <Dialog open={!!selectedScenario} onOpenChange={() => setSelectedScenario(null)}>
