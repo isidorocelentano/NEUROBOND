@@ -338,18 +338,27 @@ const EmpathyTrainingApp = () => {
   useEffect(() => {
     const checkSpeechSupport = () => {
       try {
-        if (typeof window !== 'undefined' && window.location) {
-          setSpeechSupported(
-            'webkitSpeechRecognition' in window || 
-            'SpeechRecognition' in window
+        if (typeof window !== 'undefined') {
+          const isSupported = !!(
+            window.SpeechRecognition || 
+            window.webkitSpeechRecognition ||
+            window.mozSpeechRecognition ||
+            window.msSpeechRecognition
           );
+          console.log('Speech recognition supported:', isSupported);
+          setSpeechSupported(isSupported);
+        } else {
+          setSpeechSupported(false);
         }
       } catch (error) {
         console.log('Speech recognition check failed:', error);
         setSpeechSupported(false);
       }
     };
+    
+    // Check immediately and after a short delay
     checkSpeechSupport();
+    setTimeout(checkSpeechSupport, 1000);
   }, []);
 
   // Speech Input Component
