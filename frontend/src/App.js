@@ -138,11 +138,18 @@ const EmpathyTrainingApp = () => {
         };
 
         recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          const currentValue = value || '';
-          const newValue = currentValue ? `${currentValue} ${transcript}` : transcript;
-          onChange(newValue);
-          showNotification('Spracheingabe erfolgreich!', 'success');
+          try {
+            const transcript = event.results[0][0].transcript;
+            const currentValue = value || '';
+            const newValue = currentValue ? `${currentValue} ${transcript}` : transcript;
+            if (typeof onChange === 'function') {
+              onChange(newValue);
+            }
+            showNotification('Spracheingabe erfolgreich!', 'success');
+          } catch (error) {
+            console.error('Speech result processing error:', error);
+            showNotification('Fehler beim Verarbeiten der Spracheingabe', 'error');
+          }
         };
 
         recognition.onerror = (event) => {
