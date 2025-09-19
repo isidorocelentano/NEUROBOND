@@ -2456,12 +2456,13 @@ const EmpathyTrainingApp = () => {
                   {/* 2. User Response Feld */}
                   <div className="space-y-2">
                     <Label htmlFor="response" className="text-lg font-medium">💭 Wie würdest du reagieren?</Label>
-                    <Textarea
-                      id="response"
-                      placeholder="Schreibe hier deine Reaktion auf diese Situation..."
+                    <SpeechInput
                       value={userResponse}
-                      onChange={(e) => setUserResponse(e.target.value)}
+                      onChange={setUserResponse}
+                      placeholder="Schreibe hier deine Reaktion auf diese Situation..."
+                      multiline={true}
                       className="min-h-[120px]"
+                      name="user-response"
                     />
                   </div>
 
