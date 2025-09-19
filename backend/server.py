@@ -10,7 +10,7 @@ from typing import List, Optional, Dict
 import uuid
 from datetime import datetime, timezone
 from emergentintegrations.llm.chat import LlmChat, UserMessage
-from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionResponse, CheckoutStatusResponse, CheckoutSessionRequest
+from emergentintegrations.payments.stripe.checkout import StripeCheckout
 import stripe
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from PIL import Image
