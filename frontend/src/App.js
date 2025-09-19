@@ -1185,6 +1185,17 @@ const EmpathyTrainingApp = () => {
               © 2024 NEUROBOND. Wissenschaftlich fundiertes Bindungstraining für stärkere Beziehungen.
             </p>
             <div className="mt-4 pt-4 border-t border-gray-300">
+              <div className="flex justify-center mb-4">
+                <Button 
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowLandingPage(false)}
+                  className="text-blue-600 border-blue-300 hover:bg-blue-50"
+                >
+                  <ArrowRight className="w-4 h-4 mr-2" />
+                  Zur NEUROBOND App
+                </Button>
+              </div>
               <div className="text-xs text-gray-500 space-y-1">
                 <p><strong>Impressum:</strong></p>
                 <p>MYSYMP AG</p>
