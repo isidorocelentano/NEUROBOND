@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement freemium model and Stripe payment integration for NEUROBOND app. Fix ESLint parsing errors, configure Swiss VAT (8.1%), and complete subscription functionality with webhook handling."
+user_problem_statement: "Fix critical LoginModal is not defined JavaScript runtime error that prevents NEUROBOND app from loading. Verify all existing functionality remains working after the fix."
 
 backend:
   - task: "Fix ESLint Alert Errors"
