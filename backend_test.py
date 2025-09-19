@@ -2921,7 +2921,7 @@ class EmpathyTrainingAPITester:
 
 def main():
     print("🚀 Starting Empathy Training App Backend API Tests")
-    print("🚨 URGENT FOCUS: Payment Methods Configuration Testing")
+    print("🚨 URGENT FOCUS: Avatar Upload Functionality Testing")
     print("=" * 60)
     
     tester = EmpathyTrainingAPITester()
