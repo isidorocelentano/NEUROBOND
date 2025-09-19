@@ -2324,14 +2324,12 @@ const EmpathyTrainingApp = () => {
                     
                     <div>
                       <Label htmlFor="contact-subject">Betreff</Label>
-                      <Input
-                        id="contact-subject"
-                        name="subject"
-                        type="text"
-                        placeholder="Worum geht es?"
+                      <SpeechInput
                         value={contactForm.subject}
-                        onChange={handleContactFormChange}
+                        onChange={(value) => setContactForm(prev => ({...prev, subject: value}))}
+                        placeholder="Worum geht es?"
                         className="mt-1"
+                        name="contact-subject"
                       />
                     </div>
                     
