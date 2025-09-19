@@ -95,11 +95,16 @@ const EmpathyTrainingApp = () => {
   // Check speech recognition support
   useEffect(() => {
     const checkSpeechSupport = () => {
-      if (typeof window !== 'undefined') {
-        setSpeechSupported(
-          'webkitSpeechRecognition' in window || 
-          'SpeechRecognition' in window
-        );
+      try {
+        if (typeof window !== 'undefined' && window.location) {
+          setSpeechSupported(
+            'webkitSpeechRecognition' in window || 
+            'SpeechRecognition' in window
+          );
+        }
+      } catch (error) {
+        console.log('Speech recognition check failed:', error);
+        setSpeechSupported(false);
       }
     };
     checkSpeechSupport();
