@@ -2302,15 +2302,12 @@ const EmpathyTrainingApp = () => {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="contact-name">Name *</Label>
-                        <Input
-                          id="contact-name"
-                          name="name"
-                          type="text"
-                          placeholder="Ihr Name"
+                        <SpeechInput
                           value={contactForm.name}
-                          onChange={handleContactFormChange}
-                          required
+                          onChange={(value) => setContactForm(prev => ({...prev, name: value}))}
+                          placeholder="Ihr Name"
                           className="mt-1"
+                          name="contact-name"
                         />
                       </div>
                       <div>
