@@ -49,8 +49,8 @@ CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', 'info@neurobond.ch')
 
 # Subscription Packages (including 8.1% Swiss VAT)
 SUBSCRIPTION_PACKAGES = {
-    "monthly": {"amount": 10.81, "currency": "chf", "name": "NEUROBOND PRO Monthly (incl. 8.1% MWST)"},
-    "yearly": {"amount": 108.10, "currency": "chf", "name": "NEUROBOND PRO Yearly (incl. 8.1% MWST)"}
+    "monthly": {"amount": 10.00, "currency": "chf", "name": "NEUROBOND PRO Monthly (CHF 10.00 inkl. MWST)"},
+    "yearly": {"amount": 100.00, "currency": "chf", "name": "NEUROBOND PRO Yearly (CHF 100.00 inkl. MWST)"}
 }
 
 class User(BaseModel):
