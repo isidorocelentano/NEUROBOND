@@ -126,9 +126,11 @@ const EmpathyTrainingApp = () => {
       }
 
       // Show preview
-      const reader = new FileReader();
-      reader.onload = (e) => setPreviewImage(e.target.result);
-      reader.readAsDataURL(file);
+      if (typeof window !== 'undefined' && window.FileReader) {
+        const reader = new FileReader();
+        reader.onload = (e) => setPreviewImage(e.target.result);
+        reader.readAsDataURL(file);
+      }
 
       // Upload avatar
       await uploadAvatar(file);
