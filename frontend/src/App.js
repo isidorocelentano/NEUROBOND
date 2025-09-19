@@ -1597,14 +1597,12 @@ const EmpathyTrainingApp = () => {
               </div>
               <div>
                 <Label htmlFor="email">E-Mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="adam@example.com"
+                <SpeechInput
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  required
+                  onChange={(value) => setFormData({...formData, email: value})}
+                  placeholder="adam@example.com"
                   className="mt-1"
+                  name="email"
                 />
               </div>
               <div>
