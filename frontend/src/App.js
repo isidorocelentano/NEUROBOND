@@ -1892,15 +1892,30 @@ const EmpathyTrainingApp = () => {
           </div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
-              <p className="text-gray-600 text-lg">
-                Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
-              </p>
-              {subscriptionStatus === 'active' && (
-                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                  <Crown className="w-4 h-4" />
-                  PRO
-                </div>
-              )}
+              {/* User Avatar */}
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
+                {user?.avatar ? (
+                  <img 
+                    src={user.avatar} 
+                    alt={`${user.name} Avatar`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <UserCircle className="w-full h-full text-gray-400" />
+                )}
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <p className="text-gray-600 text-lg">
+                  Willkommen zurück, {user?.name}! {user?.partner_name && `Stärkt eure Bindung - ${user.name} und ${user.partner_name}.`}
+                </p>
+                {subscriptionStatus === 'active' && (
+                  <div className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                    <Crown className="w-4 h-4" />
+                    PRO
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               {speechSupported && (
