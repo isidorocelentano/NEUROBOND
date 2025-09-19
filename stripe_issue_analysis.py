@@ -7,13 +7,13 @@ def analyze_stripe_issues():
     print("🔍 STRIPE WHITE SCREEN ISSUE ANALYSIS")
     print("="*60)
     
-    base_url = "https://neurobond-pro.preview.emergentagent.com"
+    base_url = "https://emotion-bridge-1.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Test data from the review request
     test_data = {
         "package_type": "monthly",
-        "origin_url": "https://neurobond-pro.preview.emergentagent.com"
+        "origin_url": "https://emotion-bridge-1.preview.emergentagent.com"
     }
     
     print("\n1. 🎯 TESTING CHECKOUT SESSION CREATION")

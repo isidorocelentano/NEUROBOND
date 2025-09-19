@@ -8,13 +8,13 @@ def debug_stripe_page():
     print("🔍 STRIPE CHECKOUT PAGE DETAILED DEBUG")
     print("="*60)
     
-    base_url = "https://neurobond-pro.preview.emergentagent.com"
+    base_url = "https://emotion-bridge-1.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create a fresh session
     test_data = {
         "package_type": "monthly",
-        "origin_url": "https://neurobond-pro.preview.emergentagent.com"
+        "origin_url": "https://emotion-bridge-1.preview.emergentagent.com"
     }
     
     print("1. 🎯 CREATING FRESH STRIPE SESSION")
