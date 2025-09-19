@@ -220,7 +220,7 @@ const EmpathyTrainingApp = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
             disabled={isUploading}
             className="flex items-center gap-2"
           >
