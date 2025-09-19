@@ -2971,7 +2971,7 @@ const App = () => {
       </BrowserRouter>
       
       {/* Login Modal - Available from any page */}
-      <LoginModal />
+      {showLogin && <LoginModal />}
     </div>
   );
 };
