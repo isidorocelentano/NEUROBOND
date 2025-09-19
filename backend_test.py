@@ -2926,7 +2926,45 @@ def main():
     
     tester = EmpathyTrainingAPITester()
     
-    # Run PRIORITY payment methods configuration tests FIRST
+    # Create a test user first for avatar tests
+    print("\n👤 Creating Test User for Avatar Tests...")
+    if not tester.test_create_user():
+        print("❌ Failed to create test user - avatar tests will be skipped")
+    
+    # Run PRIORITY avatar upload functionality tests FIRST
+    avatar_tests = [
+        tester.test_avatar_upload_valid_jpeg,
+        tester.test_avatar_upload_valid_png,
+        tester.test_avatar_upload_image_processing,
+        tester.test_avatar_upload_file_size_validation,
+        tester.test_avatar_upload_invalid_file_type,
+        tester.test_avatar_upload_corrupt_image,
+        tester.test_avatar_retrieval,
+        tester.test_avatar_retrieval_nonexistent_user,
+        tester.test_avatar_removal,
+        tester.test_avatar_removal_nonexistent_user,
+        tester.test_user_creation_with_avatar,
+        tester.test_avatar_upload_webp_format,
+        tester.test_avatar_upload_gif_format,
+        tester.test_avatar_comprehensive_functionality,
+    ]
+    
+    print("\n🖼️ PRIORITY: Avatar Upload Functionality Tests")
+    print("=" * 60)
+    
+    avatar_tests_passed = 0
+    avatar_tests_total = len(avatar_tests)
+    
+    for test in avatar_tests:
+        try:
+            if test():
+                avatar_tests_passed += 1
+        except Exception as e:
+            print(f"❌ Avatar test failed with exception: {str(e)}")
+    
+    print(f"\n🖼️ Avatar Upload Tests: {avatar_tests_passed}/{avatar_tests_total} tests completed")
+    
+    # Run payment methods configuration tests
     payment_methods_tests = [
         tester.test_stripe_payment_methods_configuration,
         tester.test_stripe_twint_billing_address_requirement,
