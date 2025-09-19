@@ -987,6 +987,11 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
             }],
             success_url=success_url,
             cancel_url=cancel_url,
+            billing_address_collection='required',  # Required for TWINT
+            shipping_address_collection={
+                'allowed_countries': ['CH', 'DE', 'AT', 'FR', 'IT']  # DACH region + neighbors
+            },
+            payment_method_configuration=None,  # Use default configuration
             metadata={
                 "package_type": checkout_request.package_type,
                 "package_name": package["name"],
