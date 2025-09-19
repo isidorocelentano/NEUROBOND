@@ -200,7 +200,7 @@ const EmpathyTrainingApp = () => {
           )}
           
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
             disabled={isUploading}
             className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors"
           >
