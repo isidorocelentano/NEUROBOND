@@ -3135,8 +3135,9 @@ def main():
     
     # Print final results
     print("\n" + "=" * 80)
-    print("💳 PAYMENT METHODS CONFIGURATION TEST RESULTS")
+    print("🖼️ AVATAR UPLOAD FUNCTIONALITY TEST RESULTS")
     print("=" * 80)
+    print(f"🖼️ Avatar Upload: {avatar_tests_passed}/{avatar_tests_total} tests completed")
     print(f"💳 Payment Methods: {payment_tests_passed}/{payment_tests_total} tests completed")
     print(f"📧 Email Functionality: {email_tests_passed}/{email_tests_total} tests completed")
     print(f"🔍 Contact Investigation: {contact_investigation_passed}/{contact_investigation_total} tests completed")
