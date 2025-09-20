@@ -44,7 +44,7 @@ const EmpathyTrainingApp = () => {
     { code: 'it-IT', name: 'Italiano', flag: '🇮🇹' }
   ];
 
-  // Check speech recognition support
+  // Check speech recognition support and restore user
   useEffect(() => {
     const checkSpeechSupport = () => {
       try {
@@ -66,7 +66,29 @@ const EmpathyTrainingApp = () => {
       }
     };
     
+    // Restore user from localStorage
+    const restoreUser = () => {
+      try {
+        const savedUser = localStorage.getItem('empathy_user');
+        const savedAvatar = localStorage.getItem('user_avatar');
+        
+        if (savedUser) {
+          const userData = JSON.parse(savedUser);
+          setUser(userData);
+          setShowLandingPage(false);
+          setShowOnboarding(false);
+        }
+        
+        if (savedAvatar) {
+          setUserAvatar(savedAvatar);
+        }
+      } catch (error) {
+        console.log('Error restoring user:', error);
+      }
+    };
+    
     checkSpeechSupport();
+    restoreUser();
     setTimeout(checkSpeechSupport, 1000);
   }, []);
 
