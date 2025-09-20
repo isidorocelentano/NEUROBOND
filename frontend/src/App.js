@@ -503,17 +503,24 @@ const EmpathyTrainingApp = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      if (!formData.name || !formData.email) {
+        showNotification('Bitte füllen Sie Name und E-Mail aus', 'error');
+        return;
+      }
+      
       const newUser = {
         id: 'user-' + Date.now(),
         name: formData.name,
         email: formData.email,
-        partner_name: formData.partner_name
+        partner_name: formData.partner_name,
+        avatar: userAvatar
       };
       setUser(newUser);
       localStorage.setItem('empathy_user', JSON.stringify(newUser));
+      localStorage.setItem('user_avatar', userAvatar || '');
       setShowOnboarding(false);
       setShowLandingPage(false);
-      showNotification(`Willkommen, ${formData.name}!`, 'success');
+      showNotification(`Willkommen, ${formData.name}! Ihr Profil wurde erfolgreich erstellt.`, 'success');
     };
 
     return (
