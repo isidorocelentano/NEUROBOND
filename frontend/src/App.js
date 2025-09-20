@@ -374,6 +374,10 @@ const EmpathyTrainingApp = () => {
                   <Button 
                     variant="ghost"
                     size="sm"
+                    onClick={() => {
+                      setShowLandingPage(false);
+                      setShowOnboarding(true);
+                    }}
                     className="text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                   >
                     <User className="w-4 h-4 mr-2" />
@@ -381,7 +385,10 @@ const EmpathyTrainingApp = () => {
                   </Button>
                   <Button 
                     size="sm"
-                    onClick={() => setShowOnboarding(true)}
+                    onClick={() => {
+                      setShowLandingPage(false);
+                      setShowOnboarding(true);
+                    }}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
                     <Rocket className="w-4 h-4 mr-2" />
