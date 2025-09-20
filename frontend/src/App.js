@@ -100,11 +100,12 @@ const EmpathyTrainingApp = () => {
         reader.readAsDataURL(file);
       }
 
-      // For demo purposes, just set the preview - in real app would upload to server
-      showNotification('Avatar erfolgreich hochgeladen!', 'success');
+      // Set the preview image immediately
       if (onAvatarUpdate) {
-        onAvatarUpdate(previewImage);
+        onAvatarUpdate(reader.result || previewImage);
       }
+      setUserAvatar(reader.result || previewImage);
+      showNotification('Avatar erfolgreich hochgeladen!', 'success');
     };
 
     return (
