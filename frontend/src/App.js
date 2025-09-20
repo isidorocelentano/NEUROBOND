@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
+import { Textarea } from './components/ui/textarea';
 import { Label } from './components/ui/label';
 import { Badge } from './components/ui/badge';
-import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckCircle, Play, Crown, Rocket, User, UserCheck, Mic, Globe, Camera, Upload, UserCircle } from 'lucide-react';
+import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckCircle, Play, Crown, Rocket, User, UserCheck, Mic, Globe, Camera, Upload, UserCircle, MicOff, X } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -16,6 +18,13 @@ const EmpathyTrainingApp = () => {
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showLandingPage, setShowLandingPage] = useState(true);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
+  
+  // Speech Recognition States
+  const [speechLanguage, setSpeechLanguage] = useState('de-DE');
+  const [speechSupported, setSpeechSupported] = useState(false);
+  
+  // Avatar States
+  const [userAvatar, setUserAvatar] = useState(null);
 
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
