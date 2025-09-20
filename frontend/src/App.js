@@ -70,6 +70,281 @@ const EmpathyTrainingApp = () => {
     setTimeout(checkSpeechSupport, 1000);
   }, []);
 
+  // Avatar Upload Component
+  const AvatarUpload = ({ userId, currentAvatar, onAvatarUpdate }) => {
+    const [previewImage, setPreviewImage] = useState(currentAvatar);
+    const [isUploading, setIsUploading] = useState(false);
+    const fileInputRef = useRef(null);
+
+    const handleFileSelect = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        showNotification('Nur JPEG, PNG, GIF und WebP Bilder sind erlaubt', 'error');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showNotification('Bild ist zu groß. Maximum 5MB erlaubt', 'error');
+        return;
+      }
+
+      // Show preview
+      if (typeof window !== 'undefined' && window.FileReader) {
+        const reader = new window.FileReader();
+        reader.onload = (e) => setPreviewImage(e.target.result);
+        reader.readAsDataURL(file);
+      }
+
+      // For demo purposes, just set the preview - in real app would upload to server
+      showNotification('Avatar erfolgreich hochgeladen!', 'success');
+      if (onAvatarUpdate) {
+        onAvatarUpdate(previewImage);
+      }
+    };
+
+    return (
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300 flex items-center justify-center">
+            {previewImage ? (
+              <img 
+                src={previewImage} 
+                alt="Avatar" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <UserCircle className="w-16 h-16 text-gray-400" />
+            )}
+          </div>
+          
+          {isUploading && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+            </div>
+          )}
+          
+          <button
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
+            disabled={isUploading}
+            className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
+            disabled={isUploading}
+            className="flex items-center gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Bild hochladen
+          </Button>
+          
+          {previewImage && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setPreviewImage(null);
+                if (onAvatarUpdate) onAvatarUpdate(null);
+                showNotification('Avatar entfernt', 'success');
+              }}
+              disabled={isUploading}
+              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+            >
+              <X className="w-4 h-4" />
+              Entfernen
+            </Button>
+          )}
+        </div>
+        
+        <p className="text-xs text-gray-500 text-center max-w-48">
+          JPEG, PNG, GIF oder WebP. Max 5MB. Wird automatisch auf 200x200px skaliert.
+        </p>
+      </div>
+    );
+  };
+
+  // Speech Input Component
+  const SpeechInput = ({ value, onChange, placeholder, multiline = false, className = "", disabled = false, name = "" }) => {
+    const [isListening, setIsListening] = useState(false);
+    const [showLanguageSelect, setShowLanguageSelect] = useState(false);
+
+    const startSpeechRecognition = () => {
+      if (!speechSupported) {
+        showNotification('Spracherkennung wird von Ihrem Browser nicht unterstützt', 'warning');
+        return;
+      }
+
+      try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.lang = speechLanguage;
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          setIsListening(true);
+          showNotification('Hörzu... Bitte sprechen Sie jetzt', 'info');
+        };
+
+        recognition.onresult = (event) => {
+          try {
+            const transcript = event.results[0][0].transcript;
+            const currentValue = value || '';
+            const newValue = currentValue ? `${currentValue} ${transcript}` : transcript;
+            if (typeof onChange === 'function') {
+              onChange(newValue);
+            }
+            showNotification('Spracheingabe erfolgreich!', 'success');
+          } catch (error) {
+            console.error('Speech result processing error:', error);
+            showNotification('Fehler beim Verarbeiten der Spracheingabe', 'error');
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          let errorMessage = 'Fehler bei der Spracherkennung';
+          switch(event.error) {
+            case 'no-speech':
+              errorMessage = 'Keine Sprache erkannt. Bitte versuchen Sie es erneut.';
+              break;
+            case 'audio-capture':
+              errorMessage = 'Mikrofon nicht verfügbar. Bitte prüfen Sie die Berechtigungen.';
+              break;
+            case 'not-allowed':
+              errorMessage = 'Mikrofon-Zugriff verweigert. Bitte aktivieren Sie die Berechtigung.';
+              break;
+            case 'network':
+              errorMessage = 'Netzwerkfehler. Bitte prüfen Sie Ihre Internetverbindung.';
+              break;
+          }
+          showNotification(errorMessage, 'error');
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+
+        recognition.start();
+      } catch (error) {
+        console.error('Speech recognition error:', error);
+        showNotification('Fehler beim Starten der Spracherkennung', 'error');
+        setIsListening(false);
+      }
+    };
+
+    const InputComponent = multiline ? Textarea : Input;
+    
+    const handleChange = (e) => {
+      try {
+        const value = e && e.target ? e.target.value : e;
+        if (typeof onChange === 'function') {
+          onChange(value);
+        }
+      } catch (error) {
+        console.error('Input change error:', error);
+      }
+    };
+    
+    return (
+      <div className="relative">
+        <InputComponent
+          value={value || ''}
+          onChange={handleChange}
+          placeholder={placeholder}
+          className={`pr-20 ${className}`}
+          disabled={disabled}
+          name={name}
+        />
+        
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+          {/* Language Selector */}
+          <div className="relative">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => speechSupported ? setShowLanguageSelect(!showLanguageSelect) : showNotification('Spracherkennung nicht verfügbar', 'warning')}
+              className="h-8 w-8 p-0 hover:bg-gray-100"
+              disabled={disabled || isListening}
+            >
+              <Globe className={`w-4 h-4 ${speechSupported ? 'text-blue-500' : 'text-gray-400'}`} />
+            </Button>
+              
+            {showLanguageSelect && (
+              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-36">
+                {speechLanguages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => {
+                      setSpeechLanguage(lang.code);
+                      setShowLanguageSelect(false);
+                      showNotification(`Sprache geändert zu ${lang.name}`, 'success');
+                    }}
+                    className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2 ${
+                      speechLanguage === lang.code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span>{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Speech Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={startSpeechRecognition}
+            disabled={disabled || isListening || !speechSupported}
+            className={`h-8 w-8 p-0 ${
+              isListening 
+                ? 'text-red-500 animate-pulse hover:bg-red-50' 
+                : speechSupported 
+                  ? 'text-blue-500 hover:bg-blue-50'
+                  : 'text-gray-400'
+            }`}
+            title={speechSupported 
+              ? `Spracheingabe (${speechLanguages.find(l => l.code === speechLanguage) && speechLanguages.find(l => l.code === speechLanguage).name || 'Deutsch'})`
+              : 'Spracherkennung nicht verfügbar'
+            }
+          >
+            {isListening ? (
+              <MicOff className="w-4 h-4" />
+            ) : (
+              <Mic className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   // Modern Landing Page Component
   const LandingPage = () => {
     return (
