@@ -34,6 +34,42 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
+  // Speech Recognition Configuration
+  const speechLanguages = [
+    { code: 'de-DE', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'de-CH', name: 'Schweizerdeutsch', flag: '🇨🇭' },
+    { code: 'en-US', name: 'English', flag: '🇺🇸' },
+    { code: 'fr-FR', name: 'Français', flag: '🇫🇷' },
+    { code: 'es-ES', name: 'Español', flag: '🇪🇸' },
+    { code: 'it-IT', name: 'Italiano', flag: '🇮🇹' }
+  ];
+
+  // Check speech recognition support
+  useEffect(() => {
+    const checkSpeechSupport = () => {
+      try {
+        if (typeof window !== 'undefined') {
+          const isSupported = !!(
+            window.SpeechRecognition || 
+            window.webkitSpeechRecognition ||
+            window.mozSpeechRecognition ||
+            window.msSpeechRecognition
+          );
+          console.log('Speech recognition supported:', isSupported);
+          setSpeechSupported(isSupported);
+        } else {
+          setSpeechSupported(false);
+        }
+      } catch (error) {
+        console.log('Speech recognition check failed:', error);
+        setSpeechSupported(false);
+      }
+    };
+    
+    checkSpeechSupport();
+    setTimeout(checkSpeechSupport, 1000);
+  }, []);
+
   // Modern Landing Page Component
   const LandingPage = () => {
     return (
