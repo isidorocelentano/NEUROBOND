@@ -533,40 +533,46 @@ const EmpathyTrainingApp = () => {
           <Card className="bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 rounded-3xl overflow-hidden">
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Avatar Upload Section */}
+                <div className="flex justify-center mb-6">
+                  <AvatarUpload 
+                    userId="temp-user" 
+                    currentAvatar={userAvatar}
+                    onAvatarUpdate={setUserAvatar}
+                  />
+                </div>
+
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="name" className="text-gray-700 font-medium">Dein Name *</Label>
-                    <Input
-                      id="name"
+                    <SpeechInput
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      onChange={(value) => setFormData({...formData, name: value})}
                       placeholder="z.B. Adam"
                       className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
-                      required
+                      name="name"
                     />
                   </div>
                   
                   <div>
                     <Label htmlFor="email" className="text-gray-700 font-medium">E-Mail-Adresse *</Label>
-                    <Input
-                      id="email"
-                      type="email"
+                    <SpeechInput
                       value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      onChange={(value) => setFormData({...formData, email: value})}
                       placeholder="adam@example.com"
                       className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
-                      required
+                      name="email"
                     />
                   </div>
 
                   <div>
                     <Label htmlFor="partner_name" className="text-gray-700 font-medium">Name deines Partners</Label>
-                    <Input
-                      id="partner_name"
+                    <SpeechInput
                       value={formData.partner_name}
-                      onChange={(e) => setFormData({...formData, partner_name: e.target.value})}
+                      onChange={(value) => setFormData({...formData, partner_name: value})}
                       placeholder="z.B. Linda (optional)"
                       className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
+                      name="partner_name"
                     />
                   </div>
                 </div>
