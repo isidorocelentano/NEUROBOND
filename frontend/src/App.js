@@ -650,7 +650,15 @@ const EmpathyTrainingApp = () => {
                   
                   <div className="hidden md:flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/20">
                     <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
-                      <UserCircle className="w-full h-full text-gray-400" />
+                      {userAvatar ? (
+                        <img 
+                          src={userAvatar} 
+                          alt={`${user && user.name} Avatar`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <UserCircle className="w-full h-full text-gray-400" />
+                      )}
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">Hallo, {user && user.name}!</p>
