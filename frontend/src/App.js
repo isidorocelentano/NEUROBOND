@@ -710,9 +710,12 @@ const EmpathyTrainingApp = () => {
               </div>
             </div>
 
-            {/* Features Preview */}
+            {/* Functional Features */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              <Card className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all">
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Training Stufen werden geladen...', 'info')}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Target className="w-5 h-5 text-blue-600" />
@@ -721,33 +724,123 @@ const EmpathyTrainingApp = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-4">5 strukturierte Stufen für bessere Kommunikation</p>
-                  <Badge variant="secondary">5 kostenlose Szenarien</Badge>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">5 kostenlose Szenarien</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <Play className="w-4 h-4 mr-1" />
+                      Starten
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all">
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Dialog-Coaching wird geladen...', 'info')}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Brain className="w-5 h-5 text-purple-600" />
-                    KI-Feedback
+                    Dialog-Coaching
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">Personalisierte Bewertungen deiner Reaktionen</p>
-                  <Badge variant="secondary">Wissenschaftlich fundiert</Badge>
+                  <p className="text-gray-600 mb-4">KI-gestützte Kommunikationsanalyse</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">Wissenschaftlich fundiert</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <Brain className="w-4 h-4 mr-1" />
+                      Analysieren
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all">
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Gefühlslexikon wird geöffnet...', 'info')}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Mic className="w-5 h-5 text-green-600" />
-                    Sprachsteuerung
+                    <Heart className="w-5 h-5 text-red-600" />
+                    Gefühlslexikon
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">6 Sprachen - einfach sprechen statt tippen</p>
-                  <Badge variant="secondary">Mehrsprachig</Badge>
+                  <p className="text-gray-600 mb-4">50+ Emotionen verstehen und benennen</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">Kostenlos</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <Star className="w-4 h-4 mr-1" />
+                      Erkunden
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Community Cases werden geladen...', 'info')}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-green-600" />
+                    Community Cases
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 mb-4">Anonyme Fälle aus der Community</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">Kostenlos</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <Users className="w-4 h-4 mr-1" />
+                      Entdecken
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Wöchentliche Trainingspläne werden erstellt...', 'info')}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-5 h-5 text-orange-600" />
+                    Trainingspläne
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 mb-4">Personalisierte wöchentliche Pläne</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">KI-personalisiert</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <Trophy className="w-4 h-4 mr-1" />
+                      Planen
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => showNotification('Profil wird geöffnet...', 'info')}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="w-5 h-5 text-blue-600" />
+                    Mein Profil
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 mb-4">Avatar, Einstellungen und Fortschritt</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">Personalisiert</Badge>
+                    <Button size="sm" className="ml-auto">
+                      <User className="w-4 h-4 mr-1" />
+                      Bearbeiten
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
