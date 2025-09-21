@@ -77,7 +77,7 @@ const EmpathyTrainingApp = () => {
                       setShowLandingPage(false);
                       setShowOnboarding(true);
                     }}
-                    className="text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                    className="text-gray-300 hover:text-white hover:bg-gray-800"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Anmelden
