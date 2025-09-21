@@ -414,6 +414,7 @@ const EmpathyTrainingApp = () => {
       email: '',
       partner_name: ''
     });
+    const [tempAvatar, setTempAvatar] = useState(null);
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -431,109 +432,128 @@ const EmpathyTrainingApp = () => {
       
       setUser(newUser);
       localStorage.setItem('empathy_user', JSON.stringify(newUser));
+      if (tempAvatar) {
+        setUserAvatar(tempAvatar);
+        localStorage.setItem('user_avatar', tempAvatar);
+      }
       setShowOnboarding(false);
       setShowLandingPage(false);
       showNotification(`Willkommen, ${formData.name}! Ihr Profil wurde erfolgreich erstellt.`, 'success');
     };
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative z-10 w-full max-w-lg">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Heart className="w-7 h-7 text-white" />
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+          <div className="w-full max-w-lg">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                  <Heart className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">NEUROBOND</h1>
+                  <p className="text-sm text-gray-400">Bindungstraining</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
-                <p className="text-sm text-gray-500">Bindungstraining</p>
-              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Willkommen!</h2>
+              <p className="text-gray-300">Lass uns dein persönliches Profil erstellen</p>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Willkommen!</h2>
-            <p className="text-gray-600">Lass uns dein persönliches Profil erstellen</p>
+
+            <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl overflow-hidden">
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Avatar Upload Section */}
+                  <div className="flex justify-center mb-6">
+                    <AvatarUpload
+                      currentAvatar={tempAvatar}
+                      onAvatarChange={setTempAvatar}
+                      user={{ id: 'temp-user' }}
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="name" className="text-gray-300 font-medium">Dein Name *</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          placeholder="z.B. Sophia"
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="email" className="text-gray-300 font-medium">E-Mail-Adresse *</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          placeholder="sophia@example.com"
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="partner_name" className="text-gray-300 font-medium">Name deines Partners</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={formData.partner_name}
+                          onChange={(e) => setFormData({...formData, partner_name: e.target.value})}
+                          placeholder="z.B. Max (optional)"
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Sparkles className="w-5 h-5 text-blue-400" />
+                      <h4 className="font-semibold text-blue-100">Du erhältst Zugang zu:</h4>
+                    </div>
+                    <ul className="text-sm text-blue-200 space-y-1">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        5 kostenlose Trainings-Szenarien
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        Gefühlslexikon mit 50+ Emotionen
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        KI-gestütztes Feedback
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        Partner-Dashboard verfügbar
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        Sprachsteuerung in 6 Sprachen
+                      </li>
+                    </ul>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-2xl font-semibold"
+                  >
+                    <Rocket className="w-5 h-5 mr-2" />
+                    NEUROBOND starten
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
-
-          <Card className="bg-white/90 backdrop-blur-lg shadow-2xl border border-white/20 rounded-3xl overflow-hidden">
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name" className="text-gray-700 font-medium">Dein Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      placeholder="z.B. Sophia"
-                      className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="email" className="text-gray-700 font-medium">E-Mail-Adresse *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      placeholder="sophia@example.com"
-                      className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="partner_name" className="text-gray-700 font-medium">Name deines Partners</Label>
-                    <Input
-                      id="partner_name"
-                      value={formData.partner_name}
-                      onChange={(e) => setFormData({...formData, partner_name: e.target.value})}
-                      placeholder="z.B. Max (optional)"
-                      className="mt-2 bg-gray-50 border-gray-200 rounded-xl"
-                    />
-                  </div>
-                </div>
-
-                <div className="p-4 bg-blue-50 rounded-2xl">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Sparkles className="w-5 h-5 text-blue-600" />
-                    <h4 className="font-semibold text-blue-900">Du erhältst Zugang zu:</h4>
-                  </div>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      5 kostenlose Trainings-Szenarien
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      Gefühlslexikon mit 50+ Emotionen
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      KI-gestütztes Feedback
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      Partner-Dashboard verfügbar
-                    </li>
-                  </ul>
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-2xl font-semibold"
-                >
-                  <Rocket className="w-5 h-5 mr-2" />
-                  NEUROBOND starten
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
         </div>
       </div>
     );
