@@ -562,14 +562,69 @@ const EmpathyTrainingApp = () => {
   // Partner Dashboard Component (inspired by user's design)
   const PartnerDashboard = ({ isMainUser = true }) => {
     const partnerLevel = Math.floor(userProgress.length / 3) + 3; // Start at Level 3 like in image
-    const dailyGoalsCompleted = 6;
-    const dailyGoalsTotal = 10;
+    
+    // Dynamic daily goals based on user progress and day of week
+    const generateDynamicGoals = () => {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const userLevel = partnerLevel;
+      const completedScenarios = userProgress.length;
+      
+      const baseGoals = [
+        { text: "Empathie-Training absolvieren", completed: completedScenarios > 0 },
+        { text: "Gefühlslexikon studieren", completed: true }, // Always accessible
+        { text: "Partner-Dialog führen", completed: Math.random() > 0.5 }, // Simulated
+        { text: "Meditation (5 Min)", completed: Math.random() > 0.3 }
+      ];
+
+      // Add level-specific goals
+      if (userLevel >= 3) {
+        baseGoals.push({ text: "Dialog-Coaching durchführen", completed: completedScenarios > 2 });
+      }
+      
+      if (userLevel >= 4) {
+        baseGoals.push({ text: "Community Case kommentieren", completed: Math.random() > 0.6 });
+      }
+
+      // Add day-specific goals
+      const daySpecificGoals = {
+        0: [{ text: "Wochenreflexion schreiben", completed: false }], // Sunday
+        1: [{ text: "Wöchentlichen Plan aktualisieren", completed: false }], // Monday
+        2: [{ text: "Konfliktlösung üben", completed: Math.random() > 0.7 }], // Tuesday
+        3: [{ text: "Dankbarkeits-Übung", completed: Math.random() > 0.4 }], // Wednesday
+        4: [{ text: "Emotionale Intelligenz Training", completed: false }], // Thursday
+        5: [{ text: "Beziehungs-Check durchführen", completed: Math.random() > 0.8 }], // Friday
+        6: [{ text: "Gemeinsame Aktivität planen", completed: Math.random() > 0.5 }] // Saturday
+      };
+
+      const allGoals = [...baseGoals, ...daySpecificGoals[dayOfWeek]];
+      
+      // Add some personal goals based on user data
+      if (user?.partner_name) {
+        allGoals.push({ 
+          text: `${user.partner_name} Kompliment machen`, 
+          completed: Math.random() > 0.6 
+        });
+      }
+
+      return allGoals.slice(0, 10); // Limit to 10 goals
+    };
+
+    const dailyGoals = generateDynamicGoals();
+    const dailyGoalsCompleted = dailyGoals.filter(goal => goal.completed).length;
+    const dailyGoalsTotal = dailyGoals.length;
     const progressPercentage = (dailyGoalsCompleted / dailyGoalsTotal) * 100;
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
         {/* Header */}
-        <header className="flex justify-between items-center p-6 mb-8">
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
           <h1 className="text-2xl font-bold text-white">Neurobond</h1>
           <Button 
             variant="ghost" 
@@ -582,7 +637,7 @@ const EmpathyTrainingApp = () => {
         </header>
 
         {/* Profile Section */}
-        <div className="flex flex-col items-center mb-12">
+        <div className="flex flex-col items-center mb-12 relative z-10">
           <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white/20">
             {(isMainUser && userAvatar) ? (
               <img 
@@ -601,11 +656,25 @@ const EmpathyTrainingApp = () => {
             {isMainUser ? (user && user.name || 'Sophia') : (user && user.partner_name || 'Max')}
           </h2>
           <p className="text-lg text-gray-300">Level {partnerLevel}</p>
+          <div className="mt-2 px-4 py-1 bg-blue-600/20 rounded-full">
+            <p className="text-sm text-blue-200">
+              {userProgress.length} Szenarien abgeschlossen
+            </p>
+          </div>
         </div>
 
         {/* Daily Goals Section */}
-        <div className="px-6 mb-8">
-          <h3 className="text-2xl font-bold mb-6">Tagesziele</h3>
+        <div className="px-6 mb-8 relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold">Dynamische Tagesziele</h3>
+            <div className="text-sm text-gray-400">
+              {new Date().toLocaleDateString('de-DE', { 
+                weekday: 'long', 
+                day: 'numeric', 
+                month: 'long' 
+              })}
+            </div>
+          </div>
           
           <div className="mb-4">
             <p className="text-lg text-gray-300 mb-3">
@@ -621,33 +690,58 @@ const EmpathyTrainingApp = () => {
             </div>
           </div>
 
-          {/* Goals List */}
+          {/* Dynamic Goals List */}
           <div className="space-y-4">
-            {[
-              { text: "Empathie-Training absolvieren", completed: true },
-              { text: "Gefühlslexikon studieren", completed: true },
-              { text: "Dialog-Coaching durchführen", completed: true },
-              { text: "Community Case kommentieren", completed: true },
-              { text: "Meditation (5 Min)", completed: true },
-              { text: "Partner-Dialog führen", completed: true },
-              { text: "Wöchentlichen Plan aktualisieren", completed: false },
-              { text: "Reflexion schreiben", completed: false },
-              { text: "Dankbarkeits-Übung", completed: false },
-              { text: "Konfliktlösung üben", completed: false }
-            ].map((goal, index) => (
-              <div key={index} className="flex items-center space-x-3">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+            {dailyGoals.map((goal, index) => (
+              <div 
+                key={index} 
+                className={`flex items-start space-x-3 p-3 rounded-lg transition-all ${
+                  goal.completed ? 'bg-green-900/20' : 'bg-gray-800/50'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
                   goal.completed 
                     ? 'bg-gradient-to-r from-blue-500 to-cyan-400' 
-                    : 'bg-gray-600'
+                    : 'bg-gray-600 border-2 border-gray-500'
                 }`}>
                   {goal.completed && <CheckCircle className="w-3 h-3 text-white" />}
                 </div>
-                <span className={`${goal.completed ? 'text-white' : 'text-gray-400'}`}>
+                <span className={`${
+                  goal.completed 
+                    ? 'text-white line-through' 
+                    : 'text-gray-300'
+                }`}>
                   {goal.text}
                 </span>
+                {goal.completed && (
+                  <div className="ml-auto">
+                    <Badge className="bg-green-600/20 text-green-200 text-xs">
+                      Erledigt
+                    </Badge>
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+
+          {/* Progress Motivation */}
+          <div className="mt-6 p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-lg border border-blue-700/50">
+            <div className="flex items-center gap-3">
+              <Trophy className="w-6 h-6 text-yellow-400" />
+              <div>
+                <p className="font-semibold text-white">
+                  {progressPercentage >= 80 ? 'Fantastisch!' : 
+                   progressPercentage >= 60 ? 'Gut gemacht!' : 
+                   progressPercentage >= 40 ? 'Weiter so!' : 'Heute ist dein Tag!'}
+                </p>
+                <p className="text-sm text-gray-300">
+                  {progressPercentage >= 80 ? 'Du bist ein Vorbild für empathische Kommunikation!' :
+                   progressPercentage >= 60 ? 'Du machst tolle Fortschritte in eurer Beziehung.' :
+                   progressPercentage >= 40 ? 'Jeder Schritt bringt euch näher zusammen.' :
+                   'Kleine Schritte führen zu großen Veränderungen.'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -657,7 +751,7 @@ const EmpathyTrainingApp = () => {
             <Button 
               variant="ghost" 
               className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => showNotification('Training wird geladen...', 'info')}
+              onClick={() => setCurrentTab('home')}
             >
               <Target className="w-6 h-6 mb-1" />
               <span className="text-xs">Training</span>
@@ -665,10 +759,10 @@ const EmpathyTrainingApp = () => {
             <Button 
               variant="ghost" 
               className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => showNotification('Dialog wird geladen...', 'info')}
+              onClick={() => setCurrentTab('own-cases')}
             >
               <MessageCircle className="w-6 h-6 mb-1" />
-              <span className="text-xs">Dialog</span>
+              <span className="text-xs">Eigene Cases</span>
             </Button>
             <Button 
               variant="ghost" 
