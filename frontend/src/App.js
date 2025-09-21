@@ -2248,6 +2248,11 @@ const EmpathyTrainingApp = () => {
     setSubscriptionStatus('free');
   }
 
+  // If user is logged in and we're not showing onboarding or landing page, show Dashboard
+  if (user && !showOnboarding && !showLandingPage) {
+    return <Dashboard />;
+  }
+
   // Modern Partner Dashboard Component (inspired by user's design)
   const PartnerDashboard = ({ partner, isMainUser = true }) => {
     const partnerLevel = Math.floor(userProgress.length / 3) + 1;
