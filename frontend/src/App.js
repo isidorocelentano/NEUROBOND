@@ -10,6 +10,224 @@ import { Heart, Users, Target, Brain, Sparkles, Trophy, Star, ArrowRight, CheckC
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+// SpeechInput Component with Multi-language Support
+const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
+  const [isListening, setIsListening] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('de-DE');
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const recognitionRef = useRef(null);
+
+  const languageOptions = {
+    'de-DE': 'Deutsch',
+    'de-CH': 'Schweizerdeutsch', 
+    'en-US': 'English',
+    'fr-FR': 'Français',
+    'es-ES': 'Español',
+    'it-IT': 'Italiano'
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = currentLanguage;
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        onChange({ target: { value: value + ' ' + transcript } });
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, [currentLanguage]);
+
+  const startListening = () => {
+    if (recognitionRef.current && !isListening) {
+      setIsListening(true);
+      recognitionRef.current.lang = currentLanguage;
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <div className="relative">
+        <Input
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`${className} pr-16`}
+        />
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+          <div className="relative">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+              className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+            >
+              <Globe className="w-4 h-4" />
+            </Button>
+            {showLanguageMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-32">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => {
+                      setCurrentLanguage(lang);
+                      setShowLanguageMenu(false);
+                    }}
+                    className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                      currentLanguage === lang ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                    }`}
+                  >
+                    {languageOptions[lang]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={isListening ? stopListening : startListening}
+            className={`h-8 w-8 p-0 hover:bg-gray-100 ${
+              isListening ? 'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Mic className={`w-4 h-4 ${isListening ? 'animate-pulse' : ''}`} />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Avatar Upload Component
+const AvatarUpload = ({ currentAvatar, onAvatarChange, user }) => {
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef();
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0]; 
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Bitte wählen Sie eine Bilddatei aus.');
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Die Datei ist zu groß. Maximale Größe: 5MB');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Convert to base64 for preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target.result;
+        onAvatarChange(base64);
+        localStorage.setItem('user_avatar', base64);
+      };
+      reader.readAsDataURL(file);
+
+      // In a real implementation, you would upload to the backend:
+      // const formData = new FormData();
+      // formData.append('avatar', file);
+      // const response = await fetch(`${BACKEND_URL}/api/user/${user.id}/avatar`, {
+      //   method: 'POST',
+      //   body: formData
+      // });
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      alert('Fehler beim Hochladen des Avatars');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="relative">
+        <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 border-4 border-white shadow-lg">
+          {currentAvatar ? (
+            <img
+              src={currentAvatar}
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+              <UserCircle className="w-12 h-12 text-white/80" />
+            </div>
+          )}
+        </div>
+        <Button
+          type="button"
+          size="sm"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="absolute -bottom-1 -right-1 rounded-full w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700"
+        >
+          {uploading ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Camera className="w-4 h-4 text-white" />
+          )}
+        </Button>
+      </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => fileInputRef.current?.click()}
+        disabled={uploading}
+        className="text-xs"
+      >
+        <Upload className="w-3 h-3 mr-1" />
+        Bild hochladen
+      </Button>
+    </div>
+  );
+};
+
 const EmpathyTrainingApp = () => {
   const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
