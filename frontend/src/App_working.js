@@ -406,7 +406,7 @@ const EmpathyTrainingApp = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Training Stufen werden geladen...', 'info')}
+                onClick={() => setCurrentTab('training')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -418,7 +418,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">5 strukturierte Stufen für bessere Kommunikation</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">5 kostenlose Szenarien</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('training');}}>
                       <Play className="w-4 h-4 mr-1" />
                       Starten
                     </Button>
