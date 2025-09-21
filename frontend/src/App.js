@@ -777,12 +777,17 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Regular Dashboard Component
+  // Regular Dashboard Component (Dark Theme)
   const Dashboard = () => {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
         <div className="relative z-10">
-          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+          <header className="backdrop-blur-sm bg-gray-900/80 border-b border-gray-700/50 sticky top-0 z-50">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -791,13 +796,13 @@ const EmpathyTrainingApp = () => {
                       <Heart className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
-                      <p className="text-xs text-gray-500">Bindungstraining</p>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-400">Bindungstraining</p>
                     </div>
                   </div>
                   
-                  <div className="hidden md:flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/20">
-                    <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
+                  <div className="hidden md:flex items-center gap-3 bg-gray-800/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-gray-700/50">
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-700 border-2 border-blue-400 flex-shrink-0">
                       {userAvatar ? (
                         <img 
                           src={userAvatar} 
@@ -809,9 +814,9 @@ const EmpathyTrainingApp = () => {
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Hallo, {user && user.name}!</p>
+                      <p className="text-sm font-medium text-white">Hallo, {user && user.name}!</p>
                       {user && user.partner_name && (
-                        <p className="text-xs text-gray-600">{user.name} & {user.partner_name}</p>
+                        <p className="text-xs text-gray-300">{user.name} & {user.partner_name}</p>
                       )}
                     </div>
                   </div>
@@ -838,7 +843,7 @@ const EmpathyTrainingApp = () => {
                       localStorage.removeItem('user_avatar');
                       showNotification('Erfolgreich abgemeldet', 'success');
                     }}
-                    className="text-gray-600 hover:text-red-600 hover:bg-red-50"
+                    className="text-gray-300 hover:text-red-400 hover:bg-red-900/20"
                   >
                     <ArrowRight className="w-4 h-4 rotate-180" />
                     <span className="hidden sm:inline ml-2">Abmelden</span>
@@ -850,47 +855,47 @@ const EmpathyTrainingApp = () => {
 
           <div className="container mx-auto px-4 py-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Willkommen zurück, {user && user.name}! 👋
               </h2>
               {user && user.partner_name && (
-                <p className="text-xl text-gray-600 mb-6">
-                  Stärkt eure Bindung - <span className="font-semibold">{user.name}</span> und <span className="font-semibold">{user.partner_name}</span>
+                <p className="text-xl text-gray-300 mb-6">
+                  Stärkt eure Bindung - <span className="font-semibold text-blue-400">{user.name}</span> und <span className="font-semibold text-purple-400">{user.partner_name}</span>
                 </p>
               )}
               
               <div className="flex flex-wrap justify-center gap-4 mb-8">
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
-                  <div className="text-2xl font-bold text-blue-600">0</div>
-                  <div className="text-sm text-gray-600">Szenarien absolviert</div>
+                <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+                  <div className="text-2xl font-bold text-blue-400">0</div>
+                  <div className="text-sm text-gray-400">Szenarien absolviert</div>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
-                  <div className="text-2xl font-bold text-green-600">0%</div>
-                  <div className="text-sm text-gray-600">Fortschritt</div>
+                <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+                  <div className="text-2xl font-bold text-green-400">0%</div>
+                  <div className="text-sm text-gray-400">Fortschritt</div>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/20">
-                  <div className="text-2xl font-bold text-purple-600">5</div>
-                  <div className="text-sm text-gray-600">Stufen verfügbar</div>
+                <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+                  <div className="text-2xl font-bold text-purple-400">5</div>
+                  <div className="text-sm text-gray-400">Stufen verfügbar</div>
                 </div>
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => showNotification('Training Stufen werden geladen...', 'info')}
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-blue-600" />
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Target className="w-5 h-5 text-blue-400" />
                     Training Stufen
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">5 strukturierte Stufen für bessere Kommunikation</p>
+                  <p className="text-gray-300 mb-4">5 strukturierte Stufen für bessere Kommunikation</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">5 kostenlose Szenarien</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Badge variant="secondary" className="bg-blue-900/50 text-blue-200">5 kostenlose Szenarien</Badge>
+                    <Button size="sm" className="ml-auto bg-blue-600 hover:bg-blue-700">
                       <Play className="w-4 h-4 mr-1" />
                       Starten
                     </Button>
@@ -899,20 +904,20 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => showNotification('Dialog-Coaching wird geladen...', 'info')}
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-purple-600" />
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Brain className="w-5 h-5 text-purple-400" />
                     Dialog-Coaching
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">KI-gestützte Kommunikationsanalyse</p>
+                  <p className="text-gray-300 mb-4">KI-gestützte Kommunikationsanalyse</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">Wissenschaftlich fundiert</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Badge variant="secondary" className="bg-purple-900/50 text-purple-200">Wissenschaftlich fundiert</Badge>
+                    <Button size="sm" className="ml-auto bg-purple-600 hover:bg-purple-700">
                       <Brain className="w-4 h-4 mr-1" />
                       Analysieren
                     </Button>
@@ -921,20 +926,20 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => showNotification('Gefühlslexikon wird geöffnet...', 'info')}
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-red-600" />
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Heart className="w-5 h-5 text-red-400" />
                     Gefühlslexikon
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">50+ Emotionen verstehen und benennen</p>
+                  <p className="text-gray-300 mb-4">50+ Emotionen verstehen und benennen</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">Kostenlos</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Badge variant="secondary" className="bg-green-900/50 text-green-200">Kostenlos</Badge>
+                    <Button size="sm" className="ml-auto bg-red-600 hover:bg-red-700">
                       <Star className="w-4 h-4 mr-1" />
                       Erkunden
                     </Button>
@@ -943,20 +948,42 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
+                onClick={() => setCurrentTab('own-cases')}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Plus className="w-5 h-5 text-green-400" />
+                    Eigene Cases
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 mb-4">Deine eigenen Situationen analysieren lassen</p>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary" className="bg-green-900/50 text-green-200">Neu!</Badge>
+                    <Button size="sm" className="ml-auto bg-green-600 hover:bg-green-700">
+                      <Plus className="w-4 h-4 mr-1" />
+                      Erstellen
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => showNotification('Community Cases werden geladen...', 'info')}
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-green-600" />
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Users className="w-5 h-5 text-green-400" />
                     Community Cases
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">Anonyme Fälle aus der Community</p>
+                  <p className="text-gray-300 mb-4">Anonyme Fälle aus der Community</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">Kostenlos</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Badge variant="secondary" className="bg-green-900/50 text-green-200">Kostenlos</Badge>
+                    <Button size="sm" className="ml-auto bg-green-600 hover:bg-green-700">
                       <Users className="w-4 h-4 mr-1" />
                       Entdecken
                     </Button>
@@ -965,42 +992,20 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Wöchentliche Trainingspläne werden erstellt...', 'info')}
-              >
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-orange-600" />
-                    Trainingspläne
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">Personalisierte wöchentliche Pläne</p>
-                  <div className="flex gap-2">
-                    <Badge variant="secondary">KI-personalisiert</Badge>
-                    <Button size="sm" className="ml-auto">
-                      <Trophy className="w-4 h-4 mr-1" />
-                      Planen
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card 
-                className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
+                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => setCurrentTab('partners')}
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-blue-600" />
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <User className="w-5 h-5 text-blue-400" />
                     Partner Dashboard
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">Persönliche Profile und Tagesziele</p>
+                  <p className="text-gray-300 mb-4">Persönliche Profile und Tagesziele</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">Neu!</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Badge variant="secondary" className="bg-blue-900/50 text-blue-200">Dynamische Ziele!</Badge>
+                    <Button size="sm" className="ml-auto bg-blue-600 hover:bg-blue-700">
                       <Users className="w-4 h-4 mr-1" />
                       Öffnen
                     </Button>
