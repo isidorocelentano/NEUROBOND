@@ -699,7 +699,210 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Partner Selection Component
+  // Own Cases Creation Component
+  const OwnCasesCreation = () => {
+    const [dialogMessages, setDialogMessages] = useState([
+      { speaker: user?.name || 'Ich', message: '' },
+      { speaker: user?.partner_name || 'Partner', message: '' }
+    ]);
+    const [caseTitle, setCaseTitle] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const addMessage = () => {
+      setDialogMessages([
+        ...dialogMessages,
+        { speaker: dialogMessages.length % 2 === 0 ? user?.name || 'Ich' : user?.partner_name || 'Partner', message: '' }
+      ]);
+    };
+
+    const updateMessage = (index, message) => {
+      const updated = [...dialogMessages];
+      updated[index] = { ...updated[index], message };
+      setDialogMessages(updated);
+    };
+
+    const removeMessage = (index) => {
+      if (dialogMessages.length > 2) {
+        setDialogMessages(dialogMessages.filter((_, i) => i !== index));
+      }
+    };
+
+    const submitCase = async () => {
+      if (!caseTitle.trim()) {
+        showNotification('Bitte geben Sie einen Titel für Ihren Case ein', 'error');
+        return;
+      }
+
+      const validMessages = dialogMessages.filter(msg => msg.message.trim());
+      if (validMessages.length < 2) {
+        showNotification('Bitte fügen Sie mindestens 2 Nachrichten hinzu', 'error');
+        return;
+      }
+
+      setIsSubmitting(true);
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/create-community-case-direct`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: caseTitle,
+            messages: validMessages,
+            consent: true,
+            user_email: user?.email || 'anonymous@example.com'
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          showNotification('Ihr Case wurde erfolgreich erstellt und wird analysiert!', 'success');
+          setCaseTitle('');
+          setDialogMessages([
+            { speaker: user?.name || 'Ich', message: '' },
+            { speaker: user?.partner_name || 'Partner', message: '' }
+          ]);
+        } else {
+          throw new Error('Fehler beim Erstellen des Cases');
+        }
+      } catch (error) {
+        console.error('Error creating case:', error);
+        showNotification('Fehler beim Erstellen des Cases. Bitte versuchen Sie es später erneut.', 'error');
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">Eigenen Case erstellen</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl overflow-hidden mb-8">
+            <CardHeader>
+              <CardTitle className="text-white text-center">
+                <Plus className="w-6 h-6 inline mr-2" />
+                Beschreiben Sie Ihre Situation
+              </CardTitle>
+              <CardDescription className="text-gray-300 text-center">
+                Geben Sie einen Dialog zwischen Ihnen und Ihrem Partner ein. Die KI wird eine Analyse und Lösungsvorschläge erstellen.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-6">
+                {/* Case Title */}
+                <div>
+                  <Label className="text-gray-300 font-medium">Titel Ihres Cases *</Label>
+                  <div className="mt-2">
+                    <SpeechInput
+                      value={caseTitle}
+                      onChange={(e) => setCaseTitle(e.target.value)}
+                      placeholder="z.B. Diskussion über Haushaltsaufgaben"
+                      className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Dialog Messages */}
+                <div>
+                  <Label className="text-gray-300 font-medium">Dialog zwischen Ihnen und Ihrem Partner</Label>
+                  <div className="mt-4 space-y-4">
+                    {dialogMessages.map((msg, index) => (
+                      <div key={index} className="flex gap-4 items-start">
+                        <div className="w-20 text-sm text-gray-400 pt-3 flex-shrink-0">
+                          {msg.speaker}:
+                        </div>
+                        <div className="flex-1">
+                          <SpeechInput
+                            value={msg.message}
+                            onChange={(e) => updateMessage(index, e.target.value)}
+                            placeholder={`Was hat ${msg.speaker} gesagt?`}
+                            className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                          />
+                        </div>
+                        {dialogMessages.length > 2 && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeMessage(index)}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-900/20 flex-shrink-0"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={addMessage}
+                    className="mt-4 border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Weitere Nachricht hinzufügen
+                  </Button>
+                </div>
+
+                {/* Info Box */}
+                <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
+                  <div className="flex items-start gap-3">
+                    <Brain className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-blue-100 mb-2">KI-Analyse beinhaltet:</h4>
+                      <ul className="text-sm text-blue-200 space-y-1">
+                        <li>• Kommunikationsmuster-Analyse</li>
+                        <li>• Emotionale Dynamiken</li>
+                        <li>• Konkrete Verbesserungsvorschläge</li>
+                        <li>• Alternative Gesprächsverläufe</li>
+                        <li>• Empathie-Training Empfehlungen</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  onClick={submitCase}
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-2xl font-semibold"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Wird analysiert...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Case zur Analyse einreichen
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  };
   const PartnerSelection = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
