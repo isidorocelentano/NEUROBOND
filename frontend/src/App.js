@@ -159,28 +159,28 @@ const EmpathyTrainingApp = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
-              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+              <div className="text-center p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-lg">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Brain className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">KI-Feedback</h3>
-                <p className="text-gray-600 text-sm">Personalisierte Bewertungen und Verbesserungsvorschläge für eure Kommunikation</p>
+                <h3 className="text-lg font-bold text-white mb-2">KI-Feedback</h3>
+                <p className="text-gray-300 text-sm">Personalisierte Bewertungen und Verbesserungsvorschläge für eure Kommunikation</p>
               </div>
               
-              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+              <div className="text-center p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-lg">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Mic className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Sprachsteuerung</h3>
-                <p className="text-gray-600 text-sm">6 Sprachen unterstützt - einfach sprechen statt tippen</p>
+                <h3 className="text-lg font-bold text-white mb-2">Sprachsteuerung</h3>
+                <p className="text-gray-300 text-sm">6 Sprachen unterstützt - einfach sprechen statt tippen</p>
               </div>
               
-              <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg">
+              <div className="text-center p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-lg">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Strukturiertes Training</h3>
-                <p className="text-gray-600 text-sm">5 aufeinander aufbauende Stufen für nachhaltige Beziehungsverbesserung</p>
+                <h3 className="text-lg font-bold text-white mb-2">Strukturiertes Training</h3>
+                <p className="text-gray-300 text-sm">5 aufeinander aufbauende Stufen für nachhaltige Beziehungsverbesserung</p>
               </div>
             </div>
           </div>
