@@ -142,9 +142,9 @@ const EmpathyTrainingApp = () => {
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center gap-6 text-gray-500 text-sm">
+              <div className="flex items-center justify-center gap-6 text-gray-400 text-sm">
                 <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
                   <span>4.9/5 Bewertung</span>
                 </div>
                 <div className="flex items-center gap-2">
