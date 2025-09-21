@@ -443,6 +443,8 @@ test_plan:
 agent_communication:
     -agent: "main"
     -message: "✅ CRITICAL BUG FIXED: Successfully resolved 'LoginModal is not defined' JavaScript runtime error by relocating LoginModal component definition back into EmpathyTrainingApp component. App now loads correctly, landing page displays properly, onboarding form works, and speech control icons are visible. Ready for comprehensive testing to verify all functionality remains working."
+    -agent: "main"
+    -message: "🎯 CURRENT IMPLEMENTATION STATUS: User reported missing voice control and inconsistent design. Analysis complete: 1) SpeechInput component with microphone/globe icons is missing from onboarding form and other input fields, 2) Dashboard uses light theme while Partner Dashboard uses dark theme - need consistency, 3) No functionality for users to input their own cases. About to implement: consistent dark theme across all pages, SpeechInput component with multi-language support, and own case input functionality."
     -agent: "testing"
     -message: "Completed comprehensive backend testing. All core functionality working. Stripe payment integration with Swiss VAT pricing verified. Minor error handling issue in invalid package validation (returns 500 instead of 400) but validation logic works correctly."
     -agent: "testing"
