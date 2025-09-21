@@ -2461,6 +2461,8 @@ const EmpathyTrainingApp = () => {
     // Default to home view - fall back to existing tabs interface
     setCurrentTab('home');
   }
+
+  return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
