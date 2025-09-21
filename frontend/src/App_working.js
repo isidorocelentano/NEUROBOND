@@ -634,7 +634,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Gefühlslexikon wird geöffnet...', 'info')}
+                onClick={() => setCurrentTab('lexikon')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -646,7 +646,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">50+ Emotionen verstehen und benennen</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">Kostenlos</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('lexikon');}}>
                       <Star className="w-4 h-4 mr-1" />
                       Erkunden
                     </Button>
