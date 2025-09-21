@@ -2248,7 +2248,241 @@ const EmpathyTrainingApp = () => {
     setSubscriptionStatus('free');
   }
 
-  return (
+  // Modern Partner Dashboard Component (inspired by user's design)
+  const PartnerDashboard = ({ partner, isMainUser = true }) => {
+    const partnerLevel = Math.floor(userProgress.length / 3) + 1;
+    const dailyGoalsCompleted = 6; // Demo value
+    const dailyGoalsTotal = 10;
+    const progressPercentage = (dailyGoalsCompleted / dailyGoalsTotal) * 100;
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        {/* Header */}
+        <header className="flex justify-between items-center p-6 mb-8">
+          <h1 className="text-2xl font-bold text-white">Neurobond</h1>
+          <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+            <UserCircle className="w-6 h-6" />
+          </Button>
+        </header>
+
+        {/* Profile Section */}
+        <div className="flex flex-col items-center mb-12">
+          <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white/20">
+            {(isMainUser && userAvatar) ? (
+              <img 
+                src={userAvatar} 
+                alt={`${partner?.name || user?.name} Avatar`}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                <UserCircle className="w-20 h-20 text-white/80" />
+              </div>
+            )}
+          </div>
+          
+          <h2 className="text-3xl font-bold mb-2">
+            {isMainUser ? (user?.name || 'Du') : (user?.partner_name || 'Partner')}
+          </h2>
+          <p className="text-lg text-gray-300">Level {partnerLevel}</p>
+        </div>
+
+        {/* Daily Goals Section */}
+        <div className="px-6 mb-8">
+          <h3 className="text-2xl font-bold mb-6">Tagesziele</h3>
+          
+          <div className="mb-4">
+            <p className="text-lg text-gray-300 mb-3">
+              {dailyGoalsCompleted} von {dailyGoalsTotal} abgeschlossen
+            </p>
+            
+            {/* Progress Bar */}
+            <div className="w-full bg-gray-700 rounded-full h-3 mb-6">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-cyan-400 h-3 rounded-full transition-all duration-500"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Goals List */}
+          <div className="space-y-4">
+            {[
+              { text: "Empathie-Training absolvieren", completed: true },
+              { text: "Gefühlslexikon studieren", completed: true },
+              { text: "Dialog-Coaching durchführen", completed: true },
+              { text: "Community Case kommentieren", completed: true },
+              { text: "Meditation (5 Min)", completed: true },
+              { text: "Partner-Dialog führen", completed: true },
+              { text: "Wöchentlichen Plan aktualisieren", completed: false },
+              { text: "Reflexion schreiben", completed: false },
+              { text: "Dankbarkeits-Übung", completed: false },
+              { text: "Konfliktlösung üben", completed: false }
+            ].map((goal, index) => (
+              <div key={index} className="flex items-center space-x-3">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                  goal.completed 
+                    ? 'bg-gradient-to-r from-blue-500 to-cyan-400' 
+                    : 'bg-gray-600'
+                }`}>
+                  {goal.completed && <CheckCircle className="w-3 h-3 text-white" />}
+                </div>
+                <span className={`${goal.completed ? 'text-white' : 'text-gray-400'}`}>
+                  {goal.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Footer */}
+        <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm border-t border-gray-700">
+          <div className="flex justify-around py-4">
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('training')}
+            >
+              <Target className="w-6 h-6 mb-1" />
+              <span className="text-xs">Training</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('dialog')}
+            >
+              <MessageCircle className="w-6 h-6 mb-1" />
+              <span className="text-xs">Dialog</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center text-blue-400"
+            >
+              <Heart className="w-6 h-6 mb-1" />
+              <span className="text-xs">Ziele</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('lexikon')}
+            >
+              <BookOpen className="w-6 h-6 mb-1" />
+              <span className="text-xs">Lexikon</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center text-white hover:bg-white/10"
+              onClick={() => {
+                setUser(null); 
+                setShowLandingPage(true); 
+                localStorage.removeItem('empathy_user');
+                showNotification('Erfolgreich abgemeldet', 'success');
+              }}
+            >
+              <User className="w-6 h-6 mb-1" />
+              <span className="text-xs">Profil</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Partner Selection Component
+  const PartnerSelection = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <header className="flex justify-between items-center p-6 mb-8">
+          <h1 className="text-2xl font-bold text-white">Neurobond</h1>
+        </header>
+
+        <div className="flex flex-col items-center px-6">
+          <h2 className="text-3xl font-bold mb-8 text-center">Wähle dein Profil</h2>
+          
+          <div className="grid md:grid-cols-2 gap-8 max-w-2xl w-full">
+            {/* Main User */}
+            <Card 
+              className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
+              onClick={() => setCurrentTab('partner1')}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-blue-400">
+                  {userAvatar ? (
+                    <img 
+                      src={userAvatar} 
+                      alt={`${user?.name} Avatar`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                      <UserCircle className="w-16 h-16 text-white/80" />
+                    </div>
+                  )}
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">{user?.name || 'Du'}</h3>
+                <p className="text-gray-300">Level {Math.floor(userProgress.length / 3) + 1}</p>
+                <Badge className="mt-3 bg-blue-600">Hauptnutzer</Badge>
+              </CardContent>
+            </Card>
+
+            {/* Partner */}
+            <Card 
+              className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
+              onClick={() => setCurrentTab('partner2')}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-purple-400">
+                  <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                    <UserCircle className="w-16 h-16 text-white/80" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">{user?.partner_name || 'Partner'}</h3>
+                <p className="text-gray-300">Level {Math.floor(userProgress.length / 4) + 1}</p>
+                <Badge className="mt-3 bg-purple-600">Partner</Badge>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Button 
+            variant="outline"
+            className="mt-8 border-gray-600 text-white hover:bg-gray-800"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+            Zurück zur Übersicht
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  // Dashboard Component
+  const Dashboard = () => {
+    if (currentTab === 'training') {
+      return <TrainingComponent />;
+    }
+    
+    if (currentTab === 'lexikon') {
+      return <GefuehlslexikonComponent />;
+    }
+    
+    if (currentTab === 'dialog') {
+      return <DialogCoachingComponent />;
+    }
+
+    if (currentTab === 'partner1') {
+      return <PartnerDashboard partner={user} isMainUser={true} />;
+    }
+
+    if (currentTab === 'partner2') {
+      return <PartnerDashboard partner={{name: user?.partner_name}} isMainUser={false} />;
+    }
+
+    if (currentTab === 'partners') {
+      return <PartnerSelection />;
+    }
+
+    return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
