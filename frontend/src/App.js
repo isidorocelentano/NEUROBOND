@@ -319,8 +319,346 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Training Component
+  const TrainingComponent = () => {
+    const [currentStage, setCurrentStage] = useState(1);
+    const [currentScenario, setCurrentScenario] = useState(null);
+    const [userResponse, setUserResponse] = useState('');
+
+    const scenarios = [
+      {
+        id: 1,
+        stage: 1,
+        title: "Konflikt um Hausarbeit",
+        situation: "Dein Partner sagt: 'Du hilfst nie im Haushalt! Ich mache immer alles alleine.'",
+        options: [
+          { id: 1, text: "Das stimmt nicht! Ich helfe sehr wohl!", type: "problematic" },
+          { id: 2, text: "Du übertreibst total, ich mache auch vieles.", type: "problematic" },
+          { id: 3, text: "Es tut mir leid, dass du dich allein gelassen fühlst. Lass uns darüber sprechen.", type: "empathetic" }
+        ]
+      },
+      {
+        id: 2,
+        stage: 1,
+        title: "Zeitmangel in der Beziehung",
+        situation: "Dein Partner sagt: 'Wir verbringen gar keine Zeit mehr miteinander. Dir sind andere Sachen wichtiger.'",
+        options: [
+          { id: 1, text: "Das ist unfair! Ich arbeite hart für uns beide.", type: "problematic" },
+          { id: 2, text: "Ich verstehe, dass du mehr gemeinsame Zeit brauchst. Das ist mir auch wichtig.", type: "empathetic" },
+          { id: 3, text: "Du weißt doch, wie stressig mein Job ist!", type: "problematic" }
+        ]
+      }
+    ];
+
+    const handleResponse = (option) => {
+      let feedback = "";
+      if (option.type === "empathetic") {
+        feedback = "✅ Ausgezeichnet! Diese Antwort zeigt Empathie und Verständnis. Sie validiert die Gefühle deines Partners und öffnet den Dialog für eine konstruktive Lösung.";
+      } else {
+        feedback = "❌ Diese Antwort könnte defensiv wirken. Versuche stattdessen, die Gefühle deines Partners zu verstehen und zu validieren, bevor du deine Sicht erklärst.";
+      }
+      
+      showNotification(feedback, option.type === "empathetic" ? "success" : "warning");
+      
+      // Next scenario or complete stage
+      const nextScenario = scenarios.find(s => s.id > currentScenario.id && s.stage === currentStage);
+      if (nextScenario) {
+        setTimeout(() => setCurrentScenario(nextScenario), 3000);
+      } else {
+        setTimeout(() => {
+          showNotification("Stufe 1 abgeschlossen! 🎉", "success");
+          setCurrentScenario(null);
+        }, 3000);
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-500">Training Stufen</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCurrentTab('home')}
+                    className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Zurück zum Dashboard
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="container mx-auto px-4 py-8">
+            {!currentScenario ? (
+              // Stage Selection
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Training Stufen</h2>
+                  <p className="text-xl text-gray-600">Wähle eine Stufe zum Üben empathischer Kommunikation</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[1, 2, 3, 4, 5].map(stage => (
+                    <Card 
+                      key={stage}
+                      className={`${stage === 1 ? 'bg-white/80 cursor-pointer hover:shadow-lg' : 'bg-gray-100/60'} backdrop-blur-sm border transition-all`}
+                      onClick={stage === 1 ? () => setCurrentScenario(scenarios[0]) : undefined}
+                    >
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Target className={`w-5 h-5 ${stage === 1 ? 'text-blue-600' : 'text-gray-400'}`} />
+                          Stufe {stage}
+                          {stage > 1 && <Crown className="w-4 h-4 text-yellow-500" />}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className={`mb-4 ${stage === 1 ? 'text-gray-600' : 'text-gray-400'}`}>
+                          {stage === 1 && "Grundlagen empathischer Kommunikation"}
+                          {stage === 2 && "Aktives Zuhören und Validation"}
+                          {stage === 3 && "Konfliktlösung mit Empathie"}
+                          {stage === 4 && "Emotionale Intelligenz vertiefen"}
+                          {stage === 5 && "Meisterschaft in Beziehungskommunikation"}
+                        </p>
+                        <div className="flex gap-2">
+                          {stage === 1 ? (
+                            <>
+                              <Badge variant="secondary">Kostenlos</Badge>
+                              <Button size="sm" className="ml-auto">
+                                <Play className="w-4 h-4 mr-1" />
+                                Starten
+                              </Button>
+                            </>
+                          ) : (
+                            <Badge variant="outline" className="text-gray-400">PRO erforderlich</Badge>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              // Scenario Practice
+              <div className="max-w-3xl mx-auto">
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge>Stufe {currentScenario.stage}</Badge>
+                    <Badge variant="outline">Szenario {currentScenario.id}</Badge>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">{currentScenario.title}</h2>
+                </div>
+
+                <Card className="bg-white/80 backdrop-blur-sm shadow-lg mb-6">
+                  <CardHeader>
+                    <CardTitle className="text-lg text-gray-800">Situation</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 text-lg italic">"{currentScenario.situation}"</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-lg text-gray-800">Wie würdest du antworten?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {currentScenario.options.map(option => (
+                      <Button
+                        key={option.id}
+                        variant="outline"
+                        className="w-full p-4 h-auto text-left justify-start hover:bg-blue-50"
+                        onClick={() => handleResponse(option)}
+                      >
+                        <span className="text-sm leading-relaxed">{option.text}</span>
+                      </Button>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Gefühlslexikon Component
+  const GefuehlslexikonComponent = () => {
+    const emotions = [
+      { name: "Freude", description: "Ein Gefühl des Glücks und der Zufriedenheit", color: "bg-yellow-100 text-yellow-800" },
+      { name: "Trauer", description: "Ein Gefühl des Verlustes oder der Enttäuschung", color: "bg-blue-100 text-blue-800" },
+      { name: "Wut", description: "Ein intensives Gefühl des Ärgers oder der Frustration", color: "bg-red-100 text-red-800" },
+      { name: "Angst", description: "Ein Gefühl der Unsicherheit oder Besorgnis", color: "bg-purple-100 text-purple-800" },
+      { name: "Liebe", description: "Ein tiefes Gefühl der Zuneigung und Verbundenheit", color: "bg-pink-100 text-pink-800" },
+      { name: "Dankbarkeit", description: "Ein Gefühl der Wertschätzung und des Dankes", color: "bg-green-100 text-green-800" }
+    ];
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-500">Gefühlslexikon</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCurrentTab('home')}
+                    className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Zurück zum Dashboard
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Gefühlslexikon</h2>
+                <p className="text-xl text-gray-600">Entdecke und verstehe verschiedene Emotionen</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {emotions.map((emotion, index) => (
+                  <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className={`w-4 h-4 rounded-full ${emotion.color.split(' ')[0]}`}></div>
+                        {emotion.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600">{emotion.description}</p>
+                      <Badge className={`mt-3 ${emotion.color}`}>{emotion.name}</Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Dialog Coaching Component
+  const DialogCoachingComponent = () => {
+    const [dialogText, setDialogText] = useState('');
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-500">Dialog-Coaching</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCurrentTab('home')}
+                    className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Zurück zum Dashboard
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Dialog-Coaching</h2>
+                <p className="text-xl text-gray-600">Analysiere deine Kommunikation mit KI-Unterstützung</p>
+              </div>
+
+              <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
+                <CardHeader>
+                  <CardTitle>Gib einen Dialog ein</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <textarea
+                    value={dialogText}
+                    onChange={(e) => setDialogText(e.target.value)}
+                    placeholder="Beschreibe hier ein Gespräch oder eine Situation mit deinem Partner..."
+                    className="w-full h-32 p-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <Button 
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    onClick={() => showNotification('Dialog wird analysiert... 🧠', 'info')}
+                    disabled={!dialogText.trim()}
+                  >
+                    <Brain className="w-4 h-4 mr-2" />
+                    Dialog analysieren
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Dashboard Component
   const Dashboard = () => {
+    if (currentTab === 'training') {
+      return <TrainingComponent />;
+    }
+    
+    if (currentTab === 'lexikon') {
+      return <GefuehlslexikonComponent />;
+    }
+    
+    if (currentTab === 'dialog') {
+      return <DialogCoachingComponent />;
+    }
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
         <div className="relative z-10">
@@ -406,7 +744,7 @@ const EmpathyTrainingApp = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Training Stufen werden geladen...', 'info')}
+                onClick={() => setCurrentTab('training')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -418,7 +756,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">5 strukturierte Stufen für bessere Kommunikation</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">5 kostenlose Szenarien</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('training');}}>
                       <Play className="w-4 h-4 mr-1" />
                       Starten
                     </Button>
@@ -428,7 +766,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Dialog-Coaching wird geladen...', 'info')}
+                onClick={() => setCurrentTab('dialog')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -440,7 +778,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">KI-gestützte Kommunikationsanalyse</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">Wissenschaftlich fundiert</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('dialog');}}>
                       <Brain className="w-4 h-4 mr-1" />
                       Analysieren
                     </Button>
@@ -450,7 +788,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Gefühlslexikon wird geöffnet...', 'info')}
+                onClick={() => setCurrentTab('lexikon')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -462,7 +800,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">50+ Emotionen verstehen und benennen</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">Kostenlos</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('lexikon');}}>
                       <Star className="w-4 h-4 mr-1" />
                       Erkunden
                     </Button>
