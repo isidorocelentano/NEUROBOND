@@ -2737,6 +2737,17 @@ const EmpathyTrainingApp = () => {
                   </span>
                 </div>
                 
+                {/* Partner Profiles Button */}
+                <Button 
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCurrentTab('partners')}
+                  className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                >
+                  <Users className="w-4 h-4" />
+                  <span className="hidden sm:inline ml-2">Profile</span>
+                </Button>
+                
                 {/* Logout Button */}
                 <Button 
                   variant="ghost"
