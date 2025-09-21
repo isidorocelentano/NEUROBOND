@@ -2250,428 +2250,217 @@ const EmpathyTrainingApp = () => {
 
   // If user is logged in and we're not showing onboarding or landing page, show Dashboard
   if (user && !showOnboarding && !showLandingPage) {
-    return <Dashboard />;
-  }
+    // Simple navigation logic
+    if (currentTab === 'partners') {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+          <header className="flex justify-between items-center p-6 mb-8">
+            <h1 className="text-2xl font-bold text-white">Neurobond</h1>
+          </header>
 
-  // Modern Partner Dashboard Component (inspired by user's design)
-  const PartnerDashboard = ({ partner, isMainUser = true }) => {
-    const partnerLevel = Math.floor(userProgress.length / 3) + 1;
-    const dailyGoalsCompleted = 6; // Demo value
-    const dailyGoalsTotal = 10;
-    const progressPercentage = (dailyGoalsCompleted / dailyGoalsTotal) * 100;
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
-        {/* Header */}
-        <header className="flex justify-between items-center p-6 mb-8">
-          <h1 className="text-2xl font-bold text-white">Neurobond</h1>
-          <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
-            <UserCircle className="w-6 h-6" />
-          </Button>
-        </header>
-
-        {/* Profile Section */}
-        <div className="flex flex-col items-center mb-12">
-          <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white/20">
-            {(isMainUser && userAvatar) ? (
-              <img 
-                src={userAvatar} 
-                alt={`${partner?.name || user?.name} Avatar`}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                <UserCircle className="w-20 h-20 text-white/80" />
-              </div>
-            )}
-          </div>
-          
-          <h2 className="text-3xl font-bold mb-2">
-            {isMainUser ? (user?.name || 'Du') : (user?.partner_name || 'Partner')}
-          </h2>
-          <p className="text-lg text-gray-300">Level {partnerLevel}</p>
-        </div>
-
-        {/* Daily Goals Section */}
-        <div className="px-6 mb-8">
-          <h3 className="text-2xl font-bold mb-6">Tagesziele</h3>
-          
-          <div className="mb-4">
-            <p className="text-lg text-gray-300 mb-3">
-              {dailyGoalsCompleted} von {dailyGoalsTotal} abgeschlossen
-            </p>
+          <div className="flex flex-col items-center px-6">
+            <h2 className="text-3xl font-bold mb-8 text-center">Wähle dein Profil</h2>
             
-            {/* Progress Bar */}
-            <div className="w-full bg-gray-700 rounded-full h-3 mb-6">
-              <div 
-                className="bg-gradient-to-r from-blue-500 to-cyan-400 h-3 rounded-full transition-all duration-500"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
+            <div className="grid md:grid-cols-2 gap-8 max-w-2xl w-full">
+              {/* Main User */}
+              <Card 
+                className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
+                onClick={() => setCurrentTab('partner1')}
+              >
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-blue-400">
+                    {userAvatar ? (
+                      <img 
+                        src={userAvatar} 
+                        alt={`${user?.name} Avatar`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <UserCircle className="w-16 h-16 text-white/80" />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">{user?.name || 'Du'}</h3>
+                  <p className="text-gray-300">Level {Math.floor(userProgress.length / 3) + 1}</p>
+                  <Badge className="mt-3 bg-blue-600">Hauptnutzer</Badge>
+                </CardContent>
+              </Card>
+
+              {/* Partner */}
+              <Card 
+                className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
+                onClick={() => setCurrentTab('partner2')}
+              >
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-purple-400">
+                    <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                      <UserCircle className="w-16 h-16 text-white/80" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">{user?.partner_name || 'Partner'}</h3>
+                  <p className="text-gray-300">Level {Math.floor(userProgress.length / 4) + 1}</p>
+                  <Badge className="mt-3 bg-purple-600">Partner</Badge>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Button 
+              variant="outline"
+              className="mt-8 border-gray-600 text-white hover:bg-gray-800"
+              onClick={() => setCurrentTab('home')}
+            >
+              <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+              Zurück zur Übersicht
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    if (currentTab === 'partner1' || currentTab === 'partner2') {
+      const isMainUser = currentTab === 'partner1';
+      const partnerLevel = Math.floor(userProgress.length / 3) + 1;
+      const dailyGoalsCompleted = 6; // Demo value
+      const dailyGoalsTotal = 10;
+      const progressPercentage = (dailyGoalsCompleted / dailyGoalsTotal) * 100;
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+          {/* Header */}
+          <header className="flex justify-between items-center p-6 mb-8">
+            <h1 className="text-2xl font-bold text-white">Neurobond</h1>
+            <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+              <UserCircle className="w-6 h-6" />
+            </Button>
+          </header>
+
+          {/* Profile Section */}
+          <div className="flex flex-col items-center mb-12">
+            <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white/20">
+              {(isMainUser && userAvatar) ? (
+                <img 
+                  src={userAvatar} 
+                  alt={`${user?.name} Avatar`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                  <UserCircle className="w-20 h-20 text-white/80" />
+                </div>
+              )}
+            </div>
+            
+            <h2 className="text-3xl font-bold mb-2">
+              {isMainUser ? (user?.name || 'Du') : (user?.partner_name || 'Partner')}
+            </h2>
+            <p className="text-lg text-gray-300">Level {partnerLevel}</p>
+          </div>
+
+          {/* Daily Goals Section */}
+          <div className="px-6 mb-8">
+            <h3 className="text-2xl font-bold mb-6">Tagesziele</h3>
+            
+            <div className="mb-4">
+              <p className="text-lg text-gray-300 mb-3">
+                {dailyGoalsCompleted} von {dailyGoalsTotal} abgeschlossen
+              </p>
+              
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-700 rounded-full h-3 mb-6">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-cyan-400 h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${progressPercentage}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Goals List */}
+            <div className="space-y-4">
+              {[
+                { text: "Empathie-Training absolvieren", completed: true },
+                { text: "Gefühlslexikon studieren", completed: true },
+                { text: "Dialog-Coaching durchführen", completed: true },
+                { text: "Community Case kommentieren", completed: true },
+                { text: "Meditation (5 Min)", completed: true },
+                { text: "Partner-Dialog führen", completed: true },
+                { text: "Wöchentlichen Plan aktualisieren", completed: false },
+                { text: "Reflexion schreiben", completed: false },
+                { text: "Dankbarkeits-Übung", completed: false },
+                { text: "Konfliktlösung üben", completed: false }
+              ].map((goal, index) => (
+                <div key={index} className="flex items-center space-x-3">
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                    goal.completed 
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-400' 
+                      : 'bg-gray-600'
+                  }`}>
+                    {goal.completed && <CheckCircle className="w-3 h-3 text-white" />}
+                  </div>
+                  <span className={`${goal.completed ? 'text-white' : 'text-gray-400'}`}>
+                    {goal.text}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Goals List */}
-          <div className="space-y-4">
-            {[
-              { text: "Empathie-Training absolvieren", completed: true },
-              { text: "Gefühlslexikon studieren", completed: true },
-              { text: "Dialog-Coaching durchführen", completed: true },
-              { text: "Community Case kommentieren", completed: true },
-              { text: "Meditation (5 Min)", completed: true },
-              { text: "Partner-Dialog führen", completed: true },
-              { text: "Wöchentlichen Plan aktualisieren", completed: false },
-              { text: "Reflexion schreiben", completed: false },
-              { text: "Dankbarkeits-Übung", completed: false },
-              { text: "Konfliktlösung üben", completed: false }
-            ].map((goal, index) => (
-              <div key={index} className="flex items-center space-x-3">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
-                  goal.completed 
-                    ? 'bg-gradient-to-r from-blue-500 to-cyan-400' 
-                    : 'bg-gray-600'
-                }`}>
-                  {goal.completed && <CheckCircle className="w-3 h-3 text-white" />}
-                </div>
-                <span className={`${goal.completed ? 'text-white' : 'text-gray-400'}`}>
-                  {goal.text}
-                </span>
-              </div>
-            ))}
+          {/* Navigation Footer */}
+          <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm border-t border-gray-700">
+            <div className="flex justify-around py-4">
+              <Button 
+                variant="ghost" 
+                className="flex flex-col items-center text-white hover:bg-white/10"
+                onClick={() => setCurrentTab('home')}
+              >
+                <Target className="w-6 h-6 mb-1" />
+                <span className="text-xs">Training</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="flex flex-col items-center text-white hover:bg-white/10"
+                onClick={() => setCurrentTab('home')}
+              >
+                <MessageCircle className="w-6 h-6 mb-1" />
+                <span className="text-xs">Dialog</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="flex flex-col items-center text-blue-400"
+              >
+                <Heart className="w-6 h-6 mb-1" />
+                <span className="text-xs">Ziele</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="flex flex-col items-center text-white hover:bg-white/10"
+                onClick={() => setCurrentTab('home')}
+              >
+                <BookOpen className="w-6 h-6 mb-1" />
+                <span className="text-xs">Lexikon</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="flex flex-col items-center text-white hover:bg-white/10"
+                onClick={() => {
+                  setUser(null); 
+                  setShowLandingPage(true); 
+                  localStorage.removeItem('empathy_user');
+                  showNotification('Erfolgreich abgemeldet', 'success');
+                }}
+              >
+                <User className="w-6 h-6 mb-1" />
+                <span className="text-xs">Profil</span>
+              </Button>
+            </div>
           </div>
         </div>
-
-        {/* Navigation Footer */}
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-sm border-t border-gray-700">
-          <div className="flex justify-around py-4">
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => setCurrentTab('training')}
-            >
-              <Target className="w-6 h-6 mb-1" />
-              <span className="text-xs">Training</span>
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => setCurrentTab('dialog')}
-            >
-              <MessageCircle className="w-6 h-6 mb-1" />
-              <span className="text-xs">Dialog</span>
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center text-blue-400"
-            >
-              <Heart className="w-6 h-6 mb-1" />
-              <span className="text-xs">Ziele</span>
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => setCurrentTab('lexikon')}
-            >
-              <BookOpen className="w-6 h-6 mb-1" />
-              <span className="text-xs">Lexikon</span>
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => {
-                setUser(null); 
-                setShowLandingPage(true); 
-                localStorage.removeItem('empathy_user');
-                showNotification('Erfolgreich abgemeldet', 'success');
-              }}
-            >
-              <User className="w-6 h-6 mb-1" />
-              <span className="text-xs">Profil</span>
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Partner Selection Component
-  const PartnerSelection = () => {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
-        <header className="flex justify-between items-center p-6 mb-8">
-          <h1 className="text-2xl font-bold text-white">Neurobond</h1>
-        </header>
-
-        <div className="flex flex-col items-center px-6">
-          <h2 className="text-3xl font-bold mb-8 text-center">Wähle dein Profil</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl w-full">
-            {/* Main User */}
-            <Card 
-              className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
-              onClick={() => setCurrentTab('partner1')}
-            >
-              <CardContent className="p-8 text-center">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-blue-400">
-                  {userAvatar ? (
-                    <img 
-                      src={userAvatar} 
-                      alt={`${user?.name} Avatar`}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                      <UserCircle className="w-16 h-16 text-white/80" />
-                    </div>
-                  )}
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-2">{user?.name || 'Du'}</h3>
-                <p className="text-gray-300">Level {Math.floor(userProgress.length / 3) + 1}</p>
-                <Badge className="mt-3 bg-blue-600">Hauptnutzer</Badge>
-              </CardContent>
-            </Card>
-
-            {/* Partner */}
-            <Card 
-              className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all cursor-pointer"
-              onClick={() => setCurrentTab('partner2')}
-            >
-              <CardContent className="p-8 text-center">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-purple-400">
-                  <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-                    <UserCircle className="w-16 h-16 text-white/80" />
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-2">{user?.partner_name || 'Partner'}</h3>
-                <p className="text-gray-300">Level {Math.floor(userProgress.length / 4) + 1}</p>
-                <Badge className="mt-3 bg-purple-600">Partner</Badge>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Button 
-            variant="outline"
-            className="mt-8 border-gray-600 text-white hover:bg-gray-800"
-            onClick={() => setCurrentTab('home')}
-          >
-            <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-            Zurück zur Übersicht
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  // Training Component (simplified)
-  const TrainingComponent = () => {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Empathie-Training</h1>
-            <Button 
-              variant="outline"
-              onClick={() => setCurrentTab('home')}
-              className="flex items-center gap-2"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-              Zurück
-            </Button>
-          </div>
-          
-          {/* Training Stages */}
-          <div className="space-y-6">
-            {stages.map((stage) => (
-              <Card key={stage.stage_number} className="bg-white/80 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white">
-                      {getStageIcon(stage.stage_number)}
-                    </div>
-                    Stufe {stage.stage_number}: {stage.title}
-                  </CardTitle>
-                  <CardDescription>{stage.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {stage.scenarios.slice(0, hasAccessToFeature('stage_1_scenarios', 999) ? 999 : 5).map((scenario) => (
-                      <ScenarioCard 
-                        key={scenario.id} 
-                        scenario={scenario} 
-                        stageNumber={stage.stage_number}
-                        isLocked={stage.stage_number > 1 && subscriptionStatus === 'free'}
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Gefühlslexikon Component (simplified)
-  const GefuehlslexikonComponent = () => {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Gefühlslexikon</h1>
-            <Button 
-              variant="outline"
-              onClick={() => setCurrentTab('home')}
-              className="flex items-center gap-2"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-              Zurück
-            </Button>
-          </div>
-          
-          <div className="space-y-4">
-            {FEELINGS_DATA.map((feeling) => (
-              <FeelingCard key={feeling.id} feeling={feeling} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Dialog Coaching Component (simplified)
-  const DialogCoachingComponent = () => {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Dialog-Coaching</h1>
-            <Button 
-              variant="outline"
-              onClick={() => setCurrentTab('home')}
-              className="flex items-center gap-2"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-              Zurück
-            </Button>
-          </div>
-          
-          {subscriptionStatus === 'free' ? (
-            <PremiumLock featureType="dialog_coaching" />
-          ) : (
-            <Card className="bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-blue-500" />
-                  Dialog zwischen {user?.name} und {user?.partner_name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Dialog Messages */}
-                  <div className="max-h-96 overflow-y-auto space-y-3 p-4 bg-gray-50 rounded-lg">
-                    {dialogMessages.map((msg) => (
-                      <div key={msg.id} className={`flex ${msg.speakerType === 'partner1' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-xs px-4 py-2 rounded-lg ${
-                          msg.speakerType === 'partner1' 
-                            ? 'bg-blue-500 text-white' 
-                            : 'bg-white border'
-                        }`}>
-                          <p className="text-sm font-medium">{msg.speaker}</p>
-                          <p>{msg.message}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Message Input */}
-                  <div className="flex gap-2">
-                    <SpeechInput
-                      value={currentMessage}
-                      onChange={setCurrentMessage}
-                      placeholder="Nachricht eingeben..."
-                      className="flex-1"
-                    />
-                    <Button onClick={addDialogMessage} disabled={!currentMessage.trim()}>
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  
-                  {/* Speaker Toggle */}
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium">Sprecher:</span>
-                    <Button
-                      variant={currentSpeaker === 'partner1' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setCurrentSpeaker('partner1')}
-                    >
-                      {user?.name}
-                    </Button>
-                    <Button
-                      variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setCurrentSpeaker('partner2')}
-                    >
-                      {user?.partner_name}
-                    </Button>
-                  </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button onClick={analyzeDialog} disabled={isAnalyzing || dialogMessages.length < 2}>
-                      {isAnalyzing ? 'Analysiere...' : 'Dialog analysieren'}
-                    </Button>
-                    <Button variant="outline" onClick={clearDialog}>
-                      Dialog löschen
-                    </Button>
-                  </div>
-                  
-                  {/* Analysis Results */}
-                  {dialogAnalysis && (
-                    <Card className="mt-4">
-                      <CardHeader>
-                        <CardTitle className="text-lg">KI-Analyse</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="whitespace-pre-wrap">{dialogAnalysis}</p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  // Dashboard Component
-  const Dashboard = () => {
-    if (currentTab === 'training') {
-      return <TrainingComponent />;
-    }
-    
-    if (currentTab === 'lexikon') {
-      return <GefuehlslexikonComponent />;
-    }
-    
-    if (currentTab === 'dialog') {
-      return <DialogCoachingComponent />;
+      );
     }
 
-    if (currentTab === 'partner1') {
-      return <PartnerDashboard partner={user} isMainUser={true} />;
-    }
-
-    if (currentTab === 'partner2') {
-      return <PartnerDashboard partner={{name: user?.partner_name}} isMainUser={false} />;
-    }
-
-    if (currentTab === 'partners') {
-      return <PartnerSelection />;
-    }
-
-    return (
+    // Default to home view - fall back to existing tabs interface
+    setCurrentTab('home');
+  }
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
