@@ -1355,6 +1355,10 @@ const EmpathyTrainingApp = () => {
     return <PartnerDashboard isMainUser={false} />;
   }
 
+  if (currentTab === 'own-cases') {
+    return <OwnCasesCreation />;
+  }
+
   return (
     <>
       <Dashboard />
