@@ -2456,6 +2456,190 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Training Component (simplified)
+  const TrainingComponent = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Empathie-Training</h1>
+            <Button 
+              variant="outline"
+              onClick={() => setCurrentTab('home')}
+              className="flex items-center gap-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Zurück
+            </Button>
+          </div>
+          
+          {/* Training Stages */}
+          <div className="space-y-6">
+            {stages.map((stage) => (
+              <Card key={stage.stage_number} className="bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white">
+                      {getStageIcon(stage.stage_number)}
+                    </div>
+                    Stufe {stage.stage_number}: {stage.title}
+                  </CardTitle>
+                  <CardDescription>{stage.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {stage.scenarios.slice(0, hasAccessToFeature('stage_1_scenarios', 999) ? 999 : 5).map((scenario) => (
+                      <ScenarioCard 
+                        key={scenario.id} 
+                        scenario={scenario} 
+                        stageNumber={stage.stage_number}
+                        isLocked={stage.stage_number > 1 && subscriptionStatus === 'free'}
+                      />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Gefühlslexikon Component (simplified)
+  const GefuehlslexikonComponent = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Gefühlslexikon</h1>
+            <Button 
+              variant="outline"
+              onClick={() => setCurrentTab('home')}
+              className="flex items-center gap-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Zurück
+            </Button>
+          </div>
+          
+          <div className="space-y-4">
+            {FEELINGS_DATA.map((feeling) => (
+              <FeelingCard key={feeling.id} feeling={feeling} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Dialog Coaching Component (simplified)
+  const DialogCoachingComponent = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Dialog-Coaching</h1>
+            <Button 
+              variant="outline"
+              onClick={() => setCurrentTab('home')}
+              className="flex items-center gap-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              Zurück
+            </Button>
+          </div>
+          
+          {subscriptionStatus === 'free' ? (
+            <PremiumLock featureType="dialog_coaching" />
+          ) : (
+            <Card className="bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-blue-500" />
+                  Dialog zwischen {user?.name} und {user?.partner_name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Dialog Messages */}
+                  <div className="max-h-96 overflow-y-auto space-y-3 p-4 bg-gray-50 rounded-lg">
+                    {dialogMessages.map((msg) => (
+                      <div key={msg.id} className={`flex ${msg.speakerType === 'partner1' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-xs px-4 py-2 rounded-lg ${
+                          msg.speakerType === 'partner1' 
+                            ? 'bg-blue-500 text-white' 
+                            : 'bg-white border'
+                        }`}>
+                          <p className="text-sm font-medium">{msg.speaker}</p>
+                          <p>{msg.message}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Message Input */}
+                  <div className="flex gap-2">
+                    <SpeechInput
+                      value={currentMessage}
+                      onChange={setCurrentMessage}
+                      placeholder="Nachricht eingeben..."
+                      className="flex-1"
+                    />
+                    <Button onClick={addDialogMessage} disabled={!currentMessage.trim()}>
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  {/* Speaker Toggle */}
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium">Sprecher:</span>
+                    <Button
+                      variant={currentSpeaker === 'partner1' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setCurrentSpeaker('partner1')}
+                    >
+                      {user?.name}
+                    </Button>
+                    <Button
+                      variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setCurrentSpeaker('partner2')}
+                    >
+                      {user?.partner_name}
+                    </Button>
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <Button onClick={analyzeDialog} disabled={isAnalyzing || dialogMessages.length < 2}>
+                      {isAnalyzing ? 'Analysiere...' : 'Dialog analysieren'}
+                    </Button>
+                    <Button variant="outline" onClick={clearDialog}>
+                      Dialog löschen
+                    </Button>
+                  </div>
+                  
+                  {/* Analysis Results */}
+                  {dialogAnalysis && (
+                    <Card className="mt-4">
+                      <CardHeader>
+                        <CardTitle className="text-lg">KI-Analyse</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="whitespace-pre-wrap">{dialogAnalysis}</p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // Dashboard Component
   const Dashboard = () => {
     if (currentTab === 'training') {
