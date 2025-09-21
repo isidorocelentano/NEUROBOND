@@ -3704,7 +3704,10 @@ const EmpathyTrainingApp = () => {
       {/* Login Modal */}
       <LoginModal />
     </div>
-  );
+    );
+  };
+
+  return <Dashboard />;
 };
 
 const App = () => {
