@@ -499,10 +499,164 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Gefühlslexikon Component
+  const GefuehlslexikonComponent = () => {
+    const emotions = [
+      { name: "Freude", description: "Ein Gefühl des Glücks und der Zufriedenheit", color: "bg-yellow-100 text-yellow-800" },
+      { name: "Trauer", description: "Ein Gefühl des Verlustes oder der Enttäuschung", color: "bg-blue-100 text-blue-800" },
+      { name: "Wut", description: "Ein intensives Gefühl des Ärgers oder der Frustration", color: "bg-red-100 text-red-800" },
+      { name: "Angst", description: "Ein Gefühl der Unsicherheit oder Besorgnis", color: "bg-purple-100 text-purple-800" },
+      { name: "Liebe", description: "Ein tiefes Gefühl der Zuneigung und Verbundenheit", color: "bg-pink-100 text-pink-800" },
+      { name: "Dankbarkeit", description: "Ein Gefühl der Wertschätzung und des Dankes", color: "bg-green-100 text-green-800" }
+    ];
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-500">Gefühlslexikon</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCurrentTab('home')}
+                    className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Zurück zum Dashboard
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Gefühlslexikon</h2>
+                <p className="text-xl text-gray-600">Entdecke und verstehe verschiedene Emotionen</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {emotions.map((emotion, index) => (
+                  <Card key={index} className="bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className={`w-4 h-4 rounded-full ${emotion.color.split(' ')[0]}`}></div>
+                        {emotion.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600">{emotion.description}</p>
+                      <Badge className={`mt-3 ${emotion.color}`}>{emotion.name}</Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Dialog Coaching Component
+  const DialogCoachingComponent = () => {
+    const [dialogText, setDialogText] = useState('');
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+          <header className="backdrop-blur-sm bg-white/80 border-b border-white/20 sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">NEUROBOND</h1>
+                      <p className="text-xs text-gray-500">Dialog-Coaching</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCurrentTab('home')}
+                    className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Zurück zum Dashboard
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Dialog-Coaching</h2>
+                <p className="text-xl text-gray-600">Analysiere deine Kommunikation mit KI-Unterstützung</p>
+              </div>
+
+              <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
+                <CardHeader>
+                  <CardTitle>Gib einen Dialog ein</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <textarea
+                    value={dialogText}
+                    onChange={(e) => setDialogText(e.target.value)}
+                    placeholder="Beschreibe hier ein Gespräch oder eine Situation mit deinem Partner..."
+                    className="w-full h-32 p-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <Button 
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    onClick={() => showNotification('Dialog wird analysiert... 🧠', 'info')}
+                    disabled={!dialogText.trim()}
+                  >
+                    <Brain className="w-4 h-4 mr-2" />
+                    Dialog analysieren
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Dashboard Component
   const Dashboard = () => {
     if (currentTab === 'training') {
       return <TrainingComponent />;
+    }
+    
+    if (currentTab === 'lexikon') {
+      return <GefuehlslexikonComponent />;
+    }
+    
+    if (currentTab === 'dialog') {
+      return <DialogCoachingComponent />;
     }
 
     return (
