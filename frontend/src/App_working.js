@@ -612,7 +612,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-white/60 backdrop-blur-sm border border-white/20 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Dialog-Coaching wird geladen...', 'info')}
+                onClick={() => setCurrentTab('dialog')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -624,7 +624,7 @@ const EmpathyTrainingApp = () => {
                   <p className="text-gray-600 mb-4">KI-gestützte Kommunikationsanalyse</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary">Wissenschaftlich fundiert</Badge>
-                    <Button size="sm" className="ml-auto">
+                    <Button size="sm" className="ml-auto" onClick={(e) => {e.stopPropagation(); setCurrentTab('dialog');}}>
                       <Brain className="w-4 h-4 mr-1" />
                       Analysieren
                     </Button>
