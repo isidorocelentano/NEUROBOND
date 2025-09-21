@@ -84,6 +84,9 @@ const EmpathyTrainingApp = () => {
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState('free'); // free, active, cancelled, expired
 
+  // Navigation States
+  const [currentTab, setCurrentTab] = useState('home');
+
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
     setNotification({ show: true, message, type });
