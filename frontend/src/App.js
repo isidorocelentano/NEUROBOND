@@ -678,7 +678,7 @@ const EmpathyTrainingApp = () => {
     
     const newMessage = {
       id: Date.now(),
-      speaker: currentSpeaker === 'partner1' ? user?.name || 'Partner 1' : user?.partner_name || 'Partner 2',
+      speaker: currentSpeaker === 'partner1' ? user && user.name || 'Partner 1' : user && user.partner_name || 'Partner 2',
       message: currentMessage,
       timestamp: new Date(),
       speakerType: currentSpeaker
@@ -701,8 +701,8 @@ const EmpathyTrainingApp = () => {
           speaker: msg.speaker,
           message: msg.message
         })),
-        partner1_name: user?.name || 'Partner 1',
-        partner2_name: user?.partner_name || 'Partner 2'
+        partner1_name: user && user.name || 'Partner 1',
+        partner2_name: user && user.partner_name || 'Partner 2'
       });
       
       setDialogAnalysis(response.data.analysis);
@@ -710,8 +710,8 @@ const EmpathyTrainingApp = () => {
       // Save dialog session
       await axios.post(`${API}/dialog-session`, {
         user_id: user.id,
-        partner1_name: user?.name || 'Partner 1',
-        partner2_name: user?.partner_name || 'Partner 2',
+        partner1_name: user && user.name || 'Partner 1',
+        partner2_name: user && user.partner_name || 'Partner 2',
         messages: dialogMessages,
         analysis: response.data.analysis
       });
@@ -735,8 +735,8 @@ const EmpathyTrainingApp = () => {
     try {
       const response = await axios.post(`${API}/weekly-training-plan`, {
         user_id: user.id,
-        partner1_name: user?.name || 'Partner 1',
-        partner2_name: user?.partner_name || 'Partner 2',
+        partner1_name: user && user.name || 'Partner 1',
+        partner2_name: user && user.partner_name || 'Partner 2',
         current_challenges: 'Kommunikation und Empathie stärken'
       });
       
@@ -2273,7 +2273,7 @@ const EmpathyTrainingApp = () => {
                 {/* User Profile */}
                 <div className="hidden md:flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/20">
                   <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 border-2 border-blue-300 flex-shrink-0">
-                    {user?.avatar ? (
+                    {user && user.avatar ? (
                       <img 
                         src={user.avatar} 
                         alt={`${user.name} Avatar`}
@@ -2284,8 +2284,8 @@ const EmpathyTrainingApp = () => {
                     )}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Hallo, {user?.name}!</p>
-                    {user?.partner_name && (
+                    <p className="text-sm font-medium text-gray-900">Hallo, {user && user.name}!</p>
+                    {user && user.partner_name && (
                       <p className="text-xs text-gray-600">{user.name} & {user.partner_name}</p>
                     )}
                   </div>
@@ -2335,9 +2335,9 @@ const EmpathyTrainingApp = () => {
           {/* Welcome Section */}
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Willkommen zurück, {user?.name}! 👋
+              Willkommen zurück, {user && user.name}! 👋
             </h2>
-            {user?.partner_name && (
+            {user && user.partner_name && (
               <p className="text-xl text-gray-600 mb-6">
                 Stärkt eure Bindung - <span className="font-semibold">{user.name}</span> und <span className="font-semibold">{user.partner_name}</span>
               </p>
@@ -2603,7 +2603,7 @@ const EmpathyTrainingApp = () => {
                 </CardTitle>
                 <CardDescription>
                   Wissenschaftlich fundiertes Wissen über Emotionen und empathische Kommunikation. 
-                  {user?.partner_name && ` Verstehe ${user.partner_name} besser und stärke eure Verbindung.`}
+                  {user && user.partner_name && ` Verstehe ${user.partner_name} besser und stärke eure Verbindung.`}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2626,7 +2626,7 @@ const EmpathyTrainingApp = () => {
                   </CardTitle>
                   <CardDescription>
                     Haltet euer echtes Gespräch fest und erhaltet sofortige KI-Analyse eurer Kommunikationsmuster. 
-                    {user?.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
+                    {user && user.partner_name && ` Verbessert die Kommunikation zwischen ${user.name} und ${user.partner_name}.`}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -2643,20 +2643,20 @@ const EmpathyTrainingApp = () => {
                         size="sm"
                         onClick={() => setCurrentSpeaker('partner1')}
                       >
-                        {user?.name || 'Partner 1'}
+                        {user && user.name || 'Partner 1'}
                       </Button>
                       <Button
                         variant={currentSpeaker === 'partner2' ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => setCurrentSpeaker('partner2')}
                       >
-                        {user?.partner_name || 'Partner 2'}
+                        {user && user.partner_name || 'Partner 2'}
                       </Button>
                     </div>
                     
                     <div className="flex gap-2">
                       <SpeechInput
-                        placeholder={`Was sagt ${currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2')}?`}
+                        placeholder={`Was sagt ${currentSpeaker === 'partner1' ? (user && user.name || 'Partner 1') : (user && user.partner_name || 'Partner 2')}?`}
                         value={currentMessage}
                         onChange={setCurrentMessage}
                         multiline={true}
@@ -2669,7 +2669,7 @@ const EmpathyTrainingApp = () => {
                             const newMessage = {
                               id: Date.now().toString(),
                               speakerType: currentSpeaker,
-                              speaker: currentSpeaker === 'partner1' ? (user?.name || 'Partner 1') : (user?.partner_name || 'Partner 2'),
+                              speaker: currentSpeaker === 'partner1' ? (user && user.name || 'Partner 1') : (user && user.partner_name || 'Partner 2'),
                               message: currentMessage.trim(),
                               timestamp: new Date().toISOString()
                             };
@@ -2796,7 +2796,7 @@ const EmpathyTrainingApp = () => {
                   <CardDescription>
                     Wissenschaftlich fundierte Trainingspläne basierend auf EFT und Gottman-Methode. 
                     Wöchentliche Bindungsübungen für nachhaltiges Beziehungswachstum.
-                    {user?.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
+                    {user && user.partner_name && ` Perfekt für ${user.name} und ${user.partner_name}!`}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -2865,8 +2865,8 @@ const EmpathyTrainingApp = () => {
                 <div className="flex items-center gap-6">
                   <div className="flex-shrink-0">
                     <AvatarUpload 
-                      userId={user?.id} 
-                      currentAvatar={user?.avatar}
+                      userId={user && user.id} 
+                      currentAvatar={user && user.avatar}
                       onAvatarUpdate={(newAvatar) => {
                         setUser(prev => ({ ...prev, avatar: newAvatar }));
                         // Update localStorage
@@ -2878,13 +2878,13 @@ const EmpathyTrainingApp = () => {
                   <div className="flex-1 space-y-3">
                     <div>
                       <Label className="text-sm font-medium text-gray-700">Name</Label>
-                      <p className="text-lg text-gray-900">{user?.name}</p>
+                      <p className="text-lg text-gray-900">{user && user.name}</p>
                     </div>
                     <div>
                       <Label className="text-sm font-medium text-gray-700">E-Mail</Label>
-                      <p className="text-lg text-gray-900">{user?.email}</p>
+                      <p className="text-lg text-gray-900">{user && user.email}</p>
                     </div>
-                    {user?.partner_name && (
+                    {user && user.partner_name && (
                       <div>
                         <Label className="text-sm font-medium text-gray-700">Partner</Label>
                         <p className="text-lg text-gray-900">{user.partner_name}</p>
@@ -3163,7 +3163,7 @@ const EmpathyTrainingApp = () => {
                   </div>
 
                   <Button 
-                    onClick={() => getAIFeedback(selectedScenario, userResponse, currentStage?.stage_number || 1)}
+                    onClick={() => getAIFeedback(selectedScenario, userResponse, currentStage && currentStage.stage_number || 1)}
                     disabled={!userResponse.trim() || loading}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
                   >
