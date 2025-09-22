@@ -1717,7 +1717,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Dialog-Coaching wird geladen...', 'info')}
+                onClick={() => setCurrentTab('dialog-coaching')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
@@ -1739,7 +1739,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Gefühlslexikon wird geöffnet...', 'info')}
+                onClick={() => setCurrentTab('gefuehlslexikon')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
@@ -1783,7 +1783,7 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Community Cases werden geladen...', 'info')}
+                onClick={() => setCurrentTab('community-cases')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
