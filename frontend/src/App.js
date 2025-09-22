@@ -472,6 +472,7 @@ const EmpathyTrainingApp = () => {
                       currentAvatar={tempAvatar}
                       onAvatarChange={setTempAvatar}
                       user={{ id: 'temp-user' }}
+                      storageKey="temp_user_avatar"
                     />
                   </div>
 
