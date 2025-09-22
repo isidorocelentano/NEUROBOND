@@ -351,9 +351,7 @@ const EmpathyTrainingApp = () => {
                 <Button 
                   variant="outline"
                   size="lg"
-                  onClick={() => {
-                    showNotification('PRO Version wird bald verfügbar!', 'info');
-                  }}
+                  onClick={() => setShowUpgradeModal(true)}
                   className="border-2 border-purple-300 text-purple-700 hover:bg-purple-50 px-6 py-4 text-lg font-semibold rounded-2xl shadow-lg transition-all duration-300"
                 >
                   <Crown className="w-6 h-6 mr-3" />
