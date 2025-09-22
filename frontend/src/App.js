@@ -1263,6 +1263,255 @@ const EmpathyTrainingApp = () => {
       </div>
     );
   };
+
+  // Dialog-Coaching Component
+  const DialogCoachingPage = () => {
+    const [dialogStep, setDialogStep] = useState('input'); // input, analysis, results
+    const [dialogData, setDialogData] = useState({
+      scenario: '',
+      userMessage: '',
+      partnerMessage: '',
+      context: ''
+    });
+    const [analysis, setAnalysis] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const analyzeDialog = async () => {
+      setLoading(true);
+      setDialogStep('analysis');
+      
+      try {
+        // Simulate API call - replace with actual backend call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        const mockAnalysis = {
+          communication_score: 7.5,
+          empathy_level: 6.8,
+          conflict_potential: 4.2,
+          improvements: [
+            "Verwenden Sie mehr 'Ich'-Aussagen statt 'Du'-Vorwürfe",
+            "Zeigen Sie aktives Zuhören durch Nachfragen",
+            "Anerkennen Sie die Gefühle Ihres Partners"
+          ],
+          strengths: [
+            "Beide Partner äußern ihre Bedürfnisse klar",
+            "Respektvoller Ton in der Konversation"
+          ],
+          alternative_responses: [
+            {
+              original: dialogData.userMessage,
+              improved: "Ich fühle mich überfordert, wenn... Könntest du mir dabei helfen?"
+            }
+          ]
+        };
+        
+        setAnalysis(mockAnalysis);
+        setDialogStep('results');
+      } catch (error) {
+        console.error('Error analyzing dialog:', error);
+        showNotification('Fehler bei der Dialog-Analyse', 'error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const resetDialog = () => {
+      setDialogStep('input');
+      setDialogData({ scenario: '', userMessage: '', partnerMessage: '', context: '' });
+      setAnalysis(null);
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">Dialog-Coaching</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          {dialogStep === 'input' && (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-4">KI-gestützte Kommunikationsanalyse</h2>
+                <p className="text-gray-300">Lassen Sie Ihre Gespräche analysieren und erhalten Sie Verbesserungsvorschläge</p>
+              </div>
+
+              <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <Label className="text-gray-300 font-medium">Kontext der Situation</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={dialogData.context}
+                          onChange={(e) => setDialogData({...dialogData, context: e.target.value})}
+                          placeholder="z.B. Diskussion über Haushaltsaufgaben nach einem stressigen Arbeitstag"
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-gray-300 font-medium">Was Sie gesagt haben</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={dialogData.userMessage}
+                          onChange={(e) => setDialogData({...dialogData, userMessage: e.target.value})}
+                          placeholder="Ihre Nachricht in dem Gespräch..."
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-gray-300 font-medium">Antwort Ihres Partners</Label>
+                      <div className="mt-2">
+                        <SpeechInput
+                          value={dialogData.partnerMessage}
+                          onChange={(e) => setDialogData({...dialogData, partnerMessage: e.target.value})}
+                          placeholder="Die Antwort Ihres Partners..."
+                          className="bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={analyzeDialog}
+                      disabled={!dialogData.userMessage || !dialogData.partnerMessage}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-2xl font-semibold"
+                    >
+                      <Brain className="w-5 h-5 mr-2" />
+                      Dialog analysieren
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {dialogStep === 'analysis' && (
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+              <h2 className="text-2xl font-bold text-white mb-4">KI analysiert Ihr Gespräch...</h2>
+              <p className="text-gray-300">Dies kann einen Moment dauern</p>
+            </div>
+          )}
+
+          {dialogStep === 'results' && analysis && (
+            <div>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Analyse-Ergebnisse</h2>
+                <Button onClick={resetDialog} variant="outline" className="border-gray-600 text-gray-300">
+                  Neuen Dialog analysieren
+                </Button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Score Cards */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-blue-400">{analysis.communication_score}/10</div>
+                      <div className="text-sm text-gray-300">Kommunikation</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-green-400">{analysis.empathy_level}/10</div>
+                      <div className="text-sm text-gray-300">Empathie</div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-yellow-400">{analysis.conflict_potential}/10</div>
+                      <div className="text-sm text-gray-300">Konfliktpotential</div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Strengths */}
+                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                  <CardHeader>
+                    <CardTitle className="text-green-400 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      Ihre Stärken
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {analysis.strengths.map((strength, index) => (
+                        <li key={index} className="text-gray-300 flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          {strength}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Improvements */}
+                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                  <CardHeader>
+                    <CardTitle className="text-blue-400 flex items-center gap-2">
+                      <Target className="w-5 h-5" />
+                      Verbesserungsvorschläge
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {analysis.improvements.map((improvement, index) => (
+                        <li key={index} className="text-gray-300 flex items-start gap-2">
+                          <ArrowRight className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                          {improvement}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Alternative Responses */}
+                {analysis.alternative_responses.map((alt, index) => (
+                  <Card key={index} className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-purple-400 flex items-center gap-2">
+                        <MessageCircle className="w-5 h-5" />
+                        Alternative Formulierung
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <h4 className="text-red-300 font-medium mb-2">Original:</h4>
+                        <p className="text-gray-300 italic bg-red-900/20 p-3 rounded-lg">"{alt.original}"</p>
+                      </div>
+                      <div>
+                        <h4 className="text-green-300 font-medium mb-2">Empathischer:</h4>
+                        <p className="text-gray-300 bg-green-900/20 p-3 rounded-lg">"{alt.improved}"</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const PartnerSelection = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
