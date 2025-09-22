@@ -1609,6 +1609,7 @@ const EmpathyTrainingApp = () => {
                       currentAvatar={partnerAvatar}
                       onAvatarChange={handlePartnerAvatarChange}
                       user={{ id: 'partner', name: user?.partner_name || 'Partner' }}
+                      storageKey="partner_avatar"
                     />
                   </div>
                 </div>
