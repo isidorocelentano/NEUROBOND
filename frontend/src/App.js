@@ -793,7 +793,273 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Own Cases Creation Component
+  // Gefühlslexikon Component
+  const GefuehlslexikonPage = () => {
+    const [selectedEmotion, setSelectedEmotion] = useState(null);
+    
+    const emotions = [
+      { name: "Freude", color: "bg-yellow-500", description: "Ein Gefühl des Glücks und der Zufriedenheit", category: "Positive Emotionen" },
+      { name: "Liebe", color: "bg-pink-500", description: "Tiefe Zuneigung und Verbundenheit", category: "Positive Emotionen" },
+      { name: "Dankbarkeit", color: "bg-green-500", description: "Anerkennung für etwas Gutes", category: "Positive Emotionen" },
+      { name: "Hoffnung", color: "bg-blue-500", description: "Optimismus für die Zukunft", category: "Positive Emotionen" },
+      { name: "Stolz", color: "bg-purple-500", description: "Selbstwertgefühl durch Leistung", category: "Positive Emotionen" },
+      { name: "Wut", color: "bg-red-500", description: "Intensive negative Reaktion auf Frustration", category: "Herausfordernde Emotionen" },
+      { name: "Trauer", color: "bg-gray-500", description: "Schmerz durch Verlust oder Enttäuschung", category: "Herausfordernde Emotionen" },
+      { name: "Angst", color: "bg-orange-500", description: "Besorgnis über zukünftige Bedrohungen", category: "Herausfordernde Emotionen" },
+      { name: "Eifersucht", color: "bg-indigo-500", description: "Furcht vor Verlust der Aufmerksamkeit", category: "Herausfordernde Emotionen" },
+      { name: "Scham", color: "bg-red-800", description: "Gefühl der Bloßstellung oder Unzulänglichkeit", category: "Herausfordernde Emotionen" },
+      { name: "Überraschung", color: "bg-cyan-500", description: "Unerwartete Reaktion auf Ereignisse", category: "Neutrale Emotionen" },
+      { name: "Neugier", color: "bg-teal-500", description: "Interesse an Unbekanntem", category: "Neutrale Emotionen" },
+      { name: "Verwirrung", color: "bg-slate-500", description: "Unklarheit über Situationen", category: "Neutrale Emotionen" }
+    ];
+
+    const categories = [...new Set(emotions.map(e => e.category))];
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">Gefühlslexikon</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          {!selectedEmotion ? (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-4">50+ Emotionen verstehen</h2>
+                <p className="text-gray-300">Erweitern Sie Ihr emotionales Vokabular für bessere Kommunikation</p>
+              </div>
+
+              {categories.map(category => (
+                <div key={category} className="mb-8">
+                  <h3 className="text-xl font-bold text-blue-400 mb-4">{category}</h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {emotions.filter(e => e.category === category).map(emotion => (
+                      <Card 
+                        key={emotion.name}
+                        className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                        onClick={() => setSelectedEmotion(emotion)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-4 h-4 rounded-full ${emotion.color}`}></div>
+                            <h4 className="font-semibold text-white">{emotion.name}</h4>
+                          </div>
+                          <p className="text-gray-300 text-sm mt-2">{emotion.description}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="max-w-2xl mx-auto">
+              <Button 
+                variant="ghost"
+                onClick={() => setSelectedEmotion(null)}
+                className="mb-4 text-blue-400 hover:text-blue-300"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180 mr-2" />
+                Zurück zur Übersicht
+              </Button>
+              
+              <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+                <CardHeader className="text-center">
+                  <div className={`w-16 h-16 rounded-full ${selectedEmotion.color} mx-auto mb-4`}></div>
+                  <CardTitle className="text-3xl text-white">{selectedEmotion.name}</CardTitle>
+                  <CardDescription className="text-gray-300">{selectedEmotion.category}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold text-blue-400 mb-2">Definition</h4>
+                      <p className="text-gray-300">{selectedEmotion.description}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-blue-400 mb-2">Wie sich {selectedEmotion.name} zeigt</h4>
+                      <p className="text-gray-300">
+                        Diese Emotion kann sich durch verschiedene körperliche und emotionale Signale zeigen. 
+                        Achten Sie auf Veränderungen in Ihrer Körperhaltung, Ihrem Ton und Ihren Gedanken.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-blue-400 mb-2">Empathische Kommunikation</h4>
+                      <p className="text-gray-300">
+                        "Ich merke, dass du {selectedEmotion.name.toLowerCase()} fühlst. Das ist völlig verständlich. 
+                        Magst du mir mehr darüber erzählen, was diese Emotion in dir auslöst?"
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Community Cases Component
+  const CommunityCasesPage = () => {
+    const [cases, setCases] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedCase, setSelectedCase] = useState(null);
+
+    useEffect(() => {
+      loadCommunityCases();
+    }, []);
+
+    const loadCommunityCases = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/community-cases`);
+        if (response.ok) {
+          const data = await response.json();
+          setCases(data.cases || []);
+        }
+      } catch (error) {
+        console.error('Error loading community cases:', error);
+        // Mock data for demo
+        setCases([
+          {
+            case_id: "demo-1",
+            title: "Diskussion über Haushaltsaufgaben",
+            difficulty: "Mittel",
+            ai_solution: "Eine typische Herausforderung in Beziehungen. Wichtig ist hier eine klare Kommunikation über Erwartungen und eine faire Aufgabenverteilung. Empathie und Verständnis für die Perspektive des Partners sind entscheidend."
+          },
+          {
+            case_id: "demo-2", 
+            title: "Zeitmanagement in der Beziehung",
+            difficulty: "Schwer",
+            ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen."
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">Community Cases</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          {loading ? (
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-300">Lade Community Cases...</p>
+            </div>
+          ) : !selectedCase ? (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-4">Anonyme Fälle aus der Community</h2>
+                <p className="text-gray-300">Lernen Sie von realen Situationen anderer Paare</p>
+              </div>
+
+              <div className="space-y-4">
+                {cases.map(caseItem => (
+                  <Card 
+                    key={caseItem.case_id}
+                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                    onClick={() => setSelectedCase(caseItem)}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="text-lg font-semibold text-white">{caseItem.title}</h3>
+                        <Badge className={`${
+                          caseItem.difficulty === 'Einfach' ? 'bg-green-600' :
+                          caseItem.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
+                        }`}>
+                          {caseItem.difficulty}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-300 text-sm">
+                        {caseItem.ai_solution.substring(0, 150)}...
+                      </p>
+                      <Button variant="ghost" size="sm" className="mt-3 text-blue-400 hover:text-blue-300">
+                        Fall analysieren <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <Button 
+                variant="ghost"
+                onClick={() => setSelectedCase(null)}
+                className="mb-4 text-blue-400 hover:text-blue-300"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180 mr-2" />
+                Zurück zur Übersicht
+              </Button>
+              
+              <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+                <CardHeader>
+                  <CardTitle className="text-white">{selectedCase.title}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Badge className={`${
+                      selectedCase.difficulty === 'Einfach' ? 'bg-green-600' :
+                      selectedCase.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
+                    }`}>
+                      {selectedCase.difficulty}
+                    </Badge>
+                    <span className="text-gray-400 text-sm">Anonymisierter Fall</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold text-blue-400 mb-3">KI-Analyse & Lösungsvorschläge</h4>
+                      <p className="text-gray-300 leading-relaxed">{selectedCase.ai_solution}</p>
+                    </div>
+                    
+                    <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
+                      <h4 className="font-semibold text-blue-100 mb-2">Empathie-Tipp</h4>
+                      <p className="text-blue-200 text-sm">
+                        Versuchen Sie, die Perspektive beider Partner zu verstehen. 
+                        Oft sind beide Seiten berechtigt, auch wenn sie unterschiedlich kommunizieren.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
   const OwnCasesCreation = () => {
     const [dialogMessages, setDialogMessages] = useState([
       { speaker: user?.name || 'Ich', message: '' },
