@@ -646,6 +646,12 @@ const EmpathyTrainingApp = () => {
                 alt={`${user && user.name} Avatar`}
                 className="w-full h-full object-cover"
               />
+            ) : (!isMainUser && partnerAvatar) ? (
+              <img 
+                src={partnerAvatar} 
+                alt="Partner Avatar"
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
                 <UserCircle className="w-20 h-20 text-white/80" />
