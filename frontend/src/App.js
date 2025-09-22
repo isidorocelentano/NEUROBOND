@@ -2044,7 +2044,7 @@ const EmpathyTrainingApp = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => showNotification('Training Stufen werden geladen...', 'info')}
+                onClick={() => setCurrentTab('training-stufen')}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
