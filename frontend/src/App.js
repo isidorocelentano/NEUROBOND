@@ -1297,7 +1297,7 @@ const EmpathyTrainingApp = () => {
         title: "Stufe 2: Konfliktlösung",
         description: "Konstruktive Auseinandersetzung mit Problemen",
         difficulty: "Mittel",
-        unlocked: false,
+        unlocked: true, // Für Testing freigeschaltet
         color: "from-blue-600 to-cyan-600",
         scenarios: [
           { id: 6, title: "Meinungsverschiedenheiten", description: "Unterschiedliche Ansichten respektvoll diskutieren", free: false },
@@ -1310,7 +1310,7 @@ const EmpathyTrainingApp = () => {
         title: "Stufe 3: Emotionale Intelligenz",
         description: "Vertiefte emotionale Wahrnehmung",
         difficulty: "Mittel",
-        unlocked: false,
+        unlocked: true, // Für Testing freigeschaltet
         color: "from-purple-600 to-pink-600",
         scenarios: [
           { id: 9, title: "Emotionen regulieren", description: "Eigene Gefühle bewusst steuern", free: false },
@@ -1323,7 +1323,7 @@ const EmpathyTrainingApp = () => {
         title: "Stufe 4: Beziehungsdynamiken",
         description: "Komplexe Beziehungsmuster verstehen",
         difficulty: "Schwer",
-        unlocked: false,
+        unlocked: true, // Für Testing freigeschaltet
         color: "from-orange-600 to-red-600",
         scenarios: [
           { id: 12, title: "Verhaltensmuster", description: "Wiederkehrende Dynamiken erkennen", free: false },
@@ -1336,7 +1336,7 @@ const EmpathyTrainingApp = () => {
         title: "Stufe 5: Meisterschaft",
         description: "Experte in empathischer Kommunikation",
         difficulty: "Experte",
-        unlocked: false,
+        unlocked: true, // Für Testing freigeschaltet
         color: "from-yellow-600 to-orange-600",
         scenarios: [
           { id: 15, title: "Krisenintervention", description: "In schweren Zeiten zusammenhalten", free: false },
