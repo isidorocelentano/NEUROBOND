@@ -1570,6 +1570,7 @@ const EmpathyTrainingApp = () => {
                       currentAvatar={userAvatar}
                       onAvatarChange={setUserAvatar}
                       user={user}
+                      storageKey="user_avatar"
                     />
                   </div>
                 </div>
