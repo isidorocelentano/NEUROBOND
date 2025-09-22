@@ -1874,6 +1874,18 @@ const EmpathyTrainingApp = () => {
     return <OwnCasesCreation />;
   }
 
+  if (currentTab === 'dialog-coaching') {
+    return <DialogCoachingPage />;
+  }
+
+  if (currentTab === 'gefuehlslexikon') {
+    return <GefuehlslexikonPage />;
+  }
+
+  if (currentTab === 'community-cases') {
+    return <CommunityCasesPage />;
+  }
+
   return (
     <>
       <Dashboard />
