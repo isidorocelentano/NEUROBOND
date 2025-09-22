@@ -1271,7 +1271,303 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Dialog-Coaching Component
+  // Training Stufen Component
+  const TrainingStufen = () => {
+    const [selectedStage, setSelectedStage] = useState(null);
+    const [selectedScenario, setSelectedScenario] = useState(null);
+
+    const trainingStages = [
+      {
+        id: 1,
+        title: "Stufe 1: Grundlagen der Empathie",
+        description: "Lernen Sie die Basics empathischer Kommunikation",
+        difficulty: "Einfach",
+        unlocked: true,
+        color: "from-green-600 to-emerald-600",
+        scenarios: [
+          { id: 1, title: "Aktives Zuhören", description: "Ihr Partner erzählt von einem schweren Arbeitstag", free: true },
+          { id: 2, title: "Gefühle spiegeln", description: "Zeigen Sie Verständnis für Emotionen", free: true },
+          { id: 3, title: "Nachfragen stellen", description: "Interesse durch gezielte Fragen zeigen", free: true },
+          { id: 4, title: "Körpersprache lesen", description: "Non-verbale Signale verstehen", free: true },
+          { id: 5, title: "Empathische Antworten", description: "Angemessen auf Emotionen reagieren", free: true }
+        ]
+      },
+      {
+        id: 2,
+        title: "Stufe 2: Konfliktlösung",
+        description: "Konstruktive Auseinandersetzung mit Problemen",
+        difficulty: "Mittel",
+        unlocked: false,
+        color: "from-blue-600 to-cyan-600",
+        scenarios: [
+          { id: 6, title: "Meinungsverschiedenheiten", description: "Unterschiedliche Ansichten respektvoll diskutieren", free: false },
+          { id: 7, title: "Kritik annehmen", description: "Konstruktiv mit Feedback umgehen", free: false },
+          { id: 8, title: "Kompromisse finden", description: "Win-Win-Situationen schaffen", free: false }
+        ]
+      },
+      {
+        id: 3,
+        title: "Stufe 3: Emotionale Intelligenz",
+        description: "Vertiefte emotionale Wahrnehmung",
+        difficulty: "Mittel",
+        unlocked: false,
+        color: "from-purple-600 to-pink-600",
+        scenarios: [
+          { id: 9, title: "Emotionen regulieren", description: "Eigene Gefühle bewusst steuern", free: false },
+          { id: 10, title: "Empathie zeigen", description: "Mitgefühl authentisch ausdrücken", free: false },
+          { id: 11, title: "Verständnis ausdrücken", description: "Die Perspektive des Partners verstehen", free: false }
+        ]
+      },
+      {
+        id: 4,
+        title: "Stufe 4: Beziehungsdynamiken",
+        description: "Komplexe Beziehungsmuster verstehen",
+        difficulty: "Schwer",
+        unlocked: false,
+        color: "from-orange-600 to-red-600",
+        scenarios: [
+          { id: 12, title: "Verhaltensmuster", description: "Wiederkehrende Dynamiken erkennen", free: false },
+          { id: 13, title: "Grenzen setzen", description: "Gesunde Abgrenzung in der Beziehung", free: false },
+          { id: 14, title: "Vertrauen aufbauen", description: "Sicherheit in der Partnerschaft schaffen", free: false }
+        ]
+      },
+      {
+        id: 5,
+        title: "Stufe 5: Meisterschaft",
+        description: "Experte in empathischer Kommunikation",
+        difficulty: "Experte",
+        unlocked: false,
+        color: "from-yellow-600 to-orange-600",
+        scenarios: [
+          { id: 15, title: "Krisenintervention", description: "In schweren Zeiten zusammenhalten", free: false },
+          { id: 16, title: "Langfristige Vision", description: "Gemeinsame Zukunft gestalten", free: false },
+          { id: 17, title: "Beziehungscoach", description: "Anderen Paaren helfen", free: false }
+        ]
+      }
+    ];
+
+    if (selectedScenario) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+          </div>
+
+          <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+            <h1 className="text-2xl font-bold text-white">{selectedScenario.title}</h1>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setSelectedScenario(null)}
+            >
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </Button>
+          </header>
+
+          <div className="container mx-auto px-4 max-w-4xl relative z-10">
+            <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl text-white">{selectedScenario.title}</CardTitle>
+                <CardDescription className="text-gray-300">{selectedScenario.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <div className="mb-6">
+                    <Play className="w-16 h-16 mx-auto text-blue-400 mb-4" />
+                    <p className="text-gray-300 mb-6">
+                      Dieses Training-Szenario wird geladen...
+                    </p>
+                  </div>
+                  
+                  <Button
+                    onClick={() => showNotification('Training-Szenario wird implementiert...', 'info')}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-8 rounded-2xl font-semibold"
+                  >
+                    <Play className="w-5 h-5 mr-2" />
+                    Szenario starten
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedStage) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+          </div>
+
+          <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+            <h1 className="text-2xl font-bold text-white">{selectedStage.title}</h1>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setSelectedStage(null)}
+            >
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </Button>
+          </header>
+
+          <div className="container mx-auto px-4 max-w-4xl relative z-10">
+            <div className="text-center mb-8">
+              <div className={`w-16 h-16 bg-gradient-to-br ${selectedStage.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                <Target className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white mb-4">{selectedStage.title}</h2>
+              <p className="text-gray-300 mb-4">{selectedStage.description}</p>
+              <Badge className={`${
+                selectedStage.difficulty === 'Einfach' ? 'bg-green-600' :
+                selectedStage.difficulty === 'Mittel' ? 'bg-yellow-600' : 
+                selectedStage.difficulty === 'Schwer' ? 'bg-red-600' : 'bg-purple-600'
+              }`}>
+                {selectedStage.difficulty}
+              </Badge>
+            </div>
+
+            <div className="space-y-4">
+              {selectedStage.scenarios.map(scenario => (
+                <Card 
+                  key={scenario.id}
+                  className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                  onClick={() => setSelectedScenario(scenario)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-white mb-2">{scenario.title}</h3>
+                        <p className="text-gray-300 text-sm mb-3">{scenario.description}</p>
+                        <div className="flex gap-2">
+                          {scenario.free ? (
+                            <Badge className="bg-green-600">Kostenlos</Badge>
+                          ) : (
+                            <Badge className="bg-yellow-600">PRO</Badge>
+                          )}
+                        </div>
+                      </div>
+                      <Button 
+                        size="sm"
+                        className={`ml-4 ${scenario.free ? 'bg-green-600 hover:bg-green-700' : 'bg-yellow-600 hover:bg-yellow-700'}`}
+                      >
+                        <Play className="w-4 h-4 mr-1" />
+                        Starten
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">Training Stufen</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-white mb-4">5 strukturierte Stufen</h2>
+            <p className="text-gray-300">Verbessern Sie Ihre Kommunikation Schritt für Schritt</p>
+          </div>
+
+          <div className="space-y-6">
+            {trainingStages.map(stage => (
+              <Card 
+                key={stage.id}
+                className={`border border-gray-700/50 transition-all cursor-pointer ${
+                  stage.unlocked 
+                    ? 'bg-gray-800/60 backdrop-blur-sm hover:bg-gray-800/80' 
+                    : 'bg-gray-900/60 backdrop-blur-sm opacity-75'
+                }`}
+                onClick={() => stage.unlocked && setSelectedStage(stage)}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${stage.color} rounded-full flex items-center justify-center flex-shrink-0 ${
+                      !stage.unlocked ? 'grayscale' : ''
+                    }`}>
+                      {stage.unlocked ? (
+                        <Target className="w-8 h-8 text-white" />
+                      ) : (
+                        <div className="w-6 h-6 border-2 border-white rounded-full" />
+                      )}
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-xl font-bold text-white">{stage.title}</h3>
+                        <Badge className={`${
+                          stage.difficulty === 'Einfach' ? 'bg-green-600' :
+                          stage.difficulty === 'Mittel' ? 'bg-yellow-600' : 
+                          stage.difficulty === 'Schwer' ? 'bg-red-600' : 'bg-purple-600'
+                        }`}>
+                          {stage.difficulty}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-300 mb-3">{stage.description}</p>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-gray-400">{stage.scenarios.length} Szenarien</span>
+                        {stage.id === 1 && (
+                          <Badge className="bg-green-600">5 kostenlose Szenarien</Badge>
+                        )}
+                        {!stage.unlocked && (
+                          <Badge className="bg-gray-600">Noch gesperrt</Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      {stage.unlocked ? (
+                        <Button 
+                          size="sm"
+                          className={`bg-gradient-to-r ${stage.color} hover:opacity-90`}
+                        >
+                          <Play className="w-4 h-4 mr-2" />
+                          Starten
+                        </Button>
+                      ) : (
+                        <Button 
+                          size="sm"
+                          disabled
+                          className="bg-gray-600"
+                        >
+                          Gesperrt
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
   const DialogCoachingPage = () => {
     const [dialogStep, setDialogStep] = useState('input'); // input, analysis, results
     const [dialogData, setDialogData] = useState({
