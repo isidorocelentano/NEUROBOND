@@ -3702,10 +3702,43 @@ def main():
     
     tester = EmpathyTrainingAPITester()
     
-    # Create a test user first for avatar tests
-    print("\n👤 Creating Test User for Avatar Tests...")
+    # Create a test user first for tests
+    print("\n👤 Creating Test User for Tests...")
     if not tester.test_create_user():
-        print("❌ Failed to create test user - avatar tests will be skipped")
+        print("❌ Failed to create test user - some tests will be skipped")
+    
+    # Run NEW AI-POWERED TRAINING SYSTEM TESTS FIRST (PRIORITY)
+    ai_training_tests = [
+        tester.test_training_start_scenario_valid,
+        tester.test_training_start_scenario_invalid_id,
+        tester.test_training_respond_valid,
+        tester.test_training_respond_missing_session,
+        tester.test_training_respond_invalid_session,
+        tester.test_training_evaluate_empathy,
+        tester.test_training_evaluate_invalid_scenario,
+        tester.test_training_end_scenario_valid,
+        tester.test_training_end_scenario_invalid_session,
+        tester.test_training_end_scenario_missing_session,
+        tester.test_training_session_database_storage,
+        tester.test_training_ai_integration_verification,
+        tester.test_training_scenarios_data_integrity,
+        tester.test_training_evaluation_database_storage,
+    ]
+    
+    print("\n🤖 PRIORITY: AI-Powered Training System Tests")
+    print("=" * 60)
+    
+    ai_training_tests_passed = 0
+    ai_training_tests_total = len(ai_training_tests)
+    
+    for test in ai_training_tests:
+        try:
+            if test():
+                ai_training_tests_passed += 1
+        except Exception as e:
+            print(f"❌ AI training test failed with exception: {str(e)}")
+    
+    print(f"\n🤖 AI Training Tests: {ai_training_tests_passed}/{ai_training_tests_total} tests completed")
     
     # Run PRIORITY avatar upload functionality tests FIRST
     avatar_tests = [
