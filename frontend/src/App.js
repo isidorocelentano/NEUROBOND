@@ -1950,6 +1950,72 @@ const EmpathyTrainingApp = () => {
           </div>
         </div>
       )}
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <Card className="bg-gray-900 border-gray-700 max-w-md w-full">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Crown className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-2xl text-white">NEUROBOND PRO</CardTitle>
+              <CardDescription className="text-gray-300">
+                Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-white mb-2">CHF 10.00</div>
+                <div className="text-gray-400">pro Monat, inkl. MWST</div>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span>Unbegrenzte Trainings-Szenarien</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span>Alle 5 Training-Stufen</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span>Dialog-Coaching mit KI-Analyse</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span>Wöchentliche Trainingspläne</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span>Premium Support</span>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button 
+                  variant="outline"
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
+                >
+                  Später
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowUpgradeModal(false);
+                    showNotification('Upgrade-Funktion wird implementiert...', 'info');
+                  }}
+                  className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  Jetzt upgraden
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </>
   );
 };
