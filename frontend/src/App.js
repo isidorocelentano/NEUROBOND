@@ -129,7 +129,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de
 };
 
 // Avatar Upload Component
-const AvatarUpload = ({ currentAvatar, onAvatarChange, user }) => {
+const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_avatar' }) => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef();
 
@@ -157,7 +157,7 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user }) => {
       reader.onload = (e) => {
         const base64 = e.target.result;
         onAvatarChange(base64);
-        localStorage.setItem('user_avatar', base64);
+        localStorage.setItem(storageKey, base64);
       };
       reader.readAsDataURL(file);
 
