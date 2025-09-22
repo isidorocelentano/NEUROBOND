@@ -2235,6 +2235,10 @@ const EmpathyTrainingApp = () => {
     return <CommunityCasesPage />;
   }
 
+  if (currentTab === 'training-stufen') {
+    return <TrainingStufen />;
+  }
+
   return (
     <>
       <Dashboard />
