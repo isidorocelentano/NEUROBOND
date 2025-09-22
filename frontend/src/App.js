@@ -1276,6 +1276,7 @@ const EmpathyTrainingApp = () => {
   const TrainingStufen = () => {
     const [selectedStage, setSelectedStage] = useState(null);
     const [selectedScenario, setSelectedScenario] = useState(null);
+    const [activeTraining, setActiveTraining] = useState(null);
 
     const trainingStages = [
       {
@@ -1347,53 +1348,32 @@ const EmpathyTrainingApp = () => {
       }
     ];
 
-    if (selectedScenario) {
+    // Handle starting a scenario
+    const startScenario = (scenario) => {
+      setActiveTraining({
+        scenarioId: scenario.id,
+        userId: user?.id || 'demo-user',
+        userName: user?.name || 'Sophia',
+        partnerName: user?.partner_name || 'Max'
+      });
+    };
+
+    const completeTraining = () => {
+      setActiveTraining(null);
+      setSelectedScenario(null);
+      showNotification('Training erfolgreich abgeschlossen!', 'success');
+    };
+
+    // Show active training scenario
+    if (activeTraining) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
-          </div>
-
-          <header className="flex justify-between items-center p-6 mb-8 relative z-10">
-            <h1 className="text-2xl font-bold text-white">{selectedScenario.title}</h1>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-white hover:bg-white/10"
-              onClick={() => setSelectedScenario(null)}
-            >
-              <ArrowRight className="w-6 h-6 rotate-180" />
-            </Button>
-          </header>
-
-          <div className="container mx-auto px-4 max-w-4xl relative z-10">
-            <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl text-white">{selectedScenario.title}</CardTitle>
-                <CardDescription className="text-gray-300">{selectedScenario.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="text-center">
-                  <div className="mb-6">
-                    <Play className="w-16 h-16 mx-auto text-blue-400 mb-4" />
-                    <p className="text-gray-300 mb-6">
-                      Dieses Training-Szenario wird geladen...
-                    </p>
-                  </div>
-                  
-                  <Button
-                    onClick={() => showNotification('Training-Szenario wird implementiert...', 'info')}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-8 rounded-2xl font-semibold"
-                  >
-                    <Play className="w-5 h-5 mr-2" />
-                    Szenario starten
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        <TrainingScenario
+          scenarioId={activeTraining.scenarioId}
+          userId={activeTraining.userId}
+          userName={activeTraining.userName}
+          partnerName={activeTraining.partnerName}
+          onComplete={completeTraining}
+        />
       );
     }
 
@@ -1438,7 +1418,7 @@ const EmpathyTrainingApp = () => {
                 <Card 
                   key={scenario.id}
                   className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
-                  onClick={() => setSelectedScenario(scenario)}
+                  onClick={() => startScenario(scenario)}
                 >
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
@@ -1456,6 +1436,10 @@ const EmpathyTrainingApp = () => {
                       <Button 
                         size="sm"
                         className={`ml-4 ${scenario.free ? 'bg-green-600 hover:bg-green-700' : 'bg-yellow-600 hover:bg-yellow-700'}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startScenario(scenario);
+                        }}
                       >
                         <Play className="w-4 h-4 mr-1" />
                         Starten
