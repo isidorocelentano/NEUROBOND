@@ -477,112 +477,106 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
           </Button>
         </div>
 
-        {currentPhase === 'conversation' && (
+        {currentPhase === 'question' && (
           <>
-
-            {/* Conversation Area */}
+            {/* Scenario Question */}
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl mb-6">
+              <CardHeader>
+                <CardTitle className="text-white text-center text-2xl">
+                  Trainings-Szenario
+                </CardTitle>
+              </CardHeader>
               <CardContent className="p-6">
-                <div className="space-y-6 max-h-96 overflow-y-auto">
-                  {messages.map((msg, index) => (
-                    <div key={index} className={`flex items-start gap-4 ${msg.speaker === userName ? 'flex-row-reverse' : 'flex-row'}`}>
-                      {/* Avatar */}
-                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-600 border-3 border-gray-500 flex-shrink-0">
-                        {msg.speaker === userName ? (
-                          userAvatar ? (
-                            <img 
-                              src={userAvatar} 
-                              alt={userName}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                              <UserCircle className="w-8 h-8 text-white/80" />
-                            </div>
-                          )
-                        ) : (
-                          partnerAvatar ? (
-                            <img 
-                              src={partnerAvatar}
-                              alt={partnerName}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
-                              <UserCircle className="w-8 h-8 text-white/80" />
-                            </div>
-                          )
-                        )}
+                {/* Partner Avatar and Scenario */}
+                <div className="flex items-start gap-6 mb-6">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-600 border-4 border-green-400 flex-shrink-0">
+                    {partnerAvatar ? (
+                      <img 
+                        src={partnerAvatar}
+                        alt={partnerName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
+                        <UserCircle className="w-12 h-12 text-white/80" />
                       </div>
-                      
-                      {/* Message */}
-                      <div className={`max-w-xs lg:max-w-md ${msg.speaker === userName ? 'text-right' : 'text-left'}`}>
-                        <div className="text-sm text-gray-400 mb-2 px-2 font-medium">
-                          {msg.speaker}
-                        </div>
-                        <div className={`px-5 py-4 rounded-2xl shadow-lg ${
-                          msg.speaker === userName 
-                            ? 'bg-blue-600 text-white' 
-                            : 'bg-gray-700 text-gray-100'
-                        }`}>
-                          <p className="text-sm leading-relaxed">{msg.message}</p>
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="text-lg font-semibold text-green-200 mb-3">{partnerName} sagt zu Ihnen:</div>
+                    <div className="bg-gray-700/50 p-4 rounded-2xl border border-gray-600">
+                      <p className="text-gray-100 leading-relaxed text-lg">
+                        {sessionData?.partner_message}
+                      </p>
                     </div>
-                  ))}
-                  {responding && (
-                    <div className="flex items-start gap-4">
-                      {/* Partner Avatar */}
-                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-600 border-3 border-gray-500 flex-shrink-0">
-                        {partnerAvatar ? (
-                          <img 
-                            src={partnerAvatar}
-                            alt={partnerName}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
-                            <UserCircle className="w-8 h-8 text-white/80" />
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Typing Indicator */}
-                      <div className="bg-gray-700 text-gray-100 px-5 py-4 rounded-2xl shadow-lg">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-100"></div>
-                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-200"></div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  </div>
+                </div>
+
+                {/* Learning Goals */}
+                <div className="bg-blue-900/30 rounded-2xl border border-blue-700/50 p-4 mb-6">
+                  <h4 className="text-blue-200 font-semibold mb-3">🎯 Lernziele in diesem Szenario:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {sessionData?.scenario?.learning_goals?.map((goal, index) => (
+                      <span key={index} className="bg-blue-700/30 text-blue-200 px-3 py-1 rounded-full text-sm">
+                        {goal}
+                      </span>
+                    )) || [
+                      <span key="default1" className="bg-blue-700/30 text-blue-200 px-3 py-1 rounded-full text-sm">Gefühle erkennen</span>,
+                      <span key="default2" className="bg-blue-700/30 text-blue-200 px-3 py-1 rounded-full text-sm">Empathisch spiegeln</span>,
+                      <span key="default3" className="bg-blue-700/30 text-blue-200 px-3 py-1 rounded-full text-sm">Beruhigung geben</span>
+                    ]}
+                  </div>
+                </div>
+
+                {/* Instructions */}
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    Wie würden Sie empathisch antworten?
+                  </h3>
+                  <p className="text-gray-300">
+                    Nehmen Sie sich Zeit und formulieren Sie eine einfühlsame Antwort, die die Gefühle Ihres Partners ernst nimmt.
+                  </p>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Input Area */}
+            {/* Response Input Area */}
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
               <CardContent className="p-6">
-                <div className="flex gap-4">
+                <div className="mb-4">
+                  <label className="block text-gray-300 font-medium mb-3">Ihre empathische Antwort:</label>
                   <SpeechInput
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="Wie antworten Sie empathisch?"
-                    className="flex-1 bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
-                    onKeyPress={(e) => e.key === 'Enter' && sendResponse()}
+                    value={userResponse}
+                    onChange={(e) => setUserResponse(e.target.value)}
+                    placeholder="Schreiben oder sprechen Sie Ihre Antwort hier..."
+                    className="w-full min-h-32 bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500 p-4 text-base leading-relaxed resize-none"
+                    onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submitResponse()}
                   />
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <p className="text-gray-400 text-sm">
+                    💡 Tipp: Nutzen Sie das Mikrofon-Icon für Spracheingabe in 6 Sprachen
+                  </p>
                   <Button
-                    onClick={sendResponse}
-                    disabled={responding || !userInput.trim()}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    onClick={submitResponse}
+                    disabled={submitting || !userResponse.trim()}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 text-lg"
                   >
-                    <Send className="w-4 h-4" />
+                    {submitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Wird bewertet...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle className="w-5 h-5 mr-2" />
+                        Antwort bewerten
+                      </>
+                    )}
                   </Button>
                 </div>
-                <p className="text-gray-400 text-sm mt-2">
-                  💡 Tipp: Nutzen Sie das Mikrofon-Icon für Spracheingabe in 6 Sprachen
-                </p>
               </CardContent>
             </Card>
           </>
