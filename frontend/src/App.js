@@ -196,7 +196,10 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
         <Button
           type="button"
           size="sm"
-          onClick={() => fileInputRef.current?.click()}
+          onClick={(e) => {
+            e.stopPropagation();
+            fileInputRef.current?.click();
+          }}
           disabled={uploading}
           className="absolute -bottom-1 -right-1 rounded-full w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700"
         >
