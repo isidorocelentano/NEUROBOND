@@ -396,6 +396,36 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
     }
   };
 
+  // Get detailed scenario context based on scenario ID
+  const getDetailedScenarioContext = (scenarioId) => {
+    const scenarios = {
+      1: `Es ist Sonntagabend, und Sie beide sitzen gemütlich auf der Couch. Eigentlich war es ein schöner Tag - Sie haben zusammen gefrühstückt, waren spazieren und haben einen Film geschaut. Doch plötzlich merken Sie, dass ${partnerName} immer stiller wird. Die Stirn ist leicht gerunzelt, der Blick wird nachdenklich. Sie spüren, wie sich die Stimmung verändert. ${partnerName} scheint mit etwas zu ringen, was schon länger beschäftigt. Die Arbeitsbelastung war in letzter Zeit sehr hoch, und Sie haben bemerkt, wie erschöpft ${partnerName} in den letzten Wochen nach Hause kam. Jetzt, in diesem ruhigen Moment, bricht es aus ${partnerName} heraus...`,
+      
+      2: `Sie kommen nach einem anstrengenden Tag nach Hause und freuen sich auf einen entspannten Abend mit ${partnerName}. Doch kaum haben Sie die Tür aufgeschlossen, spüren Sie sofort: Etwas ist anders. ${partnerName} sitzt am Küchentisch, umgeben von Papieren und dem Laptop. Die Schultern sind angespannt, die Bewegungen fahrig. Sie kennen diesen Blick - eine Mischung aus Frustration, Enttäuschung und tiefer Verletzung. Offensichtlich ist heute bei der Arbeit etwas vorgefallen. Ein wichtiges Projekt, an dem ${partnerName} wochenlang gearbeitet hat, scheint nicht wie erhofft gelaufen zu sein. Sie sehen die Tränen, die ${partnerName} zurückzuhalten versucht...`,
+      
+      3: `Es ist Samstag früh am Morgen. Eigentlich wollten Sie beide heute gemeinsam Zeit verbringen - vielleicht einen Ausflug machen oder einfach zusammen relaxen. Doch ${partnerName} wirkt unruhig und abwesend. Beim Frühstück starrt ${partnerName} immer wieder auf das Handy, tippt Nachrichten und scheint völlig in Gedanken versunken. Sie merken, dass etwas ${partnerName} innerlich sehr beschäftigt. Die Freundin Sarah hat gestern angerufen und von Problemen in ihrer Ehe erzählt. Das hat bei ${partnerName} offensichtlich etwas ausgelöst - Ängste und Zweifel über Ihre eigene Beziehung. Die Unsicherheit nagt an ${partnerName}, und diese Gedanken lassen sich einfach nicht abstellen...`,
+      
+      4: `Sie beide haben eigentlich einen wunderschönen Abend geplant. Reservierung im Lieblingsrestaurant, schicke Kleidung, Zeit nur für Sie beide. Doch schon auf dem Weg dorthin bemerken Sie, dass ${partnerName} angespannt wirkt. Im Restaurant dann die Katastrophe: Der Service ist schlecht, das Essen kommt viel zu spät und ist auch noch kalt. Was als romantischer Abend gedacht war, wird zur Enttäuschung. Doch das eigentliche Problem liegt tiefer. ${partnerName} hatte sich so sehr auf diesen Abend gefreut, hatte gehofft, dass nach den stressigen Wochen endlich wieder Normalität und Nähe in Ihre Beziehung kommt. Jetzt fühlt sich ${partnerName}, als würde selbst das nicht klappen...`,
+      
+      5: `Heute war ein Tag wie viele andere - oder sollte es zumindest sein. Doch während Sie im Büro waren, hat ${partnerName} zu Hause einen Anruf von der eigenen Mutter bekommen. Ein Gespräch, das alte Wunden aufgerissen hat. Familiäre Konflikte, die ${partnerName} schon seit Jahren beschäftigen, sind wieder hochgekocht. Vorwürfe, Schuldzuweisungen, das Gefühl, nie genug zu sein. Als Sie nach Hause kommen, finden Sie ${partnerName} völlig aufgelöst vor. Die Augen sind rot geweint, die Hände zittern noch leicht. ${partnerName} fühlt sich emotional völlig erschöpft und weiß nicht, wie mit diesen alten, schmerzhaften Gefühlen umgegangen werden soll...`
+    };
+    
+    return scenarios[scenarioId] || `Sie und ${partnerName} befinden sich in einer emotionalen Situation, die Ihre empathischen Fähigkeiten herausfordert...`;
+  };
+
+  // Get emotional indicators for the scenario
+  const getEmotionalIndicators = (scenarioId) => {
+    const indicators = {
+      1: `die Anspannung in ${partnerName}s Gesicht, die müden Augen und die leicht gesunkenen Schultern`,
+      2: `die Tränen in ${partnerName}s Augen, die verkrampften Hände und die enttäuschte Körperhaltung`,
+      3: `die Unruhe und Nervosität von ${partnerName}, das ständige Grübeln und die angespannte Mimik`,
+      4: `die Frustration und Enttäuschung von ${partnerName}, die sich in der ganzen Körperhaltung widerspiegelt`,
+      5: `die emotionale Erschöpfung von ${partnerName}, die verweinten Augen und das leichte Zittern`
+    };
+    
+    return indicators[scenarioId] || `dass ${partnerName} emotional belastet ist`;
+  };
+
   const startScenario = async () => {
     try {
       const response = await fetch(`${BACKEND_URL}/api/training/start-scenario`, {
