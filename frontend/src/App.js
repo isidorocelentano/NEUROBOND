@@ -634,8 +634,18 @@ const EmpathyTrainingApp = () => {
         setCurrentTab('community-cases');
       } else if (goalText.includes('eigenen Case') || goalText.includes('Case erstellen')) {
         setCurrentTab('own-cases');
+      } else if (goalText.includes('Meditation')) {
+        showNotification('🧘‍♀️ Meditation-Feature wird bald verfügbar sein!', 'info');
+      } else if (goalText.includes('Partner-Dialog')) {
+        showNotification('💬 Starten Sie ein Training-Szenario für Partner-Dialog!', 'info');
+        setTimeout(() => setCurrentTab('training-stufen'), 2000);
       } else if (goalText.includes('Wochenreflexion') || goalText.includes('Plan aktualisieren')) {
-        showNotification('Diese Funktion wird bald verfügbar sein!', 'info');
+        showNotification('📋 Diese Funktion wird bald verfügbar sein!', 'info');
+      } else if (goalText.includes('Konfliktlösung')) {
+        showNotification('🤝 Konfliktlösung-Training wird geladen...', 'info');
+        setTimeout(() => setCurrentTab('training-stufen'), 2000);
+      } else if (goalText.includes('Kompliment')) {
+        showNotification('💝 Das ist eine persönliche Aufgabe für Sie und Ihren Partner!', 'success');
       } else {
         showNotification(`${goalText} - Funktion wird geladen...`, 'info');
       }
