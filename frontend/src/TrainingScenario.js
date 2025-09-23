@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
-import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star, Mic, Globe } from 'lucide-react';
+import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star, Mic, Globe, UserCircle } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
