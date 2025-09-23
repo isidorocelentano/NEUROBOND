@@ -300,20 +300,70 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
               <CardContent className="p-6">
                 <div className="space-y-4 max-h-96 overflow-y-auto">
                   {messages.map((msg, index) => (
-                    <div key={index} className={`flex ${msg.speaker === userName ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                        msg.speaker === userName 
-                          ? 'bg-blue-600 text-white' 
-                          : 'bg-gray-700 text-gray-100'
-                      }`}>
-                        <div className="text-xs text-gray-300 mb-1">{msg.speaker}</div>
-                        <p>{msg.message}</p>
+                    <div key={index} className={`flex items-start gap-3 ${msg.speaker === userName ? 'flex-row-reverse' : 'flex-row'}`}>
+                      {/* Avatar */}
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-600 border-2 border-gray-500 flex-shrink-0">
+                        {msg.speaker === userName ? (
+                          userAvatar ? (
+                            <img 
+                              src={userAvatar} 
+                              alt={userName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                              <UserCircle className="w-6 h-6 text-white/80" />
+                            </div>
+                          )
+                        ) : (
+                          partnerAvatar ? (
+                            <img 
+                              src={partnerAvatar}
+                              alt={partnerName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
+                              <UserCircle className="w-6 h-6 text-white/80" />
+                            </div>
+                          )
+                        )}
+                      </div>
+                      
+                      {/* Message */}
+                      <div className={`max-w-xs lg:max-w-md ${msg.speaker === userName ? 'text-right' : 'text-left'}`}>
+                        <div className="text-xs text-gray-400 mb-1 px-2">
+                          {msg.speaker}
+                        </div>
+                        <div className={`px-4 py-3 rounded-2xl ${
+                          msg.speaker === userName 
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-gray-700 text-gray-100'
+                        }`}>
+                          <p className="text-sm leading-relaxed">{msg.message}</p>
+                        </div>
                       </div>
                     </div>
                   ))}
                   {responding && (
-                    <div className="flex justify-start">
-                      <div className="bg-gray-700 text-gray-100 px-4 py-2 rounded-2xl">
+                    <div className="flex items-start gap-3">
+                      {/* Partner Avatar */}
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-600 border-2 border-gray-500 flex-shrink-0">
+                        {partnerAvatar ? (
+                          <img 
+                            src={partnerAvatar}
+                            alt={partnerName}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
+                            <UserCircle className="w-6 h-6 text-white/80" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Typing Indicator */}
+                      <div className="bg-gray-700 text-gray-100 px-4 py-3 rounded-2xl">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                           <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-100"></div>
