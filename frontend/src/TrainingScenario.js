@@ -236,11 +236,10 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
 
 const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onHome, onBack, onNext }) => {
   const [sessionData, setSessionData] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState('');
+  const [userResponse, setUserResponse] = useState('');
   const [loading, setLoading] = useState(true);
-  const [responding, setResponding] = useState(false);
-  const [currentPhase, setCurrentPhase] = useState('conversation'); // conversation, evaluation, completed
+  const [submitting, setSubmitting] = useState(false);
+  const [currentPhase, setCurrentPhase] = useState('question'); // question, feedback, completed
   const [evaluation, setEvaluation] = useState(null);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
   
