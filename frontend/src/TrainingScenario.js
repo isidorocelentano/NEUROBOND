@@ -133,6 +133,10 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [responding, setResponding] = useState(false);
   const [currentPhase, setCurrentPhase] = useState('conversation'); // conversation, evaluation, completed
   const [evaluation, setEvaluation] = useState(null);
+  
+  // Load avatars from localStorage
+  const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
+  const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
 
   useEffect(() => {
     startScenario();
