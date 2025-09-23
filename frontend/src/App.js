@@ -585,7 +585,8 @@ const EmpathyTrainingApp = () => {
         { text: "Empathie-Training absolvieren", completed: completedScenarios > 0 },
         { text: "Gefühlslexikon studieren", completed: true }, // Always accessible
         { text: "Partner-Dialog führen", completed: Math.random() > 0.5 }, // Simulated
-        { text: "Meditation (5 Min)", completed: Math.random() > 0.3 }
+        { text: "Meditation (5 Min)", completed: Math.random() > 0.3 },
+        { text: "Eigenen Case erstellen", completed: false }
       ];
 
       // Add level-specific goals
