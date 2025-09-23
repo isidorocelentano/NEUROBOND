@@ -592,6 +592,17 @@ agent_communication:
         -working: true
         -agent: "main"
         -comment: "Successfully restructured training flow from chat-based conversation to structured Question-Answer-Feedback format as requested. New flow: 1) Detailed emotional scenario presentation with rich contextual background stories, partner avatar, direct message and emotional indicators, 2) User response textarea with speech input integration, 3) Comprehensive feedback showing user's answer, optimal empathetic response with detailed explanation of empathetic techniques. Enhanced ALL 17 scenarios (across 5 training levels) with emotionally rich, detailed background stories that provide context and depth. Each scenario now includes detailed situational descriptions, emotional build-up, and specific emotional indicators to create immersive, realistic training experiences."
+  - task: "User Avatar Integration in Training Input Areas"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/TrainingScenario.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Successfully added user avatar display in training scenario input areas for enhanced personalization. Added user avatar and personalized header in the response input section with 'Ihre empathische Antwort, {userName}' and contextual subtitle. Enhanced feedback phase to show user avatar with speech bubble design for user's response, and improved optimal answer section with user avatar (marked as 'empathisch optimiert') to create visual connection between user's answer and the improved version. Creates more personal and engaging training experience."
         -working: true
         -agent: "main"
         -comment: "Successfully fixed speech recognition functionality by implementing proper error handling, microphone permission requests, better user feedback, and enhanced debugging. Added visual feedback with listening indicators, error messages for common issues (permission denied, no microphone, network errors), and proper browser compatibility checks. Tests confirm microphone now works correctly in both onboarding and training scenarios with listening indicators appearing properly."
