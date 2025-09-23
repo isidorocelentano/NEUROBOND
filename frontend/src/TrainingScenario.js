@@ -331,6 +331,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     onChange={(e) => setUserInput(e.target.value)}
                     placeholder="Wie antworten Sie empathisch?"
                     className="flex-1 bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+                    onKeyPress={(e) => e.key === 'Enter' && sendResponse()}
                   />
                   <Button
                     onClick={sendResponse}
