@@ -1852,17 +1852,8 @@ const EmpathyTrainingApp = () => {
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-2">{user && user.name || 'Sophia'}</h3>
-                <p className="text-gray-300">Level 3</p>
-                <div className="flex justify-center gap-3 mt-4">
-                  <Badge className="bg-blue-600">Hauptnutzer</Badge>
-                  <Button 
-                    size="sm"
-                    onClick={() => setCurrentTab('partner1')}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    Dashboard öffnen
-                  </Button>
-                </div>
+                <p className="text-gray-300 mb-3">Level 3</p>
+                <Badge className="bg-blue-600">Hauptnutzer</Badge>
               </CardContent>
             </Card>
 
@@ -1881,17 +1872,8 @@ const EmpathyTrainingApp = () => {
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-2">{user && user.partner_name || 'Max'}</h3>
-                <p className="text-gray-300">Level 3</p>
-                <div className="flex justify-center gap-3 mt-4">
-                  <Badge className="bg-purple-600">Partner</Badge>
-                  <Button 
-                    size="sm"
-                    onClick={() => setCurrentTab('partner2')}
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    Dashboard öffnen
-                  </Button>
-                </div>
+                <p className="text-gray-300 mb-3">Level 3</p>
+                <Badge className="bg-purple-600">Partner</Badge>
               </CardContent>
             </Card>
           </div>
