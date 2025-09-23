@@ -1839,29 +1839,13 @@ const EmpathyTrainingApp = () => {
               onClick={() => setCurrentTab('partner1')}
             >
               <CardContent className="p-8 text-center">
-                <div className="mb-4">
-                  <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-blue-400 mb-4">
-                    {userAvatar ? (
-                      <img 
-                        src={userAvatar} 
-                        alt={`${user && user.name} Avatar`}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                        <UserCircle className="w-16 h-16 text-white/80" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="mb-4">
-                    <AvatarUpload
-                      currentAvatar={userAvatar}
-                      onAvatarChange={setUserAvatar}
-                      user={user}
-                      storageKey="user_avatar"
-                    />
-                  </div>
+                <div className="mb-6">
+                  <AvatarUpload
+                    currentAvatar={userAvatar}
+                    onAvatarChange={setUserAvatar}
+                    user={user}
+                    storageKey="user_avatar"
+                  />
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-2">{user && user.name || 'Sophia'}</h3>
@@ -1876,31 +1860,13 @@ const EmpathyTrainingApp = () => {
               onClick={() => setCurrentTab('partner2')}
             >
               <CardContent className="p-8 text-center">
-                <div className="mb-4">
-                  <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-purple-400 mb-4">
-                    {partnerAvatar ? (
-                      <img 
-                        src={partnerAvatar}
-                        alt="Partner Avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_emotion-bridge-1/artifacts/kzo8v6yk_neurobond%20bild%20-%2001.jpg"
-                        alt="Partner Avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  
-                  <div className="mb-4">
-                    <AvatarUpload
-                      currentAvatar={partnerAvatar}
-                      onAvatarChange={handlePartnerAvatarChange}
-                      user={{ id: 'partner', name: user?.partner_name || 'Partner' }}
-                      storageKey="partner_avatar"
-                    />
-                  </div>
+                <div className="mb-6">
+                  <AvatarUpload
+                    currentAvatar={partnerAvatar}
+                    onAvatarChange={handlePartnerAvatarChange}
+                    user={{ id: 'partner', name: user?.partner_name || 'Partner' }}
+                    storageKey="partner_avatar"
+                  />
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-2">{user && user.partner_name || 'Max'}</h3>
