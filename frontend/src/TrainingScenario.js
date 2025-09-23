@@ -708,7 +708,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                         </Button>
                         {showLanguageMenu && (
                           <div className="absolute right-0 top-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-32">
-                            {languages.map((lang) => (
+                            {['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'].map((lang) => (
                               <button
                                 key={lang}
                                 type="button"
