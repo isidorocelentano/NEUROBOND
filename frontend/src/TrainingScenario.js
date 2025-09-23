@@ -586,14 +586,39 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
               <p className="text-gray-300 mb-6">
                 Großartig! Sie haben das Szenario "{sessionData?.scenario?.title}" erfolgreich gemeistert.
               </p>
-              <Button
-                onClick={() => onComplete && onComplete()}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                Zurück zu Training Stufen
-              </Button>
+              <div className="flex gap-4 justify-center">
+                <Button
+                  onClick={() => onHome ? onHome() : (onComplete && onComplete())}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Zum Dashboard
+                </Button>
+                <Button
+                  onClick={() => onComplete && onComplete()}
+                  className="bg-gray-600 hover:bg-gray-700"
+                >
+                  <Target className="w-4 h-4 mr-2" />
+                  Weitere Trainings
+                </Button>
+              </div>
             </CardContent>
           </Card>
+        )}
+
+        {/* Notification Display */}
+        {notification.show && (
+          <div className="fixed top-4 right-4 z-50 max-w-md">
+            <div className={`p-4 rounded-lg shadow-lg backdrop-blur-sm ${
+              notification.type === 'error' 
+                ? 'bg-red-900/80 border border-red-700 text-red-100' 
+                : notification.type === 'success'
+                ? 'bg-green-900/80 border border-green-700 text-green-100'
+                : 'bg-blue-900/80 border border-blue-700 text-blue-100'
+            }`}>
+              <p className="text-sm">{notification.message}</p>
+            </div>
+          </div>
         )}
       </div>
     </div>
