@@ -766,10 +766,10 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                 {/* Instructions */}
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold text-white mb-3">
-                    Wie würden Sie empathisch antworten?
+                    Wie antworten Sie als {userName} empathisch?
                   </h3>
                   <p className="text-gray-300">
-                    Nehmen Sie sich Zeit und formulieren Sie eine einfühlsame Antwort, die die Gefühle Ihres Partners ernst nimmt.
+                    {partnerName} hat Ihnen ein Problem anvertraut. Nehmen Sie sich Zeit und formulieren Sie eine einfühlsame Antwort als {userName}, die {partnerName}s Gefühle ernst nimmt und Unterstützung bietet.
                   </p>
                 </div>
               </CardContent>
