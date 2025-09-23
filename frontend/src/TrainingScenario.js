@@ -7,7 +7,7 @@ import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star, Mic, 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 // SpeechInput Component for Training
-const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
+const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
   const [isListening, setIsListening] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('de-DE');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
