@@ -1437,6 +1437,44 @@ const EmpathyTrainingApp = () => {
           userName={activeTraining.userName}
           partnerName={activeTraining.partnerName}
           onComplete={completeTraining}
+          onHome={() => {
+            setActiveTraining(null);
+            setSelectedScenario(null);
+            setSelectedStage(null);
+            setCurrentTab('home');
+          }}
+          onBack={() => {
+            setActiveTraining(null);
+            setSelectedScenario(null);
+          }}
+          onNext={() => {
+            const currentStage = trainingStages.find(stage => 
+              stage.scenarios.some(s => s.id === activeTraining.scenarioId)
+            );
+            if (currentStage) {
+              const currentScenarioIndex = currentStage.scenarios.findIndex(s => s.id === activeTraining.scenarioId);
+              const nextScenario = currentStage.scenarios[currentScenarioIndex + 1];
+              if (nextScenario) {
+                setActiveTraining({
+                  ...activeTraining,
+                  scenarioId: nextScenario.id
+                });
+              } else {
+                // Move to next stage if available
+                const currentStageIndex = trainingStages.findIndex(s => s.id === currentStage.id);
+                const nextStage = trainingStages[currentStageIndex + 1];
+                if (nextStage && nextStage.scenarios.length > 0) {
+                  setActiveTraining({
+                    ...activeTraining,
+                    scenarioId: nextStage.scenarios[0].id
+                  });
+                } else {
+                  showNotification('Herzlichen Glückwunsch! Sie haben alle Trainings abgeschlossen!', 'success');
+                  completeTraining();
+                }
+              }
+            }
+          }}
         />
       );
     }
