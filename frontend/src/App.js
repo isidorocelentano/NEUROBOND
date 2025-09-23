@@ -1884,8 +1884,25 @@ const EmpathyTrainingApp = () => {
             onClick={() => setCurrentTab('home')}
           >
             <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-            Zurück zur Übersicht
+            Zurück zum Hauptmenü
           </Button>
+          
+          <div className="mt-4 flex justify-center gap-4">
+            <Button 
+              onClick={() => setCurrentTab('partner1')}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <User className="w-4 h-4 mr-2" />
+              {user?.name || 'Sophia'} Dashboard
+            </Button>
+            <Button 
+              onClick={() => setCurrentTab('partner2')}
+              className="bg-purple-600 hover:bg-purple-700"
+            >
+              <User className="w-4 h-4 mr-2" />
+              {user?.partner_name || 'Max'} Dashboard
+            </Button>
+          </div>
         </div>
       </div>
     );
