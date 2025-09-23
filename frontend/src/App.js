@@ -213,6 +213,7 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
         accept="image/*"
         onChange={handleFileUpload}
         className="hidden"
+        onClick={(e) => e.stopPropagation()}
       />
       <Button
         type="button"
