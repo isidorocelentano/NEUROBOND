@@ -626,6 +626,20 @@ agent_communication:
         -agent: "main"
         -comment: "Backend only had 5 scenarios defined, but frontend expected 17 scenarios across 5 training levels"
         -working: true
+  - task: "Training Role Logic Correction - User Response Perspective"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/TrainingScenario.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User identified fundamental logic error: When Resa has the emotional problem, Ada (user) should respond empathically, but the interface was confusing about WHO is responding to WHOM"
+        -working: true
+        -agent: "main"
+        -comment: "Successfully corrected role perspective logic throughout training interface. Updated input section to clearly show 'Ihre empathische Antwort an {partnerName}' and 'Wie antworten Sie als {userName} empathisch auf {partnerName}s Problem?'. Corrected placeholder text to show example: 'Wie antworten Sie als {userName} empathisch auf {partnerName}? Zum Beispiel: Liebe/r {partnerName}, ich sehe dass du...'. Updated feedback display to show '{userName} antwortet {partnerName}:' and '{userName} antwortet {partnerName} (Empathisch optimiert):' making it crystal clear that the USER is responding TO the partner with the problem, not as the partner."
         -agent: "main"
         -comment: "Successfully implemented all 17 training scenarios in backend with logical consistency checks. Added Stufe 2 (scenarios 6-8): Conflict resolution including disagreements, handling accusations, setting boundaries. Stufe 3 (scenarios 9-11): Emotional intelligence covering self-worth crises, family burdens, impostor syndrome. Stufe 4 (scenarios 12-14): Relationship dynamics including pattern recognition, losing personal boundaries, trust issues. Stufe 5 (scenarios 15-17): Mastery level covering emotional burden from helping others, future anxieties, relationship wisdom. All scenarios now have appropriate partner_opening messages that match their contextual situations and emotional states."
         -working: true
