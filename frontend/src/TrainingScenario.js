@@ -1,10 +1,128 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
-import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star } from 'lucide-react';
+import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star, Mic, Globe } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+// SpeechInput Component for Training
+const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
+  const [isListening, setIsListening] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('de-DE');
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const recognitionRef = useRef(null);
+
+  const languageOptions = {
+    'de-DE': 'Deutsch',
+    'de-CH': 'Schweizerdeutsch', 
+    'en-US': 'English',
+    'fr-FR': 'Français',
+    'es-ES': 'Español',
+    'it-IT': 'Italiano'
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = currentLanguage;
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        onChange({ target: { value: value + ' ' + transcript } });
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, [currentLanguage]);
+
+  const startListening = () => {
+    if (recognitionRef.current && !isListening) {
+      setIsListening(true);
+      recognitionRef.current.lang = currentLanguage;
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <div className="relative">
+        <Input
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`${className} pr-16`}
+        />
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+          <div className="relative">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+              className="h-8 w-8 p-0 hover:bg-gray-600 text-gray-300 hover:text-white"
+            >
+              <Globe className="w-4 h-4" />
+            </Button>
+            {showLanguageMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-32">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => {
+                      setCurrentLanguage(lang);
+                      setShowLanguageMenu(false);
+                    }}
+                    className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-600 ${
+                      currentLanguage === lang ? 'bg-blue-600 text-white' : 'text-gray-200'
+                    }`}
+                  >
+                    {languageOptions[lang]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={isListening ? stopListening : startListening}
+            className={`h-8 w-8 p-0 hover:bg-gray-600 ${
+              isListening ? 'text-red-400 hover:text-red-300' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <Mic className={`w-4 h-4 ${isListening ? 'animate-pulse' : ''}`} />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete }) => {
   const [sessionData, setSessionData] = useState(null);
