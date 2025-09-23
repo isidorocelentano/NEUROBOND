@@ -75,6 +75,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de
           onChange={onChange}
           placeholder={placeholder}
           className={`${className} pr-16`}
+          onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
         />
         <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
           <div className="relative">
