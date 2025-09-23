@@ -221,7 +221,10 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
       <Button
         type="button"
         size="sm"
-        onClick={() => fileInputRef.current?.click()}
+        onClick={(e) => {
+          e.stopPropagation();
+          fileInputRef.current?.click();
+        }}
         disabled={uploading}
         className="text-xs"
       >
