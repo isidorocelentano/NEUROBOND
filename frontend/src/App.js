@@ -154,7 +154,7 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
 
     try {
       // Convert to base64 for preview
-      const reader = new FileReader();
+      const reader = new window.FileReader();
       reader.onload = (e) => {
         const base64 = e.target.result;
         onAvatarChange(base64);
