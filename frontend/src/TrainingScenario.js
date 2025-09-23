@@ -804,7 +804,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     <textarea
                       value={userResponse}
                       onChange={(e) => setUserResponse(e.target.value)}
-                      placeholder="Schreiben Sie Ihre empathische Antwort hier... Nehmen Sie sich Zeit und denken Sie daran: Gefühle erkennen, validieren, Unterstützung anbieten."
+                      placeholder={`Wie antworten Sie als ${userName} empathisch auf ${partnerName}? Zum Beispiel: "Liebe/r ${partnerName}, ich sehe dass du..." Denken Sie daran: Gefühle erkennen, validieren, Unterstützung anbieten.`}
                       className="w-full min-h-32 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500 p-4 text-base leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                       rows={4}
                       onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submitResponse()}
