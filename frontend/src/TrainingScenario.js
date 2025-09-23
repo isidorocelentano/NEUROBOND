@@ -288,8 +288,8 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
           {/* Training Participants */}
           <div className="flex items-center justify-center gap-8 mb-6">
             {/* User Profile */}
-            <div className="flex items-center gap-3 bg-gray-800/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-gray-700/50">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-600 border-2 border-blue-400">
+            <div className="flex items-center gap-4 bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-600 border-3 border-blue-400">
                 {userAvatar ? (
                   <img 
                     src={userAvatar} 
@@ -298,21 +298,21 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                    <UserCircle className="w-8 h-8 text-white/80" />
+                    <UserCircle className="w-10 h-10 text-white/80" />
                   </div>
                 )}
               </div>
               <div className="text-left">
-                <div className="text-sm font-semibold text-white">{userName}</div>
-                <div className="text-xs text-blue-200">Sie</div>
+                <div className="text-base font-semibold text-white">{userName}</div>
+                <div className="text-sm text-blue-200">Sie</div>
               </div>
             </div>
             
-            <div className="text-2xl text-gray-500">↔</div>
+            <div className="text-3xl text-gray-500">↔</div>
             
             {/* Partner Profile */}
-            <div className="flex items-center gap-3 bg-gray-800/60 backdrop-blur-sm rounded-2xl px-4 py-2 border border-gray-700/50">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-600 border-2 border-green-400">
+            <div className="flex items-center gap-4 bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-600 border-3 border-green-400">
                 {partnerAvatar ? (
                   <img 
                     src={partnerAvatar}
@@ -321,13 +321,13 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
-                    <UserCircle className="w-8 h-8 text-white/80" />
+                    <UserCircle className="w-10 h-10 text-white/80" />
                   </div>
                 )}
               </div>
               <div className="text-left">
-                <div className="text-sm font-semibold text-white">{partnerName}</div>
-                <div className="text-xs text-green-200">KI-Partner</div>
+                <div className="text-base font-semibold text-white">{partnerName}</div>
+                <div className="text-sm text-green-200">KI-Partner</div>
               </div>
             </div>
           </div>
