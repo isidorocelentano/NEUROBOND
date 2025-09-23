@@ -770,10 +770,10 @@ const EmpathyTrainingApp = () => {
             <Button 
               variant="ghost" 
               className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => setCurrentTab('own-cases')}
+              onClick={() => setCurrentTab('gefuehlslexikon')}
             >
-              <MessageCircle className="w-6 h-6 mb-1" />
-              <span className="text-xs">Eigene Cases</span>
+              <BookOpen className="w-6 h-6 mb-1" />
+              <span className="text-xs">Lexikon</span>
             </Button>
             <Button 
               variant="ghost" 
@@ -785,10 +785,10 @@ const EmpathyTrainingApp = () => {
             <Button 
               variant="ghost" 
               className="flex flex-col items-center text-white hover:bg-white/10"
-              onClick={() => showNotification('Lexikon wird geladen...', 'info')}
+              onClick={() => setCurrentTab('own-cases')}
             >
-              <BookOpen className="w-6 h-6 mb-1" />
-              <span className="text-xs">Lexikon</span>
+              <MessageCircle className="w-6 h-6 mb-1" />
+              <span className="text-xs">Eigene Cases</span>
             </Button>
             <Button 
               variant="ghost" 
@@ -796,7 +796,7 @@ const EmpathyTrainingApp = () => {
               onClick={() => setCurrentTab('partners')}
             >
               <User className="w-6 h-6 mb-1" />
-              <span className="text-xs">Profil</span>
+              <span className="text-xs">Profile</span>
             </Button>
           </div>
         </div>
