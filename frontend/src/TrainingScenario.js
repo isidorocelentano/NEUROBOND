@@ -955,7 +955,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm text-blue-300 mb-2 font-medium">{userName}</div>
+                    <div className="text-sm text-blue-300 mb-2 font-medium">{userName} antwortet {partnerName}:</div>
                     <div className="bg-blue-900/30 p-4 rounded-2xl border border-blue-700/50 relative">
                       <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-blue-700/50"></div>
                       <p className="text-blue-100 leading-relaxed text-lg">
