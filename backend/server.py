@@ -61,7 +61,7 @@ TRAINING_SCENARIOS = {
     1: {
         "title": "Aktives Zuhören",
         "context": "Ihr Partner kommt nach einem besonders stressigen Arbeitstag nach Hause. Sie bemerken, dass er/sie müde und frustriert wirkt.",
-        "partner_opening": "Was für ein furchtbarer Tag... Ich bin so müde von all dem Stress bei der Arbeit. Nichts läuft wie geplant.",
+        "partner_opening": "Weißt du... ich kann nicht mehr so weitermachen. Die Arbeit ist einfach zu viel geworden. Ich fühle mich total erschöpft und weiß nicht, wie ich das alles schaffen soll.",
         "difficulty": "basic",
         "learning_goals": ["Aktives Zuhören", "Empathie zeigen", "Emotionale Unterstützung"]
     },
