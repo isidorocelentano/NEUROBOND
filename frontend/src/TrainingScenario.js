@@ -286,48 +286,35 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
     }
   };
 
-  const sendResponse = async () => {
-    if (!userInput.trim() || responding) return;
+  const submitResponse = async () => {
+    if (!userResponse.trim() || submitting) return;
 
-    setResponding(true);
-    const newUserMessage = {
-      speaker: userName,
-      message: userInput,
-      timestamp: new Date().toISOString()
-    };
-
-    setMessages(prev => [...prev, newUserMessage]);
-    const currentInput = userInput;
-    setUserInput('');
-
+    setSubmitting(true);
+    
     try {
-      // Send response to get partner's reply
-      const response = await fetch(`${BACKEND_URL}/api/training/respond`, {
+      // Get AI evaluation of the user's response
+      const evaluationResponse = await fetch(`${BACKEND_URL}/api/training/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          session_id: sessionData.session_id,
-          user_response: currentInput
+          user_response: userResponse,
+          scenario_id: scenarioId,
+          user_id: userId
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(prev => [...prev, {
-          speaker: partnerName,
-          message: data.partner_response,
-          timestamp: new Date().toISOString()
-        }]);
-
-        // After 3-4 exchanges, move to evaluation
-        if (messages.length >= 6) {
-          setTimeout(() => evaluateResponse(currentInput), 1000);
-        }
+      if (evaluationResponse.ok) {
+        const evaluationData = await evaluationResponse.json();
+        setEvaluation(evaluationData);
+        setCurrentPhase('feedback');
+      } else {
+        throw new Error('Failed to get evaluation');
       }
     } catch (error) {
-      console.error('Error sending response:', error);
+      console.error('Error getting evaluation:', error);
+      showNotification('Fehler beim Bewerten der Antwort. Bitte versuchen Sie es erneut.', 'error');
     } finally {
-      setResponding(false);
+      setSubmitting(false);
     }
   };
 
