@@ -923,15 +923,46 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-3">
-                  <User className="w-6 h-6 text-blue-400" />
-                  Ihre Antwort
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-600 border-2 border-blue-400">
+                    {userAvatar ? (
+                      <img 
+                        src={userAvatar} 
+                        alt={userName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <UserCircle className="w-5 h-5 text-white/80" />
+                      </div>
+                    )}
+                  </div>
+                  Ihre Antwort, {userName}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="bg-blue-900/30 p-4 rounded-2xl border border-blue-700/50">
-                  <p className="text-blue-100 italic leading-relaxed text-lg">
-                    "{userResponse}"
-                  </p>
+                <div className="flex items-start gap-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-600 border-4 border-blue-400 flex-shrink-0">
+                    {userAvatar ? (
+                      <img 
+                        src={userAvatar} 
+                        alt={userName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <UserCircle className="w-10 h-10 text-white/80" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-blue-300 mb-2 font-medium">{userName}</div>
+                    <div className="bg-blue-900/30 p-4 rounded-2xl border border-blue-700/50 relative">
+                      <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-blue-700/50"></div>
+                      <p className="text-blue-100 leading-relaxed text-lg">
+                        "{userResponse}"
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
