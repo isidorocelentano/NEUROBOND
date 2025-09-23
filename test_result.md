@@ -569,6 +569,21 @@ agent_communication:
     needs_retesting: false
     status_history:
         -working: true
+
+  - task: "Speech Recognition (Microphone) Functionality Fix"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js, /app/frontend/src/TrainingScenario.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported microphone is visible but not functioning"
+        -working: true
+        -agent: "main"
+        -comment: "Successfully fixed speech recognition functionality by implementing proper error handling, microphone permission requests, better user feedback, and enhanced debugging. Added visual feedback with listening indicators, error messages for common issues (permission denied, no microphone, network errors), and proper browser compatibility checks. Tests confirm microphone now works correctly in both onboarding and training scenarios with listening indicators appearing properly."
         -agent: "main"
         -comment: "Successfully implemented navigation buttons (Back, Home, Next) in TrainingScenario component. Fixed ESLint 'showNotification is not defined' error by implementing proper notification system with state management. Added comprehensive navigation props and handlers in App.js to support training scenario navigation. Users can now navigate between scenarios, return to home dashboard, or go back to training selection."
     -agent: "main"
