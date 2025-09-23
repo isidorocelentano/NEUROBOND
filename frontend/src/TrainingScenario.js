@@ -624,7 +624,17 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                {/* Partner Avatar and Scenario */}
+                {/* Scenario Context */}
+                <div className="mb-6">
+                  <h4 className="text-blue-200 font-semibold mb-3 text-lg">📖 Ausgangssituation</h4>
+                  <div className="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50">
+                    <p className="text-gray-200 leading-relaxed text-base">
+                      {getDetailedScenarioContext(scenarioId)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Partner Avatar and Direct Message */}
                 <div className="flex items-start gap-6 mb-6">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-600 border-4 border-green-400 flex-shrink-0">
                     {partnerAvatar ? (
@@ -641,11 +651,18 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                   </div>
                   
                   <div className="flex-1">
-                    <div className="text-lg font-semibold text-green-200 mb-3">{partnerName} sagt zu Ihnen:</div>
-                    <div className="bg-gray-700/50 p-4 rounded-2xl border border-gray-600">
-                      <p className="text-gray-100 leading-relaxed text-lg">
-                        {sessionData?.partner_message}
+                    <div className="text-lg font-semibold text-green-200 mb-3">{partnerName} wendet sich an Sie:</div>
+                    <div className="bg-green-900/20 p-5 rounded-2xl border border-green-700/50 relative">
+                      <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-green-700/50"></div>
+                      <p className="text-green-100 leading-relaxed text-lg font-medium italic">
+                        "{sessionData?.partner_message}"
                       </p>
+                    </div>
+                    
+                    {/* Emotional indicators */}
+                    <div className="mt-3 flex items-center gap-2 text-sm">
+                      <span className="text-yellow-400">😟</span>
+                      <span className="text-gray-400">Sie bemerken {getEmotionalIndicators(scenarioId)}</span>
                     </div>
                   </div>
                 </div>
