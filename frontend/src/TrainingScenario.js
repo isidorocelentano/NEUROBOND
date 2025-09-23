@@ -346,11 +346,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
             {/* Conversation Area */}
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl mb-6">
               <CardContent className="p-6">
-                <div className="space-y-4 max-h-96 overflow-y-auto">
+                <div className="space-y-6 max-h-96 overflow-y-auto">
                   {messages.map((msg, index) => (
-                    <div key={index} className={`flex items-start gap-3 ${msg.speaker === userName ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div key={index} className={`flex items-start gap-4 ${msg.speaker === userName ? 'flex-row-reverse' : 'flex-row'}`}>
                       {/* Avatar */}
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-600 border-2 border-gray-500 flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-600 border-3 border-gray-500 flex-shrink-0">
                         {msg.speaker === userName ? (
                           userAvatar ? (
                             <img 
@@ -360,7 +360,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                             />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                              <UserCircle className="w-6 h-6 text-white/80" />
+                              <UserCircle className="w-8 h-8 text-white/80" />
                             </div>
                           )
                         ) : (
@@ -372,7 +372,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                             />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
-                              <UserCircle className="w-6 h-6 text-white/80" />
+                              <UserCircle className="w-8 h-8 text-white/80" />
                             </div>
                           )
                         )}
@@ -380,10 +380,10 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                       
                       {/* Message */}
                       <div className={`max-w-xs lg:max-w-md ${msg.speaker === userName ? 'text-right' : 'text-left'}`}>
-                        <div className="text-xs text-gray-400 mb-1 px-2">
+                        <div className="text-sm text-gray-400 mb-2 px-2 font-medium">
                           {msg.speaker}
                         </div>
-                        <div className={`px-4 py-3 rounded-2xl ${
+                        <div className={`px-5 py-4 rounded-2xl shadow-lg ${
                           msg.speaker === userName 
                             ? 'bg-blue-600 text-white' 
                             : 'bg-gray-700 text-gray-100'
@@ -394,9 +394,9 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     </div>
                   ))}
                   {responding && (
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-4">
                       {/* Partner Avatar */}
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-600 border-2 border-gray-500 flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-600 border-3 border-gray-500 flex-shrink-0">
                         {partnerAvatar ? (
                           <img 
                             src={partnerAvatar}
@@ -405,17 +405,17 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
-                            <UserCircle className="w-6 h-6 text-white/80" />
+                            <UserCircle className="w-8 h-8 text-white/80" />
                           </div>
                         )}
                       </div>
                       
                       {/* Typing Indicator */}
-                      <div className="bg-gray-700 text-gray-100 px-4 py-3 rounded-2xl">
+                      <div className="bg-gray-700 text-gray-100 px-5 py-4 rounded-2xl shadow-lg">
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-100"></div>
-                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-200"></div>
+                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-100"></div>
+                          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-200"></div>
                         </div>
                       </div>
                     </div>
