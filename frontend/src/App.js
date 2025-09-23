@@ -569,7 +569,10 @@ const EmpathyTrainingApp = () => {
   // Partner Dashboard Component (inspired by user's design)
   const PartnerDashboard = ({ isMainUser = true }) => {
     const partnerLevel = Math.floor(userProgress.length / 3) + 3; // Start at Level 3 like in image
-    const partnerAvatar = localStorage.getItem('partner_avatar');
+    
+    // Load correct avatar based on user type
+    const displayAvatar = isMainUser ? userAvatar : localStorage.getItem('partner_avatar');
+    const displayName = isMainUser ? (user?.name || 'Sophia') : (user?.partner_name || 'Max');
     
     // Dynamic daily goals based on user progress and day of week
     const generateDynamicGoals = () => {
