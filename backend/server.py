@@ -92,6 +92,98 @@ TRAINING_SCENARIOS = {
         "partner_opening": "Ich hab die Beförderung nicht bekommen. Sie haben jemand anderen genommen. Ich bin so enttäuscht...",
         "difficulty": "basic",
         "learning_goals": ["Trost spenden", "Enttäuschung validieren", "Hoffnung geben"]
+    },
+    
+    # Stufe 2: Konfliktlösung
+    6: {
+        "title": "Meinungsverschiedenheiten",
+        "context": "Bei der Urlaubsplanung haben Sie unterschiedliche Vorstellungen, was zu Spannungen führt.",
+        "partner_opening": "Du verstehst einfach nicht, was ich brauche! Ich möchte endlich mal in die Berge, Ruhe haben. Warum muss es immer Strand sein?",
+        "difficulty": "intermediate",
+        "learning_goals": ["Verständnis zeigen", "Kompromisse finden", "Bedürfnisse erkennen"]
+    },
+    7: {
+        "title": "Vorwürfe handhaben",
+        "context": "Nach einem Streit über Haushaltsaufgaben ist die Stimmung angespannt.",
+        "partner_opening": "Ich fühle mich, als würde ich alles alleine machen. Deine Kritik von gestern hat mich richtig getroffen. Siehst du denn nicht, wie viel ich tue?",
+        "difficulty": "intermediate", 
+        "learning_goals": ["Defensive Reaktionen vermeiden", "Verletzungen anerkennen", "Konstruktiv reagieren"]
+    },
+    8: {
+        "title": "Grenzen setzen",
+        "context": "Ihr Partner hat spontan Familie-Verpflichtungen zugesagt, ohne Sie zu fragen.",
+        "partner_opening": "Das ist meine Familie! Ich kann doch nicht nein sagen, wenn sie Hilfe brauchen. Warum verstehst du das nicht?",
+        "difficulty": "intermediate",
+        "learning_goals": ["Grenzen kommunizieren", "Verständnis schaffen", "Gemeinsame Lösungen"]
+    },
+    
+    # Stufe 3: Emotionale Intelligenz
+    9: {
+        "title": "Selbstwertkrisen",
+        "context": "Ihr Partner kämpft mit Selbstzweifeln bezüglich des eigenen Körperbildes.",
+        "partner_opening": "Ich kann das einfach nicht mehr ertragen. Du findest mich bestimmt nicht mehr attraktiv... ich erkenne mich selbst nicht mehr.",
+        "difficulty": "advanced",
+        "learning_goals": ["Selbstwert stärken", "Bedingungslose Akzeptanz", "Körperpositivität"]
+    },
+    10: {
+        "title": "Familiäre Belastungen", 
+        "context": "Nach einem schwierigen Besuch bei der Familie ist Ihr Partner emotional erschöpft.",
+        "partner_opening": "Ich werde niemals gut genug für sie sein... egal was ich mache, es ist immer falsch. Diese ewigen Vorwürfe zermürben mich.",
+        "difficulty": "advanced",
+        "learning_goals": ["Familiendynamiken verstehen", "Emotionale Stütze sein", "Abgrenzung unterstützen"]
+    },
+    11: {
+        "title": "Impostor-Syndrom",
+        "context": "Trotz beruflichem Erfolg zweifelt Ihr Partner an den eigenen Fähigkeiten.",
+        "partner_opening": "Ich verdiene das gar nicht. Die anderen arbeiten genauso hart. Was, wenn sie merken, dass ich eigentlich keine Ahnung habe?",
+        "difficulty": "advanced", 
+        "learning_goals": ["Selbstzweifel erkennen", "Erfolge würdigen", "Realistische Perspektive geben"]
+    },
+    
+    # Stufe 4: Beziehungsdynamiken
+    12: {
+        "title": "Beziehungsmuster",
+        "context": "Ihr Partner erkennt, dass Sie beide in wiederkehrende Konfliktmuster fallen.",
+        "partner_opening": "Merkst du auch, dass wir immer die gleichen Diskussionen haben? Ich fühle mich, als wären wir in einer Schleife gefangen und ich weiß nicht, wie wir da rauskommen sollen.",
+        "difficulty": "expert",
+        "learning_goals": ["Muster erkennen", "Systemisches Denken", "Veränderungsprozesse"]
+    },
+    13: {
+        "title": "Eigene Grenzen verlieren",
+        "context": "Ihr Partner hat das Gefühl, sich selbst in der Beziehung zu verlieren.",
+        "partner_opening": "Ich sage nie nein zu dir, aber dabei verliere ich mich selbst. Ich weiß gar nicht mehr, was ich wirklich will. Das macht mich unglücklich.",
+        "difficulty": "expert",
+        "learning_goals": ["Individuelle Bedürfnisse", "Gesunde Grenzen", "Selbstreflexion fördern"]
+    },
+    14: {
+        "title": "Vertrauenskrisen",
+        "context": "Frühere Verletzungen belasten das Vertrauen in die aktuelle Beziehung.",
+        "partner_opening": "Kann ich dir wirklich vertrauen? Ich habe solche Angst, dass du mich irgendwann verlässt. Diese Zweifel lassen mich einfach nicht los.",
+        "difficulty": "expert",
+        "learning_goals": ["Vertrauen aufbauen", "Ängste verstehen", "Sicherheit vermitteln"]
+    },
+    
+    # Stufe 5: Meisterschaft
+    15: {
+        "title": "Fremde Lasten tragen",
+        "context": "Ihr Partner ist emotional erschöpft vom Helfen bei den Problemen anderer.",
+        "partner_opening": "Sie ist völlig am Boden zerstört und ich fühle mich so hilflos. Wie kann ich ihr helfen, wenn ihre Welt gerade zusammenbricht? Ich trage so viel mit...",
+        "difficulty": "mastery",
+        "learning_goals": ["Emotionale Abgrenzung", "Helfer-Syndrom", "Selbstfürsorge"]
+    },
+    16: {
+        "title": "Zukunftsängste",
+        "context": "Unsicherheiten über die gemeinsame Zukunft belasten Ihren Partner.",
+        "partner_opening": "Manchmal frage ich mich, ob wir in dieselbe Richtung gehen. Ich liebe dich, aber ich habe Angst, dass wir verschiedene Träume haben.",
+        "difficulty": "mastery",
+        "learning_goals": ["Zukunftsplanung", "Gemeinsame Visionen", "Unsicherheit aushalten"]
+    },
+    17: {
+        "title": "Beziehungsweisheit",
+        "context": "Ihr Partner reflektiert über die Beziehung und möchte anderen Paaren helfen.",
+        "partner_opening": "Heute ist mir klar geworden, wie zerbrechlich Beziehungen sind. Vielleicht könnten wir anderen helfen, aber dafür müssten wir erst sicher sein, dass wir es geschafft haben.",
+        "difficulty": "mastery", 
+        "learning_goals": ["Beziehungsreife", "Mentoring", "Weisheit weitergeben"]
     }
 }
 
