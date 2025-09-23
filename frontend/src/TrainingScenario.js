@@ -445,11 +445,32 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   // Get emotional indicators for the scenario
   const getEmotionalIndicators = (scenarioId) => {
     const indicators = {
+      // Stufe 1: Grundlagen der Empathie
       1: `die Anspannung in ${partnerName}s Gesicht, die müden Augen und die leicht gesunkenen Schultern`,
-      2: `die Tränen in ${partnerName}s Augen, die verkrampften Hände und die enttäuschte Körperhaltung`,
+      2: `die Tränen in ${partnerName}s Augen, die verkrampften Hände und die enttäuschte Körperhaltung`,  
       3: `die Unruhe und Nervosität von ${partnerName}, das ständige Grübeln und die angespannte Mimik`,
       4: `die Frustration und Enttäuschung von ${partnerName}, die sich in der ganzen Körperhaltung widerspiegelt`,
-      5: `die emotionale Erschöpfung von ${partnerName}, die verweinten Augen und das leichte Zittern`
+      5: `die emotionale Erschöpfung von ${partnerName}, die verweinten Augen und das leichte Zittern`,
+      
+      // Stufe 2: Konfliktlösung
+      6: `die steigende Lautstärke in ${partnerName}s Stimme, die verkrampften Kiefer und die abwehrende Gestik`,
+      7: `die Verletzung in ${partnerName}s Blick, die kontrollierte aber zittrige Stimme und die aufrechte, defensive Haltung`,
+      8: `die Zerrissenheit in ${partnerName}s Gesichtszügen, das nervöse Gestikulieren und die flehende Tonlage`,
+      
+      // Stufe 3: Emotionale Intelligenz
+      9: `die Panik in ${partnerName}s Augen, die zittrigen Hände und die zusammengesunkene Körperhaltung`,
+      10: `die tiefen Furchen der Enttäuschung in ${partnerName}s Gesicht, die angespannte Kiefermuskulatur und die nach innen gekehrte Haltung`,
+      11: `die Selbstzweifel in ${partnerName}s unsicheren Blick, das nervöse Spielen mit den Händen und die kleinlaute Stimme`,
+      
+      // Stufe 4: Beziehungsdynamiken  
+      12: `die Resignation in ${partnerName}s Augen, die schweren Seufzer und die hilflose Gestik`,
+      13: `die innere Zerrissenheit in ${partnerName}s zögerlicher Sprache, die unsichere Körperhaltung und den suchenden Blick`,
+      14: `die Angst vor Verlust in ${partnerName}s Stimme, die schutzsuchende Körperhaltung und die vulnerable Offenheit`,
+      
+      // Stufe 5: Meisterschaft
+      15: `die emotionale Erschöpfung vom Tragen fremder Lasten, die schweren Augenlider und die belastete Ausstrahlung`,
+      16: `die nachdenkliche Melancholie in ${partnerName}s Blick in die Ferne, die nachdenklichen Pausen und die sehnsüchtige Körpersprache`,
+      17: `die neue Reife und Weisheit in ${partnerName}s Worten, die ruhige aber bestimmte Ausstrahlung und die verantwortungsvolle Haltung`
     };
     
     return indicators[scenarioId] || `dass ${partnerName} emotional belastet ist`;
