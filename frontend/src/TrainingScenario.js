@@ -325,12 +325,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
               <CardContent className="p-6">
                 <div className="flex gap-4">
-                  <Input
+                  <SpeechInput
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     placeholder="Wie antworten Sie empathisch?"
-                    className="flex-1 bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400"
-                    onKeyPress={(e) => e.key === 'Enter' && sendResponse()}
+                    className="flex-1 bg-gray-700/50 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
                   />
                   <Button
                     onClick={sendResponse}
@@ -341,7 +340,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                   </Button>
                 </div>
                 <p className="text-gray-400 text-sm mt-2">
-                  Denken Sie daran: Zeigen Sie Empathie, stellen Sie offene Fragen, und bestätigen Sie die Gefühle.
+                  💡 Tipp: Nutzen Sie das Mikrofon-Icon für Spracheingabe in 6 Sprachen
                 </p>
               </CardContent>
             </Card>
