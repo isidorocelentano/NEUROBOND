@@ -978,13 +978,37 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
               <CardContent className="p-6 space-y-6">
                 {/* Optimal Response */}
                 <div>
-                  <h4 className="font-semibold text-green-400 mb-3 text-lg">💬 So könnten Sie noch empathischer antworten:</h4>
-                  <div className="bg-green-900/30 p-5 rounded-2xl border border-green-700/50">
-                    <p className="text-green-100 leading-relaxed text-lg font-medium">
-                      {evaluation.alternative_responses && evaluation.alternative_responses[0] 
-                        ? `"${evaluation.alternative_responses[0]}"` 
-                        : '"Ich verstehe, dass dich das wirklich beschäftigt und unsicher macht. Es ist völlig normal, dass man sich Sorgen über die Zukunft macht. Lass uns gemeinsam schauen, wie wir mit dieser Unsicherheit umgehen können. Du bist nicht allein mit diesen Gedanken."'}
-                    </p>
+                  <h4 className="font-semibold text-green-400 mb-3 text-lg flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-400 flex items-center justify-center">
+                      <Star className="w-5 h-5 text-white" />
+                    </div>
+                    So könnten Sie noch empathischer antworten:
+                  </h4>
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-600 border-4 border-green-400 flex-shrink-0">
+                      {userAvatar ? (
+                        <img 
+                          src={userAvatar} 
+                          alt={`${userName} (optimiert)`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-green-400 to-emerald-400 flex items-center justify-center">
+                          <UserCircle className="w-10 h-10 text-white/80" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm text-green-300 mb-2 font-medium">{userName} (Empathisch optimiert)</div>
+                      <div className="bg-green-900/30 p-5 rounded-2xl border border-green-700/50 relative">
+                        <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-green-700/50"></div>
+                        <p className="text-green-100 leading-relaxed text-lg font-medium">
+                          "{evaluation.alternative_responses && evaluation.alternative_responses[0] 
+                            ? evaluation.alternative_responses[0] 
+                            : 'Ich verstehe, dass dich das wirklich beschäftigt und unsicher macht. Es ist völlig normal, dass man sich Sorgen über die Zukunft macht. Lass uns gemeinsam schauen, wie wir mit dieser Unsicherheit umgehen können. Du bist nicht allein mit diesen Gedanken.'}"
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
