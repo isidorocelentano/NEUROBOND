@@ -275,11 +275,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
       if (response.ok) {
         const data = await response.json();
         setSessionData(data);
-        setMessages([{
-          speaker: partnerName,
-          message: data.partner_message,
-          timestamp: new Date().toISOString()
-        }]);
+        setCurrentPhase('question');
       } else {
         throw new Error('Failed to start scenario');
       }
