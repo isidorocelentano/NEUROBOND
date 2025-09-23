@@ -161,6 +161,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
               size="sm"
               onClick={() => setShowLanguageMenu(!showLanguageMenu)}
               className="h-8 w-8 p-0 hover:bg-gray-600 text-gray-300 hover:text-white"
+              title={`Sprache: ${languageOptions[currentLanguage]}`}
             >
               <Globe className="w-4 h-4" />
             </Button>
@@ -173,6 +174,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
                     onClick={() => {
                       setCurrentLanguage(lang);
                       setShowLanguageMenu(false);
+                      setError(''); // Clear error when language changes
                     }}
                     className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-600 ${
                       currentLanguage === lang ? 'bg-blue-600 text-white' : 'text-gray-200'
@@ -189,14 +191,45 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
             variant="ghost"
             size="sm"
             onClick={isListening ? stopListening : startListening}
+            disabled={!speechSupported}
+            title={
+              !speechSupported 
+                ? 'Spracherkennung nicht verfügbar' 
+                : isListening 
+                ? 'Aufnahme stoppen' 
+                : 'Spracheingabe starten'
+            }
             className={`h-8 w-8 p-0 hover:bg-gray-600 ${
-              isListening ? 'text-red-400 hover:text-red-300' : 'text-gray-300 hover:text-white'
+              !speechSupported 
+                ? 'text-gray-500 cursor-not-allowed'
+                : isListening 
+                ? 'text-red-400 hover:text-red-300' 
+                : 'text-gray-300 hover:text-white'
             }`}
           >
             <Mic className={`w-4 h-4 ${isListening ? 'animate-pulse' : ''}`} />
           </Button>
         </div>
       </div>
+      
+      {/* Error Message */}
+      {error && (
+        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-900/90 border border-red-700 rounded text-red-200 text-xs z-50">
+          {error}
+          {error.includes('Berechtigung') && (
+            <div className="mt-1 text-xs">
+              💡 Tipp: Klicken Sie auf das Schloss-Symbol in der Adressleiste und erlauben Sie den Mikrofon-Zugriff.
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* Listening Indicator */}
+      {isListening && (
+        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-green-900/90 border border-green-700 rounded text-green-200 text-xs z-50">
+          🎤 Sprechen Sie jetzt... (Sprache: {languageOptions[currentLanguage]})
+        </div>
+      )}
     </div>
   );
 };
