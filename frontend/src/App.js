@@ -216,7 +216,6 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
       />
       <Button
         type="button"
-        variant="outline"
         size="sm"
         onClick={() => fileInputRef.current?.click()}
         disabled={uploading}
