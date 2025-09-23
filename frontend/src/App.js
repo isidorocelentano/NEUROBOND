@@ -640,10 +640,11 @@ const EmpathyTrainingApp = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-white hover:bg-white/10"
+            className="text-white hover:bg-white/10 flex items-center gap-2"
             onClick={() => setCurrentTab('partners')}
           >
-            <Settings className="w-6 h-6" />
+            <ArrowRight className="w-5 h-5 rotate-180" />
+            <span className="text-sm">Profile bearbeiten</span>
           </Button>
         </header>
 
