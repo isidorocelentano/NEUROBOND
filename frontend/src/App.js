@@ -621,6 +621,31 @@ const EmpathyTrainingApp = () => {
       return allGoals.slice(0, 10); // Limit to 10 goals
     };
 
+    // Handle goal action
+    const handleGoalAction = (goalText) => {
+      if (goalText.includes('Empathie-Training')) {
+        setCurrentTab('training-stufen');
+      } else if (goalText.includes('Gefühlslexikon')) {
+        setCurrentTab('gefuehlslexikon');
+      } else if (goalText.includes('Dialog-Coaching')) {
+        setCurrentTab('dialog-coaching');
+      } else if (goalText.includes('Community Case')) {
+        setCurrentTab('community-cases');
+      } else if (goalText.includes('eigenen Case') || goalText.includes('Case erstellen')) {
+        setCurrentTab('own-cases');
+      } else if (goalText.includes('Wochenreflexion') || goalText.includes('Plan aktualisieren')) {
+        showNotification('Diese Funktion wird bald verfügbar sein!', 'info');
+      } else {
+        showNotification(`${goalText} - Funktion wird geladen...`, 'info');
+      }
+    };
+
+    // Toggle goal completion (for testing/practice)
+    const toggleGoalCompletion = (index) => {
+      // This would normally save to backend, for now just show notification
+      showNotification('Ziel-Status aktualisiert! (Demo-Modus)', 'success');
+    };
+
     const dailyGoals = generateDynamicGoals();
     const dailyGoalsCompleted = dailyGoals.filter(goal => goal.completed).length;
     const dailyGoalsTotal = dailyGoals.length;
