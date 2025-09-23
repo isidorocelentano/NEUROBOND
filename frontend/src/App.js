@@ -11,11 +11,13 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// SpeechInput Component with Multi-language Support
+// Enhanced SpeechInput Component with Better Error Handling
 const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
   const [isListening, setIsListening] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('de-DE');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [error, setError] = useState('');
   const recognitionRef = useRef(null);
 
   const languageOptions = {
@@ -28,26 +30,70 @@ const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+    // Check for Speech Recognition support
+    if (typeof window !== 'undefined') {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = currentLanguage;
+      
+      if (SpeechRecognition) {
+        try {
+          recognitionRef.current = new SpeechRecognition();
+          recognitionRef.current.continuous = false;
+          recognitionRef.current.interimResults = false;
+          recognitionRef.current.lang = currentLanguage;
 
-      recognitionRef.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        onChange({ target: { value: value + ' ' + transcript } });
-        setIsListening(false);
-      };
+          recognitionRef.current.onstart = () => {
+            console.log('Speech recognition started');
+            setError('');
+          };
 
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
+          recognitionRef.current.onresult = (event) => {
+            console.log('Speech recognition result:', event.results);
+            const transcript = event.results[0][0].transcript;
+            const currentValue = value || '';
+            const newValue = currentValue + (currentValue ? ' ' : '') + transcript;
+            onChange({ target: { value: newValue } });
+            setIsListening(false);
+            setError('');
+          };
 
-      recognitionRef.current.onerror = () => {
-        setIsListening(false);
-      };
+          recognitionRef.current.onend = () => {
+            console.log('Speech recognition ended');
+            setIsListening(false);
+          };
+
+          recognitionRef.current.onerror = (event) => {
+            console.error('Speech recognition error:', event);
+            setIsListening(false);
+            
+            switch (event.error) {
+              case 'not-allowed':
+                setError('Mikrofon-Berechtigung verweigert. Bitte erlauben Sie den Mikrofon-Zugriff.');
+                break;
+              case 'no-speech':
+                setError('Keine Sprache erkannt. Bitte sprechen Sie deutlicher.');
+                break;
+              case 'audio-capture':
+                setError('Kein Mikrofon gefunden. Bitte überprüfen Sie Ihr Mikrofon.');
+                break;
+              case 'network':
+                setError('Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.');
+                break;
+              default:
+                setError(`Spracherkennung Fehler: ${event.error}`);
+            }
+          };
+
+          setSpeechSupported(true);
+        } catch (err) {
+          console.error('Error initializing speech recognition:', err);
+          setSpeechSupported(false);
+          setError('Spracherkennung nicht verfügbar');
+        }
+      } else {
+        console.warn('Speech Recognition not supported');
+        setSpeechSupported(false);
+        setError('Spracherkennung wird von diesem Browser nicht unterstützt');
+      }
     }
 
     return () => {
@@ -57,11 +103,40 @@ const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de
     };
   }, [currentLanguage]);
 
-  const startListening = () => {
-    if (recognitionRef.current && !isListening) {
+  const requestMicrophonePermission = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log('Microphone permission granted');
+      return true;
+    } catch (err) {
+      console.error('Microphone permission denied:', err);
+      setError('Mikrofon-Berechtigung erforderlich. Bitte erlauben Sie den Zugriff.');
+      return false;
+    }
+  };
+
+  const startListening = async () => {
+    if (!speechSupported) {
+      setError('Spracherkennung nicht verfügbar');
+      return;
+    }
+
+    if (!recognitionRef.current || isListening) return;
+
+    // Request microphone permission first
+    const hasPermission = await requestMicrophonePermission();
+    if (!hasPermission) return;
+
+    try {
       setIsListening(true);
+      setError('');
       recognitionRef.current.lang = currentLanguage;
       recognitionRef.current.start();
+      console.log('Starting speech recognition with language:', currentLanguage);
+    } catch (err) {
+      console.error('Error starting speech recognition:', err);
+      setIsListening(false);
+      setError('Fehler beim Starten der Spracherkennung');
     }
   };
 
@@ -69,6 +144,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, languages = ['de
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
+      console.log('Stopping speech recognition');
     }
   };
 
