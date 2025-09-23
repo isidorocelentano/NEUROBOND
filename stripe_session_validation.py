@@ -8,13 +8,13 @@ def validate_stripe_session():
     print("🔍 STRIPE SESSION VALIDATION")
     print("="*50)
     
-    base_url = "https://partner-bond.preview.emergentagent.com"
+    base_url = "https://couple-connect-22.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create a session
     test_data = {
         "package_type": "monthly",
-        "origin_url": "https://partner-bond.preview.emergentagent.com"
+        "origin_url": "https://couple-connect-22.preview.emergentagent.com"
     }
     
     print("1. 🎯 CREATING SESSION")
