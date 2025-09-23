@@ -140,13 +140,13 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Bitte wählen Sie eine Bilddatei aus.');
+      console.warn('Invalid file type selected');
       return;
     }
 
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Die Datei ist zu groß. Maximale Größe: 5MB');
+      console.warn('File size too large');
       return;
     }
 
