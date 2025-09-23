@@ -171,7 +171,6 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
       // });
     } catch (error) {
       console.error('Avatar upload error:', error);
-      alert('Fehler beim Hochladen des Avatars');
     } finally {
       setUploading(false);
     }
