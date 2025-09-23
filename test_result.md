@@ -614,6 +614,20 @@ agent_communication:
         -working: false
         -agent: "user"
         -comment: "User reported that Scenario 1 had illogical partner message - Resa was described as stressed but then asked about the user's difficult day instead of talking about her own problems"
+  - task: "Complete Training Scenarios Backend Implementation (All 17 Stages)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Backend only had 5 scenarios defined, but frontend expected 17 scenarios across 5 training levels"
+        -working: true
+        -agent: "main"
+        -comment: "Successfully implemented all 17 training scenarios in backend with logical consistency checks. Added Stufe 2 (scenarios 6-8): Conflict resolution including disagreements, handling accusations, setting boundaries. Stufe 3 (scenarios 9-11): Emotional intelligence covering self-worth crises, family burdens, impostor syndrome. Stufe 4 (scenarios 12-14): Relationship dynamics including pattern recognition, losing personal boundaries, trust issues. Stufe 5 (scenarios 15-17): Mastery level covering emotional burden from helping others, future anxieties, relationship wisdom. All scenarios now have appropriate partner_opening messages that match their contextual situations and emotional states."
         -working: true
         -agent: "main"
         -comment: "Successfully corrected Scenario 1 partner message logic. Changed from 'Es tut mir leid zu hören, dass dein Tag so schwierig war' to 'Weißt du... ich kann nicht mehr so weitermachen. Die Arbeit ist einfach zu viel geworden. Ich fühle mich total erschöpft und weiß nicht, wie ich das alles schaffen soll.' Now the partner correctly talks about THEIR OWN problems and stress, which matches the scenario description of them being the one who is stressed and needs support."
