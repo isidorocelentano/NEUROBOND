@@ -778,8 +778,28 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
             {/* Response Input Area */}
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
               <CardContent className="p-6">
+                {/* User Avatar and Input Label */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-600 border-3 border-blue-400 flex-shrink-0">
+                    {userAvatar ? (
+                      <img 
+                        src={userAvatar} 
+                        alt={userName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <UserCircle className="w-8 h-8 text-white/80" />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-blue-200 font-semibold">Ihre empathische Antwort, {userName}</h4>
+                    <p className="text-gray-400 text-sm">Wie würden Sie in dieser Situation reagieren?</p>
+                  </div>
+                </div>
+
                 <div className="mb-4">
-                  <label className="block text-gray-300 font-medium mb-3">Ihre empathische Antwort:</label>
                   <div className="relative">
                     <textarea
                       value={userResponse}
