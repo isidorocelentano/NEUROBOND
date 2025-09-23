@@ -318,27 +318,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
     }
   };
 
-  const evaluateResponse = async (lastResponse) => {
-    try {
-      setCurrentPhase('evaluation');
-      
-      const response = await fetch(`${BACKEND_URL}/api/training/evaluate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_response: lastResponse,
-          scenario_id: scenarioId,
-          user_id: userId
-        })
-      });
-
-      if (response.ok) {
-        const evaluationData = await response.json();
-        setEvaluation(evaluationData);
-      }
-    } catch (error) {
-      console.error('Error getting evaluation:', error);
-    }
+  const restartScenario = () => {
+    setUserResponse('');
+    setEvaluation(null);
+    setCurrentPhase('question');
+    showNotification('Szenario wurde zurückgesetzt. Versuchen Sie es erneut!', 'info');
   };
 
   const completeScenario = async () => {
