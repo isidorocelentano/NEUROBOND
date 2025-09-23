@@ -138,6 +138,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
   const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
 
+  // Simple notification function
+  const showNotification = (message, type = 'info') => {
+    alert(message); // Simple alert for now
+  };
+
   useEffect(() => {
     startScenario();
   }, []);
