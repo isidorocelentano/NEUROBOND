@@ -603,6 +603,20 @@ agent_communication:
         -working: true
         -agent: "main"
         -comment: "Successfully added user avatar display in training scenario input areas for enhanced personalization. Added user avatar and personalized header in the response input section with 'Ihre empathische Antwort, {userName}' and contextual subtitle. Enhanced feedback phase to show user avatar with speech bubble design for user's response, and improved optimal answer section with user avatar (marked as 'empathisch optimiert') to create visual connection between user's answer and the improved version. Creates more personal and engaging training experience."
+  - task: "Training Scenario 1 Logic Correction"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported that Scenario 1 had illogical partner message - Resa was described as stressed but then asked about the user's difficult day instead of talking about her own problems"
+        -working: true
+        -agent: "main"
+        -comment: "Successfully corrected Scenario 1 partner message logic. Changed from 'Es tut mir leid zu hören, dass dein Tag so schwierig war' to 'Weißt du... ich kann nicht mehr so weitermachen. Die Arbeit ist einfach zu viel geworden. Ich fühle mich total erschöpft und weiß nicht, wie ich das alles schaffen soll.' Now the partner correctly talks about THEIR OWN problems and stress, which matches the scenario description of them being the one who is stressed and needs support."
         -working: true
         -agent: "main"
         -comment: "Successfully fixed speech recognition functionality by implementing proper error handling, microphone permission requests, better user feedback, and enhanced debugging. Added visual feedback with listening indicators, error messages for common issues (permission denied, no microphone, network errors), and proper browser compatibility checks. Tests confirm microphone now works correctly in both onboarding and training scenarios with listening indicators appearing properly."
