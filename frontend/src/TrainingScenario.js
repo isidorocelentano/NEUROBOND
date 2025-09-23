@@ -794,8 +794,8 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     )}
                   </div>
                   <div>
-                    <h4 className="text-blue-200 font-semibold">Ihre empathische Antwort, {userName}</h4>
-                    <p className="text-gray-400 text-sm">Wie würden Sie in dieser Situation reagieren?</p>
+                    <h4 className="text-blue-200 font-semibold">Ihre empathische Antwort an {partnerName}</h4>
+                    <p className="text-gray-400 text-sm">Wie antworten Sie als {userName} empathisch auf {partnerName}s Problem?</p>
                   </div>
                 </div>
 
