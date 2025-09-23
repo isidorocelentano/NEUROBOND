@@ -243,6 +243,14 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [evaluation, setEvaluation] = useState(null);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
   
+  // Speech recognition states
+  const [isListening, setIsListening] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('de-DE');
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [error, setError] = useState('');
+  const recognitionRef = useRef(null);
+  
   // Load avatars from localStorage
   const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
   const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
