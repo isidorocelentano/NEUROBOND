@@ -582,69 +582,125 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
           </>
         )}
 
-        {currentPhase === 'evaluation' && evaluation && (
-          <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl text-white flex items-center justify-center gap-3">
-                <Star className="w-8 h-8 text-yellow-400" />
-                Ihre Empathie-Bewertung
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              {/* Score */}
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-400 mb-2">
-                  {evaluation.empathy_score}/10
+        {currentPhase === 'feedback' && evaluation && (
+          <div className="space-y-6">
+            {/* Your Response */}
+            <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-3">
+                  <User className="w-6 h-6 text-blue-400" />
+                  Ihre Antwort
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="bg-blue-900/30 p-4 rounded-2xl border border-blue-700/50">
+                  <p className="text-blue-100 italic leading-relaxed text-lg">
+                    "{userResponse}"
+                  </p>
                 </div>
-                <p className="text-gray-300">Empathie-Score</p>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Feedback */}
-              <div>
-                <h4 className="font-semibold text-blue-400 mb-3">Feedback</h4>
-                <p className="text-gray-300">{evaluation.feedback}</p>
-              </div>
+            {/* Optimal Response */}
+            <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-3">
+                  <Star className="w-6 h-6 text-yellow-400" />
+                  Optimale empathische Antwort
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                {/* Optimal Response */}
+                <div>
+                  <h4 className="font-semibold text-green-400 mb-3 text-lg">💬 So könnten Sie noch empathischer antworten:</h4>
+                  <div className="bg-green-900/30 p-5 rounded-2xl border border-green-700/50">
+                    <p className="text-green-100 leading-relaxed text-lg font-medium">
+                      {evaluation.alternative_responses && evaluation.alternative_responses[0] 
+                        ? `"${evaluation.alternative_responses[0]}"` 
+                        : '"Ich verstehe, dass dich das wirklich beschäftigt und unsicher macht. Es ist völlig normal, dass man sich Sorgen über die Zukunft macht. Lass uns gemeinsam schauen, wie wir mit dieser Unsicherheit umgehen können. Du bist nicht allein mit diesen Gedanken."'}
+                    </p>
+                  </div>
+                </div>
 
-              {/* Improvements */}
-              <div>
-                <h4 className="font-semibold text-yellow-400 mb-3">Verbesserungsvorschläge</h4>
-                <ul className="space-y-2">
-                  {evaluation.improvements.map((improvement, index) => (
-                    <li key={index} className="text-gray-300 flex items-start gap-2">
-                      <ArrowRight className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                      {improvement}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Alternative Responses */}
-              <div>
-                <h4 className="font-semibold text-green-400 mb-3">Alternative Antworten</h4>
-                <div className="space-y-2">
-                  {evaluation.alternative_responses.map((response, index) => (
-                    <div key={index} className="bg-green-900/20 p-3 rounded-lg">
-                      <p className="text-green-200 italic">"{response}"</p>
+                {/* Explanation */}
+                <div>
+                  <h4 className="font-semibold text-blue-400 mb-3 text-lg">🧠 Warum ist diese Antwort empathisch?</h4>
+                  <div className="space-y-3">
+                    <div className="bg-gray-700/50 p-4 rounded-xl">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <span className="text-white text-sm font-bold">1</span>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-blue-200 mb-1">Gefühle erkennen & validieren</h5>
+                          <p className="text-gray-300 text-sm">Die Antwort zeigt, dass Sie die Gefühle Ihres Partners wahrnehmen und ernst nehmen.</p>
+                        </div>
+                      </div>
                     </div>
-                  ))}
+                    
+                    <div className="bg-gray-700/50 p-4 rounded-xl">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <span className="text-white text-sm font-bold">2</span>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-green-200 mb-1">Normalisierung</h5>
+                          <p className="text-gray-300 text-sm">Sie zeigen auf, dass diese Gefühle völlig normal und verständlich sind.</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gray-700/50 p-4 rounded-xl">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <span className="text-white text-sm font-bold">3</span>
+                        </div>
+                        <div>
+                          <h5 className="font-semibold text-purple-200 mb-1">Unterstützung anbieten</h5>
+                          <p className="text-gray-300 text-sm">Sie signalisieren Bereitschaft zur gemeinsamen Lösungssuche und Solidarität.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Next Level Tip */}
-              <div className="p-4 bg-purple-900/30 rounded-2xl border border-purple-700/50">
-                <h4 className="font-semibold text-purple-200 mb-2">💡 Nächster Level-Tipp</h4>
-                <p className="text-purple-100">{evaluation.next_level_tip}</p>
-              </div>
+                {/* Score and Feedback */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-yellow-900/30 p-4 rounded-2xl border border-yellow-700/50 text-center">
+                    <div className="text-3xl font-bold text-yellow-400 mb-2">
+                      {evaluation.empathy_score}/10
+                    </div>
+                    <p className="text-yellow-200 text-sm">Ihr Empathie-Score</p>
+                  </div>
+                  
+                  <div className="bg-purple-900/30 p-4 rounded-2xl border border-purple-700/50">
+                    <h5 className="font-semibold text-purple-200 mb-2">💡 Tipp für das nächste Mal:</h5>
+                    <p className="text-purple-100 text-sm">{evaluation.next_level_tip || evaluation.feedback}</p>
+                  </div>
+                </div>
 
-              <Button
-                onClick={completeScenario}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-2xl font-semibold"
-              >
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Training abschließen
-              </Button>
-            </CardContent>
-          </Card>
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <Button
+                    onClick={restartScenario}
+                    variant="outline"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white flex-1"
+                  >
+                    <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+                    Nochmal versuchen
+                  </Button>
+                  
+                  <Button
+                    onClick={completeScenario}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white flex-1"
+                  >
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Training abschließen
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {currentPhase === 'completed' && (
