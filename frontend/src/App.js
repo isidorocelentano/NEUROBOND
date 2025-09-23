@@ -650,16 +650,10 @@ const EmpathyTrainingApp = () => {
         {/* Profile Section */}
         <div className="flex flex-col items-center mb-12 relative z-10">
           <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white/20">
-            {(isMainUser && userAvatar) ? (
+            {displayAvatar ? (
               <img 
-                src={userAvatar} 
-                alt={`${user && user.name} Avatar`}
-                className="w-full h-full object-cover"
-              />
-            ) : (!isMainUser && partnerAvatar) ? (
-              <img 
-                src={partnerAvatar} 
-                alt="Partner Avatar"
+                src={displayAvatar} 
+                alt={`${displayName} Avatar`}
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -670,7 +664,7 @@ const EmpathyTrainingApp = () => {
           </div>
           
           <h2 className="text-3xl font-bold mb-2">
-            {isMainUser ? (user && user.name || 'Sophia') : (user && user.partner_name || 'Max')}
+            {displayName}
           </h2>
           <p className="text-lg text-gray-300">Level {partnerLevel}</p>
           <div className="mt-2 px-4 py-1 bg-blue-600/20 rounded-full">
