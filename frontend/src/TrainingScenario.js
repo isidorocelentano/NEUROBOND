@@ -125,7 +125,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
   );
 };
 
-const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete }) => {
+const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onHome, onBack, onNext }) => {
   const [sessionData, setSessionData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
@@ -133,14 +133,18 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [responding, setResponding] = useState(false);
   const [currentPhase, setCurrentPhase] = useState('conversation'); // conversation, evaluation, completed
   const [evaluation, setEvaluation] = useState(null);
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
   
   // Load avatars from localStorage
   const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
   const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
 
-  // Simple notification function
+  // Proper notification function
   const showNotification = (message, type = 'info') => {
-    alert(message); // Simple alert for now
+    setNotification({ show: true, message, type });
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'info' });
+    }, 4000);
   };
 
   useEffect(() => {
