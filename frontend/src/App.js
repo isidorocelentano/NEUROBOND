@@ -732,31 +732,55 @@ const EmpathyTrainingApp = () => {
             {dailyGoals.map((goal, index) => (
               <div 
                 key={index} 
-                className={`flex items-start space-x-3 p-3 rounded-lg transition-all ${
+                className={`flex items-center justify-between p-4 rounded-lg transition-all cursor-pointer hover:bg-gray-700/30 ${
                   goal.completed ? 'bg-green-900/20' : 'bg-gray-800/50'
                 }`}
+                onClick={() => !goal.completed && handleGoalAction(goal.text)}
               >
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                  goal.completed 
-                    ? 'bg-gradient-to-r from-blue-500 to-cyan-400' 
-                    : 'bg-gray-600 border-2 border-gray-500'
-                }`}>
-                  {goal.completed && <CheckCircle className="w-3 h-3 text-white" />}
+                <div className="flex items-start space-x-3 flex-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleGoalCompletion(index);
+                    }}
+                    className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${
+                      goal.completed 
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500' 
+                        : 'bg-gray-600 border-2 border-gray-500 hover:border-blue-400'
+                    }`}
+                  >
+                    {goal.completed && <CheckCircle className="w-4 h-4 text-white" />}
+                  </button>
+                  <div className="flex-1">
+                    <span className={`block ${
+                      goal.completed 
+                        ? 'text-white line-through' 
+                        : 'text-gray-300'
+                    }`}>
+                      {goal.text}
+                    </span>
+                    {!goal.completed && (
+                      <span className="text-xs text-blue-400 mt-1 block">
+                        → Klicken um zu starten
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <span className={`${
-                  goal.completed 
-                    ? 'text-white line-through' 
-                    : 'text-gray-300'
-                }`}>
-                  {goal.text}
-                </span>
-                {goal.completed && (
-                  <div className="ml-auto">
+                
+                <div className="flex items-center gap-2">
+                  {goal.completed ? (
                     <Badge className="bg-green-600/20 text-green-200 text-xs">
                       Erledigt
                     </Badge>
-                  </div>
-                )}
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-blue-600/20 text-blue-200 text-xs">
+                        Offen
+                      </Badge>
+                      <ArrowRight className="w-4 h-4 text-blue-400" />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
