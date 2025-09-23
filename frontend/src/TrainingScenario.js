@@ -999,13 +999,13 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                       )}
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm text-green-300 mb-2 font-medium">{userName} (Empathisch optimiert)</div>
+                      <div className="text-sm text-green-300 mb-2 font-medium">{userName} antwortet {partnerName} (Empathisch optimiert):</div>
                       <div className="bg-green-900/30 p-5 rounded-2xl border border-green-700/50 relative">
                         <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-green-700/50"></div>
                         <p className="text-green-100 leading-relaxed text-lg font-medium">
                           "{evaluation.alternative_responses && evaluation.alternative_responses[0] 
                             ? evaluation.alternative_responses[0] 
-                            : 'Ich verstehe, dass dich das wirklich beschäftigt und unsicher macht. Es ist völlig normal, dass man sich Sorgen über die Zukunft macht. Lass uns gemeinsam schauen, wie wir mit dieser Unsicherheit umgehen können. Du bist nicht allein mit diesen Gedanken.'}"
+                            : `Liebe/r ${partnerName}, ich verstehe, dass dich das wirklich beschäftigt und unsicher macht. Es ist völlig normal, dass man sich Sorgen über die Zukunft macht. Lass uns gemeinsam schauen, wie wir mit dieser Unsicherheit umgehen können. Du bist nicht allein mit diesen Gedanken.`}"
                         </p>
                       </div>
                     </div>
