@@ -581,6 +581,17 @@ agent_communication:
         -working: false
         -agent: "user"
         -comment: "User reported microphone is visible but not functioning"
+  - task: "Training Flow Restructure - Question-Answer-Feedback Format"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/TrainingScenario.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Successfully restructured training flow from chat-based conversation to structured Question-Answer-Feedback format as requested. New flow: 1) Scenario question presentation with partner message and learning goals, 2) User response textarea with speech input integration, 3) Comprehensive feedback showing user's answer, optimal empathetic response with detailed explanation of why it's empathetic (emotion recognition, validation, support offering), empathy score, and action buttons for retry or completion. Enhanced with visual explanations using numbered steps and proper UI/UX design matching the app's dark theme."
         -working: true
         -agent: "main"
         -comment: "Successfully fixed speech recognition functionality by implementing proper error handling, microphone permission requests, better user feedback, and enhanced debugging. Added visual feedback with listening indicators, error messages for common issues (permission denied, no microphone, network errors), and proper browser compatibility checks. Tests confirm microphone now works correctly in both onboarding and training scenarios with listening indicators appearing properly."
