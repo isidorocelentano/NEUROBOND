@@ -343,6 +343,42 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
 
         {currentPhase === 'conversation' && (
           <>
+            {/* Navigation Header */}
+            <div className="flex justify-between items-center mb-6">
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => onComplete && onComplete()}
+                className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+              >
+                <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+                Zurück zu Stufen
+              </Button>
+              
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <span>Szenario {scenarioId}</span>
+                <span>•</span>
+                <span>{sessionData?.scenario?.title}</span>
+              </div>
+              
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (scenarioId < 5) {
+                    // Go to next scenario in same stage
+                    window.location.reload(); // Simple reload to start new scenario
+                  } else {
+                    showNotification('Das war das letzte Szenario in dieser Stufe!', 'success');
+                  }
+                }}
+                className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+              >
+                Nächstes Szenario
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+
             {/* Conversation Area */}
             <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl mb-6">
               <CardContent className="p-6">
