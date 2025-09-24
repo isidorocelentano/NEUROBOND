@@ -2040,25 +2040,72 @@ const EmpathyTrainingApp = () => {
                   </Card>
                 )}
 
-                {/* Improvements */}
-                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
-                  <CardHeader>
-                    <CardTitle className="text-blue-400 flex items-center gap-2">
-                      <Target className="w-5 h-5" />
-                      Verbesserungsvorschläge
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
-                      {analysis.improvements.map((improvement, index) => (
-                        <li key={index} className="text-gray-300 flex items-start gap-2">
-                          <ArrowRight className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                          {improvement}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                {/* Specific Improvements - Detailed */}
+                {analysis.specific_improvements && (
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-blue-400 flex items-center gap-2">
+                        <Target className="w-5 h-5" />
+                        Detaillierte Verbesserungsvorschläge
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {analysis.specific_improvements.map((improvement, index) => (
+                          <div key={index} className="bg-blue-900/20 p-5 rounded-lg border-l-4 border-blue-400">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                {index + 1}
+                              </div>
+                              <h4 className="font-semibold text-blue-300">{improvement.category}</h4>
+                            </div>
+                            
+                            <div className="space-y-3 ml-8">
+                              <div>
+                                <span className="text-red-300 font-medium">Problem: </span>
+                                <span className="text-gray-300">{improvement.problem}</span>
+                              </div>
+                              
+                              <div>
+                                <span className="text-green-300 font-medium">Lösung: </span>
+                                <span className="text-gray-300">{improvement.solution}</span>
+                              </div>
+                              
+                              {improvement.example && (
+                                <div className="bg-blue-800/30 p-3 rounded-lg">
+                                  <span className="text-blue-200 font-medium">💡 Praktisches Beispiel: </span>
+                                  <span className="text-gray-300 italic">"{improvement.example}"</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Fallback for simple improvements */}
+                {analysis.improvements && !analysis.specific_improvements && (
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-blue-400 flex items-center gap-2">
+                        <Target className="w-5 h-5" />
+                        Verbesserungsvorschläge
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {analysis.improvements.map((improvement, index) => (
+                          <li key={index} className="text-gray-300 flex items-start gap-2">
+                            <ArrowRight className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                            {improvement}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Alternative Responses */}
                 {analysis.alternative_responses.map((alt, index) => (
