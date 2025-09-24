@@ -1300,8 +1300,8 @@ const EmpathyTrainingApp = () => {
           showNotification('Ihr Case wurde erfolgreich erstellt und wird analysiert!', 'success');
           setCaseTitle('');
           setDialogMessages([
-            { speaker: user?.name || 'Ich', message: '' },
-            { speaker: user?.partner_name || 'Partner', message: '' }
+            { speaker: 'Ich', message: '' },
+            { speaker: 'Mein Partner', message: '' }
           ]);
         } else {
           throw new Error('Fehler beim Erstellen des Cases');
