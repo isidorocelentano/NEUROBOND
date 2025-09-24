@@ -558,15 +558,30 @@ const EmpathyTrainingApp = () => {
         partner_name: formData.partner_name
       };
       
+      console.log('🚀 NEUROBOND: Starting registration process...');
+      
       setUser(newUser);
       localStorage.setItem('empathy_user', JSON.stringify(newUser));
+      console.log('✅ NEUROBOND: User saved to state and localStorage:', newUser);
+      
       if (tempAvatar) {
         setUserAvatar(tempAvatar);
         localStorage.setItem('user_avatar', tempAvatar);
+        console.log('✅ NEUROBOND: Avatar saved');
       }
+      
       setShowOnboarding(false);
       setShowLandingPage(false);
-      console.log('User registration completed:', newUser);
+      console.log('✅ NEUROBOND: States updated - onboarding off, landing off');
+      
+      // Force a small delay to ensure state updates are processed
+      setTimeout(() => {
+        console.log('🔍 NEUROBOND: State check after registration:', {
+          user: user?.name,
+          showOnboarding,
+          showLandingPage
+        });
+      }, 100);
     };
 
     return (
