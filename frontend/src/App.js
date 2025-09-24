@@ -2003,25 +2003,42 @@ const EmpathyTrainingApp = () => {
                   </div>
                 )}
 
-                {/* Strengths */}
-                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
-                  <CardHeader>
-                    <CardTitle className="text-green-400 flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5" />
-                      Ihre Stärken
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {analysis.strengths.map((strength, index) => (
-                        <li key={index} className="text-gray-300 flex items-start gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                          {strength}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                {/* Strengths - Enhanced */}
+                {analysis.strengths && (
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-green-400 flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5" />
+                        Ihre Stärken
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {analysis.strengths.map((strength, index) => (
+                          <div key={index} className="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-400">
+                            {typeof strength === 'object' ? (
+                              <>
+                                <h4 className="font-semibold text-green-300 mb-2">{strength.aspect}</h4>
+                                <p className="text-gray-300 mb-3">{strength.description}</p>
+                                {strength.how_to_build_on && (
+                                  <div className="bg-green-800/20 p-3 rounded mt-3">
+                                    <span className="text-green-200 text-sm font-medium">💡 Darauf aufbauen: </span>
+                                    <span className="text-gray-300 text-sm">{strength.how_to_build_on}</span>
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              <div className="text-gray-300 flex items-start gap-2">
+                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                {strength}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Improvements */}
                 <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
