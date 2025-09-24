@@ -1284,18 +1284,34 @@ const EmpathyTrainingApp = () => {
       setIsSubmitting(true);
       
       try {
-        // For now, simulate success without backend call to avoid errors
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Simulate analysis processing
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Success feedback
-        alert('Ihr Case wurde erfolgreich erstellt!');
+        // Generate mock analysis
+        const mockAnalysis = {
+          title: caseTitle,
+          communication_score: Math.floor(Math.random() * 3) + 6, // 6-8
+          empathy_level: Math.floor(Math.random() * 3) + 5, // 5-7
+          main_issues: [
+            "Kommunikationsmuster zeigen Defensivität",
+            "Bedürfnisse werden nicht klar ausgedrückt", 
+            "Emotionale Validierung fehlt"
+          ],
+          suggestions: [
+            "Verwenden Sie 'Ich'-Aussagen statt 'Du'-Vorwürfe",
+            "Hören Sie aktiv zu, bevor Sie antworten",
+            "Spiegeln Sie die Gefühle Ihres Partners wider"
+          ],
+          alternative_responses: validMessages.map((msg, index) => ({
+            original: msg.message,
+            improved: index % 2 === 0 
+              ? `Mir ist aufgefallen, dass... Können wir darüber sprechen?`
+              : `Ich verstehe deine Sicht. Für mich fühlt es sich so an...`
+          }))
+        };
         
-        // Reset form
-        setCaseTitle('');
-        setDialogMessages([
-          { speaker: 'Ich', message: '' },
-          { speaker: 'Mein Partner', message: '' }
-        ]);
+        setAnalysisResult(mockAnalysis);
+        setShowAnalysis(true);
       } catch (error) {
         console.error('Error creating case:', error);
         alert('Fehler beim Erstellen des Cases. Bitte versuchen Sie es später erneut.');
