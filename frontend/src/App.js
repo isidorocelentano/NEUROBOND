@@ -2107,8 +2107,53 @@ const EmpathyTrainingApp = () => {
                   </Card>
                 )}
 
-                {/* Alternative Responses */}
-                {analysis.alternative_responses.map((alt, index) => (
+                {/* Alternative Formulations - Enhanced */}
+                {analysis.alternative_formulations && analysis.alternative_formulations.map((alt, index) => (
+                  <Card key={index} className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-purple-400 flex items-center gap-2">
+                        <MessageCircle className="w-5 h-5" />
+                        Alternative Formulierung für {alt.speaker}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      <div>
+                        <h4 className="text-red-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                          Original-Aussage:
+                        </h4>
+                        <p className="text-gray-300 italic bg-red-900/20 p-4 rounded-lg border-l-4 border-red-400">
+                          "{alt.original_statement}"
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="text-green-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                          Empathische Alternative:
+                        </h4>
+                        <p className="text-gray-300 bg-green-900/20 p-4 rounded-lg border-l-4 border-green-400">
+                          "{alt.improved_version}"
+                        </p>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-blue-900/20 p-4 rounded-lg">
+                          <h5 className="text-blue-300 font-medium mb-2">🤔 Warum ist das besser?</h5>
+                          <p className="text-gray-300 text-sm">{alt.why_better}</p>
+                        </div>
+                        
+                        <div className="bg-purple-900/20 p-4 rounded-lg">
+                          <h5 className="text-purple-300 font-medium mb-2">💝 Emotionale Wirkung:</h5>
+                          <p className="text-gray-300 text-sm">{alt.emotional_impact}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                {/* Fallback for simple alternative responses */}
+                {analysis.alternative_responses && !analysis.alternative_formulations && analysis.alternative_responses.map((alt, index) => (
                   <Card key={index} className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
                     <CardHeader>
                       <CardTitle className="text-purple-400 flex items-center gap-2">
@@ -2128,6 +2173,40 @@ const EmpathyTrainingApp = () => {
                     </CardContent>
                   </Card>
                 ))}
+
+                {/* Next Steps Section */}
+                {analysis.next_steps && (
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardHeader>
+                      <CardTitle className="text-orange-400 flex items-center gap-2">
+                        <ArrowRight className="w-5 h-5" />
+                        Nächste Schritte
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {analysis.next_steps.map((step, index) => (
+                          <div key={index} className="flex gap-4 p-4 bg-orange-900/20 rounded-lg border-l-4 border-orange-400">
+                            <div className="flex-shrink-0">
+                              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                {index + 1}
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="px-2 py-1 bg-orange-600/30 rounded-full text-orange-200 text-xs font-medium">
+                                  {step.timeframe}
+                                </span>
+                              </div>
+                              <h5 className="font-medium text-orange-200 mb-1">{step.action}</h5>
+                              <p className="text-gray-300 text-sm">{step.goal}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             </div>
           )}
