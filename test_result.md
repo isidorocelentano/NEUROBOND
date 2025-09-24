@@ -659,6 +659,20 @@ agent_communication:
         -working: true
         -agent: "main"
         -comment: "Successfully enhanced Dialog Coaching with comprehensive AI-powered analysis. BACKEND IMPROVEMENTS: Connected frontend to real AI backend endpoint, enhanced system prompt for detailed JSON-structured analysis including communication scores (overall, empathy, conflict potential, emotional safety), detailed analysis (communication patterns, emotional dynamics), specific improvements with step-by-step solutions, alternative formulations with explanations, and next steps with timeframes. FRONTEND ENHANCEMENTS: Updated interface to display detailed communication scores, gesprächsmuster-analyse, emotional dynamics, enhanced strengths with build-on suggestions, specific improvements with categories/problems/solutions/examples, alternative formulations with speaker attribution, why-better explanations, emotional impact descriptions, and actionable next steps with timeframes. Maintains backward compatibility with old analysis format."
+  - task: "Dialog Coaching Input Loss Bug Fix"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py, /app/frontend/src/App.js"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported critical bug: When clicking 'Dialog analysieren', input fields disappeared and empty form appeared, losing all user data"
+        -working: true
+        -agent: "main"
+        -comment: "Successfully fixed dialog coaching data loss bug. BACKEND FIX: Corrected SyntaxError in f-string ('{request.partner1_name oder request.partner2_name}' -> '{request.partner1_name} oder {request.partner2_name}'). FRONTEND FIXES: Enhanced error handling in analyzeDialog function, added input validation before API call, improved loading state management (don't change dialogStep immediately), enhanced error messages with specific details, added loading spinner to button, prevented form submission during loading, added console logging for debugging. Data now persists during analysis and users receive clear feedback on success/failure."
         -working: true
         -agent: "main"
         -comment: "Successfully corrected role perspective logic throughout training interface. Updated input section to clearly show 'Ihre empathische Antwort an {partnerName}' and 'Wie antworten Sie als {userName} empathisch auf {partnerName}s Problem?'. Corrected placeholder text to show example: 'Wie antworten Sie als {userName} empathisch auf {partnerName}? Zum Beispiel: Liebe/r {partnerName}, ich sehe dass du...'. Updated feedback display to show '{userName} antwortet {partnerName}:' and '{userName} antwortet {partnerName} (Empathisch optimiert):' making it crystal clear that the USER is responding TO the partner with the problem, not as the partner."
