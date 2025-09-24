@@ -1870,6 +1870,8 @@ const EmpathyTrainingApp = () => {
       setDialogStep('input');
       setDialogData({ scenario: '', userMessage: '', partnerMessage: '', context: '' });
       setAnalysis(null);
+      setError(null);
+      setLoading(false);
     };
 
     return (
