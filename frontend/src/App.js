@@ -1242,8 +1242,8 @@ const EmpathyTrainingApp = () => {
   };
   const OwnCasesCreation = () => {
     const [dialogMessages, setDialogMessages] = useState([
-      { speaker: user?.name || 'Ich', message: '' },
-      { speaker: user?.partner_name || 'Partner', message: '' }
+      { speaker: 'Ich', message: '' },
+      { speaker: 'Mein Partner', message: '' }
     ]);
     const [caseTitle, setCaseTitle] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1251,7 +1251,7 @@ const EmpathyTrainingApp = () => {
     const addMessage = () => {
       setDialogMessages([
         ...dialogMessages,
-        { speaker: dialogMessages.length % 2 === 0 ? user?.name || 'Ich' : user?.partner_name || 'Partner', message: '' }
+        { speaker: dialogMessages.length % 2 === 0 ? 'Ich' : 'Mein Partner', message: '' }
       ]);
     };
 
