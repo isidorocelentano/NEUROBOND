@@ -2785,7 +2785,31 @@ const EmpathyTrainingApp = () => {
   const isTestMode = typeof window !== 'undefined' && 
     new URLSearchParams(window.location.search).get('test') === 'true';
 
-  if (showLandingPage && !isTestMode) {
+  // Enhanced render logic with localStorage fallback
+  const hasUserInStorage = typeof window !== 'undefined' && localStorage.getItem('empathy_user');
+  
+  console.log('🔍 NEUROBOND Render Check:', {
+    showLandingPage,
+    showOnboarding,
+    hasUser: !!user,
+    hasUserInStorage: !!hasUserInStorage,
+    isTestMode
+  });
+
+  // If we have a user in storage but not in state, something went wrong
+  if (hasUserInStorage && !user && !showOnboarding && !isTestMode) {
+    console.log('🔧 NEUROBOND: User in storage but not in state - attempting recovery...');
+    try {
+      const userData = JSON.parse(hasUserInStorage);
+      setUser(userData);
+      setShowLandingPage(false);
+      setShowOnboarding(false);
+    } catch (e) {
+      console.error('❌ NEUROBOND: Failed to recover user from storage:', e);
+    }
+  }
+
+  if (showLandingPage && !isTestMode && !hasUserInStorage) {
     return <LandingPage />;
   }
 
