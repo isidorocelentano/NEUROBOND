@@ -1825,14 +1825,14 @@ const EmpathyTrainingApp = () => {
           alternative_formulations: [
             {
               original_statement: dialogData.userMessage,
-              speaker: userName || "Sie",
+              speaker: user?.name || "Sie",
               improved_version: `Mir fällt auf, dass ich mich bei der Hausarbeit oft alleine fühle. Ich weiß, dass du viel arbeitest und müde bist. Können wir gemeinsam schauen, wie wir die Aufgaben besser aufteilen können?`,
               why_better: "Diese Formulierung vermeidet Vorwürfe, anerkennt die Situation des Partners und schlägt eine gemeinsame Lösung vor.",
               emotional_impact: "Der Partner fühlt sich nicht angegriffen, sondern zu einer Lösung eingeladen."
             },
             {
               original_statement: dialogData.partnerMessage,
-              speaker: partnerName || "Partner",
+              speaker: user?.partner_name || "Partner",
               improved_version: `Du hast recht, dass du viel im Haushalt machst. Ich merke, dass du dich überfordert fühlst. Lass uns mal schauen, was ich konkret übernehmen kann, damit du dich entlastet fühlst.`,
               why_better: "Anstatt zu rechtfertigen, wird das Gefühl des Partners validiert und Hilfe angeboten.",
               emotional_impact: "Führt zu Gefühl der Zusammengehörigkeit statt zu weiterem Konflikt."
