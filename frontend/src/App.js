@@ -1291,7 +1291,7 @@ const EmpathyTrainingApp = () => {
             title: caseTitle,
             messages: validMessages,
             consent: true,
-            user_email: user?.email || 'anonymous@example.com'
+            user_email: 'anonymous@example.com'
           }),
         });
 
