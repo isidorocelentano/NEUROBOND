@@ -1046,18 +1046,40 @@ Analysiere mit Fokus auf:
         ).with_model("openai", "gpt-4o")
         
         # Create user message with dialog
+        context_info = ""
+        if hasattr(request, 'scenario_context') and request.scenario_context:
+            context_info = f"Kontext/Situation: {request.scenario_context}\n"
+        if hasattr(request, 'relationship_context') and request.relationship_context:
+            context_info += f"Beziehungskontext: {request.relationship_context}\n"
+        
         user_message = UserMessage(
-            text=f"""Bitte analysiere dieses Gespräch zwischen {request.partner1_name} und {request.partner2_name}:
+            text=f"""Analysiere dieses Gespräch zwischen {request.partner1_name} und {request.partner2_name}:
 
+{context_info}
+
+DIALOG:
 {dialog_text}
 
-Gib eine detaillierte Analyse mit konkreten Verbesserungsvorschlägen."""
+Führe eine tiefgehende Kommunikationsanalyse durch und gib das Ergebnis im angeforderten JSON-Format zurück. 
+
+Fokussiere besonders auf:
+1. DETAILLIERTE VERBESSERUNGSVORSCHLÄGE mit konkreten Schritt-für-Schritt Anleitungen
+2. ALTERNATIVE FORMULIERUNGEN für jede kritische Aussage mit Erklärung warum diese besser sind
+3. EMOTIONALE DYNAMIKEN und unausgesprochene Bedürfnisse
+4. PRAKTISCHE SOFORT-TIPPS für beide Partner"""
         )
         
         # Get AI response
         response = await chat.send_message(user_message)
         
-        return {"analysis": response, "success": True}
+        # Try to parse JSON response, fallback to structured text if needed
+        try:
+            import json
+            analysis_json = json.loads(response)
+            return {"analysis": analysis_json, "success": True, "format": "json"}
+        except:
+            # If JSON parsing fails, return structured text
+            return {"analysis": {"detailed_text": response}, "success": True, "format": "text"}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Dialog analysis failed: {str(e)}")
