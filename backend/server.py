@@ -1015,7 +1015,7 @@ WICHTIG: Antworte im folgenden JSON-Format für bessere Strukturierung:
   "alternative_formulations": [
     {{
       "original_statement": "Exakte ursprüngliche Aussage",
-      "speaker": "{request.partner1_name oder request.partner2_name}",
+      "speaker": "{request.partner1_name} oder {request.partner2_name}",
       "improved_version": "Verbesserte empathische Alternative", 
       "why_better": "Detaillierte Erklärung warum diese Version besser ist",
       "emotional_impact": "Welche emotionale Wirkung die neue Formulierung hat"
