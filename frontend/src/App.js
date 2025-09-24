@@ -1779,35 +1779,42 @@ const EmpathyTrainingApp = () => {
       setDialogStep('analysis');
       
       try {
-        // Simulate API call - replace with actual backend call
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const mockAnalysis = {
-          communication_score: 7.5,
-          empathy_level: 6.8,
-          conflict_potential: 4.2,
-          improvements: [
-            "Verwenden Sie mehr 'Ich'-Aussagen statt 'Du'-Vorwürfe",
-            "Zeigen Sie aktives Zuhören durch Nachfragen",
-            "Anerkennen Sie die Gefühle Ihres Partners"
-          ],
-          strengths: [
-            "Beide Partner äußern ihre Bedürfnisse klar",
-            "Respektvoller Ton in der Konversation"
-          ],
-          alternative_responses: [
-            {
-              original: dialogData.userMessage,
-              improved: "Ich fühle mich überfordert, wenn... Könntest du mir dabei helfen?"
-            }
-          ]
-        };
-        
-        setAnalysis(mockAnalysis);
-        setDialogStep('results');
+        const response = await fetch(`${BACKEND_URL}/api/analyze-dialog`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            dialog_messages: [
+              {
+                speaker: userName || "Sie",
+                message: dialogData.userMessage,
+                role: "user"
+              },
+              {
+                speaker: partnerName || "Partner",
+                message: dialogData.partnerMessage,
+                role: "partner"
+              }
+            ],
+            scenario_context: dialogData.scenario,
+            relationship_context: dialogData.context,
+            partner1_name: userName || "Sie",
+            partner2_name: partnerName || "Partner"
+          })
+        });
+
+        if (response.ok) {
+          const analysisData = await response.json();
+          setAnalysis(analysisData);
+          setDialogStep('results');
+        } else {
+          throw new Error('Analyse fehlgeschlagen');
+        }
       } catch (error) {
         console.error('Error analyzing dialog:', error);
-        showNotification('Fehler bei der Dialog-Analyse', 'error');
+        showNotification('Fehler bei der Dialog-Analyse. Bitte versuchen Sie es erneut.', 'error');
+        setDialogStep('input');
       } finally {
         setLoading(false);
       }
