@@ -1923,30 +1923,85 @@ const EmpathyTrainingApp = () => {
                 </Button>
               </div>
 
-              <div className="space-y-6">
-                {/* Score Cards */}
-                <div className="grid md:grid-cols-3 gap-4">
-                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-blue-400">{analysis.communication_score}/10</div>
-                      <div className="text-sm text-gray-300">Kommunikation</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-green-400">{analysis.empathy_level}/10</div>
-                      <div className="text-sm text-gray-300">Empathie</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-yellow-400">{analysis.conflict_potential}/10</div>
-                      <div className="text-sm text-gray-300">Konfliktpotential</div>
-                    </CardContent>
-                  </Card>
-                </div>
+              <div className="grid gap-6">
+                {/* Communication Scores */}
+                {analysis.communication_scores && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                      <CardContent className="p-4">
+                        <div className="text-2xl font-bold text-green-400">
+                          {analysis.communication_scores.overall_score || analysis.communication_score || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-400">Kommunikation</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                      <CardContent className="p-4">
+                        <div className="text-2xl font-bold text-blue-400">
+                          {analysis.communication_scores.empathy_level || analysis.empathy_level || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-400">Empathie</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                      <CardContent className="p-4">
+                        <div className="text-2xl font-bold text-yellow-400">
+                          {analysis.communication_scores.conflict_potential || analysis.conflict_potential || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-400">Konfliktpotential</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                      <CardContent className="p-4">
+                        <div className="text-2xl font-bold text-purple-400">
+                          {analysis.communication_scores.emotional_safety || 'N/A'}
+                        </div>
+                        <div className="text-sm text-gray-400">Emotionale Sicherheit</div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
+                {/* Detailed Analysis */}
+                {analysis.detailed_analysis && (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                      <CardHeader>
+                        <CardTitle className="text-cyan-400 flex items-center gap-2">
+                          <MessageCircle className="w-5 h-5" />
+                          Gesprächsmuster-Analyse
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3">
+                          {analysis.detailed_analysis.communication_patterns?.map((pattern, index) => (
+                            <li key={index} className="text-gray-300 p-3 bg-cyan-900/20 rounded-lg">
+                              {pattern}
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                      <CardHeader>
+                        <CardTitle className="text-pink-400 flex items-center gap-2">
+                          <Star className="w-5 h-5" />
+                          Emotionale Dynamiken
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3">
+                          {analysis.detailed_analysis.emotional_dynamics?.map((dynamic, index) => (
+                            <li key={index} className="text-gray-300 p-3 bg-pink-900/20 rounded-lg">
+                              {dynamic}
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
 
                 {/* Strengths */}
                 <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
