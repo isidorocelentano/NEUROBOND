@@ -2809,13 +2809,21 @@ const EmpathyTrainingApp = () => {
     }
   }
 
-  if (showLandingPage && !isTestMode && !hasUserInStorage) {
+  // Simplified render logic - show dashboard if user exists OR is in storage
+  if (!user && !hasUserInStorage && !isTestMode) {
+    if (showOnboarding) {
+      return <OnboardingForm />;
+    }
     return <LandingPage />;
   }
 
+  // If we have onboarding active, show that
   if (showOnboarding && !isTestMode) {
     return <OnboardingForm />;
   }
+
+  // At this point, either user exists or is in storage - show dashboard
+  console.log('✅ NEUROBOND: Rendering dashboard - user authenticated');
 
   // For test mode, create a default user if none exists
   if (isTestMode && !user) {
