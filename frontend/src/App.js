@@ -1775,10 +1775,22 @@ const EmpathyTrainingApp = () => {
     const [loading, setLoading] = useState(false);
 
     const analyzeDialog = async () => {
+      // Validate input data first
+      if (!dialogData.userMessage.trim() || !dialogData.partnerMessage.trim()) {
+        showNotification('Bitte füllen Sie beide Nachrichten aus.', 'error');
+        return;
+      }
+      
       setLoading(true);
-      setDialogStep('analysis');
+      // Don't change step immediately - keep input visible during loading
       
       try {
+        console.log('Sending dialog analysis request:', {
+          userMessage: dialogData.userMessage,
+          partnerMessage: dialogData.partnerMessage,
+          scenario: dialogData.scenario
+        });
+        
         const response = await fetch(`${BACKEND_URL}/api/analyze-dialog`, {
           method: 'POST',
           headers: {
@@ -1804,17 +1816,28 @@ const EmpathyTrainingApp = () => {
           })
         });
 
+        console.log('Response status:', response.status);
+        
         if (response.ok) {
           const analysisData = await response.json();
-          setAnalysis(analysisData);
-          setDialogStep('results');
+          console.log('Analysis data received:', analysisData);
+          
+          // Only change step and set analysis if we have valid data
+          if (analysisData && (analysisData.analysis || analysisData.success)) {
+            setAnalysis(analysisData.analysis || analysisData);
+            setDialogStep('results');
+          } else {
+            throw new Error('Keine gültigen Analysedaten erhalten');
+          }
         } else {
-          throw new Error('Analyse fehlgeschlagen');
+          const errorText = await response.text();
+          console.error('API Error:', response.status, errorText);
+          throw new Error(`Analyse fehlgeschlagen: ${response.status}`);
         }
       } catch (error) {
         console.error('Error analyzing dialog:', error);
-        showNotification('Fehler bei der Dialog-Analyse. Bitte versuchen Sie es erneut.', 'error');
-        setDialogStep('input');
+        showNotification(`Fehler bei der Dialog-Analyse: ${error.message}. Bitte versuchen Sie es erneut.`, 'error');
+        // Keep dialogStep as 'input' so user can try again with their data intact
       } finally {
         setLoading(false);
       }
