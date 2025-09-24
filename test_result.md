@@ -681,6 +681,20 @@ agent_communication:
         -working: false
         -agent: "user"
         -comment: "User reported persistent blank screen bug despite previous fix attempts"
+  - task: "Dialog Coaching userName Variable Error Fix"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 3
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported error message 'Can't find variable: userName' despite being registered in Dialog Coaching feature"
+        -working: false
+        -agent: "main"
+        -comment: "ISSUE PERSISTENT: Despite multiple attempts to fix userName variable scope issue, the error continues to occur. Attempts included: 1) Correcting f-string syntax in backend, 2) Using user?.name fallback, 3) Using static fallback values 'Sie'/'Ihr Partner'. The DialogCoachingPage component appears to have scope issues accessing user data. The page redirects to landing after error, indicating a critical JavaScript runtime error that needs further investigation. Recommend thorough debugging session or alternative implementation approach."
         -working: true
         -agent: "main"
         -comment: "Successfully implemented robust solution using reliable mock data analysis. APPROACH CHANGE: Switched from problematic backend API calls to stable frontend mock analysis to eliminate blank screen issues. ROBUST FEATURES: Added comprehensive error state management, improved loading state handling, eliminated confusing intermediate 'analysis' step, enhanced input validation, added visible error messages, persistent data during errors, reliable analysis results with detailed improvements and alternative formulations. TESTING CONFIRMED: Dialog analysis now works consistently, displays results properly, maintains data integrity, and provides comprehensive feedback."
