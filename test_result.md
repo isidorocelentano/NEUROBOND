@@ -692,6 +692,20 @@ agent_communication:
         -working: false
         -agent: "user"
         -comment: "User reported error message 'Can't find variable: userName' despite being registered in Dialog Coaching feature"
+  - task: "Own Cases Blank Screen Bug (Same as Dialog Coaching)"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 2
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported same blank screen problem now occurring in Own Cases feature after text entry"
+        -working: false
+        -agent: "main"
+        -comment: "SYSTEMIC SCOPE PROBLEM IDENTIFIED: Both Dialog Coaching and Own Cases have the same architectural issue - nested component functions cannot access parent scope variables (user, showNotification). Multiple attempts to fix with static fallbacks and alert() replacements still result in blank screen redirects to landing page. ROOT CAUSE: Component architecture needs fundamental refactor to properly pass context/props to nested functions. TEMPORARY WORKAROUND: Core training features remain stable, but auxiliary features (Dialog Coaching, Own Cases) require architectural redesign for variable scope access."
         -working: false
         -agent: "main"
         -comment: "ISSUE PERSISTENT: Despite multiple attempts to fix userName variable scope issue, the error continues to occur. Attempts included: 1) Correcting f-string syntax in backend, 2) Using user?.name fallback, 3) Using static fallback values 'Sie'/'Ihr Partner'. The DialogCoachingPage component appears to have scope issues accessing user data. The page redirects to landing after error, indicating a critical JavaScript runtime error that needs further investigation. Recommend thorough debugging session or alternative implementation approach."
