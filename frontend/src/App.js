@@ -1917,11 +1917,20 @@ const EmpathyTrainingApp = () => {
 
                     <Button
                       onClick={analyzeDialog}
-                      disabled={!dialogData.userMessage || !dialogData.partnerMessage}
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-2xl font-semibold"
+                      disabled={!dialogData.userMessage.trim() || !dialogData.partnerMessage.trim() || loading}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-2xl font-semibold disabled:opacity-50"
                     >
-                      <Brain className="w-5 h-5 mr-2" />
-                      Dialog analysieren
+                      {loading ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          Analysiert...
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="w-5 h-5 mr-2" />
+                          Dialog analysieren
+                        </>
+                      )}
                     </Button>
                   </div>
                 </CardContent>
