@@ -1320,6 +1320,134 @@ const EmpathyTrainingApp = () => {
       }
     };
 
+    if (showAnalysis && analysisResult) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+          </div>
+
+          <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+            <h1 className="text-2xl font-bold text-white">Case-Analyse: {analysisResult.title}</h1>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => {
+                setShowAnalysis(false);
+                setAnalysisResult(null);
+                setCaseTitle('');
+                setDialogMessages([
+                  { speaker: 'Ich', message: '' },
+                  { speaker: 'Mein Partner', message: '' }
+                ]);
+              }}
+            >
+              Neuen Case erstellen
+            </Button>
+          </header>
+
+          <div className="relative z-10 max-w-4xl mx-auto p-6">
+            <div className="grid gap-6">
+              {/* Scores */}
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-green-400">{analysisResult.communication_score}/10</div>
+                    <div className="text-sm text-gray-400">Kommunikation</div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 text-center">
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-blue-400">{analysisResult.empathy_level}/10</div>
+                    <div className="text-sm text-gray-400">Empathie</div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Main Issues */}
+              <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                <CardHeader>
+                  <CardTitle className="text-red-400">🚨 Hauptprobleme</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {analysisResult.main_issues.map((issue, index) => (
+                      <li key={index} className="text-gray-300 flex items-start gap-2">
+                        <span className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></span>
+                        {issue}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Suggestions */}
+              <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                <CardHeader>
+                  <CardTitle className="text-green-400">💡 Verbesserungsvorschläge</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {analysisResult.suggestions.map((suggestion, index) => (
+                      <li key={index} className="text-gray-300 flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Alternative Responses */}
+              {analysisResult.alternative_responses.map((alt, index) => (
+                <Card key={index} className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                  <CardHeader>
+                    <CardTitle className="text-purple-400">🔄 Alternative Formulierung #{index + 1}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="text-red-300 font-medium mb-2">Original:</h4>
+                      <p className="text-gray-300 italic bg-red-900/20 p-3 rounded-lg">"{alt.original}"</p>
+                    </div>
+                    <div>
+                      <h4 className="text-green-300 font-medium mb-2">Empathischer:</h4>
+                      <p className="text-gray-300 bg-green-900/20 p-3 rounded-lg">"{alt.improved}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              <div className="flex gap-4 justify-center">
+                <Button
+                  onClick={() => {
+                    setShowAnalysis(false);
+                    setAnalysisResult(null);
+                    setCaseTitle('');
+                    setDialogMessages([
+                      { speaker: 'Ich', message: '' },
+                      { speaker: 'Mein Partner', message: '' }
+                    ]);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  Neuen Case erstellen
+                </Button>
+                <Button
+                  onClick={() => setCurrentTab('home')}
+                  variant="outline"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                >
+                  Zurück zum Dashboard
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
