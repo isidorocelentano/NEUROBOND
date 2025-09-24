@@ -1967,13 +1967,7 @@ const EmpathyTrainingApp = () => {
             </div>
           )}
 
-          {dialogStep === 'analysis' && (
-            <div className="text-center">
-              <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-              <h2 className="text-2xl font-bold text-white mb-4">KI analysiert Ihr Gespräch...</h2>
-              <p className="text-gray-300">Dies kann einen Moment dauern</p>
-            </div>
-          )}
+          {/* Removed intermediate analysis step - loading now happens in button */}
 
           {dialogStep === 'results' && analysis && (
             <div>
