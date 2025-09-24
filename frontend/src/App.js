@@ -1773,6 +1773,7 @@ const EmpathyTrainingApp = () => {
     });
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const analyzeDialog = async () => {
       // Validate input data first
