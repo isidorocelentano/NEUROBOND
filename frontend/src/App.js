@@ -1938,6 +1938,12 @@ const EmpathyTrainingApp = () => {
                       </div>
                     </div>
 
+                    {error && (
+                      <div className="mb-4 p-4 bg-red-900/30 border border-red-700 rounded-lg">
+                        <p className="text-red-200 text-sm">{error}</p>
+                      </div>
+                    )}
+                    
                     <Button
                       onClick={analyzeDialog}
                       disabled={!dialogData.userMessage.trim() || !dialogData.partnerMessage.trim() || loading}
