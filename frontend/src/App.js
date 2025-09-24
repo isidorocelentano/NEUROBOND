@@ -361,22 +361,36 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
-  // Check for saved user on load
+  // Enhanced user restoration with debugging
   useEffect(() => {
+    console.log('🔍 NEUROBOND: Initializing app...');
     try {
       const savedUser = localStorage.getItem('empathy_user');
       const savedAvatar = localStorage.getItem('user_avatar');
+      
+      console.log('🔍 SavedUser from localStorage:', savedUser);
+      
       if (savedUser) {
         const userData = JSON.parse(savedUser);
+        console.log('✅ NEUROBOND: User found in localStorage:', userData);
         setUser(userData);
         setShowLandingPage(false);
         setShowOnboarding(false);
+        console.log('✅ NEUROBOND: State updated - should show dashboard');
+      } else {
+        console.log('ℹ️ NEUROBOND: No saved user found - showing landing page');
       }
+      
       if (savedAvatar) {
         setUserAvatar(savedAvatar);
+        console.log('✅ NEUROBOND: Avatar restored');
       }
     } catch (error) {
-      console.log('Error restoring user:', error);
+      console.error('❌ NEUROBOND: Error restoring user:', error);
+      // Reset states to safe defaults
+      setShowLandingPage(true);
+      setShowOnboarding(false);
+      setUser(null);
     }
   }, []);
 
