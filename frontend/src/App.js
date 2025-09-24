@@ -1247,6 +1247,8 @@ const EmpathyTrainingApp = () => {
     ]);
     const [caseTitle, setCaseTitle] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showAnalysis, setShowAnalysis] = useState(false);
+    const [analysisResult, setAnalysisResult] = useState(null);
 
     const addMessage = () => {
       setDialogMessages([
