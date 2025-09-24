@@ -967,7 +967,7 @@ async def get_user_progress(user_id: str):
     progress_list = await db.progress.find({"user_id": user_id}).to_list(length=None)
     return [UserProgress(**p) for p in progress_list]
 
-@api_router.post("/dialog-analysis")
+@api_router.post("/analyze-dialog")
 async def analyze_dialog(request: DialogAnalysisRequest):
     """Analyze couple's dialog patterns and provide real-time suggestions"""
     try:
