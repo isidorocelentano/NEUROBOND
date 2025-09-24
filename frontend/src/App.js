@@ -552,7 +552,7 @@ const EmpathyTrainingApp = () => {
       }
       setShowOnboarding(false);
       setShowLandingPage(false);
-      showNotification(`Willkommen, ${formData.name}! Ihr Profil wurde erfolgreich erstellt.`, 'success');
+      console.log('User registration completed:', newUser);
     };
 
     return (
