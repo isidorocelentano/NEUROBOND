@@ -648,6 +648,17 @@ agent_communication:
         -working: true
         -agent: "main"
         -comment: "Successfully completed comprehensive control of all 17 training stages. BACKEND VERIFICATION: All scenarios (1-17) have logically consistent partner_opening messages that match their contexts - partners speak about THEIR problems, not the user's. FRONTEND VERIFICATION: All training levels accessible, proper role clarity implemented throughout (user responds TO partner), navigation system functional, input areas correctly labeled, and feedback displays proper attribution. VISUAL TESTING: Confirmed Stufe 1 (Basic), Stufe 2 (Intermediate), and Stufe 5 (Mastery) scenarios load correctly with all required elements. All 17 scenarios maintain logical consistency where the partner expresses their emotional problem and the user provides empathetic responses."
+  - task: "Dialog Coaching Enhancement - Detailed Analysis & Alternative Formulations"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py, /app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Successfully enhanced Dialog Coaching with comprehensive AI-powered analysis. BACKEND IMPROVEMENTS: Connected frontend to real AI backend endpoint, enhanced system prompt for detailed JSON-structured analysis including communication scores (overall, empathy, conflict potential, emotional safety), detailed analysis (communication patterns, emotional dynamics), specific improvements with step-by-step solutions, alternative formulations with explanations, and next steps with timeframes. FRONTEND ENHANCEMENTS: Updated interface to display detailed communication scores, gesprächsmuster-analyse, emotional dynamics, enhanced strengths with build-on suggestions, specific improvements with categories/problems/solutions/examples, alternative formulations with speaker attribution, why-better explanations, emotional impact descriptions, and actionable next steps with timeframes. Maintains backward compatibility with old analysis format."
         -working: true
         -agent: "main"
         -comment: "Successfully corrected role perspective logic throughout training interface. Updated input section to clearly show 'Ihre empathische Antwort an {partnerName}' and 'Wie antworten Sie als {userName} empathisch auf {partnerName}s Problem?'. Corrected placeholder text to show example: 'Wie antworten Sie als {userName} empathisch auf {partnerName}? Zum Beispiel: Liebe/r {partnerName}, ich sehe dass du...'. Updated feedback display to show '{userName} antwortet {partnerName}:' and '{userName} antwortet {partnerName} (Empathisch optimiert):' making it crystal clear that the USER is responding TO the partner with the problem, not as the partner."
