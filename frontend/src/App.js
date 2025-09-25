@@ -1133,7 +1133,136 @@ const EmpathyTrainingApp = () => {
       loadCommunityCases();
     }, []);
 
-    const loadCommunityCases = async () => {
+    // Generate specific empathy tips based on case content
+    const generateEmpathyTips = (caseItem) => {
+      const baseKeywords = caseItem.title?.toLowerCase() || '';
+      const aiSolutionKeywords = caseItem.ai_solution?.toLowerCase() || '';
+      const allContent = `${baseKeywords} ${aiSolutionKeywords}`;
+      
+      // Kategorie-spezifische Empathie-Tipps
+      const empathyTips = {
+        haushaltsaufgaben: {
+          category: "Haushaltsführung",
+          tips: [
+            {
+              icon: "🏠",
+              title: "Geteilte Verantwortung anerkennen",
+              description: "Würdigen Sie die Arbeiten, die Ihr Partner bereits übernimmt, bevor Sie zusätzliche Wünsche äußern."
+            },
+            {
+              icon: "⏰",
+              title: "Zeitliche Belastung verstehen", 
+              description: "Fragen Sie: 'Wann würde es für dich am besten passen?' statt 'Warum machst du das nie?'"
+            },
+            {
+              icon: "🤝",
+              title: "Gemeinsame Lösungen finden",
+              description: "Schlagen Sie vor: 'Lass uns schauen, wie wir das aufteilen können' statt Vorwürfe zu machen."
+            }
+          ]
+        },
+        zeitmanagement: {
+          category: "Zeit & Prioritäten",
+          tips: [
+            {
+              icon: "📅",
+              title: "Qualitätszeit priorisieren",
+              description: "Planen Sie bewusst gemeinsame Zeit ein, auch wenn es nur 15 Minuten täglich sind."
+            },
+            {
+              icon: "💼",
+              title: "Berufsstress anerkennen",
+              description: "Sagen Sie: 'Ich sehe, wie sehr dich die Arbeit gerade fordert' statt 'Du hast nie Zeit für mich'."
+            },
+            {
+              icon: "⚖️",
+              title: "Balance gemeinsam schaffen",
+              description: "Fragen Sie: 'Was brauchst du, damit du mehr entspannen kannst?' und bieten Sie konkrete Unterstützung."
+            }
+          ]
+        },
+        kommunikation: {
+          category: "Gesprächsführung",
+          tips: [
+            {
+              icon: "👂",
+              title: "Aktiv zuhören",
+              description: "Wiederholen Sie das Gehörte: 'Verstehe ich richtig, dass du dich... fühlst?'"
+            },
+            {
+              icon: "💭",
+              title: "Gefühle validieren",
+              description: "Sagen Sie: 'Deine Gefühle sind berechtigt' auch wenn Sie anders sehen."
+            },
+            {
+              icon: "🔄",
+              title: "Perspektive wechseln",
+              description: "Fragen Sie sich: 'Wie würde ich mich in seiner/ihrer Situation fühlen?'"
+            }
+          ]
+        },
+        stress: {
+          category: "Stress & Belastung",
+          tips: [
+            {
+              icon: "😌",
+              title: "Emotionale Erste Hilfe",
+              description: "Bieten Sie an: 'Magst du darüber reden oder brauchst du erstmal Ruhe?'"
+            },
+            {
+              icon: "🛡️",
+              title: "Schutzraum schaffen",
+              description: "Sorgen Sie dafür, dass wichtige Gespräche nicht unter Stress stattfinden."
+            },
+            {
+              icon: "🤗",
+              title: "Körperliche Nähe anbieten",
+              description: "Eine Umarmung oder Berührung kann mehr helfen als viele Worte."
+            }
+          ]
+        },
+        conflict: {
+          category: "Konfliktlösung",
+          tips: [
+            {
+              icon: "🕊️",
+              title: "Deeskalation",
+              description: "Sagen Sie: 'Lass uns eine Pause machen und das später besprechen' wenn es hitzig wird."
+            },
+            {
+              icon: "🎯",
+              title: "Fokus auf Lösungen",
+              description: "Fragen Sie: 'Was können wir tun, damit es beiden besser geht?' statt Schuldzuweisungen."
+            },
+            {
+              icon: "💝",
+              title: "Liebe betonen",
+              description: "Erinnern Sie daran: 'Mir ist unsere Beziehung wichtig, deshalb möchte ich das lösen.'"
+            }
+          ]
+        }
+      };
+
+      // Bestimme die passende Kategorie basierend auf Keywords
+      if (allContent.includes('haushalts') || allContent.includes('aufgabe')) {
+        return empathyTips.haushaltsaufgaben;
+      }
+      if (allContent.includes('zeit') || allContent.includes('arbeit') || allContent.includes('balance')) {
+        return empathyTips.zeitmanagement;
+      }
+      if (allContent.includes('stress') || allContent.includes('belast')) {
+        return empathyTips.stress;
+      }
+      if (allContent.includes('kommunikation') || allContent.includes('gespräch')) {
+        return empathyTips.kommunikation;
+      }
+      if (allContent.includes('konflikt') || allContent.includes('streit')) {
+        return empathyTips.conflict;
+      }
+      
+      // Default: Allgemeine Kommunikationstipps
+      return empathyTips.kommunikation;
+    };
       console.log('Loading Community Cases...');
       try {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
