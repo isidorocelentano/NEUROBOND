@@ -1212,31 +1212,47 @@ const EmpathyTrainingApp = () => {
               </div>
 
               <div className="space-y-4">
-                {cases.map(caseItem => (
-                  <Card 
-                    key={caseItem.case_id}
-                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
-                    onClick={() => setSelectedCase(caseItem)}
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-white">{caseItem.title}</h3>
-                        <Badge className={`${
-                          caseItem.difficulty === 'Einfach' ? 'bg-green-600' :
-                          caseItem.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
-                        }`}>
-                          {caseItem.difficulty}
-                        </Badge>
-                      </div>
-                      <p className="text-gray-300 text-sm">
-                        {caseItem.ai_solution.substring(0, 150)}...
-                      </p>
-                      <Button variant="ghost" size="sm" className="mt-3 text-blue-400 hover:text-blue-300">
-                        Fall analysieren <ArrowRight className="w-4 h-4 ml-2" />
+                {console.log('Rendering cases, count:', cases.length)}
+                {cases.length === 0 ? (
+                  <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+                    <CardContent className="p-6 text-center">
+                      <p className="text-gray-300 mb-4">Keine Community Cases verfügbar.</p>
+                      <p className="text-gray-400 text-sm">Die Cases werden geladen oder es sind keine verfügbar.</p>
+                      <Button 
+                        onClick={() => window.location.reload()} 
+                        className="mt-4 bg-blue-600 hover:bg-blue-700"
+                      >
+                        Seite neu laden
                       </Button>
                     </CardContent>
                   </Card>
-                ))}
+                ) : (
+                  cases.map(caseItem => (
+                    <Card 
+                      key={caseItem.case_id}
+                      className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                      onClick={() => setSelectedCase(caseItem)}
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-3">
+                          <h3 className="text-lg font-semibold text-white">{caseItem.title}</h3>
+                          <Badge className={`${
+                            caseItem.difficulty === 'Einfach' ? 'bg-green-600' :
+                            caseItem.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
+                          }`}>
+                            {caseItem.difficulty}
+                          </Badge>
+                        </div>
+                        <p className="text-gray-300 text-sm">
+                          {caseItem.ai_solution.substring(0, 150)}...
+                        </p>
+                        <Button variant="ghost" size="sm" className="mt-3 text-blue-400 hover:text-blue-300">
+                          Fall analysieren <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
               </div>
             </div>
           ) : (
