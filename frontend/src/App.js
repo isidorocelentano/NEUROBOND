@@ -1417,13 +1417,47 @@ const EmpathyTrainingApp = () => {
                       <p className="text-gray-300 leading-relaxed">{selectedCase.ai_solution}</p>
                     </div>
                     
-                    <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
-                      <h4 className="font-semibold text-blue-100 mb-2">Empathie-Tipp</h4>
-                      <p className="text-blue-200 text-sm">
-                        Versuchen Sie, die Perspektive beider Partner zu verstehen. 
-                        Oft sind beide Seiten berechtigt, auch wenn sie unterschiedlich kommunizieren.
-                      </p>
-                    </div>
+                    {(() => {
+                      const empathyTipsData = generateEmpathyTips(selectedCase);
+                      return (
+                        <div className="space-y-4">
+                          <div className="p-4 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl border border-purple-700/50">
+                            <h4 className="font-semibold text-purple-100 mb-3 flex items-center gap-2">
+                              <Heart className="w-5 h-5 text-purple-400" />
+                              Konkrete Empathie-Strategien: {empathyTipsData.category}
+                            </h4>
+                            <div className="grid gap-3">
+                              {empathyTipsData.tips.map((tip, index) => (
+                                <div key={index} className="bg-purple-800/20 p-3 rounded-xl border border-purple-600/30">
+                                  <div className="flex items-start gap-3">
+                                    <span className="text-lg flex-shrink-0">{tip.icon}</span>
+                                    <div>
+                                      <h5 className="font-medium text-purple-100 mb-1">{tip.title}</h5>
+                                      <p className="text-purple-200 text-sm leading-relaxed">{tip.description}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl border border-green-700/50">
+                            <h4 className="font-semibold text-green-100 mb-2 flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              Sofort-Tipp für diese Situation
+                            </h4>
+                            <p className="text-green-200 text-sm">
+                              {selectedCase.difficulty === 'Einfach' 
+                                ? "Beginnen Sie mit aktivem Zuhören: 'Erzähl mir mehr darüber' und zeigen Sie durch Nicken, dass Sie verstehen."
+                                : selectedCase.difficulty === 'Mittel'
+                                ? "Validieren Sie die Gefühle: 'Ich verstehe, warum du dich so fühlst' - auch wenn Sie die Situation anders sehen."
+                                : "Schaffen Sie erstmal Ruhe: 'Uns beiden ist das wichtig. Lass uns das in Ruhe besprechen' und vereinbaren Sie einen festen Gesprächstermin."
+                              }
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </CardContent>
               </Card>
