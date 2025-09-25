@@ -1226,19 +1226,33 @@ const EmpathyTrainingApp = () => {
                   <CardTitle className="text-white">{selectedCase.title}</CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={`${
-                      selectedCase.difficulty === 'Einfach' ? 'bg-green-600' :
-                      selectedCase.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
+                      selectedCase.difficulty_level === 'Einfach' ? 'bg-green-600' :
+                      selectedCase.difficulty_level === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
                     }`}>
-                      {selectedCase.difficulty}
+                      {selectedCase.difficulty_level}
                     </Badge>
                     <span className="text-gray-400 text-sm">Anonymisierter Fall</span>
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="space-y-6">
+                    {selectedCase.anonymized_dialogue && selectedCase.anonymized_dialogue.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-purple-400 mb-3">Dialog-Beispiel</h4>
+                        <div className="space-y-2">
+                          {selectedCase.anonymized_dialogue.slice(0, 3).map((message, index) => (
+                            <div key={index} className="p-3 bg-gray-700/50 rounded-lg">
+                              <span className="font-medium text-blue-300">{message.speaker}:</span>
+                              <span className="text-gray-300 ml-2">{message.message}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
                     <div>
                       <h4 className="font-semibold text-blue-400 mb-3">KI-Analyse & Lösungsvorschläge</h4>
-                      <p className="text-gray-300 leading-relaxed">{selectedCase.ai_solution}</p>
+                      <div className="text-gray-300 leading-relaxed whitespace-pre-line">{selectedCase.ai_solution}</div>
                     </div>
                     
                     <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
