@@ -1263,6 +1263,8 @@ const EmpathyTrainingApp = () => {
       // Default: Allgemeine Kommunikationstipps
       return empathyTips.kommunikation;
     };
+
+    const loadCommunityCases = async () => {
       console.log('Loading Community Cases...');
       try {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
