@@ -1459,9 +1459,9 @@ const EmpathyTrainingApp = () => {
                               Sofort-Tipp für diese Situation
                             </h4>
                             <p className="text-green-200 text-sm">
-                              {selectedCase.difficulty === 'Einfach' 
+                              {(selectedCase.difficulty || selectedCase.difficulty_level) === 'Einfach' 
                                 ? "Beginnen Sie mit aktivem Zuhören: 'Erzähl mir mehr darüber' und zeigen Sie durch Nicken, dass Sie verstehen."
-                                : selectedCase.difficulty === 'Mittel'
+                                : (selectedCase.difficulty || selectedCase.difficulty_level) === 'Mittel'
                                 ? "Validieren Sie die Gefühle: 'Ich verstehe, warum du dich so fühlst' - auch wenn Sie die Situation anders sehen."
                                 : "Schaffen Sie erstmal Ruhe: 'Uns beiden ist das wichtig. Lass uns das in Ruhe besprechen' und vereinbaren Sie einen festen Gesprächstermin."
                               }
