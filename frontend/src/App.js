@@ -2860,7 +2860,7 @@ const EmpathyTrainingApp = () => {
   }
 
   if (currentTab === 'dialog-coaching') {
-    return <DialogCoachingPage />;
+    return <DialogCoachingPage onNavigateBack={() => setCurrentTab('home')} user={user} showNotification={showNotification} />;
   }
 
   if (currentTab === 'gefuehlslexikon') {
@@ -2868,7 +2868,7 @@ const EmpathyTrainingApp = () => {
   }
 
   if (currentTab === 'community-cases') {
-    return <CommunityCasesPage />;
+    return <CommunityCasesPage onNavigateBack={() => setCurrentTab('home')} user={user} showNotification={showNotification} />;
   }
 
   if (currentTab === 'training-stufen') {
