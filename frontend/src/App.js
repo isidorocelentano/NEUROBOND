@@ -2856,7 +2856,7 @@ const EmpathyTrainingApp = () => {
   }
 
   if (currentTab === 'own-cases') {
-    return <OwnCasesCreation />;
+    return <OwnCasesCreation onNavigateBack={() => setCurrentTab('home')} user={user} showNotification={showNotification} />;
   }
 
   if (currentTab === 'dialog-coaching') {
