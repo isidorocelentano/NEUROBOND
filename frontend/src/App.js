@@ -1467,7 +1467,7 @@ const EmpathyTrainingApp = () => {
                   Neuen Case erstellen
                 </Button>
                 <Button
-                  onClick={() => setCurrentTab('home')}
+                  onClick={onNavigateBack}
                   variant="outline"
                   className="border-gray-600 text-gray-300 hover:bg-gray-700"
                 >
