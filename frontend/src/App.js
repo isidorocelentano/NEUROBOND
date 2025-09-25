@@ -1414,10 +1414,10 @@ const EmpathyTrainingApp = () => {
                   <CardTitle className="text-white">{selectedCase.title}</CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={`${
-                      selectedCase.difficulty === 'Einfach' ? 'bg-green-600' :
-                      selectedCase.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
+                      (selectedCase.difficulty || selectedCase.difficulty_level) === 'Einfach' ? 'bg-green-600' :
+                      (selectedCase.difficulty || selectedCase.difficulty_level) === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
                     }`}>
-                      {selectedCase.difficulty}
+                      {selectedCase.difficulty || selectedCase.difficulty_level}
                     </Badge>
                     <span className="text-gray-400 text-sm">Anonymisierter Fall</span>
                   </div>
