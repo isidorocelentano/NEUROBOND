@@ -507,11 +507,11 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Complete Application Status Verification"
-    - "All existing functionality thorough testing"
+    - "Comprehensive Stripe Payment System Testing"
+    - "Complete Payment Flow End-to-End Verification"
   stuck_tasks: []
   test_all: true
-  test_priority: "comprehensive"
+  test_priority: "payment_critical"
 
 agent_communication:
     -agent: "main"
