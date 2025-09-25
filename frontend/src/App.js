@@ -1346,7 +1346,7 @@ const EmpathyTrainingApp = () => {
         setShowAnalysis(true);
       } catch (error) {
         console.error('Error creating case:', error);
-        alert('Fehler beim Erstellen des Cases. Bitte versuchen Sie es später erneut.');
+        showNotification('Fehler beim Erstellen des Cases. Bitte versuchen Sie es später erneut.', 'error');
       } finally {
         setIsSubmitting(false);
       }
