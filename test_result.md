@@ -527,11 +527,11 @@ frontend:
 
 test_plan:
   current_focus:
-    - "AI-Powered Training System Testing Completed"
-    - "All core training endpoints verified working"
+    - "Enhanced Community Cases with Detailed Empathy Tips"
+    - "Context-specific empathy strategies testing"
   stuck_tasks: []
   test_all: false
-  test_priority: "completed"
+  test_priority: "high_first"
 
 agent_communication:
     -agent: "main"
