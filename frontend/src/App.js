@@ -1264,7 +1264,91 @@ const EmpathyTrainingApp = () => {
       return empathyTips.kommunikation;
     };
 
-    const loadCommunityCases = async () => {
+    // Generate structured solution with examples
+    const generateStructuredSolution = (caseItem) => {
+      const baseKeywords = caseItem.title?.toLowerCase() || '';
+      const aiSolutionKeywords = caseItem.ai_solution?.toLowerCase() || '';
+      
+      // Basis-Analyse aus der AI-Solution extrahieren
+      const baseAnalysis = caseItem.ai_solution || "Eine wichtige Situation in der Beziehung, die empathische Kommunikation erfordert.";
+      
+      // Situationsspezifische konkrete Beispiele generieren
+      const examples = {
+        haushaltsaufgaben: {
+          problematisch: [
+            "\"Du machst nie etwas im Haushalt!\"",
+            "\"Warum muss ich immer alles alleine machen?\""
+          ],
+          empathisch: [
+            "\"Mir fällt auf, dass ich in letzter Zeit viel vom Haushalt übernommen habe. Können wir schauen, wie wir das besser aufteilen?\"",
+            "\"Ich würde mich entlastet fühlen, wenn wir uns die Aufgaben teilen könnten. Was denkst du darüber?\""
+          ],
+          kontext: "Bei Diskussionen über Haushaltsaufgaben"
+        },
+        zeitmanagement: {
+          problematisch: [
+            "\"Du hast nie Zeit für mich!\"",
+            "\"Deine Arbeit ist dir wichtiger als unsere Beziehung!\""
+          ],
+          empathisch: [
+            "\"Ich merke, dass du gerade viel um die Ohren hast. Mir würde es gut tun, wenn wir uns bewusst Zeit füreinander nehmen könnten.\"",
+            "\"Ich verstehe, dass die Arbeit gerade sehr fordernd ist. Können wir trotzdem kleine Momente für uns finden?\""
+          ],
+          kontext: "Bei Zeitmanagement und Work-Life-Balance"
+        },
+        kommunikation: {
+          problematisch: [
+            "\"Du hörst mir nie zu!\"",
+            "\"Das verstehst du sowieso nicht!\""
+          ],
+          empathisch: [
+            "\"Ich habe das Gefühl, dass wir aneinander vorbei reden. Können wir das nochmal in Ruhe besprechen?\"",
+            "\"Mir ist wichtig, dass du dich verstanden fühlst. Erzähl mir mehr darüber.\""
+          ],
+          kontext: "Bei Kommunikationsproblemen"
+        },
+        stress: {
+          problematisch: [
+            "\"Reg dich nicht so auf!\"",
+            "\"So schlimm ist das doch nicht!\""
+          ],
+          empathisch: [
+            "\"Ich sehe, dass dich das wirklich belastet. Magst du mir erzählen, was genau dich beschäftigt?\"",
+            "\"Das klingt wirklich stressig für dich. Wie kann ich dich am besten unterstützen?\""
+          ],
+          kontext: "Bei Stress und emotionaler Belastung"
+        },
+        conflict: {
+          problematisch: [
+            "\"Du hast immer Recht!\"",
+            "\"Mit dir kann man nicht reden!\""
+          ],
+          empathisch: [
+            "\"Wir sehen das unterschiedlich, aber mir ist wichtig, eine Lösung zu finden, mit der wir beide leben können.\"",
+            "\"Lass uns eine kurze Pause machen und das später in Ruhe besprechen.\""
+          ],
+          kontext: "Bei Konflikten und Meinungsverschiedenheiten"
+        }
+      };
+
+      // Bestimme die passende Kategorie
+      let selectedExamples = examples.kommunikation; // Default
+      
+      if (baseKeywords.includes('haushalts') || aiSolutionKeywords.includes('aufgabe')) {
+        selectedExamples = examples.haushaltsaufgaben;
+      } else if (baseKeywords.includes('zeit') || aiSolutionKeywords.includes('arbeit')) {
+        selectedExamples = examples.zeitmanagement;
+      } else if (baseKeywords.includes('stress') || aiSolutionKeywords.includes('belast')) {
+        selectedExamples = examples.stress;
+      } else if (baseKeywords.includes('konflikt') || aiSolutionKeywords.includes('streit')) {
+        selectedExamples = examples.conflict;
+      }
+
+      return {
+        analysis: baseAnalysis,
+        examples: selectedExamples
+      };
+    };
       console.log('Loading Community Cases...');
       try {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
