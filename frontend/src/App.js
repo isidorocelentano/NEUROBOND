@@ -1272,7 +1272,7 @@ const EmpathyTrainingApp = () => {
       </div>
     );
   };
-  const OwnCasesCreation = () => {
+  const OwnCasesCreation = ({ onNavigateBack, user, showNotification }) => {
     const [dialogMessages, setDialogMessages] = useState([
       { speaker: 'Ich', message: '' },
       { speaker: 'Mein Partner', message: '' }
