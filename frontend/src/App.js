@@ -1287,19 +1287,31 @@ const EmpathyTrainingApp = () => {
             case_id: "demo-1",
             title: "Diskussion über Haushaltsaufgaben",
             difficulty: "Mittel",
-            ai_solution: "Eine typische Herausforderung in Beziehungen. Wichtig ist hier eine klare Kommunikation über Erwartungen und eine faire Aufgabenverteilung. Empathie und Verständnis für die Perspektive des Partners sind entscheidend."
+            ai_solution: "Eine typische Herausforderung in Beziehungen. Wichtig ist hier eine klare Kommunikation über Erwartungen und eine faire Aufgabenverteilung. Empathie und Verständnis für die Perspektive des Partners sind entscheidend. Oft fühlt sich einer überlastet, während der andere nicht merkt, wie ungleich die Aufgaben verteilt sind."
           },
           {
             case_id: "demo-2", 
             title: "Zeitmanagement in der Beziehung",
             difficulty: "Schwer",
-            ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen."
+            ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen. Beruflicher Stress und unterschiedliche Zeitvorstellungen führen oft zu Missverständnissen."
           },
           {
             case_id: "demo-3",
             title: "Kommunikation bei Stress",
             difficulty: "Einfach",
-            ai_solution: "Stress kann die Kommunikation beeinträchtigen. Wichtig ist, sich bewusst Zeit für Gespräche zu nehmen und Verständnis für die Belastung des Partners zu zeigen."
+            ai_solution: "Stress kann die Kommunikation beeinträchtigen. Wichtig ist, sich bewusst Zeit für Gespräche zu nehmen und Verständnis für die Belastung des Partners zu zeigen. Aktives Zuhören und empathische Reaktionen sind hier besonders wertvoll."
+          },
+          {
+            case_id: "demo-4",
+            title: "Konfliktlösung nach einem Streit",
+            difficulty: "Schwer", 
+            ai_solution: "Nach einem Konflikt ist es wichtig, aufeinander zuzugehen und eine Lösung zu finden. Beide Partner sollten ihre Sichtweise erklären können, ohne unterbrochen zu werden. Deeskalation und der Fokus auf gemeinsame Ziele helfen dabei."
+          },
+          {
+            case_id: "demo-5",
+            title: "Unterstützung bei beruflichem Stress",
+            difficulty: "Mittel",
+            ai_solution: "Wenn der Partner unter Arbeitsstress leidet, ist emotionale Unterstützung wichtiger als Ratschläge. Zuhören, Verständnis zeigen und praktische Hilfe anbieten können die Belastung reduzieren und die Beziehung stärken."
           }
         ];
         setCases(mockCases);
