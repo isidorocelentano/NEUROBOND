@@ -1124,7 +1124,7 @@ const EmpathyTrainingApp = () => {
   };
 
   // Community Cases Component
-  const CommunityCasesPage = () => {
+  const CommunityCasesPage = ({ onNavigateBack, user, showNotification }) => {
     const [cases, setCases] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCase, setSelectedCase] = useState(null);
@@ -1142,6 +1142,9 @@ const EmpathyTrainingApp = () => {
         }
       } catch (error) {
         console.error('Error loading community cases:', error);
+        if (showNotification) {
+          showNotification('Fehler beim Laden der Community Cases. Zeige Demo-Daten.', 'error');
+        }
         // Mock data for demo
         setCases([
           {
@@ -1175,7 +1178,7 @@ const EmpathyTrainingApp = () => {
             variant="ghost" 
             size="sm" 
             className="text-white hover:bg-white/10"
-            onClick={() => setCurrentTab('home')}
+            onClick={onNavigateBack}
           >
             <ArrowRight className="w-6 h-6 rotate-180" />
           </Button>
