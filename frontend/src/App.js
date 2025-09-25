@@ -1139,8 +1139,8 @@ const EmpathyTrainingApp = () => {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
         if (response.ok) {
           const data = await response.json();
-          setCases(data.cases || []);
-          console.log('Cases loaded from API:', data.cases);
+          setCases(data || []);
+          console.log('Cases loaded from API:', data);
         } else {
           console.log('API response not OK, loading mock data');
           throw new Error(`API response failed: ${response.status}`);
