@@ -334,6 +334,17 @@ metadata:
   run_ui: false
 
 frontend:
+  - task: "Community Cases Blank Page Bug Fix"
+    implemented: true
+    working: false  # Needs testing
+    file: "/app/frontend/src/App.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "CRITICAL: Fixed systematic scope-problem affecting Community Cases, Dialog Coaching, and Own Cases. Problem: Components defined inside App component were trying to use setCurrentTab without proper prop passing. Solution: 1) Modified CommunityCasesPage, DialogCoachingPage, and OwnCasesCreation to accept props (onNavigateBack, user, showNotification), 2) Updated component calls to pass setCurrentTab as onNavigateBack prop, 3) Replaced alert() calls with showNotification in OwnCasesCreation. This addresses the same scope issue that was causing blank pages in these components."
   - task: "Post-LoginModal Fix Comprehensive Frontend Testing"
     implemented: true
     working: true
