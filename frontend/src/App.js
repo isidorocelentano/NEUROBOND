@@ -1138,8 +1138,13 @@ const EmpathyTrainingApp = () => {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
         if (response.ok) {
           const data = await response.json();
+          console.log('Loaded community cases:', data.length);
           // API returns cases directly as array, not wrapped in data.cases
           setCases(Array.isArray(data) ? data : []);
+        } else {
+          console.error('Failed to load community cases:', response.status);
+          showNotification('Fehler beim Laden der Community Cases.', 'error');
+          setCases([]);
         }
       } catch (error) {
         console.error('Error loading community cases:', error);
