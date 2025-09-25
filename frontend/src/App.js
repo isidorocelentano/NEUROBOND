@@ -1349,6 +1349,8 @@ const EmpathyTrainingApp = () => {
         examples: selectedExamples
       };
     };
+
+    const loadCommunityCases = async () => {
       console.log('Loading Community Cases...');
       try {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
