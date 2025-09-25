@@ -1138,25 +1138,13 @@ const EmpathyTrainingApp = () => {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
         if (response.ok) {
           const data = await response.json();
-          setCases(data.cases || []);
+          // API returns cases directly as array, not wrapped in data.cases
+          setCases(Array.isArray(data) ? data : []);
         }
       } catch (error) {
         console.error('Error loading community cases:', error);
-        // Mock data for demo
-        setCases([
-          {
-            case_id: "demo-1",
-            title: "Diskussion über Haushaltsaufgaben",
-            difficulty: "Mittel",
-            ai_solution: "Eine typische Herausforderung in Beziehungen. Wichtig ist hier eine klare Kommunikation über Erwartungen und eine faire Aufgabenverteilung. Empathie und Verständnis für die Perspektive des Partners sind entscheidend."
-          },
-          {
-            case_id: "demo-2", 
-            title: "Zeitmanagement in der Beziehung",
-            difficulty: "Schwer",
-            ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen."
-          }
-        ]);
+        showNotification('Fehler beim Laden der Community Cases. Versuchen Sie es später erneut.', 'error');
+        setCases([]);
       } finally {
         setLoading(false);
       }
