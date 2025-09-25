@@ -1510,10 +1510,69 @@ const EmpathyTrainingApp = () => {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="space-y-6">
-                    <div>
-                      <h4 className="font-semibold text-blue-400 mb-3">KI-Analyse & Lösungsvorschläge</h4>
-                      <p className="text-gray-300 leading-relaxed">{selectedCase.ai_solution}</p>
-                    </div>
+                    {(() => {
+                      const structuredSolution = generateStructuredSolution(selectedCase);
+                      return (
+                        <div className="space-y-6">
+                          {/* Theoretische Analyse */}
+                          <div>
+                            <h4 className="font-semibold text-blue-400 mb-4 flex items-center gap-2">
+                              <Brain className="w-5 h-5" />
+                              KI-Analyse der Situation
+                            </h4>
+                            <div className="bg-blue-900/20 p-4 rounded-xl border border-blue-700/30">
+                              <p className="text-gray-200 leading-relaxed">{structuredSolution.analysis}</p>
+                            </div>
+                          </div>
+
+                          {/* Praktische Beispiele */}
+                          <div>
+                            <h4 className="font-semibold text-orange-400 mb-4 flex items-center gap-2">
+                              <MessageCircle className="w-5 h-5" />
+                              Konkrete Gesprächsbeispiele
+                            </h4>
+                            <div className="grid gap-4">
+                              {/* Problematische Formulierungen */}
+                              <div className="bg-red-900/20 p-4 rounded-xl border border-red-700/30">
+                                <h5 className="font-medium text-red-300 mb-3 flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  So besser nicht: {structuredSolution.examples.kontext}
+                                </h5>
+                                <div className="space-y-2">
+                                  {structuredSolution.examples.problematisch.map((example, index) => (
+                                    <div key={index} className="flex items-start gap-3">
+                                      <span className="text-red-400 text-sm font-mono">❌</span>
+                                      <p className="text-red-200 text-sm italic">{example}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Empathische Alternativen */}
+                              <div className="bg-green-900/20 p-4 rounded-xl border border-green-700/30">
+                                <h5 className="font-medium text-green-300 mb-3 flex items-center gap-2">
+                                  <CheckCircle className="w-4 h-4" />
+                                  Empathische Alternative
+                                </h5>
+                                <div className="space-y-3">
+                                  {structuredSolution.examples.empathisch.map((example, index) => (
+                                    <div key={index} className="flex items-start gap-3">
+                                      <span className="text-green-400 text-sm font-mono">✅</span>
+                                      <div>
+                                        <p className="text-green-200 text-sm font-medium">{example}</p>
+                                        <p className="text-green-300 text-xs mt-1 opacity-75">
+                                          → Zeigt Verständnis und lädt zur gemeinsamen Lösungsfindung ein
+                                        </p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
                     
                     {(() => {
                       const empathyTipsData = generateEmpathyTips(selectedCase);
