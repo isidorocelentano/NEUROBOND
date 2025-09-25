@@ -1134,19 +1134,24 @@ const EmpathyTrainingApp = () => {
     }, []);
 
     const loadCommunityCases = async () => {
+      console.log('Loading Community Cases...');
       try {
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
         if (response.ok) {
           const data = await response.json();
           setCases(data.cases || []);
+          console.log('Cases loaded from API:', data.cases);
+        } else {
+          console.log('API response not OK, loading mock data');
+          throw new Error(`API response failed: ${response.status}`);
         }
       } catch (error) {
         console.error('Error loading community cases:', error);
         if (showNotification) {
-          showNotification('Fehler beim Laden der Community Cases. Zeige Demo-Daten.', 'error');
+          showNotification('Lade Demo-Daten für Community Cases', 'info');
         }
-        // Mock data for demo
-        setCases([
+        // Mock data for demo - always load this if API fails
+        const mockCases = [
           {
             case_id: "demo-1",
             title: "Diskussion über Haushaltsaufgaben",
@@ -1158,10 +1163,19 @@ const EmpathyTrainingApp = () => {
             title: "Zeitmanagement in der Beziehung",
             difficulty: "Schwer",
             ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen."
+          },
+          {
+            case_id: "demo-3",
+            title: "Kommunikation bei Stress",
+            difficulty: "Einfach",
+            ai_solution: "Stress kann die Kommunikation beeinträchtigen. Wichtig ist, sich bewusst Zeit für Gespräche zu nehmen und Verständnis für die Belastung des Partners zu zeigen."
           }
-        ]);
+        ];
+        setCases(mockCases);
+        console.log('Mock cases set:', mockCases);
       } finally {
         setLoading(false);
+        console.log('Loading completed, setting loading to false');
       }
     };
 
