@@ -1929,7 +1929,7 @@ const EmpathyTrainingApp = () => {
       </div>
     );
   };
-  const DialogCoachingPage = () => {
+  const DialogCoachingPage = ({ onNavigateBack, user, showNotification }) => {
     const [dialogStep, setDialogStep] = useState('input'); // input, analysis, results
     const [dialogData, setDialogData] = useState({
       scenario: '',
