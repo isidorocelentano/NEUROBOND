@@ -1303,13 +1303,13 @@ const EmpathyTrainingApp = () => {
 
     const submitCase = async () => {
       if (!caseTitle.trim()) {
-        alert('Bitte geben Sie einen Titel für Ihren Case ein');
+        showNotification('Bitte geben Sie einen Titel für Ihren Case ein', 'error');
         return;
       }
 
       const validMessages = dialogMessages.filter(msg => msg.message.trim());
       if (validMessages.length < 2) {
-        alert('Bitte fügen Sie mindestens 2 Nachrichten hinzu');
+        showNotification('Bitte fügen Sie mindestens 2 Nachrichten hinzu', 'error');
         return;
       }
 
