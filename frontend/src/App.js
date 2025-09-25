@@ -2053,7 +2053,7 @@ const EmpathyTrainingApp = () => {
             variant="ghost" 
             size="sm" 
             className="text-white hover:bg-white/10"
-            onClick={() => setCurrentTab('home')}
+            onClick={onNavigateBack}
           >
             <ArrowRight className="w-6 h-6 rotate-180" />
           </Button>
