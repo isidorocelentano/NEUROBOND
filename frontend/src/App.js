@@ -1979,11 +1979,15 @@ const EmpathyTrainingApp = () => {
                 }`}
                 onClick={() => {
                   if (stage.unlocked) {
+                    console.log('🔍 Training stage clicked:', stage.id, stage.title, 'user:', user);
                     if (stage.id === 1) {
                       setSelectedStage(stage);
                     } else {
                       // Stufen 2-5 require upgrade
-                      if (!checkUpgradeRequired(`Training ${stage.title}`)) {
+                      if (!user || user.subscription === 'free') {
+                        console.log('✅ Showing upgrade modal for training stage:', stage.title);
+                        setShowUpgradeModal(true);
+                      } else {
                         setSelectedStage(stage);
                       }
                     }
