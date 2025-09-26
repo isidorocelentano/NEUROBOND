@@ -2748,9 +2748,21 @@ const EmpathyTrainingApp = () => {
 
           <div className="container mx-auto px-4 py-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Willkommen zurück, {user && user.name}! 👋
-              </h2>
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-white">
+                  Willkommen zurück, {user && user.name}! 👋
+                </h2>
+                {/* Debug Test Button for Modal */}
+                <Button 
+                  onClick={() => {
+                    console.log('🔍 TEST: Manual modal trigger');
+                    setShowUpgradeModal(true);
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-xs px-2 py-1"
+                >
+                  Test Modal
+                </Button>
+              </div>
               {user && user.partner_name && (
                 <p className="text-xl text-gray-300 mb-6">
                   Stärkt eure Bindung - <span className="font-semibold text-blue-400">{user.name}</span> und <span className="font-semibold text-purple-400">{user.partner_name}</span>
