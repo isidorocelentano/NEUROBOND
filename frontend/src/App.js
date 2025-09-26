@@ -1969,7 +1969,18 @@ const EmpathyTrainingApp = () => {
                     ? 'bg-gray-800/60 backdrop-blur-sm hover:bg-gray-800/80' 
                     : 'bg-gray-900/60 backdrop-blur-sm opacity-75'
                 }`}
-                onClick={() => stage.unlocked && setSelectedStage(stage)}
+                onClick={() => {
+                  if (stage.unlocked) {
+                    if (stage.id === 1) {
+                      setSelectedStage(stage);
+                    } else {
+                      // Stufen 2-5 require upgrade
+                      if (!checkUpgradeRequired(`Training ${stage.title}`)) {
+                        setSelectedStage(stage);
+                      }
+                    }
+                  }
+                }}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-6">
