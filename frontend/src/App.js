@@ -3035,6 +3035,11 @@ const EmpathyTrainingApp = () => {
     <>
       <Dashboard />
       
+      {/* Debug Info */}
+      <div className="fixed bottom-4 left-4 bg-gray-800 text-white p-2 text-xs rounded z-40">
+        Modal State: {showUpgradeModal ? 'OPEN' : 'CLOSED'} | User: {user?.subscription || 'NO_USER'}
+      </div>
+
       {/* Notification */}
       {notification.show && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm ${
