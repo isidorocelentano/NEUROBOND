@@ -854,15 +854,6 @@ const EmpathyTrainingApp = () => {
       return allGoals.slice(0, 10); // Limit to 10 goals
     };
 
-    // Helper function to check if user needs upgrade
-    const checkUpgradeRequired = (featureName) => {
-      if (!user || user.subscription === 'free') {
-        setShowUpgradeModal(true);
-        return true;
-      }
-      return false;
-    };
-
     // Enhanced goal action with upgrade check
     const handleGoalAction = (goalText) => {
       if (goalText.includes('Empathie-Training')) {
