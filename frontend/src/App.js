@@ -355,6 +355,11 @@ const EmpathyTrainingApp = () => {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
+  // Debug Modal State Changes
+  useEffect(() => {
+    console.log('🔍 Upgrade modal state changed:', showUpgradeModal);
+  }, [showUpgradeModal]);
+
   // Stripe Integration
   const stripe = window.Stripe && window.Stripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
