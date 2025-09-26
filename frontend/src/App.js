@@ -2795,7 +2795,11 @@ const EmpathyTrainingApp = () => {
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
                 onClick={() => {
-                  if (!checkUpgradeRequired('Dialog-Coaching')) {
+                  console.log('🔍 Dialog-Coaching clicked, user:', user);
+                  if (!user || user.subscription === 'free') {
+                    console.log('✅ Showing upgrade modal for Dialog-Coaching');
+                    setShowUpgradeModal(true);
+                  } else {
                     setCurrentTab('dialog-coaching');
                   }
                 }}
