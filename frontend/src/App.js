@@ -1984,12 +1984,7 @@ const EmpathyTrainingApp = () => {
                       setSelectedStage(stage);
                     } else {
                       // Stufen 2-5 require upgrade
-                      if (!user || user.subscription === 'free') {
-                        console.log('✅ Showing upgrade modal for training stage:', stage.title);
-                        setShowUpgradeModal(true);
-                      } else {
-                        setSelectedStage(stage);
-                      }
+                      checkUpgradeRequired(`Training ${stage.title}`) || setSelectedStage(stage);
                     }
                   }
                 }}
