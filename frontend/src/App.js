@@ -352,6 +352,59 @@ const EmpathyTrainingApp = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [userProgress] = useState([]);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('monthly');
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  // Stripe Integration
+  const stripe = window.Stripe && window.Stripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+  // Handle Stripe Checkout
+  const handleStripeCheckout = async () => {
+    if (!stripe) {
+      showNotification('Stripe wird geladen... Bitte versuchen Sie es erneut.', 'warning');
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
+    try {
+      console.log('Creating checkout session for plan:', selectedPlan);
+      
+      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          package_type: selectedPlan,
+          origin_url: window.location.origin
+        }),
+      });
+
+      const session = await response.json();
+
+      if (!response.ok) {
+        throw new Error(session.detail || 'Fehler beim Erstellen der Checkout Session');
+      }
+
+      console.log('Checkout session created:', session);
+
+      // Redirect to Stripe Checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.session_id,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
+    } catch (error) {
+      console.error('Payment error:', error);
+      showNotification(`Fehler beim Starten der Zahlung: ${error.message}`, 'error');
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
 
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
