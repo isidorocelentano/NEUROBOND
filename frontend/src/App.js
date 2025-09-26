@@ -2954,66 +2954,165 @@ const EmpathyTrainingApp = () => {
         </div>
       )}
 
-      {/* Upgrade Modal */}
+      {/* Enhanced Upgrade Modal with Stripe Integration */}
       {showUpgradeModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-gray-900 border-gray-700 max-w-md w-full">
+          <Card className="bg-gray-900 border-gray-700 max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <CardHeader className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Crown className="w-8 h-8 text-white" />
+              <div className="flex justify-between items-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto">
+                  <Crown className="w-8 h-8 text-white" />
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
               </div>
-              <CardTitle className="text-2xl text-white">NEUROBOND PRO</CardTitle>
+              
+              <CardTitle className="text-2xl text-white mb-2">NEUROBOND PRO</CardTitle>
               <CardDescription className="text-gray-300">
                 Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
               </CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white mb-2">CHF 10.00</div>
-                <div className="text-gray-400">pro Monat, inkl. MWST</div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Unbegrenzte Trainings-Szenarien</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Alle 5 Training-Stufen</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Dialog-Coaching mit KI-Analyse</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Wöchentliche Trainingspläne</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Premium Support</span>
+              {/* Plan Selection */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white text-center">Wählen Sie Ihren Plan</h3>
+                
+                <div className="grid gap-3">
+                  {/* Monthly Plan */}
+                  <div 
+                    onClick={() => setSelectedPlan('monthly')}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      selectedPlan === 'monthly' 
+                        ? 'border-yellow-500 bg-yellow-500/10' 
+                        : 'border-gray-600 hover:border-gray-500'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-white">Monatlich</h4>
+                        <p className="text-sm text-gray-400">Flexibel kündbar</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-white">CHF 10.00</div>
+                        <div className="text-sm text-gray-400">pro Monat</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Yearly Plan with Savings */}
+                  <div 
+                    onClick={() => setSelectedPlan('yearly')}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all relative ${
+                      selectedPlan === 'yearly' 
+                        ? 'border-yellow-500 bg-yellow-500/10' 
+                        : 'border-gray-600 hover:border-gray-500'
+                    }`}
+                  >
+                    <div className="absolute -top-2 left-4">
+                      <Badge className="bg-green-600 text-white">CHF 20.00 sparen</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-white">Jährlich</h4>
+                        <p className="text-sm text-gray-400">2 Monate gratis</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-white">CHF 100.00</div>
+                        <div className="text-sm text-gray-400">pro Jahr</div>
+                        <div className="text-xs text-green-400">CHF 8.33/Monat</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              {/* Features List */}
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-white text-center">PRO Features</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <span>Unbegrenzter Zugang zu allen 5 Training Stufen</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <span>Personalisierte Dialog-Coaching Sessions</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <span>Zugang zu Community Cases</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <span>Wöchentliche Trainingspläne</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    <span>Premium Support</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Methods */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-400 text-center">Sichere Zahlung mit</h3>
+                <div className="flex justify-center gap-4">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-lg">
+                    <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">💳</span>
+                    </div>
+                    <span className="text-sm text-gray-300">Kreditkarte</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-lg">
+                    <div className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">P</span>
+                    </div>
+                    <span className="text-sm text-gray-300">PayPal</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
                 <Button 
                   variant="outline"
                   onClick={() => setShowUpgradeModal(false)}
                   className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
+                  disabled={isProcessingPayment}
                 >
                   Später
                 </Button>
                 <Button 
-                  onClick={() => {
-                    setShowUpgradeModal(false);
-                    showNotification('Upgrade-Funktion wird implementiert...', 'info');
-                  }}
-                  className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+                  onClick={handleStripeCheckout}
+                  disabled={isProcessingPayment}
+                  className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 disabled:opacity-50"
                 >
-                  <Crown className="w-4 h-4 mr-2" />
-                  Jetzt upgraden
+                  {isProcessingPayment ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Verarbeitung...
+                    </>
+                  ) : (
+                    <>
+                      <Crown className="w-4 h-4 mr-2" />
+                      {selectedPlan === 'yearly' ? 'CHF 100.00 zahlen' : 'CHF 10.00 zahlen'}
+                    </>
+                  )}
                 </Button>
+              </div>
+
+              {/* Legal Info */}
+              <div className="text-center">
+                <p className="text-xs text-gray-500">
+                  Inkl. 8.1% Schweizer MWST • Jederzeit kündbar
+                </p>
               </div>
             </CardContent>
           </Card>
