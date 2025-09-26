@@ -2775,7 +2775,11 @@ const EmpathyTrainingApp = () => {
 
               <Card 
                 className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => setCurrentTab('dialog-coaching')}
+                onClick={() => {
+                  if (!checkUpgradeRequired('Dialog-Coaching')) {
+                    setCurrentTab('dialog-coaching');
+                  }
+                }}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
