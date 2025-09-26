@@ -406,6 +406,15 @@ const EmpathyTrainingApp = () => {
     }
   };
 
+  // Helper function to check if user needs upgrade
+  const checkUpgradeRequired = (featureName) => {
+    if (!user || user.subscription === 'free') {
+      setShowUpgradeModal(true);
+      return true;
+    }
+    return false;
+  };
+
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
     setNotification({ show: true, message, type });
