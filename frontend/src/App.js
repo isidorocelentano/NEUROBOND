@@ -845,18 +845,33 @@ const EmpathyTrainingApp = () => {
       return allGoals.slice(0, 10); // Limit to 10 goals
     };
 
-    // Handle goal action
+    // Helper function to check if user needs upgrade
+    const checkUpgradeRequired = (featureName) => {
+      if (!user || user.subscription === 'free') {
+        setShowUpgradeModal(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Enhanced goal action with upgrade check
     const handleGoalAction = (goalText) => {
       if (goalText.includes('Empathie-Training')) {
         setCurrentTab('training-stufen');
       } else if (goalText.includes('Gefühlslexikon')) {
         setCurrentTab('gefuehlslexikon');
       } else if (goalText.includes('Dialog-Coaching')) {
-        setCurrentTab('dialog-coaching');
+        if (!checkUpgradeRequired('Dialog-Coaching')) {
+          setCurrentTab('dialog-coaching');
+        }
       } else if (goalText.includes('Community Case')) {
-        setCurrentTab('community-cases');
+        if (!checkUpgradeRequired('Community Cases')) {
+          setCurrentTab('community-cases');
+        }
       } else if (goalText.includes('eigenen Case') || goalText.includes('Case erstellen')) {
-        setCurrentTab('own-cases');
+        if (!checkUpgradeRequired('Eigenen Case erstellen')) {
+          setCurrentTab('own-cases');
+        }
       } else if (goalText.includes('Meditation')) {
         showNotification('🧘‍♀️ Meditation-Feature wird bald verfügbar sein!', 'info');
       } else if (goalText.includes('Partner-Dialog')) {
