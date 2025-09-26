@@ -414,9 +414,42 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
-  // Enhanced user restoration with debugging
+  // Enhanced user restoration with debugging and payment result handling
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
+    
+    // Check for payment success/cancel in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment_success');
+    const paymentCanceled = urlParams.get('payment_canceled');
+    const sessionId = urlParams.get('session_id');
+
+    if (paymentSuccess === 'true' && sessionId) {
+      console.log('✅ Payment successful, session_id:', sessionId);
+      showNotification('Zahlung erfolgreich! Ihr PRO Account ist jetzt aktiv.', 'success');
+      // Update user subscription status
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userData.subscription = 'pro';
+          setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
+        } catch (error) {
+          console.error('Error updating user subscription:', error);
+        }
+      }
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (paymentCanceled === 'true') {
+      console.log('❌ Payment canceled');
+      showNotification('Zahlung wurde abgebrochen. Sie können jederzeit erneut upgraden.', 'warning');
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     try {
       const savedUser = localStorage.getItem('empathy_user');
       const savedAvatar = localStorage.getItem('user_avatar');
