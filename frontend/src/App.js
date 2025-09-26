@@ -408,10 +408,13 @@ const EmpathyTrainingApp = () => {
 
   // Helper function to check if user needs upgrade
   const checkUpgradeRequired = (featureName) => {
+    console.log('🔍 checkUpgradeRequired called:', { featureName, user, userSubscription: user?.subscription });
     if (!user || user.subscription === 'free') {
+      console.log('✅ Triggering upgrade modal for:', featureName);
       setShowUpgradeModal(true);
       return true;
     }
+    console.log('❌ User has premium access, no upgrade required');
     return false;
   };
 
