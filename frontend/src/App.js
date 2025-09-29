@@ -4025,77 +4025,58 @@ const EmpathyTrainingApp = () => {
         </div>
       )}
 
-      {/* Upgrade Modal */}
+      {/* Simple Debug Modal */}
       {showUpgradeModal && (
         <div 
-          className="fixed inset-0 flex items-center justify-center p-4"
           style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
             zIndex: 999999,
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(4px)'
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           <div 
-            className="bg-gray-900 border border-gray-700 rounded-3xl max-w-md w-full p-8"
             style={{
-              zIndex: 1000000,
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
+              backgroundColor: '#1f2937',
+              border: '2px solid #6366f1',
+              borderRadius: '16px',
+              padding: '32px',
+              maxWidth: '500px',
+              width: '90%',
+              color: 'white',
+              textAlign: 'center'
             }}
           >
-            {/* Header */}
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Crown className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">NEUROBOND PRO</h2>
-              <p className="text-gray-300 text-sm">
-                Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
-              </p>
-            </div>
-
-            {/* Pricing */}
-            <div className="text-center mb-6">
-              <div className="flex justify-center gap-6 mb-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-white mb-1">CHF 10.00</div>
-                  <div className="text-gray-400 text-sm">pro Monat</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-white mb-1">CHF 100.00</div>
-                  <div className="text-gray-400 text-sm">pro Jahr</div>
-                  <div className="text-green-400 text-xs font-medium">2 Monate gratis!</div>
-                </div>
-              </div>
-            </div>
+            <h2 style={{ fontSize: '24px', marginBottom: '16px', color: '#fff' }}>
+              🎉 NEUROBOND PRO
+            </h2>
+            <p style={{ marginBottom: '24px', color: '#d1d5db' }}>
+              Wählen Sie Ihr Abonnement
+            </p>
             
-            {/* Features */}
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Alle 17 Trainings-Szenarien</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Vollständiges Gefühlslexikon</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Dialog-Coaching mit KI-Analyse</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Eigene Fälle erstellen</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Wöchentliche Trainingspläne</span>
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '16px' }}>
+                <div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>CHF 10.00</div>
+                  <div style={{ fontSize: '14px', color: '#9ca3af' }}>pro Monat</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>CHF 100.00</div>
+                  <div style={{ fontSize: '14px', color: '#9ca3af' }}>pro Jahr</div>
+                </div>
               </div>
             </div>
 
-            {/* Payment Buttons */}
-            <div className="space-y-3 mb-6">
+            <div style={{ marginBottom: '24px' }}>
               <button 
                 onClick={async () => {
+                  alert('Monatliche Zahlung wird verarbeitet...');
                   try {
                     const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
                       method: 'POST',
@@ -4118,14 +4099,24 @@ const EmpathyTrainingApp = () => {
                     alert('Fehler beim Laden der Zahlungsseite.');
                   }
                 }}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                style={{
+                  width: '100%',
+                  backgroundColor: '#7c3aed',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  marginBottom: '8px',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
               >
-                <Crown className="w-4 h-4" />
-                Monatlich - CHF 10.00
+                💳 Monatlich - CHF 10.00
               </button>
               
               <button 
                 onClick={async () => {
+                  alert('Jährliche Zahlung wird verarbeitet...');
                   try {
                     const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
                       method: 'POST',
@@ -4148,22 +4139,39 @@ const EmpathyTrainingApp = () => {
                     alert('Fehler beim Laden der Zahlungsseite.');
                   }
                 }}
-                className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                style={{
+                  width: '100%',
+                  backgroundColor: '#059669',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  marginBottom: '16px',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
               >
-                <Sparkles className="w-4 h-4" />
-                Jährlich - CHF 100.00 (2 Monate gratis!)
+                💎 Jährlich - CHF 100.00 (2 Monate gratis!)
               </button>
             </div>
 
-            {/* Cancel Button */}
-            <div className="flex gap-3">
-              <button 
-                onClick={() => setShowUpgradeModal(false)}
-                className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-xl font-semibold transition-colors"
-              >
-                Abbrechen
-              </button>
-            </div>
+            <button 
+              onClick={() => {
+                console.log('🔴 CLOSING MODAL');
+                setShowUpgradeModal(false);
+                setShowLandingPage(true);
+              }}
+              style={{
+                backgroundColor: '#374151',
+                color: 'white',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: '1px solid #6b7280',
+                cursor: 'pointer'
+              }}
+            >
+              Abbrechen
+            </button>
           </div>
         </div>
       )}
