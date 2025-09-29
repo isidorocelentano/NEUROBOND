@@ -235,13 +235,21 @@ Current emotional state based on scenario: Reflect the emotions described in the
         # Debug: Log the raw AI response
         logging.info(f"Raw AI response for scenario {request.scenario_id}: '{response}' (type: {type(response)})")
         
+        # Ensure response is converted to string properly
+        if hasattr(response, 'content'):
+            response_text = response.content
+        elif hasattr(response, 'text'):
+            response_text = response.text  
+        else:
+            response_text = str(response)
+            
         # Debug: Ensure response is not empty
-        if not response or (isinstance(response, str) and response.strip() == ""):
+        if not response_text or response_text.strip() == "":
             # Fallback to scenario's partner_opening if AI response is empty
-            response = scenario['partner_opening']
-            logging.warning(f"AI response was empty for scenario {request.scenario_id}, using fallback: {response}")
+            response_text = scenario['partner_opening']
+            logging.warning(f"AI response was empty for scenario {request.scenario_id}, using fallback: {response_text}")
         
-        logging.info(f"Training scenario {request.scenario_id} started with partner message: {response[:100]}...")
+        logging.info(f"Training scenario {request.scenario_id} started with partner message: {response_text[:100]}...")
         
         # Store scenario session in database
         scenario_session = {
@@ -255,7 +263,7 @@ Current emotional state based on scenario: Reflect the emotions described in the
             "messages": [
                 {
                     "speaker": request.partner_name,
-                    "message": response,
+                    "message": response_text,
                     "timestamp": datetime.now(timezone.utc).isoformat()
                 }
             ],
@@ -272,7 +280,7 @@ Current emotional state based on scenario: Reflect the emotions described in the
                 "context": scenario['context'],
                 "learning_goals": scenario['learning_goals']
             },
-            "partner_message": response,
+            "partner_message": response_text,
             "partner_name": request.partner_name
         }
         
