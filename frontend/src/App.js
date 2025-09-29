@@ -1182,6 +1182,15 @@ const EmpathyTrainingApp = () => {
           "Sie können Ihrem Partner nicht helfen, obwohl er leidet",
           "Äußere Umstände bedrohen die Beziehung und Sie können nichts tun"
         ],
+        exampleDialog: {
+          situation: "Ihr Partner leidet unter Depressionen und Sie wissen nicht, wie Sie helfen können",
+          dialog: [
+            { speaker: "Sie", text: "Ich kann dir sowieso nicht helfen. Ich bin nutzlos." },
+            { speaker: "Partner", text: "Das stimmt nicht. Du gibst dir Mühe." },
+            { speaker: "Sie (hilfesuchend)", text: "Ich fühle mich hilflos in dieser Situation. Ich möchte dir so gerne helfen, aber weiß nicht wie. Können wir gemeinsam einen Weg finden?" },
+            { speaker: "Partner", text: "Dass du da bist und es versuchst, bedeutet mir schon viel. Vielleicht können wir zusammen professionelle Hilfe suchen." }
+          ]
+        },
         communicationTip: "Bitten Sie um konkrete Hilfe: 'Ich fühle mich hilflos in dieser Situation. Können wir gemeinsam einen Weg finden?'"
       },
       {
