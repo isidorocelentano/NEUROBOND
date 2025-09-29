@@ -367,15 +367,6 @@ const EmpathyTrainingApp = () => {
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
     
-    // Check URL parameters for direct payment page access
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('payment') === 'true') {
-      console.log('🔴 PAYMENT URL PARAMETER DETECTED!');
-      setCurrentTab('payment');
-      setShowLandingPage(false);
-      return;
-    }
-    
     // Check for successful Pro payment first
     const checkProPaymentStatus = async () => {
       const pendingProUpgrade = localStorage.getItem('pending_pro_upgrade');
@@ -396,6 +387,7 @@ const EmpathyTrainingApp = () => {
               setUserSubscription('pro');
               setShowOnboarding(true);
               setShowLandingPage(false);
+              setShowPaymentPage(false);
               
               // Clear payment tracking
               localStorage.removeItem('pending_pro_upgrade');
