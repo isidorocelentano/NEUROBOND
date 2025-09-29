@@ -1024,6 +1024,15 @@ const EmpathyTrainingApp = () => {
           "Sie fühlen sich in einer Diskussion nicht ernst genommen oder übergangen",
           "Ihr Partner trifft eine wichtige Entscheidung ohne Sie zu konsultieren"
         ],
+        exampleDialog: {
+          situation: "Ihr Partner kommt wieder einmal zu spät nach Hause, obwohl Sie ein gemeinsames Abendessen geplant hatten",
+          dialog: [
+            { speaker: "Sie", text: "Ich bin so wütend! Das ist jetzt das dritte Mal diese Woche, dass du zu spät kommst!" },
+            { speaker: "Partner", text: "Es tut mir leid, aber die Besprechung hat länger gedauert. Ich konnte nichts dafür." },
+            { speaker: "Sie (besser)", text: "Ich bin wütend, weil mein Bedürfnis nach Respekt und Planungssicherheit verletzt wurde. Kannst du verstehen, wie frustrierend das für mich ist?" },
+            { speaker: "Partner", text: "Du hast recht. Es war respektlos von mir. Lass uns einen Plan machen, wie ich dich in Zukunft früher informieren kann." }
+          ]
+        },
         communicationTip: "Statt 'Du machst mich wütend!' sagen Sie: 'Ich bin wütend, weil mein Bedürfnis nach Respekt verletzt wurde.'"
       },
       {
