@@ -1076,6 +1076,15 @@ const EmpathyTrainingApp = () => {
           "Bestimmte Gewohnheiten oder Verhaltensweisen stoßen Sie ab",
           "Moralische Grenzüberschreitungen lösen starke Ablehnung aus"
         ],
+        exampleDialog: {
+          situation: "Sie entdecken, dass Ihr Partner Sie bezüglich seiner Ausgaben belogen hat",
+          dialog: [
+            { speaker: "Sie", text: "Das ist ekelhaft! Wie kannst du mich so anlügen?" },
+            { speaker: "Partner", text: "Es ist doch nicht so schlimm. Du übertreibst wieder mal." },
+            { speaker: "Sie (besser)", text: "Dieses unehrliche Verhalten widerspricht meinen Grundwerten. Es macht mir Angst, dir nicht mehr vertrauen zu können." },
+            { speaker: "Partner", text: "Du hast recht. Ehrlichkeit ist wichtig. Ich werde transparenter sein und dein Vertrauen wieder verdienen." }
+          ]
+        },
         communicationTip: "Benennen Sie konkret was Sie stört: 'Dieses Verhalten widerspricht meinen Werten, weil...'"
       },
       {
