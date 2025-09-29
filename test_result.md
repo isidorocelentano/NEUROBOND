@@ -507,8 +507,8 @@ frontend:
 
 test_plan:
   current_focus:
-    - "AI-Powered Training System Testing Completed"
-    - "All core training endpoints verified working"
+    - "Post-Gefühlslexikon Backend Testing Completed"
+    - "All core backend functionality verified stable"
   stuck_tasks: []
   test_all: false
   test_priority: "completed"
