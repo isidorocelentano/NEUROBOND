@@ -1130,6 +1130,15 @@ const EmpathyTrainingApp = () => {
           "Die Beziehung hat nicht mehr die Leichtigkeit wie am Anfang",
           "Sie fühlen emotionale Distanz zum Partner"
         ],
+        exampleDialog: {
+          situation: "Ihr gemeinsamer Plan, ein Haus zu kaufen, ist durch finanzielle Probleme geplatzt",
+          dialog: [
+            { speaker: "Sie", text: "Es ist alles sinnlos. Wir werden nie unser eigenes Zuhause haben." },
+            { speaker: "Partner", text: "Sei doch nicht so negativ. Es wird schon klappen." },
+            { speaker: "Sie (besser)", text: "Ich bin traurig, weil ich den Verlust unseres gemeinsamen Traumes betrauern muss. Könntest du mich dabei unterstützen?" },
+            { speaker: "Partner", text: "Das verstehe ich. Es ist okay, traurig zu sein. Lass uns gemeinsam einen neuen Plan entwickeln." }
+          ]
+        },
         communicationTip: "Benennen Sie den Verlust: 'Ich bin traurig, weil ich ... vermisse. Kannst du mich dabei unterstützen?'"
       },
       {
