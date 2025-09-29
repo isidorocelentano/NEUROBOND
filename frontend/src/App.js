@@ -4157,6 +4157,7 @@ const EmpathyTrainingApp = () => {
                 </button>
               </div>
             </div>
+          </div>
         </div>
       )}
     </>
