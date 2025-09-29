@@ -1325,6 +1325,61 @@ const EmpathyTrainingApp = () => {
 
     const categories = [...new Set(emotions.map(e => e.category))];
 
+    // Practical Guide Component
+    const PracticalGuide = () => (
+      <Card className="bg-gradient-to-br from-blue-900/90 to-purple-900/90 backdrop-blur-lg border border-blue-500/30 mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl text-white flex items-center gap-2">
+            <Target className="w-6 h-6" />
+            Praxisteil: Wie Adam das Lexikon nutzen kann
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="p-4 bg-red-900/30 rounded-xl border border-red-500/30">
+                <h4 className="font-semibold text-red-200 mb-2 flex items-center gap-2">
+                  🚨 Für den Notfall
+                </h4>
+                <p className="text-red-100 text-sm">
+                  "Ich spüre [körperliches Signal]. Welches Gefühl aus der 🔴 ROTEN oder 🟡 GELBEN Kategorie könnte das sein?"
+                </p>
+              </div>
+              
+              <div className="p-4 bg-blue-900/30 rounded-xl border border-blue-500/30">
+                <h4 className="font-semibold text-blue-200 mb-2 flex items-center gap-2">
+                  🔍 Für die Selbstreflexion
+                </h4>
+                <p className="text-blue-100 text-sm">
+                  "Welches Grundbedürfnis steckt hinter meinem Gefühl? Was will es mir sagen?"
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="p-4 bg-green-900/30 rounded-xl border border-green-500/30">
+                <h4 className="font-semibold text-green-200 mb-2 flex items-center gap-2">
+                  💬 Für die Kommunikation
+                </h4>
+                <p className="text-green-100 text-sm">
+                  Statt: "Du machst mich wütend" → "Ich fühle Wut, weil mein Bedürfnis nach Respekt verletzt wurde."
+                </p>
+              </div>
+              
+              <div className="p-4 bg-purple-900/30 rounded-xl border border-purple-500/30">
+                <h4 className="font-semibold text-purple-200 mb-2 flex items-center gap-2">
+                  🎯 Emotionale Landkarte
+                </h4>
+                <p className="text-purple-100 text-sm">
+                  Diese Gliederung verwandelt das chaotische Erleben von Emotionen in eine strukturierte Landkarte für besseres Verständnis.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
@@ -1333,41 +1388,92 @@ const EmpathyTrainingApp = () => {
         </div>
 
         <header className="flex justify-between items-center p-6 mb-8 relative z-10">
-          <h1 className="text-2xl font-bold text-white">Gefühlslexikon</h1>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-white hover:bg-white/10"
-            onClick={() => setCurrentTab('home')}
-          >
-            <ArrowRight className="w-6 h-6 rotate-180" />
-          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Gefühlslexikon</h1>
+            <p className="text-gray-400 text-sm">Wissenschaftlich fundierte Emotionsmuster verstehen</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant={showPracticalGuide ? "default" : "ghost"}
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setShowPracticalGuide(!showPracticalGuide)}
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Praxis-Guide
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('home')}
+            >
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </Button>
+          </div>
         </header>
 
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          {showPracticalGuide && <PracticalGuide />}
+
           {!selectedEmotion ? (
             <div>
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-4">50+ Emotionen verstehen</h2>
-                <p className="text-gray-300">Erweitern Sie Ihr emotionales Vokabular für bessere Kommunikation</p>
+                <h2 className="text-4xl font-bold text-white mb-4">
+                  Detaillierte Kategorien & Emotionen
+                </h2>
+                <p className="text-gray-300 text-lg mb-6">
+                  Jede Emotion mit Intensitäts-Skala, körperlichen Signalen und zugrundeliegenden Bedürfnissen
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                  <Badge className="bg-red-600/20 text-red-200 px-4 py-2">🔴 Alarm-Modus</Badge>
+                  <Badge className="bg-yellow-600/20 text-yellow-200 px-4 py-2">🟡 Rückzug-Modus</Badge>
+                  <Badge className="bg-green-600/20 text-green-200 px-4 py-2">🟢 Wachstums-Modus</Badge>
+                  <Badge className="bg-blue-600/20 text-blue-200 px-4 py-2">🔵 Reflektierte Ebene</Badge>
+                </div>
               </div>
 
               {categories.map(category => (
-                <div key={category} className="mb-8">
-                  <h3 className="text-xl font-bold text-blue-400 mb-4">{category}</h3>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div key={category} className="mb-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <h3 className="text-2xl font-bold text-white">{category}</h3>
+                    <Badge className={`px-3 py-1 ${
+                      category.includes('🔴') ? 'bg-red-600/20 text-red-200' :
+                      category.includes('🟡') ? 'bg-yellow-600/20 text-yellow-200' :
+                      category.includes('🟢') ? 'bg-green-600/20 text-green-200' :
+                      'bg-blue-600/20 text-blue-200'
+                    }`}>
+                      {emotions.filter(e => e.category === category)[0]?.categoryDescription || ''}
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {emotions.filter(e => e.category === category).map(emotion => (
                       <Card 
                         key={emotion.name}
-                        className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                        className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer group"
                         onClick={() => setSelectedEmotion(emotion)}
                       >
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-4 h-4 rounded-full ${emotion.color}`}></div>
-                            <h4 className="font-semibold text-white">{emotion.name}</h4>
+                        <CardContent className="p-5">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className={`w-5 h-5 rounded-full ${emotion.color} group-hover:scale-110 transition-transform`}></div>
+                            <h4 className="font-semibold text-white text-lg">{emotion.name}</h4>
                           </div>
-                          <p className="text-gray-300 text-sm mt-2">{emotion.description}</p>
+                          
+                          <div className="space-y-2 mb-4">
+                            <div className="flex items-center gap-2 text-gray-400 text-sm">
+                              <span>🌡️</span>
+                              <span className="text-xs">{emotion.intensityScale}</span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-300 text-sm mb-3">{emotion.definition}</p>
+                          
+                          <div className="p-3 bg-blue-900/20 rounded-lg border border-blue-700/30">
+                            <p className="text-blue-200 text-sm">
+                              💬 "{emotion.helpfulQuestion}"
+                            </p>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
@@ -1376,44 +1482,111 @@ const EmpathyTrainingApp = () => {
               ))}
             </div>
           ) : (
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <Button 
                 variant="ghost"
                 onClick={() => setSelectedEmotion(null)}
-                className="mb-4 text-blue-400 hover:text-blue-300"
+                className="mb-6 text-blue-400 hover:text-blue-300"
               >
                 <ArrowRight className="w-4 h-4 rotate-180 mr-2" />
                 Zurück zur Übersicht
               </Button>
               
               <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
-                <CardHeader className="text-center">
-                  <div className={`w-16 h-16 rounded-full ${selectedEmotion.color} mx-auto mb-4`}></div>
-                  <CardTitle className="text-3xl text-white">{selectedEmotion.name}</CardTitle>
-                  <CardDescription className="text-gray-300">{selectedEmotion.category}</CardDescription>
+                <CardHeader className="text-center pb-6">
+                  <div className="flex items-center justify-center gap-4 mb-4">
+                    <div className={`w-20 h-20 rounded-full ${selectedEmotion.color} flex items-center justify-center`}>
+                      <Heart className="w-10 h-10 text-white" />
+                    </div>
+                    <div>
+                      <Badge className={`mb-2 ${
+                        selectedEmotion.category.includes('🔴') ? 'bg-red-600/20 text-red-200' :
+                        selectedEmotion.category.includes('🟡') ? 'bg-yellow-600/20 text-yellow-200' :
+                        selectedEmotion.category.includes('🟢') ? 'bg-green-600/20 text-green-200' :
+                        'bg-blue-600/20 text-blue-200'
+                      }`}>
+                        {selectedEmotion.category}
+                      </Badge>
+                      <CardTitle className="text-3xl text-white mb-1">{selectedEmotion.name}</CardTitle>
+                      <CardDescription className="text-gray-400">{selectedEmotion.categoryDescription}</CardDescription>
+                    </div>
+                  </div>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h4 className="font-semibold text-blue-400 mb-2">Definition</h4>
-                      <p className="text-gray-300">{selectedEmotion.description}</p>
+                
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {/* Left Column */}
+                    <div className="space-y-6">
+                      <div className="p-5 bg-blue-900/30 rounded-2xl border border-blue-700/50">
+                        <h4 className="font-semibold text-blue-200 mb-3 flex items-center gap-2">
+                          🌡️ Intensitäts-Skala
+                        </h4>
+                        <p className="text-blue-100">{selectedEmotion.intensityScale}</p>
+                      </div>
+
+                      <div className="p-5 bg-purple-900/30 rounded-2xl border border-purple-700/50">
+                        <h4 className="font-semibold text-purple-200 mb-3 flex items-center gap-2">
+                          💡 Was es ist
+                        </h4>
+                        <p className="text-purple-100">{selectedEmotion.definition}</p>
+                      </div>
+
+                      <div className="p-5 bg-green-900/30 rounded-2xl border border-green-700/50">
+                        <h4 className="font-semibold text-green-200 mb-3 flex items-center gap-2">
+                          🔍 Körperliche Signale
+                        </h4>
+                        <p className="text-green-100">{selectedEmotion.bodySignals}</p>
+                      </div>
                     </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-blue-400 mb-2">Wie sich {selectedEmotion.name} zeigt</h4>
-                      <p className="text-gray-300">
-                        Diese Emotion kann sich durch verschiedene körperliche und emotionale Signale zeigen. 
-                        Achten Sie auf Veränderungen in Ihrer Körperhaltung, Ihrem Ton und Ihren Gedanken.
-                      </p>
+
+                    {/* Right Column */}
+                    <div className="space-y-6">
+                      <div className="p-5 bg-orange-900/30 rounded-2xl border border-orange-700/50">
+                        <h4 className="font-semibold text-orange-200 mb-3 flex items-center gap-2">
+                          🎯 Das zugrundeliegende Bedürfnis
+                        </h4>
+                        <p className="text-orange-100">{selectedEmotion.underlyingNeed}</p>
+                      </div>
+
+                      <div className="p-5 bg-cyan-900/30 rounded-2xl border border-cyan-700/50">
+                        <h4 className="font-semibold text-cyan-200 mb-3 flex items-center gap-2">
+                          💬 Hilfreiche Frage
+                        </h4>
+                        <p className="text-cyan-100 font-medium">"{selectedEmotion.helpfulQuestion}"</p>
+                      </div>
+
+                      <div className="p-5 bg-pink-900/30 rounded-2xl border border-pink-700/50">
+                        <h4 className="font-semibold text-pink-200 mb-3 flex items-center gap-2">
+                          💭 Kommunikations-Tipp
+                        </h4>
+                        <p className="text-pink-100 italic">{selectedEmotion.communicationTip}</p>
+                      </div>
                     </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-blue-400 mb-2">Empathische Kommunikation</h4>
-                      <p className="text-gray-300">
-                        "Ich merke, dass du {selectedEmotion.name.toLowerCase()} fühlst. Das ist völlig verständlich. 
-                        Magst du mir mehr darüber erzählen, was diese Emotion in dir auslöst?"
-                      </p>
+                  </div>
+
+                  {/* Practical Examples Section */}
+                  <div className="mt-8 p-6 bg-gray-700/40 rounded-2xl border border-gray-600/50">
+                    <h4 className="font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                      📚 Praktische Beispiele aus dem Alltag
+                    </h4>
+                    <div className="space-y-3">
+                      {selectedEmotion.practicalExamples.map((example, index) => (
+                        <div key={index} className="p-3 bg-gray-800/60 rounded-lg border border-gray-600/30">
+                          <p className="text-gray-300 text-sm">• {example}</p>
+                        </div>
+                      ))}
                     </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="mt-8 text-center">
+                    <Button
+                      onClick={() => setCurrentTab('training-stufen')}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl font-semibold"
+                    >
+                      <Target className="w-5 h-5 mr-2" />
+                      Emotion im Training üben
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
