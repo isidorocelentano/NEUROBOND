@@ -232,6 +232,14 @@ Current emotional state based on scenario: Reflect the emotions described in the
         
         response = await chat.send_message(opening_message)
         
+        # Debug: Ensure response is not empty
+        if not response or response.strip() == "":
+            # Fallback to scenario's partner_opening if AI response is empty
+            response = scenario['partner_opening']
+            logging.warning(f"AI response was empty for scenario {request.scenario_id}, using fallback: {response}")
+        
+        logging.info(f"Training scenario {request.scenario_id} started with partner message: {response[:100]}...")
+        
         # Store scenario session in database
         scenario_session = {
             "session_id": session_id,
