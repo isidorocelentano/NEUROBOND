@@ -4035,11 +4035,38 @@ const EmpathyTrainingApp = () => {
                   Später
                 </Button>
                 <Button 
-                  onClick={() => {
-                    setShowUpgradeModal(false);
-                    showNotification('Upgrade-Funktion wird implementiert...', 'info');
+                  onClick={async () => {
+                    try {
+                      // Create Stripe checkout session for Pro version
+                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          package_type: 'monthly', // Default to monthly
+                          origin_url: window.location.origin
+                        })
+                      });
+
+                      if (response.ok) {
+                        const data = await response.json();
+                        if (data.url) {
+                          // Store that user wants Pro version
+                          localStorage.setItem('pending_pro_upgrade', 'true');
+                          localStorage.setItem('stripe_session_id', data.session_id);
+                          // Redirect to Stripe checkout
+                          window.location.href = data.url;
+                        } else {
+                          throw new Error('No checkout URL received');
+                        }
+                      } else {
+                        throw new Error('Failed to create checkout session');
+                      }
+                    } catch (error) {
+                      console.error('Stripe checkout error:', error);
+                      showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
+                    }
                   }}
-                  className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 >
                   <Crown className="w-4 h-4 mr-2" />
                   Jetzt upgraden
