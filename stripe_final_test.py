@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 class StripeFinalTester:
-    def __init__(self, base_url="https://emotracer.preview.emergentagent.com"):
+    def __init__(self, base_url="https://neurobondapp.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -41,7 +41,7 @@ class StripeFinalTester:
         """Test fixed Stripe monthly subscription"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://emotracer.preview.emergentagent.com"
+            "origin_url": "https://neurobondapp.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -96,7 +96,7 @@ class StripeFinalTester:
         """Test fixed Stripe yearly subscription"""
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://emotracer.preview.emergentagent.com"
+            "origin_url": "https://neurobondapp.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -137,7 +137,7 @@ class StripeFinalTester:
         # Create session with exact parameters from review request
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://emotracer.preview.emergentagent.com"
+            "origin_url": "https://neurobondapp.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
