@@ -576,7 +576,8 @@ const EmpathyTrainingApp = () => {
         id: 'user-' + Date.now(),
         name: formData.name,
         email: formData.email,
-        partner_name: formData.partner_name
+        partner_name: formData.partner_name,
+        subscription: userSubscription // Add subscription status to user
       };
       
       console.log('🚀 NEUROBOND: Starting registration process...');
