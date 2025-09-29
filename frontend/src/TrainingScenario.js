@@ -491,6 +491,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Training scenario data received:', data); // Debug log
         setSessionData(data);
         setCurrentPhase('question');
       } else {
