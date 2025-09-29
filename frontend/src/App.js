@@ -539,18 +539,11 @@ const EmpathyTrainingApp = () => {
                 </div>
                 
                 <div className="text-center">
-                  <button
-                    onClick={() => {
-                      console.log('🔴 PRO BUTTON CLICKED - DIRECT');
-                      alert('Pro Version Button wurde geklickt!');
-                      
-                      // Direct window navigation to payment page  
-                      window.location.href = window.location.origin + '?payment=true';
-                    }}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 cursor-pointer"
+                  <a
+                    href="?payment=true"
+                    className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 cursor-pointer no-underline"
                     style={{ 
-                      border: 'none',
-                      outline: 'none',
+                      textDecoration: 'none',
                       cursor: 'pointer'
                     }}
                   >
@@ -558,7 +551,7 @@ const EmpathyTrainingApp = () => {
                       <Crown className="w-6 h-6" />
                       PRO Version starten
                     </span>
-                  </button>
+                  </a>
                   <div className="text-sm text-gray-400">
                     <div>✓ Alle 17 Trainings</div>
                     <div>✓ Vollständiges Lexikon</div>
