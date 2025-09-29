@@ -362,41 +362,79 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
-  // Enhanced user restoration with debugging
+  // Enhanced user restoration with debugging and Pro payment check
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
-    try {
-      const savedUser = localStorage.getItem('empathy_user');
-      const savedAvatar = localStorage.getItem('user_avatar');
+    
+    // Check for successful Pro payment first
+    const checkProPaymentStatus = async () => {
+      const pendingProUpgrade = localStorage.getItem('pending_pro_upgrade');
+      const stripeSessionId = localStorage.getItem('stripe_session_id');
       
-      console.log('🔍 SavedUser from localStorage:', savedUser);
-      
-      if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        console.log('✅ NEUROBOND: User found in localStorage:', userData);
-        setUser(userData);
-        // Set subscription from saved user data
-        if (userData.subscription) {
-          setUserSubscription(userData.subscription);
+      if (pendingProUpgrade && stripeSessionId) {
+        try {
+          console.log('💳 NEUROBOND: Checking payment status for session:', stripeSessionId);
+          const response = await fetch(`${BACKEND_URL}/api/checkout/status/${stripeSessionId}`);
+          
+          if (response.ok) {
+            const paymentData = await response.json();
+            console.log('💳 Payment status:', paymentData);
+            
+            if (paymentData.payment_status === 'paid') {
+              console.log('✅ NEUROBOND: Payment successful, setting up Pro onboarding...');
+              // Payment successful - set up Pro onboarding
+              setUserSubscription('pro');
+              setShowOnboarding(true);
+              setShowLandingPage(false);
+              
+              // Clear payment tracking
+              localStorage.removeItem('pending_pro_upgrade');
+              localStorage.removeItem('stripe_session_id');
+              
+              showNotification('Zahlung erfolgreich! Willkommen bei NEUROBOND PRO! 🎉', 'success');
+              return; // Exit early - user needs to register
+            }
+          }
+        } catch (error) {
+          console.error('Payment status check failed:', error);
+          // Clear failed payment attempt
+          localStorage.removeItem('pending_pro_upgrade');
+          localStorage.removeItem('stripe_session_id');
         }
-        setShowLandingPage(false);
-        setShowOnboarding(false);
-        console.log('✅ NEUROBOND: State updated - should show dashboard');
-      } else {
-        console.log('ℹ️ NEUROBOND: No saved user found - showing landing page');
       }
       
-      if (savedAvatar) {
-        setUserAvatar(savedAvatar);
-        console.log('✅ NEUROBOND: Avatar restored');
+      // Normal user restoration logic
+      try {
+        const savedUser = localStorage.getItem('empathy_user');
+        const savedAvatar = localStorage.getItem('user_avatar');
+        
+        if (savedUser) {
+          const userData = JSON.parse(savedUser);
+          console.log('✅ NEUROBOND: User found in localStorage:', userData);
+          setUser(userData);
+          // Set subscription from saved user data
+          if (userData.subscription) {
+            setUserSubscription(userData.subscription);
+          }
+          setShowLandingPage(false);
+          setShowOnboarding(false);
+          console.log('✅ NEUROBOND: State updated - should show dashboard');
+        } else {
+          console.log('ℹ️ NEUROBOND: No saved user found - showing landing page');
+        }
+        
+        if (savedAvatar) {
+          setUserAvatar(savedAvatar);
+          console.log('✅ NEUROBOND: Avatar restored from localStorage');
+        }
+        
+      } catch (error) {
+        console.error('Error during user restoration:', error);
+        setShowLandingPage(true);
       }
-    } catch (error) {
-      console.error('❌ NEUROBOND: Error restoring user:', error);
-      // Reset states to safe defaults
-      setShowLandingPage(true);
-      setShowOnboarding(false);
-      setUser(null);
-    }
+    };
+    
+    checkProPaymentStatus();
   }, []);
 
   // Dark Landing Page Component
