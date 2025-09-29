@@ -4155,6 +4155,9 @@ const EmpathyTrainingApp = () => {
   }
 
   // Navigation logic
+  if (currentTab === 'payment') {
+    return <PaymentPage />;
+  }
   if (currentTab === 'partners') {
     return <PartnerSelection />;
   }
