@@ -3998,31 +3998,104 @@ const EmpathyTrainingApp = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white mb-2">CHF 10.00</div>
-                <div className="text-gray-400">pro Monat, inkl. MWST</div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Unbegrenzte Trainings-Szenarien</span>
+              <div className="space-y-4">
+                <div className="text-center">
+                  <div className="flex justify-center gap-4 mb-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-white mb-1">CHF 10.00</div>
+                      <div className="text-gray-400 text-sm">pro Monat</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-white mb-1">CHF 100.00</div>
+                      <div className="text-gray-400 text-sm">pro Jahr</div>
+                      <div className="text-green-400 text-xs font-medium">2 Monate gratis!</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Alle 5 Training-Stufen</span>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Alle 17 Trainings-Szenarien</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Vollständiges Gefühlslexikon</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Dialog-Coaching mit KI-Analyse</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Eigene Fälle erstellen</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Wöchentliche Trainingspläne</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Dialog-Coaching mit KI-Analyse</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Wöchentliche Trainingspläne</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Premium Support</span>
+
+                <div className="space-y-2">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            package_type: 'monthly',
+                            origin_url: window.location.origin
+                          })
+                        });
+
+                        if (response.ok) {
+                          const data = await response.json();
+                          if (data.url) {
+                            localStorage.setItem('pending_pro_upgrade', 'monthly');
+                            localStorage.setItem('stripe_session_id', data.session_id);
+                            window.location.href = data.url;
+                          }
+                        }
+                      } catch (error) {
+                        showNotification('Fehler beim Laden der Zahlungsseite.', 'error');
+                      }
+                    }}
+                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    Monatlich - CHF 10.00
+                  </Button>
+                  
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            package_type: 'yearly',
+                            origin_url: window.location.origin
+                          })
+                        });
+
+                        if (response.ok) {
+                          const data = await response.json();
+                          if (data.url) {
+                            localStorage.setItem('pending_pro_upgrade', 'yearly');
+                            localStorage.setItem('stripe_session_id', data.session_id);
+                            window.location.href = data.url;
+                          }
+                        }
+                      } catch (error) {
+                        showNotification('Fehler beim Laden der Zahlungsseite.', 'error');
+                      }
+                    }}
+                    className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Jährlich - CHF 100.00 (2 Monate gratis!)
+                  </Button>
                 </div>
               </div>
 
@@ -4032,44 +4105,7 @@ const EmpathyTrainingApp = () => {
                   onClick={() => setShowUpgradeModal(false)}
                   className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
                 >
-                  Später
-                </Button>
-                <Button 
-                  onClick={async () => {
-                    try {
-                      // Create Stripe checkout session for Pro version
-                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          package_type: 'monthly', // Default to monthly
-                          origin_url: window.location.origin
-                        })
-                      });
-
-                      if (response.ok) {
-                        const data = await response.json();
-                        if (data.url) {
-                          // Store that user wants Pro version
-                          localStorage.setItem('pending_pro_upgrade', 'true');
-                          localStorage.setItem('stripe_session_id', data.session_id);
-                          // Redirect to Stripe checkout
-                          window.location.href = data.url;
-                        } else {
-                          throw new Error('No checkout URL received');
-                        }
-                      } else {
-                        throw new Error('Failed to create checkout session');
-                      }
-                    } catch (error) {
-                      console.error('Stripe checkout error:', error);
-                      showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
-                    }
-                  }}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                >
-                  <Crown className="w-4 h-4 mr-2" />
-                  Jetzt upgraden
+                  Abbrechen
                 </Button>
               </div>
             </CardContent>
