@@ -1306,6 +1306,15 @@ const EmpathyTrainingApp = () => {
           "Andere Paare scheinen glücklicher oder erfolgreicher zu sein",
           "Ihr Partner bewundert Eigenschaften anderer, die Sie nicht haben"
         ],
+        exampleDialog: {
+          situation: "Ihr Partner schwärmt von seiner neuen Kollegin, die sehr sportlich und erfolgreich ist",
+          dialog: [
+            { speaker: "Sie", text: "Du redest ständig nur noch von ihr! Bin ich dir nicht mehr gut genug?" },
+            { speaker: "Partner", text: "Du bist eifersüchtig ohne Grund. Wir arbeiten nur zusammen." },
+            { speaker: "Sie (reflektiert)", text: "Ich bin eifersüchtig, weil ich Angst habe, dass du jemanden findest, der sportlicher und erfolgreicher ist als ich. Kannst du mir helfen, mich sicherer zu fühlen?" },
+            { speaker: "Partner", text: "Oh, das wusste ich nicht. Du bist perfekt für mich, genau so wie du bist. Lass mich dir das öfter zeigen." }
+          ]
+        },
         communicationTip: "Benennen Sie die dahinterliegende Angst: 'Ich bin eifersüchtig, weil ich Angst habe, dass...'"
       },
       {
