@@ -1279,6 +1279,15 @@ const EmpathyTrainingApp = () => {
           "Nach einem stressigen Tag bringt die Gegenwart Ihres Partners sofort Entspannung",
           "Sie können sich vollkommen fallen lassen, ohne Angst vor Verurteilung"
         ],
+        exampleDialog: {
+          situation: "Nach einem besonders anstrengenden Arbeitstag kommen Sie nach Hause",
+          dialog: [
+            { speaker: "Sie", text: "Was für ein furchtbarer Tag. Alles ging schief." },
+            { speaker: "Partner", text: "Komm her. Erzähl mir davon." },
+            { speaker: "Sie (entspannt)", text: "Bei dir fühle ich mich geborgen und sicher. Wenn du deine Arme um mich legst, ist die ganze Welt in Ordnung. Das bedeutet mir sehr viel." },
+            { speaker: "Partner", text: "Du bist bei mir immer sicher. Hier kannst du alles loslassen." }
+          ]
+        },
         communicationTip: "Anerkennen Sie Sicherheit: 'Bei dir fühle ich mich geborgen und sicher. Das bedeutet mir sehr viel.'"
       },
       {
