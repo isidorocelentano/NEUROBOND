@@ -1332,6 +1332,15 @@ const EmpathyTrainingApp = () => {
           "Ein Versprechen wurde gebrochen und Sie spüren die Verantwortung",
           "Ihr Verhalten entsprach nicht Ihren eigenen moralischen Standards"
         ],
+        exampleDialog: {
+          situation: "Sie haben in einem Streit etwas Verletzendes über die Familie Ihres Partners gesagt",
+          dialog: [
+            { speaker: "Sie", text: "Es tut mir leid, aber du hast mich auch verletzt!" },
+            { speaker: "Partner", text: "Das rechtfertigt nicht, was du über meine Familie gesagt hast." },
+            { speaker: "Sie (verantwortlich)", text: "Du hast recht. Ich fühle mich schuldig, weil ich deine Familie beleidigt habe, obwohl das gegen meine Werte verstößt. Wie kann ich das wiedergutmachen?" },
+            { speaker: "Partner", text: "Danke, dass du Verantwortung übernimmst. Vielleicht könntest du dich bei ihnen entschuldigen?" }
+          ]
+        },
         communicationTip: "Übernehmen Sie Verantwortung: 'Ich fühle mich schuldig, weil ich... Wie kann ich das wiedergutmachen?'"
       },
       {
