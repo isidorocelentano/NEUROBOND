@@ -494,7 +494,10 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
         const data = await response.json();
         console.log('Training scenario data received:', data); // Debug log
         console.log('Partner message:', data.partner_message); // Specific debug
+        
+        // Set both sessionData and separate partnerMessage state
         setSessionData(data);
+        setPartnerMessage(data.partner_message || '');
         setCurrentPhase('question');
       } else {
         console.error('Response not ok:', response.status, response.statusText);
