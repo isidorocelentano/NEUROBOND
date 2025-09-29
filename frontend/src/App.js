@@ -3654,7 +3654,16 @@ const EmpathyTrainingApp = () => {
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">Hallo, {user && user.name}!</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-white">Hallo, {user && user.name}!</p>
+                        <Badge className={`text-xs px-2 py-1 ${
+                          (user?.subscription || userSubscription) === 'pro' 
+                            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
+                            : 'bg-gray-600 text-gray-200'
+                        }`}>
+                          {(user?.subscription || userSubscription) === 'pro' ? 'PRO' : 'FREE'}
+                        </Badge>
+                      </div>
                       {user && user.partner_name && (
                         <p className="text-xs text-gray-300">{user.name} & {user.partner_name}</p>
                       )}
