@@ -1218,6 +1218,15 @@ const EmpathyTrainingApp = () => {
           "Sie beide lachen zusammen über etwas Lustiges",
           "Ein gemeinsames Ziel wurde erreicht und Sie feiern den Erfolg"
         ],
+        exampleDialog: {
+          situation: "Ihr Partner hat heimlich Ihren Lieblingskuchen gebacken, nachdem Sie einen schwierigen Tag hatten",
+          dialog: [
+            { speaker: "Sie", text: "Oh wow, das ist ja mein Lieblingskuchen!" },
+            { speaker: "Partner", text: "Ich dachte mir, dass du nach dem stressigen Tag etwas Schönes brauchst." },
+            { speaker: "Sie (ausdrucksvoll)", text: "Ich freue mich so sehr über diese liebevolle Geste! Du zeigst mir damit, dass du an mich denkst. Das macht mich richtig glücklich!" },
+            { speaker: "Partner", text: "Es freut mich, dich glücklich zu sehen. Du bedeutest mir so viel." }
+          ]
+        },
         communicationTip: "Teilen Sie Freude bewusst: 'Ich freue mich so sehr über... Das macht mich richtig glücklich!'"
       },
       {
