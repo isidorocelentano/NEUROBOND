@@ -1102,6 +1102,15 @@ const EmpathyTrainingApp = () => {
           "Kommunikation läuft immer wieder in die gleichen Muster",
           "Sie fühlen sich in Ihren Bemühungen nicht verstanden"
         ],
+        exampleDialog: {
+          situation: "Sie versuchen seit Wochen, mit Ihrem Partner über die Haushaltsaufteilung zu sprechen, aber nichts ändert sich",
+          dialog: [
+            { speaker: "Sie", text: "Das bringt alles nichts! Du hörst mir sowieso nicht zu!" },
+            { speaker: "Partner", text: "Doch, ich höre zu. Aber du jammerst nur rum." },
+            { speaker: "Sie (besser)", text: "Ich bin frustriert, weil ich gerne eine faire Haushaltsaufteilung erreichen möchte, aber ich fühle mich blockiert. Können wir einen anderen Ansatz versuchen?" },
+            { speaker: "Partner", text: "Du hast recht, wir drehen uns im Kreis. Lass uns konkret planen, wer was übernimmt." }
+          ]
+        },
         communicationTip: "Identifizieren Sie das Hindernis: 'Ich bin frustriert, weil ich gerne... erreichen möchte, aber...'"
       },
 
