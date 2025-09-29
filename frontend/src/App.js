@@ -4148,19 +4148,16 @@ const EmpathyTrainingApp = () => {
                     Jährlich - CHF 100.00 (2 Monate gratis!)
                   </Button>
                 </div>
-              </div>
 
-              <div className="flex gap-3">
-                <Button 
-                  variant="outline"
-                  onClick={() => setShowUpgradeModal(false)}
-                  className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
-                >
-                  Abbrechen
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex gap-3 mt-6">
+                  <button 
+                    onClick={() => setShowUpgradeModal(false)}
+                    className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-xl font-semibold transition-colors"
+                  >
+                    Abbrechen
+                  </button>
+                </div>
+            </div>
         </div>
       )}
     </>
