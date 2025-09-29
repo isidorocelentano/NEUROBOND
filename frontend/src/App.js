@@ -1244,6 +1244,15 @@ const EmpathyTrainingApp = () => {
           "Ihr Partner ist krank und Sie kümmern sich gerne um ihn",
           "In einem schwierigen Moment stehen Sie bedingungslos zusammen"
         ],
+        exampleDialog: {
+          situation: "Ihr Partner ist mit einem wichtigen Projekt gescheitert und völlig niedergeschlagen",
+          dialog: [
+            { speaker: "Partner", text: "Ich bin so ein Versager. Nichts klappt bei mir." },
+            { speaker: "Sie", text: "Du bist kein Versager! Du bist intelligent und fleißig." },
+            { speaker: "Sie (liebevoller)", text: "Ich liebe dich, auch wenn Projekte manchmal nicht klappen. Du bist ein wunderbarer Mensch mit so vielen Talenten. Diese Schwierigkeit ändert nichts an meiner Liebe zu dir." },
+            { speaker: "Partner", text: "Danke, dass du zu mir stehst. Deine Liebe gibt mir Kraft, weiterzumachen." }
+          ]
+        },
         communicationTip: "Drücken Sie Liebe konkret aus: 'Ich liebe dich, weil... Du bist mir so wichtig.'"
       },
       {
