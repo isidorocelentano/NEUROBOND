@@ -1702,7 +1702,7 @@ const EmpathyTrainingApp = () => {
                           <div key={index} className={`p-3 rounded-lg ${
                             line.speaker === 'Sie' 
                               ? 'bg-blue-900/40 border border-blue-700/50 ml-4' 
-                              : line.speaker === 'Sie (besser)' || line.speaker === 'Sie (ausdrucksvoll)' || line.speaker === 'Sie (liebevoller)' || line.speaker === 'Sie (reflektiert)' || line.speaker === 'Sie (verantwortlich)'
+                              : line.speaker === 'Sie (besser)' || line.speaker === 'Sie (ausdrucksvoll)' || line.speaker === 'Sie (liebevoller)' || line.speaker === 'Sie (reflektiert)' || line.speaker === 'Sie (verantwortlich)' || line.speaker === 'Sie (hilfesuchend)'
                               ? 'bg-green-900/40 border border-green-700/50 ml-4'
                               : 'bg-gray-800/40 border border-gray-600/50 mr-4'
                           }`}>
@@ -1728,12 +1728,6 @@ const EmpathyTrainingApp = () => {
                             </div>
                           </div>
                         ))}
-                      </div>
-                      
-                      <div className="mt-4 p-3 bg-yellow-900/30 rounded-lg border border-yellow-700/50">
-                        <p className="text-yellow-100 text-xs">
-                          💡 <strong>Lernelement:</strong> Beachten Sie den Unterschied zwischen reaktiver und empathischer Kommunikation
-                        </p>
                       </div>
                     </div>
                   )}
