@@ -202,22 +202,25 @@ async def start_training_scenario(request: TrainingScenarioRequest):
         # Initialize AI chat for this scenario
         session_id = f"training_{request.user_id}_{request.scenario_id}_{datetime.now().isoformat()}"
         
-        system_message = f"""You are simulating {request.partner_name} in an empathy training scenario for couples communication.
+        system_message = f"""You are {request.partner_name} in an empathy training scenario. You are experiencing the situation described and need to express YOUR feelings and concerns to {request.user_name}.
 
 SCENARIO: {scenario['title']}
 CONTEXT: {scenario['context']}
 LEARNING GOALS: {', '.join(scenario['learning_goals'])}
 
-Your role:
-- Be natural and authentic in responses
-- Show real emotions appropriate to the scenario
-- Respond as {request.partner_name} would in this situation
-- Keep responses conversational (2-3 sentences max)
-- Allow the conversation to develop naturally
-- Show vulnerability when appropriate
-- Don't give obvious hints about what {request.user_name} should say
+IMPORTANT: You are NOT being empathetic - you are the one who NEEDS empathy from {request.user_name}.
 
-Current emotional state based on scenario: Reflect the emotions described in the context.
+Your role as {request.partner_name}:
+- Express YOUR emotions and frustrations from the scenario
+- Share YOUR perspective and feelings honestly
+- Be vulnerable and authentic about what YOU are experiencing  
+- You are stressed/upset/frustrated (as described in the context)
+- Don't be empathetic back - you need support from {request.user_name}
+- Keep responses conversational (2-3 sentences max)
+- Show the emotional state described in the scenario context
+- Wait for {request.user_name} to show empathy to YOU
+
+Current emotional state: You are feeling the stress/frustration described in the context and need {request.user_name}'s empathy and support.
 """
 
         # Initialize the AI chat
