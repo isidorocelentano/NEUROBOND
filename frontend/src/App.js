@@ -4039,6 +4039,7 @@ const EmpathyTrainingApp = () => {
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
             }}
           >
+            {/* Header */}
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Crown className="w-8 h-8 text-white" />
@@ -4048,114 +4049,117 @@ const EmpathyTrainingApp = () => {
                 Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
               </p>
             </div>
-            <div className="space-y-6">
-              <div className="text-center">
-                <div className="flex justify-center gap-6 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white mb-1">CHF 10.00</div>
-                    <div className="text-gray-400 text-sm">pro Monat</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white mb-1">CHF 100.00</div>
-                    <div className="text-gray-400 text-sm">pro Jahr</div>
-                    <div className="text-green-400 text-xs font-medium">2 Monate gratis!</div>
-                  </div>
+
+            {/* Pricing */}
+            <div className="text-center mb-6">
+              <div className="flex justify-center gap-6 mb-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">CHF 10.00</div>
+                  <div className="text-gray-400 text-sm">pro Monat</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">CHF 100.00</div>
+                  <div className="text-gray-400 text-sm">pro Jahr</div>
+                  <div className="text-green-400 text-xs font-medium">2 Monate gratis!</div>
                 </div>
               </div>
+            </div>
+            
+            {/* Features */}
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-3 text-gray-300">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Alle 17 Trainings-Szenarien</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-300">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Vollständiges Gefühlslexikon</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-300">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Dialog-Coaching mit KI-Analyse</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-300">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Eigene Fälle erstellen</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-300">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Wöchentliche Trainingspläne</span>
+              </div>
+            </div>
+
+            {/* Payment Buttons */}
+            <div className="space-y-3 mb-6">
+              <button 
+                onClick={async () => {
+                  try {
+                    const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        package_type: 'monthly',
+                        origin_url: window.location.origin
+                      })
+                    });
+
+                    if (response.ok) {
+                      const data = await response.json();
+                      if (data.url) {
+                        localStorage.setItem('pending_pro_upgrade', 'monthly');
+                        localStorage.setItem('stripe_session_id', data.session_id);
+                        window.location.href = data.url;
+                      }
+                    }
+                  } catch (error) {
+                    alert('Fehler beim Laden der Zahlungsseite.');
+                  }
+                }}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+              >
+                <Crown className="w-4 h-4" />
+                Monatlich - CHF 10.00
+              </button>
               
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Alle 17 Trainings-Szenarien</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Vollständiges Gefühlslexikon</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Dialog-Coaching mit KI-Analyse</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Eigene Fälle erstellen</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Wöchentliche Trainingspläne</span>
-                </div>
-              </div>
+              <button 
+                onClick={async () => {
+                  try {
+                    const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        package_type: 'yearly',
+                        origin_url: window.location.origin
+                      })
+                    });
 
-              <div className="space-y-3">
-                <button 
-                  onClick={async () => {
-                    try {
-                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          package_type: 'monthly',
-                          origin_url: window.location.origin
-                        })
-                      });
-
-                      if (response.ok) {
-                        const data = await response.json();
-                        if (data.url) {
-                          localStorage.setItem('pending_pro_upgrade', 'monthly');
-                          localStorage.setItem('stripe_session_id', data.session_id);
-                          window.location.href = data.url;
-                        }
+                    if (response.ok) {
+                      const data = await response.json();
+                      if (data.url) {
+                        localStorage.setItem('pending_pro_upgrade', 'yearly');
+                        localStorage.setItem('stripe_session_id', data.session_id);
+                        window.location.href = data.url;
                       }
-                    } catch (error) {
-                      alert('Fehler beim Laden der Zahlungsseite.');
                     }
-                  }}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                >
-                  <Crown className="w-4 h-4" />
-                  Monatlich - CHF 10.00
-                </button>
-                
-                <button 
-                  onClick={async () => {
-                    try {
-                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          package_type: 'yearly',
-                          origin_url: window.location.origin
-                        })
-                      });
+                  } catch (error) {
+                    alert('Fehler beim Laden der Zahlungsseite.');
+                  }
+                }}
+                className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+              >
+                <Sparkles className="w-4 h-4" />
+                Jährlich - CHF 100.00 (2 Monate gratis!)
+              </button>
+            </div>
 
-                      if (response.ok) {
-                        const data = await response.json();
-                        if (data.url) {
-                          localStorage.setItem('pending_pro_upgrade', 'yearly');
-                          localStorage.setItem('stripe_session_id', data.session_id);
-                          window.location.href = data.url;
-                        }
-                      }
-                    } catch (error) {
-                      alert('Fehler beim Laden der Zahlungsseite.');
-                    }
-                  }}
-                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Jährlich - CHF 100.00 (2 Monate gratis!)
-                </button>
-              </div>
-
-              <div className="flex gap-3 mt-6">
-                <button 
-                  onClick={() => setShowUpgradeModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-xl font-semibold transition-colors"
-                >
-                  Abbrechen
-                </button>
-              </div>
+            {/* Cancel Button */}
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setShowUpgradeModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-xl font-semibold transition-colors"
+              >
+                Abbrechen
+              </button>
             </div>
           </div>
         </div>
