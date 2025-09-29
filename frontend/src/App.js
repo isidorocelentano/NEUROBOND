@@ -4024,8 +4024,8 @@ const EmpathyTrainingApp = () => {
 
       {/* Upgrade Modal */}
       {showUpgradeModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-gray-900 border-gray-700 max-w-md w-full">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
+          <Card className="bg-gray-900 border-gray-700 max-w-md w-full relative z-[10000]"  style={{ zIndex: 10000 }}>
             <CardHeader className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Crown className="w-8 h-8 text-white" />
