@@ -1756,6 +1756,152 @@ const EmpathyTrainingApp = () => {
     const [cases, setCases] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCase, setSelectedCase] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showCreateForm, setShowCreateForm] = useState(false);
+    
+    // Predefined therapy core questions with empathetic responses
+    const coreTherapyCases = [
+      {
+        case_id: "therapy-1",
+        title: "Zur aktuellen Krise",
+        question: "Was ist der konkrete Anlass, warum Sie jetzt kommen – und was wäre für Sie ein Erfolg?",
+        goal: "Den Leidensdruck konkretisieren und realistische Erwartungen setzen",
+        difficulty: "Einfach",
+        category: "Krisenintervention",
+        ai_solution: "Diese Frage hilft dabei, den akuten Schmerz zu benennen und ein konkretes Ziel zu definieren. Eine empathische Antwort wäre: 'Ich verstehe, dass Sie beide unter der aktuellen Situation leiden. Es braucht Mut, hier zu sein. Lassen Sie uns gemeinsam herausfinden, was sich ändern muss, damit Sie wieder Hoffnung spüren können. Was würde für Sie persönlich bedeuten, dass sich die Mühe gelohnt hat?'",
+        empathetic_responses: [
+          "Ich verstehe, dass es schwer sein muss, über diese Krise zu sprechen",
+          "Es zeigt Stärke, dass Sie beide hier sind und nach Lösungen suchen",
+          "Ihre Gefühle in dieser schwierigen Zeit sind völlig berechtigt"
+        ]
+      },
+      {
+        case_id: "therapy-2", 
+        title: "Zur gemeinsamen Geschichte",
+        question: "Erzählen Sie mir von dem Paar, das Sie einmal waren – was hat Sie originally zusammengebracht?",
+        goal: "Positive Ressourcen und verbindende Werte aktivieren",
+        difficulty: "Einfach",
+        category: "Ressourcenaktivierung",
+        ai_solution: "Diese Frage reaktiviert positive Erinnerungen und gemeinsame Werte. Empathische Begleitung: 'Wenn Sie von den frühen Tagen erzählen, sehe ich, wie Ihre Gesichter weicher werden. Diese Verbindung, die Sie einmal hatten, ist nicht verschwunden – sie ist nur unter den aktuellen Sorgen begraben. Diese Qualitäten, die Sie damals aneinander geschätzt haben, sind noch da. Wie könnten Sie diese heute wieder mehr würdigen?'",
+        empathetic_responses: [
+          "Es ist schön zu hören, was Sie ursprünglich verbunden hat",
+          "Diese frühen Gefühle zeigen, dass eine tiefe Verbindung da war",
+          "Die Person, in die Sie sich verliebt haben, steckt noch in Ihrem Partner"
+        ]
+      },
+      {
+        case_id: "therapy-3",
+        title: "Zum Kommunikationsmuster", 
+        question: "Was passiert typischerweise in 95% Ihrer Streits? Wer verfolgt, wer flüchtet?",
+        goal: "Das Teufelskreis-Muster (Pursuer-Distancer) identifizieren",
+        difficulty: "Mittel",
+        category: "Kommunikationsmuster",
+        ai_solution: "Dieses Muster zu erkennen ist befreiend für beide Partner. Empathische Intervention: 'Sehen Sie, wie Sie beide in diesem Tanz gefangen sind? Der eine fühlt sich ungehört und wird lauter, der andere fühlt sich überwältigt und zieht sich zurück. Keiner von Ihnen ist der Böse – Sie reagieren nur auf die Angst des anderen. Wenn wir diesen Kreislauf durchbrechen, können Sie beide endlich das bekommen, was Sie brauchen: Nähe und Sicherheit.'",
+        empathetic_responses: [
+          "Dieser Kreislauf ist erschöpfend für Sie beide",
+          "Niemand von Ihnen will diesen Tanz – Sie sind beide gefangen",
+          "Es ist verständlich, dass Sie so reagieren, wenn Sie sich bedroht fühlen"
+        ]
+      },
+      {
+        case_id: "therapy-4",
+        title: "Zu den Triggern",
+        question: "Welche Themen lösen innerhalb von Sekunden eine emotionale Explosion aus?",
+        goal: "Frühwarnsystem für hochsensible Themen entwickeln",
+        difficulty: "Mittel", 
+        category: "Trigger-Management",
+        ai_solution: "Trigger zu identifizieren schafft emotionale Sicherheit. Empathische Herangehensweise: 'Diese Themen sind wie offene Wunden für Sie – kein Wunder, dass Sie so stark reagieren. Ihre Reaktion ist nicht übertrieben, sondern ein Zeichen dafür, dass hier etwas sehr Wichtiges für Sie bedroht wird. Lassen Sie uns gemeinsam verstehen, welches Bedürfnis dahinter liegt, damit Ihr Partner lernen kann, vorsichtiger mit diesem sensiblen Bereich umzugehen.'",
+        empathetic_responses: [
+          "Diese Themen berühren offensichtlich etwas sehr Wichtiges in Ihnen",
+          "Es ist verständlich, dass Sie so stark reagieren, wenn Sie verletzt sind",
+          "Ihre Emotionen sind ein Signal – sie zeigen, was Ihnen wichtig ist"
+        ]
+      },
+      {
+        case_id: "therapy-5",
+        title: "Zur emotionalen Sicherheit",
+        question: "Wann fühlen Sie sich in dieser Beziehung absolut sicher – und wann gar nicht?",
+        goal: "Die Grundbedingung für Bindungsfähigkeit klären",
+        difficulty: "Schwer",
+        category: "Bindungssicherheit", 
+        ai_solution: "Emotionale Sicherheit ist das Fundament jeder Beziehung. Empathischer Zugang: 'Sicherheit ist nicht Luxus, sondern Grundbedürfnis. Wenn Sie sich unsicher fühlen, ist Ihr Nervensystem im Alarmzustand – da ist Liebe fast unmöglich. Die Momente, in denen Sie sich sicher fühlen, zeigen uns den Weg: Was brauchen Sie, um häufiger in diesem Zustand zu sein? Ihr Partner will Sie nicht verletzen – er weiß nur noch nicht, wie er Ihnen Sicherheit geben kann.'",
+        empathetic_responses: [
+          "Sicherheit zu brauchen ist völlig normal und gesund",
+          "Wenn Sie sich unsicher fühlen, können Sie nicht wirklich verbunden sein",
+          "Diese sicheren Momente zeigen, was möglich ist zwischen Ihnen"
+        ]
+      },
+      {
+        case_id: "therapy-6",
+        title: "Zu den Bedürfnissen",
+        question: "Welches Ihrer Grundbedürfnisse (Sicherheit, Autonomie, Wertschätzung) fühlt sich aktuell verletzt an?",
+        goal: "Hinter den Konflikten die eigentlichen Bedürfnisse finden",
+        difficulty: "Mittel",
+        category: "Bedürfnisklärung",
+        ai_solution: "Bedürfnisse zu erkennen verwandelt Vorwürfe in Bitten. Empathische Begleitung: 'Sehen Sie, wie unterschiedlich Ihre Bedürfnisse sind? Das ist nicht schlimm – das ist menschlich. Der eine braucht mehr Nähe, der andere mehr Raum. Der eine mehr Bestätigung, der andere mehr Ruhe. Wenn wir diese Bedürfnisse würdigen statt bekämpfen, können wir Wege finden, wie beide bekommen, was sie brauchen.'",
+        empathetic_responses: [
+          "Ihre Bedürfnisse sind völlig berechtigt und wichtig",
+          "Es ist schmerzhaft, wenn ein Grundbedürfnis unerfüllt bleibt",
+          "Diese Bedürfnisse zu äußern zeigt Mut und Selbstfürsorge"
+        ]
+      },
+      {
+        case_id: "therapy-7",
+        title: "Zur Konfliktkultur",
+        question: "Wie haben Ihre Eltern gestritten – und was haben Sie daraus über 'richtige' Konflikte gelernt?",
+        goal: "Familiäre Prägungen und deren Wiederholung bewusst machen",
+        difficulty: "Schwer",
+        category: "Familiäre Prägungen",
+        ai_solution: "Familiäre Muster zu verstehen befreit von unbewussten Wiederholungen. Empathischer Ansatz: 'Sie haben als Kind gelernt, dass Konflikte gefährlich oder normal sind, dass man kämpft oder sich zurückzieht. Diese Strategien haben damals überlebt, aber heute schaden sie vielleicht Ihrer Beziehung. Sie sind nicht Ihre Eltern – Sie können neue, liebevollere Wege des Streitens lernen. Was würden Sie Ihren Kindern über Konflikte beibringen wollen?'",
+        empathetic_responses: [
+          "Diese frühen Erfahrungen haben Sie geprägt – das ist normal",
+          "Sie können neue, gesündere Muster entwickeln",
+          "Ihre Vergangenheit erklärt Ihr Verhalten, aber bestimmt es nicht"
+        ]
+      },
+      {
+        case_id: "therapy-8",
+        title: "Zur Reparaturfähigkeit", 
+        question: "Wie versuchen Sie normalerweise, sich zu versöhnen – und warum scheitert es oft?",
+        goal: "Reparaturmechanismen analysieren und verbessern",
+        difficulty: "Mittel",
+        category: "Reparaturmechanismen",
+        ai_solution: "Gute Reparatur-Versuche zu erkennen stärkt die Beziehung. Empathische Würdigung: 'Ich sehe, dass Sie beide versuchen, Frieden zu machen – das zeigt, wie wichtig Ihnen die Beziehung ist. Manchmal scheitern Versöhnungen, weil die Verletzung noch zu frisch oder der Ansatz nicht passend ist. Lassen Sie uns herausfinden, was Sie jeweils brauchen, um wirklich vergeben und vertrauen zu können. Manchmal braucht es Zeit, manchmal andere Worte, manchmal andere Taten.'",
+        empathetic_responses: [
+          "Ihre Versöhnungsversuche zeigen, dass Ihnen die Beziehung wichtig ist",
+          "Manchmal braucht Heilung mehr Zeit und andere Ansätze",
+          "Es ist frustrierend, wenn gut gemeinte Gesten nicht ankommen"
+        ]
+      },
+      {
+        case_id: "therapy-9",
+        title: "Zur Zukunftsangst",
+        question: "Was ist Ihre größte Angst – dass Sie sich trennen oder dass Sie so weiterleben müssen?", 
+        goal: "Die Motivation für Veränderung freilegen",
+        difficulty: "Schwer",
+        category: "Zukunftsängste",
+        ai_solution: "Diese Angst zu teilen schafft Klarheit über die Motivation. Empathische Begleitung: 'Diese Angst zu haben ist menschlich – sie zeigt, dass Sie vor einer wichtigen Entscheidung stehen. Beide Optionen – so weitermachen oder sich trennen – fühlen sich schmerzhaft an. Das bedeutet, dass Sie eine dritte Option brauchen: echte Veränderung. Lassen Sie uns gemeinsam herausfinden, wie eine Beziehung aussehen könnte, vor der Sie keine Angst haben müssen.'",
+        empathetic_responses: [
+          "Diese Angst zu spüren ist ein Zeichen, dass Veränderung nötig ist",
+          "Beide Optionen fühlen sich schwer an – das verstehe ich",
+          "Sie verdienen eine Beziehung, vor der Sie keine Angst haben müssen"
+        ]
+      },
+      {
+        case_id: "therapy-10",
+        title: "Zum individuellen Beitrag",
+        question: "Was ist Ihr persönlicher 40%-Anteil an den Problemen – unabhängig vom Partner?",
+        goal: "Eigenverantwortung statt Opferhaltung fördern",
+        difficulty: "Schwer", 
+        category: "Eigenverantwortung",
+        ai_solution: "Eigenverantwortung zu übernehmen ist ein Zeichen von Reife und Stärke. Empathische Ermutigung: 'Es braucht Mut, den eigenen Anteil zu sehen – das macht Sie nicht zum schlechteren Menschen, sondern zum verantwortlichen Partner. Wenn Sie Ihren 40%-Anteil verändern, hat das mehr Einfluss als alle Vorwürfe an den Partner. Sie können nur sich selbst ändern – aber das ist auch Ihre größte Macht. Was wäre der erste kleine Schritt, den Sie gehen könnten?'",
+        empathetic_responses: [
+          "Eigenverantwortung zu übernehmen zeigt Stärke und Reife",
+          "Sie können nur sich selbst ändern – aber das ist Ihre Macht",
+          "Dieser Mut zur Selbstreflexion ist der erste Schritt zur Heilung"
+        ]
+      }
+    ];
 
     useEffect(() => {
       loadCommunityCases();
@@ -1763,31 +1909,165 @@ const EmpathyTrainingApp = () => {
 
     const loadCommunityCases = async () => {
       try {
+        // Try to load from backend first
         const response = await fetch(`${BACKEND_URL}/api/community-cases`);
         if (response.ok) {
           const data = await response.json();
-          setCases(data.cases || []);
+          const backendCases = data.cases || [];
+          // Combine with core therapy cases
+          setCases([...coreTherapyCases, ...backendCases]);
+        } else {
+          // If backend fails, use core therapy cases
+          setCases(coreTherapyCases);
         }
       } catch (error) {
         console.error('Error loading community cases:', error);
-        // Mock data for demo
-        setCases([
-          {
-            case_id: "demo-1",
-            title: "Diskussion über Haushaltsaufgaben",
-            difficulty: "Mittel",
-            ai_solution: "Eine typische Herausforderung in Beziehungen. Wichtig ist hier eine klare Kommunikation über Erwartungen und eine faire Aufgabenverteilung. Empathie und Verständnis für die Perspektive des Partners sind entscheidend."
-          },
-          {
-            case_id: "demo-2", 
-            title: "Zeitmanagement in der Beziehung",
-            difficulty: "Schwer",
-            ai_solution: "Work-Life-Balance ist ein komplexes Thema. Offene Gespräche über Prioritäten und gemeinsame Planung können helfen, mehr Qualitätszeit miteinander zu verbringen."
-          }
-        ]);
+        // Fallback to core therapy cases
+        setCases(coreTherapyCases);
       } finally {
         setLoading(false);
       }
+    };
+
+    // Filter cases based on search term
+    const filteredCases = cases.filter(caseItem =>
+      caseItem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      caseItem.question?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      caseItem.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      caseItem.ai_solution.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Create case form component
+    const CreateCaseForm = () => {
+      const [formData, setFormData] = useState({
+        title: '',
+        question: '',
+        situation: '',
+        category: 'Kommunikation'
+      });
+      const [submitting, setSubmitting] = useState(false);
+
+      const categories = [
+        'Kommunikation', 'Vertrauen', 'Intimität', 'Finanzen', 
+        'Familie', 'Zukunftsplanung', 'Konflikte', 'Bedürfnisse'
+      ];
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.title || !formData.question) {
+          showNotification('Bitte füllen Sie Titel und Frage aus', 'error');
+          return;
+        }
+
+        setSubmitting(true);
+        try {
+          const response = await fetch(`${BACKEND_URL}/api/create-community-case-direct`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              dialog: [
+                { speaker: 'User', message: formData.question },
+                { speaker: 'Situation', message: formData.situation }
+              ],
+              title: formData.title,
+              category: formData.category,
+              user_consent: true
+            })
+          });
+
+          if (response.ok) {
+            showNotification('Fall erfolgreich eingereicht! Vielen Dank für Ihren Beitrag.', 'success');
+            setShowCreateForm(false);
+            setFormData({ title: '', question: '', situation: '', category: 'Kommunikation' });
+            loadCommunityCases(); // Reload to include new case
+          } else {
+            showNotification('Fehler beim Einreichen. Bitte versuchen Sie es später erneut.', 'error');
+          }
+        } catch (error) {
+          console.error('Error creating case:', error);
+          showNotification('Fehler beim Einreichen. Bitte versuchen Sie es später erneut.', 'error');
+        } finally {
+          setSubmitting(false);
+        }
+      };
+
+      return (
+        <Card className="bg-gray-800/90 backdrop-blur-lg border border-gray-700/50 mb-8">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Plus className="w-5 h-5" />
+              Eigenen Fall beitragen
+            </CardTitle>
+            <CardDescription className="text-gray-300">
+              Teilen Sie anonymisiert eine Situation aus Ihrer Beziehung
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label className="text-gray-300">Titel/Thema</Label>
+                <Input
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  placeholder="z.B. Streit über Haushaltsaufgaben"
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+              
+              <div>
+                <Label className="text-gray-300">Kategorie</Label>
+                <select 
+                  value={formData.category}
+                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+                >
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <Label className="text-gray-300">Ihre Frage/Ihr Anliegen</Label>
+                <textarea
+                  value={formData.question}
+                  onChange={(e) => setFormData({...formData, question: e.target.value})}
+                  placeholder="Beschreiben Sie Ihre Situation oder Frage..."
+                  className="w-full p-3 bg-gray-700 border border-gray-600 rounded text-white h-24"
+                />
+              </div>
+
+              <div>
+                <Label className="text-gray-300">Zusätzliche Details (optional)</Label>
+                <textarea
+                  value={formData.situation}
+                  onChange={(e) => setFormData({...formData, situation: e.target.value})}
+                  placeholder="Weitere Details zur Situation..."
+                  className="w-full p-3 bg-gray-700 border border-gray-600 rounded text-white h-20"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button 
+                  type="submit" 
+                  disabled={submitting}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  {submitting ? 'Wird eingereicht...' : 'Fall einreichen'}
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  onClick={() => setShowCreateForm(false)}
+                  className="text-gray-300"
+                >
+                  Abbrechen
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      );
     };
 
     return (
