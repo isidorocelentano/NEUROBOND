@@ -4024,17 +4024,30 @@ const EmpathyTrainingApp = () => {
 
       {/* Upgrade Modal */}
       {showUpgradeModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
-          <Card className="bg-gray-900 border-gray-700 max-w-md w-full relative z-[10000]"  style={{ zIndex: 10000 }}>
-            <CardHeader className="text-center">
+        <div 
+          className="fixed inset-0 flex items-center justify-center p-4"
+          style={{
+            zIndex: 999999,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(4px)'
+          }}
+        >
+          <div 
+            className="bg-gray-900 border border-gray-700 rounded-3xl max-w-md w-full p-8"
+            style={{
+              zIndex: 1000000,
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
+            }}
+          >
+            <div className="text-center mb-6">
               <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Crown className="w-8 h-8 text-white" />
               </div>
-              <CardTitle className="text-2xl text-white">NEUROBOND PRO</CardTitle>
-              <CardDescription className="text-gray-300">
+              <h2 className="text-2xl font-bold text-white mb-2">NEUROBOND PRO</h2>
+              <p className="text-gray-300 text-sm">
                 Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
-              </CardDescription>
-            </CardHeader>
+              </p>
+            </div>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="text-center">
