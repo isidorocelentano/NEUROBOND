@@ -375,6 +375,10 @@ const EmpathyTrainingApp = () => {
         const userData = JSON.parse(savedUser);
         console.log('✅ NEUROBOND: User found in localStorage:', userData);
         setUser(userData);
+        // Set subscription from saved user data
+        if (userData.subscription) {
+          setUserSubscription(userData.subscription);
+        }
         setShowLandingPage(false);
         setShowOnboarding(false);
         console.log('✅ NEUROBOND: State updated - should show dashboard');
