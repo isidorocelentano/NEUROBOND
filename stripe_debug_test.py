@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 class StripeWhiteScreenDebugger:
-    def __init__(self, base_url="https://couple-connect-22.preview.emergentagent.com"):
+    def __init__(self, base_url="https://emotracer.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -81,7 +81,7 @@ class StripeWhiteScreenDebugger:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response, raw_response = self.run_debug_test(
@@ -185,7 +185,7 @@ class StripeWhiteScreenDebugger:
         # Test with explicit parameters to see what's being sent to Stripe
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response, raw_response = self.run_debug_test(
@@ -265,7 +265,7 @@ class StripeWhiteScreenDebugger:
             
             test_data = {
                 "package_type": package_type,
-                "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+                "origin_url": "https://emotracer.preview.emergentagent.com"
             }
             
             success, response, raw_response = self.run_debug_test(
@@ -335,14 +335,14 @@ class StripeWhiteScreenDebugger:
         # Test CORS headers
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         # Add Origin header to simulate browser request
         headers = {
             'Content-Type': 'application/json',
-            'Origin': 'https://couple-connect-22.preview.emergentagent.com',
-            'Referer': 'https://couple-connect-22.preview.emergentagent.com'
+            'Origin': 'https://emotracer.preview.emergentagent.com',
+            'Referer': 'https://emotracer.preview.emergentagent.com'
         }
         
         success, response, raw_response = self.run_debug_test(
@@ -376,7 +376,7 @@ class StripeWhiteScreenDebugger:
         print("🎯 SUCCESS/CANCEL URLs DEBUG")
         print("="*80)
         
-        origin_url = "https://couple-connect-22.preview.emergentagent.com"
+        origin_url = "https://emotracer.preview.emergentagent.com"
         
         test_data = {
             "package_type": "monthly",
@@ -424,7 +424,7 @@ class StripeWhiteScreenDebugger:
         # Create session and analyze the actual Stripe configuration
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response, raw_response = self.run_debug_test(
@@ -478,7 +478,7 @@ class StripeWhiteScreenDebugger:
         # Test with the exact data from the review request
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         print("🔍 Testing with EXACT review request data:")

@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 class PricingVerificationTester:
-    def __init__(self, base_url="https://couple-connect-22.preview.emergentagent.com"):
+    def __init__(self, base_url="https://emotracer.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -58,7 +58,7 @@ class PricingVerificationTester:
         """Test monthly subscription has round CHF 10.00 pricing (1000 cents)"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -111,7 +111,7 @@ class PricingVerificationTester:
         """Test yearly subscription has round CHF 100.00 pricing (10000 cents)"""
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -164,7 +164,7 @@ class PricingVerificationTester:
         """Test that only 'card' and 'paypal' payment methods are available"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -219,7 +219,7 @@ class PricingVerificationTester:
         # Test monthly package name
         monthly_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         monthly_success, monthly_response = self.run_test(
@@ -233,7 +233,7 @@ class PricingVerificationTester:
         # Test yearly package name
         yearly_data = {
             "package_type": "yearly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         yearly_success, yearly_response = self.run_test(
@@ -272,7 +272,7 @@ class PricingVerificationTester:
         """Test that Swiss currency (CHF) is correctly configured"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -331,7 +331,7 @@ class PricingVerificationTester:
         for package_type in package_types:
             test_data = {
                 "package_type": package_type,
-                "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+                "origin_url": "https://emotracer.preview.emergentagent.com"
             }
             
             success, response = self.run_test(
@@ -380,7 +380,7 @@ class PricingVerificationTester:
         """Test that Swiss billing addresses work correctly"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couple-connect-22.preview.emergentagent.com"
+            "origin_url": "https://emotracer.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
