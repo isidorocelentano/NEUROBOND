@@ -4174,10 +4174,18 @@ const EmpathyTrainingApp = () => {
 
   // Simplified render logic - show dashboard if user exists OR is in storage
   if (!user && !hasUserInStorage && !isTestMode) {
+    if (showPaymentPage) {
+      return <PaymentPage />;
+    }
     if (showOnboarding) {
       return <OnboardingForm />;
     }
     return <LandingPage />;
+  }
+
+  // Check for payment page first
+  if (showPaymentPage) {
+    return <PaymentPage />;
   }
 
   // If we have onboarding active, show that
