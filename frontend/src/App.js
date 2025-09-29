@@ -530,19 +530,26 @@ const EmpathyTrainingApp = () => {
                 </div>
                 
                 <div className="text-center">
-                  <Button 
-                    size="lg"
+                  <button
                     onClick={() => {
-                      console.log('🔴 PRO VERSION BUTTON CLICKED!');
-                      // Navigate directly to payment page instead of modal
-                      setCurrentTab('payment');
-                      setShowLandingPage(false);
+                      console.log('🔴 PRO BUTTON CLICKED - DIRECT');
+                      alert('Pro Version Button wurde geklickt!');
+                      
+                      // Direct window navigation to payment page  
+                      window.location.href = window.location.origin + '?payment=true';
                     }}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3"
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 cursor-pointer"
+                    style={{ 
+                      border: 'none',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
                   >
-                    <Crown className="w-6 h-6 mr-3" />
-                    PRO Version starten
-                  </Button>
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+                      <Crown className="w-6 h-6" />
+                      PRO Version starten
+                    </span>
+                  </button>
                   <div className="text-sm text-gray-400">
                     <div>✓ Alle 17 Trainings</div>
                     <div>✓ Vollständiges Lexikon</div>
