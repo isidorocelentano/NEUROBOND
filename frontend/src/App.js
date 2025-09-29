@@ -1002,359 +1002,324 @@ const EmpathyTrainingApp = () => {
     );
   };
 
-  // Gefühlslexikon Component
+  // Enhanced Gefühlslexikon Component
   const GefuehlslexikonPage = () => {
     const [selectedEmotion, setSelectedEmotion] = useState(null);
+    const [showPracticalGuide, setShowPracticalGuide] = useState(false);
     
     const emotions = [
-      // POSITIVE EMOTIONEN
+      // 🔴 KATEGORIE 1: HOHE AKTIVIERUNG / UNBEHAGEN (Der Alarm-Modus)
       {
-        name: "Freude",
-        color: "bg-yellow-500",
-        description: "Ein warmes, leichtes Gefühl des Glücks und der Erfüllung",
-        category: "Positive Emotionen",
-        situations: [
-          "Ihr Partner überrascht Sie mit einer kleinen Geste - einem liebevoll zubereiteten Frühstück oder einer spontanen Umarmung.",
-          "Sie schaffen es gemeinsam, nach einem Streit wieder zueinander zu finden und sich auszusöhnen.",
-          "Ihr Partner teilt einen Erfolg mit Ihnen und Sie spüren echte Mitfreude."
+        name: "Wut / Ärger",
+        color: "bg-red-500",
+        category: "🔴 Hohe Aktivierung / Unbehagen",
+        categoryDescription: "Der Alarm-Modus",
+        intensityScale: "Verärgert → Wütend → Zornig / Rasend",
+        definition: "Intensive emotionale Reaktion auf wahrgenommene Ungerechtigkeit, Verletzung oder Frustration",
+        bodySignals: "Hitze, angespannte Muskeln (Kiefer, Fäuste), laute Stimme, schneller Puls, Anspannung im ganzen Körper",
+        underlyingNeed: "Grenzen setzen, Gerechtigkeit, durchgesetzt werden, Respekt, Autonomie",
+        helpfulQuestion: "Wo wurde meine Grenze überschritten?",
+        practicalExamples: [
+          "Ihr Partner vergisst zum dritten Mal einen wichtigen Termin, obwohl Sie ihn mehrfach daran erinnert haben",
+          "Sie fühlen sich in einer Diskussion nicht ernst genommen oder übergangen",
+          "Ihr Partner trifft eine wichtige Entscheidung ohne Sie zu konsultieren"
         ],
-        bodySignals: "Lächeln, entspannte Schultern, warmes Gefühl in der Brust, Leichtigkeit",
-        selfReflection: [
-          "Wann haben Sie das letzte Mal gemeinsam gelacht?",
-          "Was macht Sie in Ihrer Beziehung wirklich glücklich?",
-          "Wie zeigen Sie Ihrem Partner Ihre Freude?"
-        ],
-        relationshipTip: "Teilen Sie Ihre Freude bewusst mit Ihrem Partner. Sagen Sie: 'Ich bin so glücklich über...' oder 'Du machst mich froh, wenn...'"
+        communicationTip: "Statt 'Du machst mich wütend!' sagen Sie: 'Ich bin wütend, weil mein Bedürfnis nach Respekt verletzt wurde.'"
       },
       {
-        name: "Liebe",
-        color: "bg-pink-500", 
-        description: "Tiefe emotionale Verbundenheit, Fürsorge und bedingungslose Akzeptanz",
-        category: "Positive Emotionen",
-        situations: [
-          "Sie schauen Ihren Partner beim Schlafen an und spüren eine überwältigende Zärtlichkeit.",
-          "Ihr Partner ist krank und Sie kümmern sich gerne um ihn, ohne es als Last zu empfinden.",
-          "In einem schwierigen Moment steht Ihr Partner zu Ihnen - bedingungslos und loyal."
+        name: "Angst", 
+        color: "bg-orange-500",
+        category: "🔴 Hohe Aktivierung / Unbehagen",
+        categoryDescription: "Der Alarm-Modus",
+        intensityScale: "Besorgt → Ängstlich → Panisch",
+        definition: "Emotionale Reaktion auf wahrgenommene Bedrohung oder Unsicherheit in der Zukunft",
+        bodySignals: "Enge in der Brust, flache Atmung, kalte Hände, Unruhe, Anspannung, schneller Herzschlag",
+        underlyingNeed: "Sicherheit, Schutz, Vorbereitung, Kontrolle, Vorhersagbarkeit",
+        helpfulQuestion: "Wovor muss ich mich schützen?",
+        practicalExamples: [
+          "Ihr Partner verhält sich ungewöhnlich distanziert und Sie befürchten Beziehungsprobleme",
+          "Anstehende Veränderungen (Jobwechsel, Umzug) machen Ihnen Sorgen um die Beziehung",
+          "Sie haben Angst, nicht gut genug für Ihren Partner zu sein"
         ],
-        bodySignals: "Wärme im Herzen, entspannter Atem, das Bedürfnis zu berühren oder nah zu sein",
-        selfReflection: [
-          "Wie drücken Sie Ihre Liebe aus - durch Worte, Taten oder Berührungen?",
-          "Was bedeutet Liebe für Sie konkret im Alltag?",
-          "Fühlen Sie sich geliebt und wie zeigt sich das?"
-        ],
-        relationshipTip: "Liebe braucht Ausdruck. Sagen Sie regelmäßig 'Ich liebe dich' und zeigen Sie es durch kleine, alltägliche Gesten."
+        communicationTip: "Sprechen Sie konkrete Ängste aus: 'Ich habe Angst vor... Kannst du mir dabei helfen, mich sicherer zu fühlen?'"
       },
       {
-        name: "Dankbarkeit",
-        color: "bg-green-500",
-        description: "Bewusste Wertschätzung für das, was Ihr Partner für Sie tut und ist",
-        category: "Positive Emotionen", 
-        situations: [
-          "Ihr Partner übernimmt stillschweigend eine Aufgabe, die Sie vergessen haben.",
-          "Nach einem anstrengenden Tag bereitet Ihr Partner das Abendessen vor.",
-          "Ihr Partner hört Ihnen zu, ohne zu urteilen oder Lösungen zu drängen."
+        name: "Ekel / Abscheu",
+        color: "bg-yellow-800",
+        category: "🔴 Hohe Aktivierung / Unbehagen", 
+        categoryDescription: "Der Alarm-Modus",
+        intensityScale: "Unbehagen → Angewidert → Ekel",
+        definition: "Starke Ablehnung gegenüber etwas, das als moralisch oder körperlich inakzeptabel empfunden wird",
+        bodySignals: "Würgereiz, zusammengezogene Lippen, Abwenden des Blicks/Körpers, Schaudern",
+        underlyingNeed: "Reinigung, Distanz, Schutz vor Verunreinigung (körperlich oder moralisch), Integrität",
+        helpfulQuestion: "Was ist giftig für mich und muss abgestoßen werden?",
+        practicalExamples: [
+          "Ihr Partner verhält sich unehrlich oder manipulativ",
+          "Bestimmte Gewohnheiten oder Verhaltensweisen stoßen Sie ab",
+          "Moralische Grenzüberschreitungen lösen starke Ablehnung aus"
         ],
-        bodySignals: "Warmes Gefühl im Brustbereich, entspannte Mimik, das Bedürfnis zu danken",
-        selfReflection: [
-          "Was nehmen Sie in Ihrer Beziehung als selbstverständlich hin?",
-          "Wofür könnten Sie Ihrem Partner häufiger danken?",
-          "Wie zeigen Sie Ihre Wertschätzung?"
-        ],
-        relationshipTip: "Sprechen Sie Dankbarkeit konkret aus: 'Mir bedeutet es viel, dass du...' macht mehr Eindruck als ein einfaches 'Danke'."
+        communicationTip: "Benennen Sie konkret was Sie stört: 'Dieses Verhalten widerspricht meinen Werten, weil...'"
       },
       {
-        name: "Vertrauen", 
-        color: "bg-blue-400",
-        description: "Das sichere Gefühl, sich auf den Partner verlassen zu können",
-        category: "Positive Emotionen",
-        situations: [
-          "Ihr Partner verspricht etwas und Sie wissen ohne Zweifel, dass er es einhalten wird.",
-          "Sie können Ihrem Partner einen persönlichen Schwachpunkt anvertrauen, ohne Angst vor Verurteilung.",
-          "Ihr Partner ist auch in schwierigen Zeiten für Sie da - verlässlich und beständig."
+        name: "Frustration",
+        color: "bg-red-600",
+        category: "🔴 Hohe Aktivierung / Unbehagen",
+        categoryDescription: "Der Alarm-Modus", 
+        intensityScale: "Genervt → Frustriert → Verzweifelt",
+        definition: "Gefühl der Blockade wenn Ziele oder Erwartungen wiederholt nicht erreicht werden können",
+        bodySignals: "Seufzen, Augenrollen, Anspannung, Unruhe, Hände zu Fäusten ballen",
+        underlyingNeed: "Wirksamkeit, Erfolg, Überwindung von Hindernissen, Fortschritt",
+        helpfulQuestion: "Was blockiert mich gerade?",
+        practicalExamples: [
+          "Sie versuchen ein Problem in der Beziehung zu lösen, aber kommen nicht voran",
+          "Kommunikation läuft immer wieder in die gleichen Muster",
+          "Sie fühlen sich in Ihren Bemühungen nicht verstanden"
         ],
-        bodySignals: "Entspannung im ganzen Körper, ruhiger Atem, innere Ruhe",
-        selfReflection: [
-          "In welchen Bereichen vertrauen Sie Ihrem Partner vollständig?",
-          "Wo gibt es noch Unsicherheiten oder Zweifel?", 
-          "Wie bauen Sie aktiv Vertrauen auf?"
-        ],
-        relationshipTip: "Vertrauen entsteht durch Konsistenz. Halten Sie Versprechen ein, auch die kleinen."
-      },
-      {
-        name: "Stolz",
-        color: "bg-purple-500",
-        description: "Positive Selbstwahrnehmung durch eigene oder des Partners Leistungen",
-        category: "Positive Emotionen",
-        situations: [
-          "Ihr Partner erreicht ein wichtiges Ziel und Sie platzen vor Stolz auf ihn.",
-          "Sie beide meistern gemeinsam eine schwierige Herausforderung.",
-          "Andere Menschen loben Ihre Beziehung oder Ihren Partner."
-        ],
-        bodySignals: "Aufrechte Haltung, erhobenes Kinn, warmes Gefühl in der Brust",
-        selfReflection: [
-          "Worauf sind Sie in Ihrer Beziehung besonders stolz?",
-          "Teilen Sie Ihren Stolz auf den Partner mit ihm?",
-          "Wie feiern Sie gemeinsame Erfolge?"
-        ],
-        relationshipTip: "Teilen Sie Ihren Stolz: 'Ich bin so stolz auf dich/uns, weil...' stärkt das Selbstwert beider Partner."
+        communicationTip: "Identifizieren Sie das Hindernis: 'Ich bin frustriert, weil ich gerne... erreichen möchte, aber...'"
       },
 
-      // HERAUSFORDERNDE EMOTIONEN  
+      // 🟡 KATEGORIE 2: NIEDRIGE AKTIVIERUNG / UNBEHAGEN (Der Rückzug-Modus)
       {
-        name: "Wut",
-        color: "bg-red-500", 
-        description: "Intensive Emotion als Reaktion auf Verletzung, Ungerechtigkeit oder Frustration",
-        category: "Herausfordernde Emotionen",
-        situations: [
-          "Ihr Partner vergisst zum dritten Mal etwas Wichtiges, obwohl Sie es mehrfach besprochen haben.",
-          "Ihr Partner kritisiert Sie vor anderen Menschen oder macht Sie lächerlich.",
-          "Sie fühlen sich ungehört oder ignoriert, obwohl Sie ein wichtiges Anliegen haben."
+        name: "Traurigkeit",
+        color: "bg-blue-600",
+        category: "🟡 Niedrige Aktivierung / Unbehagen",
+        categoryDescription: "Der Rückzug-Modus",
+        intensityScale: "Wehmütig → Traurig → Verzweifelt",
+        definition: "Tiefer emotionaler Schmerz als Reaktion auf Verlust, Enttäuschung oder unerfüllte Erwartungen",
+        bodySignals: "Schwere in Gliedern, Druck auf der Brust, Tränen, Energielosigkeit, hängende Schultern",
+        underlyingNeed: "Trost, Abschied nehmen, Verlust verarbeiten, Mitgefühl, Unterstützung",
+        helpfulQuestion: "Was habe ich verloren und muss es betrauern?",
+        practicalExamples: [
+          "Ein gemeinsamer Traum oder Plan ist zerbrochen",
+          "Die Beziehung hat nicht mehr die Leichtigkeit wie am Anfang",
+          "Sie fühlen emotionale Distanz zum Partner"
         ],
-        bodySignals: "Anspannung im Kiefer, geballte Fäuste, erhöhter Herzschlag, Hitze im Gesicht",
-        selfReflection: [
-          "Was liegt unter Ihrer Wut - Verletzung, Angst oder Enttäuschung?",
-          "Wie drücken Sie Wut aus - konstruktiv oder destruktiv?",
-          "Was brauchen Sie, wenn Sie wütend sind?"
-        ],
-        relationshipTip: "Sagen Sie: 'Ich bin wütend, weil...' statt 'Du machst mich wütend'. Pausieren Sie, bevor Sie reagieren."
-      },
-      {
-        name: "Trauer",
-        color: "bg-gray-500",
-        description: "Tiefer Schmerz durch Verlust, Enttäuschung oder unerfüllte Erwartungen", 
-        category: "Herausfordernde Emotionen",
-        situations: [
-          "Ein gemeinsamer Traum oder Plan zerbricht unverschuldet.",
-          "Ihr Partner zieht sich emotional zurück und Sie spüren die Distanz schmerzhaft.",
-          "Sie erinnern sich an schöne gemeinsame Zeiten, die vergangen sind."
-        ],
-        bodySignals: "Schwere in der Brust, Tränen, erschlaffte Körperhaltung, Energielosigkeit",
-        selfReflection: [
-          "Was genau macht Sie traurig - der Verlust oder die Erinnerung?",
-          "Lassen Sie Trauer zu oder verdrängen Sie sie?",
-          "Was würde Ihnen helfen, mit der Trauer umzugehen?"
-        ],
-        relationshipTip: "Trauer darf sein. Sagen Sie: 'Ich bin traurig über...' und lassen Sie sich trösten."
-      },
-      {
-        name: "Angst",
-        color: "bg-orange-500",
-        description: "Besorgnis über mögliche negative Entwicklungen in der Beziehung",
-        category: "Herausfordernde Emotionen", 
-        situations: [
-          "Ihr Partner verhält sich anders als sonst und Sie befürchten, dass etwas nicht stimmt.",
-          "Sie haben Angst, Ihren Partner zu verlieren oder nicht gut genug zu sein.",
-          "Veränderungen stehen bevor (Umzug, Job, Familie) und Sie sorgen sich um die Beziehung."
-        ],
-        bodySignals: "Schneller Herzschlag, flache Atmung, Anspannung im Magen, Grübeln",
-        selfReflection: [
-          "Sind Ihre Ängste begründet oder entstehen sie durch Fantasien?",
-          "Was würde passieren, wenn Ihre Befürchtung eintritt?",
-          "Können Sie Ihre Ängste mit Ihrem Partner teilen?"
-        ],
-        relationshipTip: "Sprechen Sie Ängste aus: 'Ich mache mir Sorgen über...' - meist sind sie unbegründet."
-      },
-      {
-        name: "Eifersucht",
-        color: "bg-indigo-500",
-        description: "Furcht vor dem Verlust der Liebe oder Aufmerksamkeit des Partners",
-        category: "Herausfordernde Emotionen",
-        situations: [
-          "Ihr Partner hat Spaß mit anderen Menschen und Sie fühlen sich ausgeschlossen.",
-          "Eine attraktive Person zeigt Interesse an Ihrem Partner.",
-          "Ihr Partner verbringt viel Zeit mit Hobbys oder Freunden, die Sie nicht teilen."
-        ],
-        bodySignals: "Enge in der Brust, angespannte Kiefer, unruhige Gedanken, Kontrollbedürfnis",
-        selfReflection: [
-          "Was steckt hinter Ihrer Eifersucht - Angst, Unsicherheit oder schlechte Erfahrungen?",
-          "Verhalten Sie sich aufgrund von Eifersucht anders?",
-          "Was würde Ihnen mehr Sicherheit geben?"
-        ],
-        relationshipTip: "Gestehen Sie Eifersucht ein: 'Ich bin eifersüchtig, weil ich Angst habe...' - das schafft Verständnis."
+        communicationTip: "Benennen Sie den Verlust: 'Ich bin traurig, weil ich ... vermisse. Kannst du mich dabei unterstützen?'"
       },
       {
         name: "Scham",
         color: "bg-red-800",
-        description: "Gefühl der Bloßstellung oder des Versagens vor dem Partner",
-        category: "Herausfordernde Emotionen",
-        situations: [
-          "Sie haben einen Fehler gemacht und fühlen sich Ihrem Partner gegenüber schuldig.",
-          "Ihr Partner kritisiert etwas an Ihnen und Sie fühlen sich komplett unzulänglich.",
-          "Sie vergleichen sich mit anderen und fühlen sich minderwertig."
+        category: "🟡 Niedrige Aktivierung / Unbehagen",
+        categoryDescription: "Der Rückzug-Modus",
+        intensityScale: "Verlegen → Beschämt → Gedemütigt",
+        definition: "Schmerzhaftes Gefühl der Bloßstellung oder des fundamentalen Versagens als Person",
+        bodySignals: "Hitze im Gesicht (Erröten), gesenkter Blick, sich klein machen, Verstecken wollen",
+        underlyingNeed: "Zugehörigkeit, Akzeptanz, sich verstecken, Vergebung",
+        helpfulQuestion: "Wofür fürchte ich, ausgeschlossen zu werden?",
+        practicalExamples: [
+          "Sie haben einen wichtigen Fehler gemacht und fühlen sich als Person unzulänglich",
+          "Ihr Partner hat Sie vor anderen kritisiert oder bloßgestellt",
+          "Sie vergleichen sich mit anderen und fühlen sich minderwertig"
         ],
-        bodySignals: "Rote Wangen, gesenkter Blick, zusammengezogene Schultern, Verstecken-wollen",
-        selfReflection: [
-          "Ist die Scham berechtigt oder übertrieben?",
-          "Was würden Sie einem Freund in Ihrer Situation raten?",
-          "Können Sie sich selbst vergeben?"
+        communicationTip: "Teilen Sie Schamgefühle vorsichtig: 'Ich schäme mich für... Das macht es schwer für mich, darüber zu sprechen.'"
+      },
+      {
+        name: "Hilflosigkeit / Ohnmacht",
+        color: "bg-gray-600",
+        category: "🟡 Niedrige Aktivierung / Unbehagen",
+        categoryDescription: "Der Rückzug-Modus",
+        intensityScale: "Überfordert → Hilflos → Resigniert",
+        definition: "Gefühl der völligen Machtlosigkeit und des Ausgeliefertseins gegenüber der Situation",
+        bodySignals: "Schwere, Leere, Erschlaffung, flacher Atem, kraftlose Bewegungen",
+        underlyingNeed: "Selbstwirksamkeit, Kontrolle, Unterstützung, Handlungsfähigkeit",
+        helpfulQuestion: "Wo fehlt mir gerade jede Macht?",
+        practicalExamples: [
+          "Beziehungsprobleme scheinen unlösbar und Sie wissen nicht weiter",
+          "Sie können Ihrem Partner nicht helfen, obwohl er leidet",
+          "Äußere Umstände bedrohen die Beziehung und Sie können nichts tun"
         ],
-        relationshipTip: "Teilen Sie Scham mit: 'Ich schäme mich für... und das tut mir leid.' - meist reagiert der Partner verständnisvoller als erwartet."
+        communicationTip: "Bitten Sie um konkrete Hilfe: 'Ich fühle mich hilflos in dieser Situation. Können wir gemeinsam einen Weg finden?'"
+      },
+      {
+        name: "Leere / Apathie",
+        color: "bg-slate-500",
+        category: "🟡 Niedrige Aktivierung / Unbehagen",
+        categoryDescription: "Der Rückzug-Modus",
+        intensityScale: "Abgestumpft → Leer → Apathisch",
+        definition: "Gefühl innerer Taubheit und des Verlusts von emotionaler Verbindung",
+        bodySignals: "Gefühl der Taubheit, Dissoziation, kein Zugang zu Gefühlen, mechanische Bewegungen",
+        underlyingNeed: "Sinn, Verbindung, Stimulation, Erholung, Lebendigkeit",
+        helpfulQuestion: "Was würde mich wieder lebendig fühlen lassen?",
+        practicalExamples: [
+          "Die Beziehung fühlt sich routine-mäßig und emotionslos an",
+          "Sie spüren keine Freude oder Trauer mehr - alles ist gleichgültig",
+          "Emotionale Überforderung hat zu innerem Rückzug geführt"
+        ],
+        communicationTip: "Beschreiben Sie die Leere: 'Ich fühle mich emotional taub. Ich brauche Hilfe, wieder Verbindung zu spüren.'"
       },
 
-      // KOMPLEXE EMOTIONEN
+      // 🟢 KATEGORIE 3: WOHLBEFINDEN / SICHERHEIT & VERBINDUNG (Der Wachstums-Modus)
       {
-        name: "Enttäuschung",
-        color: "bg-slate-600",
-        description: "Schmerz wenn Erwartungen oder Hoffnungen nicht erfüllt werden",
-        category: "Komplexe Emotionen",
-        situations: [
-          "Ihr Partner vergisst einen wichtigen Termin oder Jahrestag, auf den Sie sich gefreut haben.",
-          "Ein geplanter gemeinsamer Urlaub fällt aus oder wird verschoben.",
-          "Ihr Partner reagiert nicht so verständnisvoll, wie Sie es erwartet haben."
+        name: "Freude / Begeisterung",
+        color: "bg-yellow-500",
+        category: "🟢 Wohlbefinden / Sicherheit & Verbindung",
+        categoryDescription: "Der Wachstums-Modus",
+        intensityScale: "Zufrieden → Fröhlich → Begeistert / Ekstatisch",
+        definition: "Warmes, expansives Gefühl des Glücks und der Lebensfreude",
+        bodySignals: "Leichtigkeit, Wärme in der Brust, Lächeln, Energie, aufrechte Haltung",
+        underlyingNeed: "Teilen, Verbindung, Feiern, Ausdruck",
+        helpfulQuestion: "Worüber kann ich mich gerade authentisch freuen?",
+        practicalExamples: [
+          "Ihr Partner überrascht Sie mit einer liebevollen Geste",
+          "Sie beide lachen zusammen über etwas Lustiges",
+          "Ein gemeinsames Ziel wurde erreicht und Sie feiern den Erfolg"
         ],
-        bodySignals: "Schwere im Herzen, Seufzen, erschlaffte Mimik, innere Leere",
-        selfReflection: [
-          "Waren Ihre Erwartungen realistisch und kommuniziert?",
-          "Wie gehen Sie mit Enttäuschungen um?",
-          "Was können Sie daraus für die Zukunft lernen?"
-        ],
-        relationshipTip: "Kommunizieren Sie Erwartungen vorher klar und teilen Sie Enttäuschung ehrlich mit."
+        communicationTip: "Teilen Sie Freude bewusst: 'Ich freue mich so sehr über... Das macht mich richtig glücklich!'"
       },
       {
-        name: "Sehnsucht",
-        color: "bg-purple-400",
-        description: "Verlangen nach mehr Nähe, Verständnis oder gemeinsamer Zeit",
-        category: "Komplexe Emotionen",
-        situations: [
-          "Ihr Partner ist beruflich viel unterwegs und Sie vermissen die Nähe.",
-          "Sie wünschen sich tiefere Gespräche oder mehr emotionale Intimität.",
-          "Sie sehnen sich nach der Leichtigkeit der Anfangszeit Ihrer Beziehung."
+        name: "Liebe / Zuneigung", 
+        color: "bg-pink-500",
+        category: "🟢 Wohlbefinden / Sicherheit & Verbindung",
+        categoryDescription: "Der Wachstums-Modus",
+        intensityScale: "Sympathie → Zuneigung → Liebe / Hingabe",
+        definition: "Tiefe emotionale Verbindung und bedingungslose Akzeptanz einer anderen Person",
+        bodySignals: "Wärmegefühl, weicher Blick, entspannte Körpermitte, Berührungsdrang",
+        underlyingNeed: "Nähe, Fürsorge, Verbindung, Geben und Nehmen",
+        helpfulQuestion: "Wem oder was möchte ich mich gerade zuwenden?",
+        practicalExamples: [
+          "Sie schauen Ihren schlafenden Partner an und spüren tiefe Zärtlichkeit",
+          "Ihr Partner ist krank und Sie kümmern sich gerne um ihn",
+          "In einem schwierigen Moment stehen Sie bedingungslos zusammen"
         ],
-        bodySignals: "Wehmut, warme Erinnerungen, Verlangen nach Berührung oder Nähe",
-        selfReflection: [
-          "Wonach sehnen Sie sich konkret?",
-          "Können Sie diese Sehnsucht in Worte fassen?",  
-          "Was können Sie aktiv tun, um das zu erreichen?"
-        ],
-        relationshipTip: "Sehnsucht ist wertvoll - teilen Sie mit: 'Ich sehne mich nach...' und machen Sie Vorschläge."
+        communicationTip: "Drücken Sie Liebe konkret aus: 'Ich liebe dich, weil... Du bist mir so wichtig.'"
       },
       {
-        name: "Überforderung",
-        color: "bg-gray-600",
-        description: "Das Gefühl, den Anforderungen der Beziehung nicht gewachsen zu sein",
-        category: "Komplexe Emotionen",
-        situations: [
-          "Ihr Partner hat hohe emotionale Bedürfnisse und Sie wissen nicht, wie Sie helfen können.",
-          "Beziehung, Beruf und Familie unter einen Hut zu bringen fühlt sich unmöglich an.",
-          "Konflikte häufen sich und Sie sehen keinen Ausweg."
+        name: "Geborgenheit / Sicherheit",
+        color: "bg-green-600", 
+        category: "🟢 Wohlbefinden / Sicherheit & Verbindung",
+        categoryDescription: "Der Wachstums-Modus",
+        intensityScale: "Ruhig → Sicher → Geborgen",
+        definition: "Fundamentales Gefühl von Schutz und emotionaler Sicherheit",
+        bodySignals: "Tiefe, ruhige Atmung, entspannte Muskulatur, offene Haltung",
+        underlyingNeed: "Schutz, Vertrauen, Loslassen-Können, Stabilität",
+        helpfulQuestion: "Was gibt mir in diesem Moment das Gefühl, absolut sicher zu sein?",
+        practicalExamples: [
+          "Sie liegen in den Armen Ihres Partners und spüren vollkommene Ruhe",
+          "Nach einem stressigen Tag bringt die Gegenwart Ihres Partners sofort Entspannung",
+          "Sie können sich vollkommen fallen lassen, ohne Angst vor Verurteilung"
         ],
-        bodySignals: "Kopfschmerzen, Verspannungen, Müdigkeit, Reizbarkeit",
-        selfReflection: [
-          "Was genau überfordert Sie - zu viele Aufgaben oder zu hohe Ansprüche?",
-          "Können Sie um Hilfe bitten?",
-          "Was würde die Situation erleichtern?"
-        ],
-        relationshipTip: "Kommunizieren Sie Überforderung früh: 'Mir wird das gerade zu viel' - und bitten Sie um Unterstützung."
+        communicationTip: "Anerkennen Sie Sicherheit: 'Bei dir fühle ich mich geborgen und sicher. Das bedeutet mir sehr viel.'"
       },
       {
-        name: "Einsamkeit",
-        color: "bg-blue-800",
-        description: "Gefühl der emotionalen Isolation trotz Partnerschaft",
-        category: "Komplexe Emotionen",
-        situations: [
-          "Sie sind zusammen, aber jeder ist mit seinem Handy oder anderen Dingen beschäftigt.",
-          "Ihr Partner versteht Ihre Sorgen oder Freuden nicht und Sie fühlen sich allein.",
-          "Sie haben das Gefühl, nicht wirklich gesehen oder gekannt zu werden."
+        name: "Neugier / Interesse",
+        color: "bg-purple-500",
+        category: "🟢 Wohlbefinden / Sicherheit & Verbindung", 
+        categoryDescription: "Der Wachstums-Modus",
+        intensityScale: "Aufmerksam → Neugierig → Fasziniert",
+        definition: "Offene, explorative Haltung gegenüber neuen Erfahrungen und Erkenntnissen",
+        bodySignals: "Wachheit, offene Augen, nach vorne geneigt, ruhige Konzentration",
+        underlyingNeed: "Erkunden, Lernen, Wachstum, Verstehen",
+        helpfulQuestion: "Was fesselt gerade meine Aufmerksamkeit?",
+        practicalExamples: [
+          "Sie entdecken eine neue Seite an Ihrem Partner und sind fasziniert",
+          "Ein Gespräch öffnet neue Perspektiven auf Ihre Beziehung",
+          "Sie beide erkunden gemeinsam neue Aktivitäten oder Orte"
         ],
-        bodySignals: "Leere in der Brust, Kälte, das Bedürfnis nach echter Verbindung",
-        selfReflection: [
-          "Wann fühlen Sie sich in der Beziehung am einsamsten?",
-          "Was würde echte Verbindung für Sie bedeuten?",
-          "Können Sie Ihre Einsamkeit artikulieren?"
+        communicationTip: "Zeigen Sie Interesse: 'Das finde ich faszinierend an dir... Erzähl mir mehr davon!'"
+      },
+
+      // 🔵 KATEGORIE 4: KOMPLEXE & GEMISCHTE GEFÜHLE (Die reflektierte Ebene)
+      {
+        name: "Neid / Eifersucht",
+        color: "bg-green-800",
+        category: "🔵 Komplexe & Gemischte Gefühle",
+        categoryDescription: "Die reflektierte Ebene", 
+        intensityScale: "Unbehagen → Neidisch → Eifersüchtig / Besitzergreifend",
+        definition: "Komplexe Mischung aus Angst (zu verlieren), Wut (ungerecht behandelt) und Traurigkeit (Mangel)",
+        bodySignals: "Enge in der Brust, angespannte Kiefer, unruhige Gedanken, Kontrollbedürfnis",
+        underlyingNeed: "Sicherheit in der Bindung, Selbstwert, Gerechtigkeit, Einzigartigkeit",
+        helpfulQuestion: "Was habe ich nicht, das ich für mein Glück brauche?",
+        practicalExamples: [
+          "Ihr Partner verbringt viel Zeit mit attraktiven Kollegen",
+          "Andere Paare scheinen glücklicher oder erfolgreicher zu sein",
+          "Ihr Partner bewundert Eigenschaften anderer, die Sie nicht haben"
         ],
-        relationshipTip: "Einsamkeit in Beziehungen ist paradox aber normal. Sprechen Sie darüber: 'Ich fühle mich einsam, obwohl wir zusammen sind.'"
+        communicationTip: "Benennen Sie die dahinterliegende Angst: 'Ich bin eifersüchtig, weil ich Angst habe, dass...'"
+      },
+      {
+        name: "Schuld",
+        color: "bg-orange-800",
+        category: "🔵 Komplexe & Gemischte Gefühle",
+        categoryDescription: "Die reflektierte Ebene",
+        intensityScale: "Reue → Schuldig → Überwältigt von Schuld",
+        definition: "Mischung aus Angst (vor Bestrafung) und Scham (über Versagen gegen eigene Werte)",
+        bodySignals: "Druck in der Brust, gesenkter Blick, schwere Schultern, innere Unruhe",
+        underlyingNeed: "Wiedergutmachung, Verantwortung übernehmen, Vergebung, Integrität",
+        helpfulQuestion: "Wem gegenüber habe ich meine Werte verletzt?",
+        practicalExamples: [
+          "Sie haben Ihren Partner verletzt oder enttäuscht",
+          "Ein Versprechen wurde gebrochen und Sie spüren die Verantwortung",
+          "Ihr Verhalten entsprach nicht Ihren eigenen moralischen Standards"
+        ],
+        communicationTip: "Übernehmen Sie Verantwortung: 'Ich fühle mich schuldig, weil ich... Wie kann ich das wiedergutmachen?'"
+      },
+      {
+        name: "Stolz",
+        color: "bg-yellow-600",
+        category: "🔵 Komplexe & Gemischte Gefühle", 
+        categoryDescription: "Die reflektierte Ebene",
+        intensityScale: "Zufrieden → Stolz → Überheblich",
+        definition: "Mischung aus Freude (über Erfolg) und Sicherheit (in den eigenen Fähigkeiten)",
+        bodySignals: "Aufrechte Haltung, erhobenes Kinn, warmes Gefühl in der Brust, Energie",
+        underlyingNeed: "Anerkennung, Selbstwirksamkeit, Wertschätzung, Bedeutsamkeit",
+        helpfulQuestion: "Worauf habe ich durch meine eigene Anstrengung erreicht?",
+        practicalExamples: [
+          "Sie haben erfolgreich an einem Beziehungsproblem gearbeitet",
+          "Ihr Partner erreicht ein wichtiges Ziel und Sie sind stolz auf ihn",
+          "Andere bewundern Ihre Beziehung und Sie fühlen sich bestätigt"
+        ],
+        communicationTip: "Teilen Sie berechtigten Stolz: 'Ich bin stolz darauf, dass wir... Das zeigt, wie stark wir sind.'"
       },
       {
         name: "Hoffnung",
-        color: "bg-green-400",
-        description: "Optimismus und Vertrauen in die positive Entwicklung der Beziehung",
-        category: "Komplexe Emotionen",
-        situations: [
-          "Nach einem schweren Streit sehen Sie erste Zeichen der Versöhnung.",
-          "Ihr Partner zeigt Bereitschaft, an Problemen zu arbeiten.",
-          "Sie beide beginnen eine Paartherapie oder arbeiten bewusst an der Beziehung."
+        color: "bg-blue-400",
+        category: "🔵 Komplexe & Gemischte Gefühle",
+        categoryDescription: "Die reflektierte Ebene", 
+        intensityScale: "Optimistisch → Hoffnungsvoll → Überzeugt",
+        definition: "Mischung aus Neugier (auf Zukunft), Vorfreude und vorsichtiger Zuversicht",
+        bodySignals: "Aufrechte Haltung, tiefere Atmung, Lächeln, nach vorne gerichteter Blick",
+        underlyingNeed: "Perspektive, Orientierung, Motivation, Sinn",
+        helpfulQuestion: "Was könnte trotz allem positiv in der Zukunft liegen?",
+        practicalExamples: [
+          "Nach einer Krise sehen Sie erste positive Veränderungen",
+          "Sie beide beginnen eine Paartherapie und glauben an Besserung",
+          "Trotz Schwierigkeiten vertrauen Sie in Ihre gemeinsame Zukunft"
         ],
-        bodySignals: "Aufrechte Haltung, tiefere Atmung, Lächeln, Energie",
-        selfReflection: [
-          "Worauf setzen Sie Ihre Hoffnung?",
-          "Sind Ihre Hoffnungen realistisch?",
-          "Was können Sie aktiv für eine positive Entwicklung tun?"
-        ],
-        relationshipTip: "Teilen Sie Hoffnung: 'Ich glaube daran, dass wir...' - das motiviert beide Partner."
-      },
-
-      // SUBTILE EMOTIONEN
-      {
-        name: "Melancholie",
-        color: "bg-indigo-400", 
-        description: "Sanfte Traurigkeit gemischt mit Nostalgie und Reflektion",
-        category: "Subtile Emotionen",
-        situations: [
-          "Sie blättern in alten Fotos und denken an die Anfangszeit Ihrer Beziehung.",
-          "Ein Lied erinnert Sie an besondere gemeinsame Momente.",
-          "Sie realisieren, wie schnell die Zeit vergeht."  
-        ],
-        bodySignals: "Wehmut, sanfte Traurigkeit, nachdenklicher Blick",
-        selfReflection: [
-          "Was löst diese melancholischen Gefühle aus?",
-          "Sind es schöne oder schmerzhafte Erinnerungen?",
-          "Was können Sie daraus für die Gegenwart mitnehmen?"
-        ],
-        relationshipTip: "Melancholie kann verbinden - teilen Sie Erinnerungen: 'Erinnerst du dich an...?'"
+        communicationTip: "Artikulieren Sie Hoffnung: 'Ich glaube daran, dass wir... Das gibt mir Mut für unsere Zukunft.'"
       },
       {
-        name: "Zärtlichkeit",
-        color: "bg-pink-300",
-        description: "Sanfte, liebevolle Fürsorge und der Wunsch zu beschützen",
-        category: "Subtile Emotionen", 
-        situations: [
-          "Ihr Partner ist krank oder verletzlich und Sie möchten ihn umsorgen.",
-          "Sie beobachten Ihren Partner bei einer alltäglichen Tätigkeit und spüren tiefe Liebe.",
-          "Ihr Partner zeigt eine verletzliche Seite und Sie fühlen sich beschützend."
+        name: "Dankbarkeit",
+        color: "bg-amber-500",
+        category: "🔵 Komplexe & Gemischte Gefühle",
+        categoryDescription: "Die reflektierte Ebene",
+        intensityScale: "Wertschätzend → Dankbar → Überwältigt von Dankbarkeit", 
+        definition: "Mischung aus Freude (über ein Geschenk), Liebe (dem Geber gegenüber) und Demut",
+        bodySignals: "Warmes Gefühl im Herzen, entspannte Mimik, das Bedürfnis zu danken, Lächeln",
+        underlyingNeed: "Verbindung, Wertschätzung ausdrücken, Sinn, Reziprozität",
+        helpfulQuestion: "Wem oder was verdanke ich gerade etwas Gutes?",
+        practicalExamples: [
+          "Ihr Partner hat Ihnen in einer schwierigen Zeit beigestanden",
+          "Sie realisieren, wie viel Ihr Partner täglich für Sie tut",
+          "Trotz aller Probleme erkennen Sie das Geschenk Ihrer Beziehung"
         ],
-        bodySignals: "Warme, weiche Gefühle, sanfte Berührungen, ruhige Präsenz",
-        selfReflection: [
-          "Wie zeigen Sie Zärtlichkeit?",
-          "Lassen Sie selbst Zärtlichkeit zu?",
-          "Was weckt zärtliche Gefühle in Ihnen?"
-        ],
-        relationshipTip: "Zärtlichkeit zeigt sich in kleinen Gesten - einer sanften Berührung, einem liebevollen Blick."
+        communicationTip: "Drücken Sie konkrete Dankbarkeit aus: 'Ich bin so dankbar für... Du hast mir damit wirklich geholfen.'"
       },
       {
-        name: "Ehrfurcht",
-        color: "bg-yellow-600",
-        description: "Tiefe Bewunderung für den Partner als Person",
-        category: "Subtile Emotionen",
-        situations: [
-          "Ihr Partner zeigt in einer schwierigen Situation außergewöhnliche Stärke oder Weisheit.",
-          "Sie entdecken eine neue Facette oder Fähigkeit an Ihrem Partner.",
-          "Ihr Partner handelt selbstlos oder mit großer Integrität."
+        name: "Mitgefühl",
+        color: "bg-teal-600",
+        category: "🔵 Komplexe & Gemischte Gefühle",
+        categoryDescription: "Die reflektierte Ebene",
+        intensityScale: "Verständnisvoll → Mitfühlend → Überwältigt von Mitgefühl",
+        definition: "Mischung aus Liebe (Zuwendung), Traurigkeit (über den Schmerz anderer) und Hilfsbereitschaft",
+        bodySignals: "Warme Öffnung im Herzen, sanfte Tränen, ausgestreckte Arme, ruhige Präsenz",
+        underlyingNeed: "Linderung von Leid, Verbindung, Fürsorge, Sinn",
+        helpfulQuestion: "Wie kann ich das Leid eines anderen lindern?",
+        practicalExamples: [
+          "Ihr Partner leidet und Sie spüren seinen Schmerz mit",
+          "Sie sehen Ihr eigenes früheres Leid in den Schwierigkeiten anderer Paare",
+          "Empathie für die Verletzlichkeit und Menschlichkeit Ihres Partners"
         ],
-        bodySignals: "Staunen, weite Augen, Respekt, innere Ruhe",
-        selfReflection: [
-          "Was bewundern Sie an Ihrem Partner am meisten?",
-          "Teilen Sie diese Bewunderung mit ihm?",
-          "Wie können Sie Ihre Ehrfurcht ausdrücken?"
-        ],
-        relationshipTip: "Sprechen Sie Bewunderung aus: 'Ich bewundere an dir...' - das stärkt das Selbstwertgefühl des Partners."
-      },
-      {
-        name: "Geborgenheit",
-        color: "bg-amber-600",
-        description: "Tiefes Gefühl von Sicherheit und Zuhause beim Partner",
-        category: "Subtile Emotionen",
-        situations: [
-          "Sie liegen in den Armen Ihres Partners und spüren vollkommene Sicherheit.",
-          "Nach einem stressigen Tag kommen Sie nach Hause und entspannen sich sofort.",
-          "Ihr Partner ist da und Sie wissen, dass alles gut wird."
-        ],
-        bodySignals: "Entspannung im ganzen Körper, ruhiger Atem, Wärme",
-        selfReflection: [
-          "Wann fühlen Sie sich am geborgensten?", 
-          "Was schafft Geborgenheit für Sie?",
-          "Können Sie auch Geborgenheit geben?"
-        ],
-        relationshipTip: "Geborgenheit entsteht durch Beständigkeit und emotionale Verfügbarkeit."
+        communicationTip: "Bieten Sie Mitgefühl an: 'Ich kann sehen, dass du leidest. Ich bin für dich da und möchte dir helfen.'"
       }
     ];
 
