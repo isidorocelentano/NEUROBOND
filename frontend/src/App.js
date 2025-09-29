@@ -1668,6 +1668,58 @@ const EmpathyTrainingApp = () => {
                     </div>
                   </div>
 
+                  {/* Example Dialog Section */}
+                  {selectedEmotion.exampleDialog && (
+                    <div className="mt-8 p-6 bg-gradient-to-br from-indigo-900/40 to-purple-900/40 rounded-2xl border border-indigo-700/50">
+                      <h4 className="font-semibold text-indigo-200 mb-4 flex items-center gap-2">
+                        🎭 Musterdialog aus der Wirklichkeit
+                      </h4>
+                      <div className="mb-4 p-3 bg-indigo-800/30 rounded-lg">
+                        <p className="text-indigo-100 text-sm font-medium">Situation:</p>
+                        <p className="text-indigo-200 text-sm mt-1">{selectedEmotion.exampleDialog.situation}</p>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        {selectedEmotion.exampleDialog.dialog.map((line, index) => (
+                          <div key={index} className={`p-3 rounded-lg ${
+                            line.speaker === 'Sie' 
+                              ? 'bg-blue-900/40 border border-blue-700/50 ml-4' 
+                              : line.speaker === 'Sie (besser)' || line.speaker === 'Sie (ausdrucksvoll)' || line.speaker === 'Sie (liebevoller)' || line.speaker === 'Sie (reflektiert)' || line.speaker === 'Sie (verantwortlich)'
+                              ? 'bg-green-900/40 border border-green-700/50 ml-4'
+                              : 'bg-gray-800/40 border border-gray-600/50 mr-4'
+                          }`}>
+                            <div className="flex items-start gap-2">
+                              <span className={`font-semibold text-xs px-2 py-1 rounded ${
+                                line.speaker === 'Sie' 
+                                  ? 'bg-blue-700 text-blue-100' 
+                                  : line.speaker.includes('Sie (')
+                                  ? 'bg-green-700 text-green-100'
+                                  : 'bg-gray-700 text-gray-100'
+                              }`}>
+                                {line.speaker}
+                              </span>
+                              <p className={`text-sm flex-1 ${
+                                line.speaker === 'Sie' 
+                                  ? 'text-blue-200' 
+                                  : line.speaker.includes('Sie (')
+                                  ? 'text-green-200'
+                                  : 'text-gray-200'
+                              }`}>
+                                "{line.text}"
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-4 p-3 bg-yellow-900/30 rounded-lg border border-yellow-700/50">
+                        <p className="text-yellow-100 text-xs">
+                          💡 <strong>Lernelement:</strong> Beachten Sie den Unterschied zwischen reaktiver und empathischer Kommunikation
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Action Button */}
                   <div className="mt-8 text-center">
                     <Button
