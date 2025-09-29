@@ -2078,18 +2078,34 @@ const EmpathyTrainingApp = () => {
         </div>
 
         <header className="flex justify-between items-center p-6 mb-8 relative z-10">
-          <h1 className="text-2xl font-bold text-white">Community Cases</h1>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-white hover:bg-white/10"
-            onClick={() => setCurrentTab('home')}
-          >
-            <ArrowRight className="w-6 h-6 rotate-180" />
-          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Community Cases</h1>
+            <p className="text-gray-400 text-sm">Lernen von realen Paartherapie-Situationen</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline"
+              size="sm" 
+              className="text-white border-white/20 hover:bg-white/10"
+              onClick={() => setShowCreateForm(!showCreateForm)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Eigenen Fall beitragen
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('home')}
+            >
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </Button>
+          </div>
         </header>
 
-        <div className="container mx-auto px-4 max-w-4xl relative z-10">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          {showCreateForm && <CreateCaseForm />}
+
           {loading ? (
             <div className="text-center">
               <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -2098,44 +2114,129 @@ const EmpathyTrainingApp = () => {
           ) : !selectedCase ? (
             <div>
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-4">Anonyme Fälle aus der Community</h2>
-                <p className="text-gray-300">Lernen Sie von realen Situationen anderer Paare</p>
+                <h2 className="text-3xl font-bold text-white mb-4">Kernfragen der Paartherapie</h2>
+                <p className="text-gray-300 text-lg mb-6">
+                  20 bewährte Therapie-Fragen mit empathischen Antworten + Community-Beiträge
+                </p>
+                
+                {/* Search Bar */}
+                <div className="max-w-md mx-auto mb-8">
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      placeholder="Suchen nach Themen, Kategorien oder Stichworten..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="bg-gray-800/60 border-gray-600 text-white pl-10 pr-4 py-3 rounded-2xl"
+                    />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                      <BookOpen className="w-4 h-4 text-gray-400" />
+                    </div>
+                    {searchTerm && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
+                        onClick={() => setSearchTerm('')}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                  <p className="text-gray-400 text-sm mt-2">
+                    {filteredCases.length} von {cases.length} Fällen
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {cases.map(caseItem => (
+              {/* Category Filters */}
+              <div className="flex flex-wrap justify-center gap-2 mb-8">
+                {[...new Set(cases.map(c => c.category))].map(category => (
+                  <Button
+                    key={category}
+                    variant="ghost"
+                    size="sm"
+                    className="bg-gray-800/40 hover:bg-gray-700/60 text-gray-300 rounded-full px-4 py-2"
+                    onClick={() => setSearchTerm(category)}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredCases.map(caseItem => (
                   <Card 
                     key={caseItem.case_id}
-                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer"
+                    className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 transition-all cursor-pointer group"
                     onClick={() => setSelectedCase(caseItem)}
                   >
                     <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-white">{caseItem.title}</h3>
+                      <div className="flex justify-between items-start mb-4">
                         <Badge className={`${
-                          caseItem.difficulty === 'Einfach' ? 'bg-green-600' :
-                          caseItem.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
-                        }`}>
+                          caseItem.difficulty === 'Einfach' ? 'bg-green-600/20 text-green-200' :
+                          caseItem.difficulty === 'Mittel' ? 'bg-yellow-600/20 text-yellow-200' : 
+                          'bg-red-600/20 text-red-200'
+                        } px-3 py-1`}>
                           {caseItem.difficulty}
                         </Badge>
+                        <Badge className="bg-blue-600/20 text-blue-200 px-3 py-1">
+                          {caseItem.category}
+                        </Badge>
                       </div>
-                      <p className="text-gray-300 text-sm">
-                        {caseItem.ai_solution.substring(0, 150)}...
+                      
+                      <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-blue-300 transition-colors">
+                        {caseItem.title}
+                      </h3>
+                      
+                      {caseItem.question && (
+                        <div className="mb-3 p-3 bg-blue-900/20 rounded-lg border border-blue-700/30">
+                          <p className="text-blue-200 text-sm font-medium">Kernfrage:</p>
+                          <p className="text-blue-100 text-sm mt-1">"{caseItem.question}"</p>
+                        </div>
+                      )}
+                      
+                      {caseItem.goal && (
+                        <div className="mb-3 p-2 bg-purple-900/20 rounded-lg">
+                          <p className="text-purple-200 text-xs">
+                            🎯 {caseItem.goal}
+                          </p>
+                        </div>
+                      )}
+                      
+                      <p className="text-gray-300 text-sm mb-4">
+                        {caseItem.ai_solution.substring(0, 120)}...
                       </p>
-                      <Button variant="ghost" size="sm" className="mt-3 text-blue-400 hover:text-blue-300">
-                        Fall analysieren <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
+                      
+                      <div className="flex items-center justify-between">
+                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 p-0">
+                          Fall analysieren <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                        {caseItem.empathetic_responses && (
+                          <span className="text-xs text-gray-500">
+                            {caseItem.empathetic_responses.length} empathische Antworten
+                          </span>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
+              
+              {filteredCases.length === 0 && (
+                <div className="text-center py-12">
+                  <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">Keine Fälle gefunden</h3>
+                  <p className="text-gray-500">Versuchen Sie einen anderen Suchbegriff</p>
+                </div>
+              )}
             </div>
           ) : (
             <div>
               <Button 
                 variant="ghost"
                 onClick={() => setSelectedCase(null)}
-                className="mb-4 text-blue-400 hover:text-blue-300"
+                className="mb-6 text-blue-400 hover:text-blue-300"
               >
                 <ArrowRight className="w-4 h-4 rotate-180 mr-2" />
                 Zurück zur Übersicht
@@ -2143,31 +2244,78 @@ const EmpathyTrainingApp = () => {
               
               <Card className="bg-gray-800/90 backdrop-blur-lg shadow-2xl border border-gray-700/50 rounded-3xl">
                 <CardHeader>
-                  <CardTitle className="text-white">{selectedCase.title}</CardTitle>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between mb-4">
                     <Badge className={`${
-                      selectedCase.difficulty === 'Einfach' ? 'bg-green-600' :
-                      selectedCase.difficulty === 'Mittel' ? 'bg-yellow-600' : 'bg-red-600'
-                    }`}>
+                      selectedCase.difficulty === 'Einfach' ? 'bg-green-600/20 text-green-200' :
+                      selectedCase.difficulty === 'Mittel' ? 'bg-yellow-600/20 text-yellow-200' : 
+                      'bg-red-600/20 text-red-200'
+                    } px-4 py-2`}>
                       {selectedCase.difficulty}
                     </Badge>
-                    <span className="text-gray-400 text-sm">Anonymisierter Fall</span>
+                    <Badge className="bg-blue-600/20 text-blue-200 px-4 py-2">
+                      {selectedCase.category}
+                    </Badge>
                   </div>
+                  <CardTitle className="text-white text-2xl">{selectedCase.title}</CardTitle>
+                  {selectedCase.goal && (
+                    <CardDescription className="text-purple-300 text-base">
+                      🎯 {selectedCase.goal}
+                    </CardDescription>
+                  )}
                 </CardHeader>
-                <CardContent className="p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h4 className="font-semibold text-blue-400 mb-3">KI-Analyse & Lösungsvorschläge</h4>
+                <CardContent className="p-8">
+                  <div className="space-y-8">
+                    {selectedCase.question && (
+                      <div className="p-6 bg-blue-900/30 rounded-2xl border border-blue-700/50">
+                        <h4 className="font-semibold text-blue-200 mb-3 flex items-center gap-2">
+                          ❓ Kernfrage der Paartherapie
+                        </h4>
+                        <p className="text-blue-100 text-lg italic">"{selectedCase.question}"</p>
+                      </div>
+                    )}
+                    
+                    <div className="p-6 bg-gray-700/40 rounded-2xl border border-gray-600/50">
+                      <h4 className="font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                        🧠 KI-Analyse & Therapeutischer Ansatz
+                      </h4>
                       <p className="text-gray-300 leading-relaxed">{selectedCase.ai_solution}</p>
                     </div>
                     
-                    <div className="p-4 bg-blue-900/30 rounded-2xl border border-blue-700/50">
-                      <h4 className="font-semibold text-blue-100 mb-2">Empathie-Tipp</h4>
-                      <p className="text-blue-200 text-sm">
-                        Versuchen Sie, die Perspektive beider Partner zu verstehen. 
-                        Oft sind beide Seiten berechtigt, auch wenn sie unterschiedlich kommunizieren.
+                    {selectedCase.empathetic_responses && (
+                      <div className="p-6 bg-green-900/30 rounded-2xl border border-green-700/50">
+                        <h4 className="font-semibold text-green-200 mb-4 flex items-center gap-2">
+                          💚 Empathische Antworten für Partner
+                        </h4>
+                        <div className="space-y-3">
+                          {selectedCase.empathetic_responses.map((response, index) => (
+                            <div key={index} className="p-3 bg-green-800/30 rounded-lg border border-green-600/30">
+                              <p className="text-green-100">"{response}"</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="p-6 bg-amber-900/30 rounded-2xl border border-amber-700/50">
+                      <h4 className="font-semibold text-amber-200 mb-3 flex items-center gap-2">
+                        💡 Praktischer Tipp
+                      </h4>
+                      <p className="text-amber-100">
+                        Diese Frage eignet sich besonders gut für ruhige Gesprächsmomente zu zweit. 
+                        Schaffen Sie einen sicheren Rahmen ohne Ablenkungen und hören Sie aktiv zu, 
+                        ohne sofort zu bewerten oder Lösungen anzubieten.
                       </p>
                     </div>
+                  </div>
+
+                  <div className="mt-8 text-center">
+                    <Button
+                      onClick={() => setCurrentTab('training-stufen')}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl font-semibold"
+                    >
+                      <Target className="w-5 h-5 mr-2" />
+                      Im Training üben
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
