@@ -352,6 +352,7 @@ const EmpathyTrainingApp = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [userProgress] = useState([]);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [userSubscription, setUserSubscription] = useState('free');
 
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
