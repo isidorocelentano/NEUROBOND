@@ -1135,28 +1135,46 @@ const EmpathyTrainingApp = () => {
 
                 <Button 
                   onClick={async () => {
+                    console.log('💳 MONTHLY payment button clicked');
                     try {
+                      console.log('💳 Sending payment request for monthly...');
+                      console.log('💳 Backend URL:', BACKEND_URL);
+                      
+                      const requestData = {
+                        package_type: 'monthly',
+                        origin_url: window.location.origin
+                      };
+                      console.log('💳 Request data:', requestData);
+
                       const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          package_type: 'monthly',
-                          origin_url: window.location.origin
-                        })
+                        body: JSON.stringify(requestData)
                       });
+
+                      console.log('💳 Response status:', response.status);
+                      console.log('💳 Response ok:', response.ok);
 
                       if (response.ok) {
                         const data = await response.json();
+                        console.log('💳 Response data:', data);
+                        
                         if (data.url) {
+                          console.log('💳 Redirecting to Stripe:', data.url);
                           localStorage.setItem('pending_pro_upgrade', 'monthly');
                           localStorage.setItem('stripe_session_id', data.session_id);
                           window.location.href = data.url;
+                        } else {
+                          console.error('💳 No URL in response:', data);
+                          showNotification('Keine Zahlungsseite erhalten. Bitte versuchen Sie es erneut.', 'error');
                         }
                       } else {
-                        throw new Error('Checkout session creation failed');
+                        const errorText = await response.text();
+                        console.error('💳 API Error:', response.status, errorText);
+                        throw new Error(`Checkout session creation failed: ${response.status} - ${errorText}`);
                       }
                     } catch (error) {
-                      console.error('Payment error:', error);
+                      console.error('💳 Payment error:', error);
                       showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
                     }
                   }}
