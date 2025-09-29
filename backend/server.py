@@ -231,7 +231,7 @@ Current emotional state: You are feeling the stress/frustration described in the
         ).with_model("openai", "gpt-4o")
 
         # Generate the opening message from the partner
-        opening_message = UserMessage(text=f"Start the conversation naturally with the opening: '{scenario['partner_opening']}'")
+        opening_message = UserMessage(text=f"Express your feelings and situation naturally as {request.partner_name}, based on this opening: '{scenario['partner_opening']}'. Remember: you need empathy from {request.user_name}, don't give empathy yourself.")
         
         response = await chat.send_message(opening_message)
         
