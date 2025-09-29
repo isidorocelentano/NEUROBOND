@@ -1156,6 +1156,15 @@ const EmpathyTrainingApp = () => {
           "Ihr Partner hat Sie vor anderen kritisiert oder bloßgestellt",
           "Sie vergleichen sich mit anderen und fühlen sich minderwertig"
         ],
+        exampleDialog: {
+          situation: "Sie haben vor Freunden Ihres Partners einen peinlichen Kommentar gemacht und fühlen sich schrecklich",
+          dialog: [
+            { speaker: "Sie", text: "Ich bin so dumm! Jetzt denken alle schlecht von dir wegen mir." },
+            { speaker: "Partner", text: "Ach was, das war doch nicht so schlimm." },
+            { speaker: "Sie (besser)", text: "Ich schäme mich für meinen Kommentar und habe Angst, dass ich dich blamiert habe. Das macht es schwer für mich, darüber zu sprechen." },
+            { speaker: "Partner", text: "Hey, jeder macht mal Fehler. Meine Freunde mögen dich trotzdem. Du bist ein wunderbarer Mensch." }
+          ]
+        },
         communicationTip: "Teilen Sie Schamgefühle vorsichtig: 'Ich schäme mich für... Das macht es schwer für mich, darüber zu sprechen.'"
       },
       {
