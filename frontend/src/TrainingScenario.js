@@ -492,9 +492,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
       if (response.ok) {
         const data = await response.json();
         console.log('Training scenario data received:', data); // Debug log
+        console.log('Partner message:', data.partner_message); // Specific debug
         setSessionData(data);
         setCurrentPhase('question');
       } else {
+        console.error('Response not ok:', response.status, response.statusText);
         throw new Error('Failed to start scenario');
       }
     } catch (error) {
