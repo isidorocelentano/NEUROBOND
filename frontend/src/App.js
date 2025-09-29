@@ -465,31 +465,47 @@ const EmpathyTrainingApp = () => {
                 empathisch und baut eine tiefere emotionale Verbindung auf.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <Button 
-                  size="lg"
-                  onClick={() => {
-                    setShowLandingPage(false);
-                    setShowOnboarding(true);
-                    setUserSubscription('free'); // Set as free user
-                  }}
-                  className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
-                >
-                  <Play className="w-6 h-6 mr-3" />
-                  Kostenlos ausprobieren
-                </Button>
-                <Button 
-                  size="lg"
-                  onClick={() => {
-                    setShowLandingPage(false);
-                    setShowOnboarding(true);
-                    setUserSubscription('pro'); // Set as Pro user directly
-                  }}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
-                >
-                  <Crown className="w-6 h-6 mr-3" />
-                  PRO Version starten
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                <div className="text-center">
+                  <Button 
+                    size="lg"
+                    onClick={() => {
+                      setShowLandingPage(false);
+                      setShowOnboarding(true);
+                      setUserSubscription('free'); // Set as free user
+                    }}
+                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3"
+                  >
+                    <Play className="w-6 h-6 mr-3" />
+                    Kostenlos ausprobieren
+                  </Button>
+                  <div className="text-sm text-gray-400">
+                    <div>✓ 5 kostenlose Trainings</div>
+                    <div>✓ Basis Gefühlslexikon</div>
+                    <div>✓ Community Cases</div>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    size="lg"
+                    onClick={() => {
+                      setShowLandingPage(false);
+                      setShowOnboarding(true);
+                      setUserSubscription('pro'); // Set as Pro user directly
+                    }}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3"
+                  >
+                    <Crown className="w-6 h-6 mr-3" />
+                    PRO Version starten
+                  </Button>
+                  <div className="text-sm text-gray-400">
+                    <div>✓ Alle 17 Trainings</div>
+                    <div>✓ Vollständiges Lexikon</div>
+                    <div>✓ Dialog-Coaching</div>
+                    <div>✓ Eigene Fälle erstellen</div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center justify-center gap-6 text-gray-400 text-sm">
