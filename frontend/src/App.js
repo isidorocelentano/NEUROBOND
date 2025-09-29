@@ -1050,6 +1050,15 @@ const EmpathyTrainingApp = () => {
           "Anstehende Veränderungen (Jobwechsel, Umzug) machen Ihnen Sorgen um die Beziehung",
           "Sie haben Angst, nicht gut genug für Ihren Partner zu sein"
         ],
+        exampleDialog: {
+          situation: "Sie bemerken, dass Ihr Partner weniger Zeit mit Ihnen verbringt und mehr mit Kollegen ausgeht",
+          dialog: [
+            { speaker: "Sie", text: "Du bist in letzter Zeit so selten zuhause. Liebst du mich noch?" },
+            { speaker: "Partner", text: "Natürlich! Du machst dir viel zu viele Sorgen." },
+            { speaker: "Sie (besser)", text: "Ich habe Angst, dass ich dir nicht mehr wichtig bin, weil du so viel Zeit mit anderen verbringst. Können wir darüber reden?" },
+            { speaker: "Partner", text: "Oh, das wusste ich gar nicht. Du bist mir sehr wichtig. Lass uns mehr gemeinsame Zeit einplanen." }
+          ]
+        },
         communicationTip: "Sprechen Sie konkrete Ängste aus: 'Ich habe Angst vor... Kannst du mir dabei helfen, mich sicherer zu fühlen?'"
       },
       {
