@@ -23,7 +23,9 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
-db = client.get_database("neurobond")  # Use direct database name
+# Use environment variable for database name to support managed MongoDB deployments
+db_name = os.environ.get('MONGO_DB_NAME', 'neurobond')
+db = client.get_database(db_name)
 
 # Create the main app without a prefix
 app = FastAPI()
