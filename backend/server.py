@@ -307,10 +307,24 @@ async def respond_to_scenario(request: dict):
             raise HTTPException(status_code=404, detail="Training session not found")
         
         # Reinitialize chat with session history
+        partner_system_message = f"""Continue as {session['partner_name']} in this empathy training conversation. 
+
+IMPORTANT: You are the one experiencing problems/stress and need empathy from {session['user_name']}. 
+
+Your role:
+- Continue expressing YOUR feelings and concerns as {session['partner_name']}
+- React authentically to {session['user_name']}'s responses
+- You are still dealing with your emotional situation 
+- Don't suddenly become empathetic - you still need support
+- Show whether {session['user_name']}'s response helped you feel understood or not
+- Keep responses natural and conversational (2-3 sentences)
+- Stay in character as someone who needs empathy, not someone giving it
+"""
+        
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
             session_id=session_id,
-            system_message="Continue the empathy training conversation naturally."
+            system_message=partner_system_message
         ).with_model("openai", "gpt-4o")
         
         # Send user's response to AI
