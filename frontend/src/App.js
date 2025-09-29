@@ -1067,6 +1067,191 @@ const EmpathyTrainingApp = () => {
     );
   };
 
+  // Payment Page Component
+  const PaymentPage = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <header className="flex justify-between items-center p-6 mb-8 relative z-10">
+          <h1 className="text-2xl font-bold text-white">NEUROBOND PRO</h1>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück
+          </Button>
+        </header>
+
+        <div className="container mx-auto px-4 max-w-2xl relative z-10">
+          <div className="text-center mb-12">
+            <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Crown className="w-12 h-12 text-white" />
+            </div>
+            <h2 className="text-4xl font-bold text-white mb-4">Upgrade zu NEUROBOND PRO</h2>
+            <p className="text-gray-300 text-lg mb-8">
+              Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Monthly Plan */}
+            <Card className="bg-gray-800/60 backdrop-blur-sm border border-purple-500/50 hover:bg-gray-800/80 transition-all">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <div className="text-3xl font-bold text-white mb-2">CHF 10.00</div>
+                  <div className="text-gray-400">pro Monat</div>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Alle 17 Trainings-Szenarien</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Vollständiges Gefühlslexikon</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Dialog-Coaching mit KI-Analyse</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Eigene Fälle erstellen</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Wöchentliche Trainingspläne</span>
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={async () => {
+                    try {
+                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          package_type: 'monthly',
+                          origin_url: window.location.origin
+                        })
+                      });
+
+                      if (response.ok) {
+                        const data = await response.json();
+                        if (data.url) {
+                          localStorage.setItem('pending_pro_upgrade', 'monthly');
+                          localStorage.setItem('stripe_session_id', data.session_id);
+                          window.location.href = data.url;
+                        }
+                      } else {
+                        throw new Error('Checkout session creation failed');
+                      }
+                    } catch (error) {
+                      console.error('Payment error:', error);
+                      showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
+                    }
+                  }}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  size="lg"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  Monatlich wählen
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Yearly Plan */}
+            <Card className="bg-gray-800/60 backdrop-blur-sm border border-green-500/50 hover:bg-gray-800/80 transition-all relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-green-600 text-white px-3 py-1">
+                  2 Monate gratis!
+                </Badge>
+              </div>
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
+                  <div className="text-3xl font-bold text-white mb-2">CHF 100.00</div>
+                  <div className="text-gray-400">pro Jahr</div>
+                  <div className="text-green-400 text-sm font-medium mt-1">(CHF 8.33/Monat)</div>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Alle 17 Trainings-Szenarien</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Vollständiges Gefühlslexikon</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Dialog-Coaching mit KI-Analyse</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Eigene Fälle erstellen</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span>Wöchentliche Trainingspläne</span>
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={async () => {
+                    try {
+                      const response = await fetch(`${BACKEND_URL}/api/checkout/session`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          package_type: 'yearly',
+                          origin_url: window.location.origin
+                        })
+                      });
+
+                      if (response.ok) {
+                        const data = await response.json();
+                        if (data.url) {
+                          localStorage.setItem('pending_pro_upgrade', 'yearly');
+                          localStorage.setItem('stripe_session_id', data.session_id);
+                          window.location.href = data.url;
+                        }
+                      } else {
+                        throw new Error('Checkout session creation failed');
+                      }
+                    } catch (error) {
+                      console.error('Payment error:', error);
+                      showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
+                    }
+                  }}
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                  size="lg"
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Jährlich wählen
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center text-gray-400 text-sm">
+            <p>✅ Sichere Zahlung über Stripe</p>
+            <p>✅ Jederzeit kündbar</p>
+            <p>✅ 30 Tage Geld-zurück-Garantie</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Enhanced Gefühlslexikon Component
   const GefuehlslexikonPage = () => {
     const [selectedEmotion, setSelectedEmotion] = useState(null);
