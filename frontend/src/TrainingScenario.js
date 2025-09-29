@@ -236,6 +236,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, lang
 
 const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onHome, onBack, onNext }) => {
   const [sessionData, setSessionData] = useState(null);
+  const [partnerMessage, setPartnerMessage] = useState('');
   const [userResponse, setUserResponse] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
