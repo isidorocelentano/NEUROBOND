@@ -471,20 +471,24 @@ const EmpathyTrainingApp = () => {
                   onClick={() => {
                     setShowLandingPage(false);
                     setShowOnboarding(true);
+                    setUserSubscription('free'); // Set as free user
                   }}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
+                  className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
                 >
                   <Play className="w-6 h-6 mr-3" />
                   Kostenlos ausprobieren
                 </Button>
                 <Button 
-                  variant="outline"
                   size="lg"
-                  onClick={() => setShowUpgradeModal(true)}
-                  className="border-2 border-purple-300 text-purple-700 hover:bg-purple-50 px-6 py-4 text-lg font-semibold rounded-2xl shadow-lg transition-all duration-300"
+                  onClick={() => {
+                    setShowLandingPage(false);
+                    setShowOnboarding(true);
+                    setUserSubscription('pro'); // Set as Pro user directly
+                  }}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300"
                 >
                   <Crown className="w-6 h-6 mr-3" />
-                  PRO Version entdecken
+                  PRO Version starten
                 </Button>
               </div>
 
