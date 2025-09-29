@@ -735,7 +735,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                     <div className="bg-green-900/20 p-5 rounded-2xl border border-green-700/50 relative">
                       <div className="absolute -left-3 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-green-700/50"></div>
                       <p className="text-green-100 leading-relaxed text-lg font-medium italic">
-                        "{sessionData?.partner_message}"
+                        "{sessionData?.partner_message || 'Lade Dialog...'}"
                       </p>
                     </div>
                     
