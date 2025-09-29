@@ -539,19 +539,57 @@ const EmpathyTrainingApp = () => {
                 </div>
                 
                 <div className="text-center">
-                  <a
-                    href="?payment=true"
-                    className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 cursor-pointer no-underline"
+                  {/* Multiple backup approaches for Pro Version button */}
+                  <div 
+                    onClick={() => {
+                      // Method 1: React state change
+                      console.log('🔴 PRO BUTTON CLICKED - React state');
+                      try {
+                        setCurrentTab('payment');
+                        setShowLandingPage(false);
+                      } catch (e) {
+                        console.error('React state method failed:', e);
+                      }
+                      
+                      // Method 2: Direct URL navigation
+                      setTimeout(() => {
+                        try {
+                          const newUrl = window.location.origin + '?payment=true';
+                          console.log('🔴 Navigating to:', newUrl);
+                          window.location.href = newUrl;
+                        } catch (e) {
+                          console.error('URL navigation failed:', e);
+                        }
+                      }, 100);
+                      
+                      // Method 3: Force reload with parameter
+                      setTimeout(() => {
+                        try {
+                          window.location.search = '?payment=true';
+                        } catch (e) {
+                          console.error('Search parameter method failed:', e);
+                        }
+                      }, 200);
+                    }}
+                    className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 cursor-pointer"
                     style={{ 
-                      textDecoration: 'none',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      userSelect: 'none'
                     }}
                   >
                     <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
                       <Crown className="w-6 h-6" />
                       PRO Version starten
                     </span>
-                  </a>
+                  </div>
+                  
+                  {/* Alternative direct link as backup */}
+                  <div className="text-xs text-gray-500 mb-2">
+                    <a href="?payment=true" style={{ color: '#9ca3af' }}>
+                      → Alternative: Direkt zur Zahlungsseite
+                    </a>
+                  </div>
+                  
                   <div className="text-sm text-gray-400">
                     <div>✓ Alle 17 Trainings</div>
                     <div>✓ Vollständiges Lexikon</div>
