@@ -1227,7 +1227,9 @@ const EmpathyTrainingApp = () => {
                 </div>
 
                 <Button 
-                  onClick={async () => {
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     console.log('💳 YEARLY payment button clicked');
                     try {
                       console.log('💳 Sending payment request for yearly...');
