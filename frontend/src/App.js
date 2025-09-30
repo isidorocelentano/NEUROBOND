@@ -3272,10 +3272,14 @@ const EmpathyTrainingApp = () => {
                       ) : (
                         <Button 
                           size="sm"
-                          disabled
-                          className="bg-gray-600"
+                          onClick={() => {
+                            console.log('🔴 PRO UPGRADE CLICKED - LOCKED STAGE');
+                            setShowPaymentPage(true);
+                          }}
+                          className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white"
                         >
-                          Gesperrt
+                          <Crown className="w-4 h-4 mr-2" />
+                          Upgrade zu PRO
                         </Button>
                       )}
                     </div>
