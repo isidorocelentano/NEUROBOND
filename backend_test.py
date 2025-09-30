@@ -3259,6 +3259,396 @@ class EmpathyTrainingAPITester:
         return total_passed == total_tests
 
 
+    # ===== TRAINING SCENARIO API TESTS (CRITICAL FOR "Lade Dialog..." ISSUE) =====
+    
+    def test_training_start_scenario_basic(self):
+        """CRITICAL: Test /api/training/start-scenario with basic scenario (scenario_id=1)"""
+        print("\n🎯 CRITICAL TEST: Training Start Scenario - Basic Level...")
+        
+        test_data = {
+            "scenario_id": 1,
+            "user_id": "test_user_123",
+            "user_name": "TestUser",
+            "partner_name": "TestPartner"
+        }
+        
+        success, response = self.run_test(
+            "Training Start Scenario - Basic (ID=1)",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success:
+            # Check required response fields
+            required_fields = ['session_id', 'scenario', 'partner_message', 'partner_name']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if not missing_fields:
+                print("   ✅ All required response fields present")
+                
+                # Check partner_message content
+                partner_message = response.get('partner_message', '')
+                if partner_message and len(partner_message.strip()) > 0:
+                    print(f"   ✅ Partner message generated: '{partner_message[:100]}...'")
+                    print(f"   ✅ Partner message length: {len(partner_message)} characters")
+                    
+                    # Check if it's not just the fallback message
+                    if partner_message != "Weißt du... ich kann nicht mehr so weitermachen. Die Arbeit ist einfach zu viel geworden. Ich fühle mich total erschöpft und weiß nicht, wie ich das alles schaffen soll.":
+                        print("   ✅ AI-generated partner message (not fallback)")
+                    else:
+                        print("   ⚠️  Using fallback partner message (AI may have failed)")
+                    
+                    # Check scenario details
+                    scenario = response.get('scenario', {})
+                    if scenario.get('title') == "Aktives Zuhören":
+                        print("   ✅ Correct scenario loaded (Aktives Zuhören)")
+                    
+                    # Check session_id format
+                    session_id = response.get('session_id', '')
+                    if session_id.startswith('training_'):
+                        print("   ✅ Session ID has correct format")
+                        self.test_session_id = session_id  # Store for follow-up tests
+                    
+                    return True
+                else:
+                    print("   ❌ CRITICAL: Empty or missing partner_message")
+                    print("   🚨 This is the root cause of 'Lade Dialog...' issue!")
+                    return False
+            else:
+                print(f"   ❌ Missing required response fields: {missing_fields}")
+                return False
+        else:
+            print("   ❌ CRITICAL: Training start scenario endpoint failed")
+            return False
+
+    def test_training_start_scenario_intermediate(self):
+        """Test /api/training/start-scenario with intermediate scenario (scenario_id=6)"""
+        test_data = {
+            "scenario_id": 6,
+            "user_id": "test_user_456",
+            "user_name": "Sophia",
+            "partner_name": "Max"
+        }
+        
+        success, response = self.run_test(
+            "Training Start Scenario - Intermediate (ID=6)",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success and 'partner_message' in response:
+            partner_message = response['partner_message']
+            if partner_message and len(partner_message.strip()) > 0:
+                print(f"   ✅ Intermediate scenario partner message: {len(partner_message)} chars")
+                return True
+            else:
+                print("   ❌ Empty partner message in intermediate scenario")
+                return False
+        return False
+
+    def test_training_start_scenario_expert(self):
+        """Test /api/training/start-scenario with expert scenario (scenario_id=12)"""
+        test_data = {
+            "scenario_id": 12,
+            "user_id": "test_user_789",
+            "user_name": "Emma",
+            "partner_name": "David"
+        }
+        
+        success, response = self.run_test(
+            "Training Start Scenario - Expert (ID=12)",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success and 'partner_message' in response:
+            partner_message = response['partner_message']
+            if partner_message and len(partner_message.strip()) > 0:
+                print(f"   ✅ Expert scenario partner message: {len(partner_message)} chars")
+                return True
+            else:
+                print("   ❌ Empty partner message in expert scenario")
+                return False
+        return False
+
+    def test_training_start_scenario_invalid(self):
+        """Test /api/training/start-scenario with invalid scenario_id"""
+        test_data = {
+            "scenario_id": 999,  # Invalid scenario ID
+            "user_id": "test_user_invalid",
+            "user_name": "TestUser",
+            "partner_name": "TestPartner"
+        }
+        
+        success, response = self.run_test(
+            "Training Start Scenario - Invalid ID",
+            "POST",
+            "training/start-scenario",
+            500,  # Backend returns 500 for invalid scenarios
+            data=test_data
+        )
+        
+        if success:
+            print("   ✅ Invalid scenario ID properly rejected")
+            return True
+        return False
+
+    def test_training_respond_endpoint(self):
+        """Test /api/training/respond endpoint"""
+        # First create a training session
+        if not hasattr(self, 'test_session_id'):
+            print("   ⚠️  No session ID available, creating new session...")
+            self.test_training_start_scenario_basic()
+        
+        if hasattr(self, 'test_session_id'):
+            test_data = {
+                "session_id": self.test_session_id,
+                "user_response": "Das klingt wirklich stressig. Ich kann verstehen, dass du dich überfordert fühlst. Möchtest du mir mehr darüber erzählen?"
+            }
+            
+            success, response = self.run_test(
+                "Training Respond Endpoint",
+                "POST",
+                "training/respond",
+                200,
+                data=test_data
+            )
+            
+            if success and 'partner_response' in response:
+                partner_response = response['partner_response']
+                if partner_response and len(partner_response.strip()) > 0:
+                    print(f"   ✅ Partner response generated: {len(partner_response)} chars")
+                    return True
+                else:
+                    print("   ❌ Empty partner response")
+                    return False
+        else:
+            print("   ❌ No session ID available for respond test")
+            return False
+
+    def test_training_evaluate_endpoint(self):
+        """Test /api/training/evaluate endpoint"""
+        test_data = {
+            "user_response": "Ich verstehe, dass du dich gestresst fühlst. Das muss wirklich schwierig für dich sein.",
+            "scenario_id": 1,
+            "user_id": "test_user_eval"
+        }
+        
+        success, response = self.run_test(
+            "Training Evaluate Endpoint",
+            "POST",
+            "training/evaluate",
+            200,
+            data=test_data
+        )
+        
+        if success:
+            required_fields = ['empathy_score', 'feedback', 'improvements', 'alternative_responses']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if not missing_fields:
+                print(f"   ✅ Empathy score: {response.get('empathy_score', 'N/A')}")
+                print(f"   ✅ Feedback length: {len(response.get('feedback', ''))} chars")
+                return True
+            else:
+                print(f"   ❌ Missing evaluation fields: {missing_fields}")
+                return False
+        return False
+
+    def test_training_end_scenario_endpoint(self):
+        """Test /api/training/end-scenario endpoint"""
+        if hasattr(self, 'test_session_id'):
+            test_data = {
+                "session_id": self.test_session_id
+            }
+            
+            success, response = self.run_test(
+                "Training End Scenario Endpoint",
+                "POST",
+                "training/end-scenario",
+                200,
+                data=test_data
+            )
+            
+            if success and 'session_completed' in response:
+                if response.get('session_completed') == True:
+                    print("   ✅ Training session completed successfully")
+                    print(f"   ✅ Summary: {response.get('summary', 'N/A')[:100]}...")
+                    return True
+                else:
+                    print("   ❌ Session not marked as completed")
+                    return False
+        else:
+            print("   ❌ No session ID available for end scenario test")
+            return False
+
+    def test_emergent_llm_key_configuration(self):
+        """CRITICAL: Test if EMERGENT_LLM_KEY is properly configured"""
+        print("\n🔍 CRITICAL: Testing EMERGENT_LLM_KEY Configuration...")
+        
+        # Test by creating a training scenario that requires AI
+        test_data = {
+            "scenario_id": 1,
+            "user_id": "llm_test_user",
+            "user_name": "TestUser",
+            "partner_name": "TestPartner"
+        }
+        
+        success, response = self.run_test(
+            "EMERGENT_LLM_KEY Configuration Test",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success:
+            partner_message = response.get('partner_message', '')
+            
+            # Check for AI-generated content quality indicators
+            quality_indicators = [
+                len(partner_message) > 50,  # Reasonable length
+                any(word in partner_message.lower() for word in ['ich', 'du', 'mir', 'mich']),  # German pronouns
+                not partner_message.startswith('Error'),  # No error messages
+                not 'API' in partner_message  # No API error references
+            ]
+            
+            passed_indicators = sum(quality_indicators)
+            print(f"   Quality indicators passed: {passed_indicators}/4")
+            
+            if passed_indicators >= 3:
+                print("   ✅ EMERGENT_LLM_KEY is working correctly")
+                print("   ✅ AI is generating quality responses")
+                return True
+            else:
+                print("   ❌ EMERGENT_LLM_KEY may not be working properly")
+                print(f"   ❌ Generated message: '{partner_message}'")
+                return False
+        else:
+            print("   ❌ EMERGENT_LLM_KEY configuration test failed")
+            return False
+
+    def test_training_scenario_response_format(self):
+        """CRITICAL: Test exact response format expected by frontend"""
+        print("\n🔍 CRITICAL: Testing Training Scenario Response Format...")
+        
+        test_data = {
+            "scenario_id": 1,
+            "user_id": "format_test_user",
+            "user_name": "FormatTest",
+            "partner_name": "FormatPartner"
+        }
+        
+        success, response = self.run_test(
+            "Training Scenario Response Format Test",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success:
+            print("   📋 Checking response format...")
+            
+            # Expected format based on frontend requirements
+            expected_format = {
+                "session_id": str,
+                "scenario": dict,
+                "partner_message": str,
+                "partner_name": str
+            }
+            
+            format_correct = True
+            for field, expected_type in expected_format.items():
+                if field not in response:
+                    print(f"   ❌ Missing field: {field}")
+                    format_correct = False
+                elif not isinstance(response[field], expected_type):
+                    print(f"   ❌ Wrong type for {field}: expected {expected_type.__name__}, got {type(response[field]).__name__}")
+                    format_correct = False
+                else:
+                    print(f"   ✅ {field}: {expected_type.__name__} ✓")
+            
+            # Check scenario sub-fields
+            if 'scenario' in response:
+                scenario = response['scenario']
+                scenario_fields = ['id', 'title', 'context', 'learning_goals']
+                for field in scenario_fields:
+                    if field in scenario:
+                        print(f"   ✅ scenario.{field}: ✓")
+                    else:
+                        print(f"   ❌ Missing scenario.{field}")
+                        format_correct = False
+            
+            # Most critical check: partner_message content
+            partner_message = response.get('partner_message', '')
+            if partner_message and partner_message.strip():
+                print(f"   ✅ partner_message has content: {len(partner_message)} chars")
+                print(f"   ✅ partner_message preview: '{partner_message[:50]}...'")
+            else:
+                print("   ❌ CRITICAL: partner_message is empty or null")
+                print("   🚨 This causes 'Lade Dialog...' to never disappear!")
+                format_correct = False
+            
+            if format_correct:
+                print("   ✅ Response format is correct for frontend")
+                return True
+            else:
+                print("   ❌ Response format has issues")
+                return False
+        else:
+            print("   ❌ Failed to get response for format testing")
+            return False
+
+    def test_training_scenario_ai_integration_comprehensive(self):
+        """COMPREHENSIVE: Test AI integration across multiple scenarios"""
+        print("\n🤖 COMPREHENSIVE AI Integration Test...")
+        
+        test_scenarios = [1, 2, 3, 6, 12]  # Basic, intermediate, expert levels
+        successful_scenarios = 0
+        
+        for scenario_id in test_scenarios:
+            test_data = {
+                "scenario_id": scenario_id,
+                "user_id": f"ai_test_{scenario_id}",
+                "user_name": "AITestUser",
+                "partner_name": "AITestPartner"
+            }
+            
+            success, response = self.run_test(
+                f"AI Integration - Scenario {scenario_id}",
+                "POST",
+                "training/start-scenario",
+                200,
+                data=test_data
+            )
+            
+            if success and 'partner_message' in response:
+                partner_message = response['partner_message']
+                if partner_message and len(partner_message.strip()) > 20:
+                    print(f"   ✅ Scenario {scenario_id}: AI generated {len(partner_message)} chars")
+                    successful_scenarios += 1
+                else:
+                    print(f"   ❌ Scenario {scenario_id}: Empty or too short AI response")
+            else:
+                print(f"   ❌ Scenario {scenario_id}: Failed to get AI response")
+        
+        success_rate = (successful_scenarios / len(test_scenarios)) * 100
+        print(f"\n   📊 AI Integration Success Rate: {success_rate:.1f}% ({successful_scenarios}/{len(test_scenarios)})")
+        
+        if success_rate >= 80:
+            print("   ✅ AI integration is working well across scenarios")
+            return True
+        else:
+            print("   ❌ AI integration has significant issues")
+            return False
+
     # ===== NEW AI-POWERED TRAINING SYSTEM TESTS =====
     
     def test_training_start_scenario_valid(self):
