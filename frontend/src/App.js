@@ -3947,6 +3947,23 @@ const EmpathyTrainingApp = () => {
                     <span className="hidden sm:inline">Partner Profile</span>
                   </Button>
                   
+                  {/* PRO Upgrade Button - only show for free users */}
+                  {(user?.subscription || userSubscription) === 'free' && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        console.log('🔴 PRO UPGRADE CLICKED - DASHBOARD');
+                        setShowPaymentPage(true);
+                      }}
+                      className="flex items-center gap-2 bg-gradient-to-r from-yellow-600 to-orange-600 text-white border-none hover:from-yellow-700 hover:to-orange-700 animate-pulse"
+                    >
+                      <Crown className="w-4 h-4" />
+                      <span className="hidden sm:inline">Upgrade zu PRO</span>
+                      <span className="sm:hidden">PRO</span>
+                    </Button>
+                  )}
+                  
                   <Button 
                     variant="ghost"
                     size="sm"
