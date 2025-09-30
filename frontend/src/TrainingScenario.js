@@ -479,6 +479,9 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
 
   const startScenario = async () => {
     try {
+      console.log('🚀 Starting training scenario:', { scenarioId, userId, userName, partnerName });
+      console.log('🌐 Backend URL:', BACKEND_URL);
+      
       const response = await fetch(`${BACKEND_URL}/api/training/start-scenario`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -490,23 +493,55 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
         })
       });
 
+      console.log('📡 API Response status:', response.status);
+      console.log('📡 API Response ok:', response.ok);
+
       if (response.ok) {
         const data = await response.json();
-        console.log('Training scenario data received:', data); // Debug log
-        console.log('Partner message:', data.partner_message); // Specific debug
+        console.log('✅ Training scenario data received:', data);
+        console.log('💬 Partner message received:', data.partner_message);
+        console.log('📝 Data keys:', Object.keys(data));
         
-        // Set both sessionData and separate partnerMessage state
+        // Validate partner_message exists and is not empty
+        const partnerMessageContent = data.partner_message || data.partnerMessage || '';
+        console.log('🎯 Final partner message content:', partnerMessageContent);
+        
+        if (!partnerMessageContent || partnerMessageContent.trim() === '') {
+          console.warn('⚠️ Partner message is empty, using fallback');
+          const fallbackMessage = `Liebe/r ${userName}, ich brauche deine Unterstützung. Heute war ein schwieriger Tag und ich fühle mich wirklich überfordert.`;
+          setPartnerMessage(fallbackMessage);
+        } else {
+          setPartnerMessage(partnerMessageContent);
+        }
+        
+        // Set sessionData with the response
         setSessionData(data);
-        setPartnerMessage(data.partner_message || '');
         setCurrentPhase('question');
+        console.log('✅ Scenario started successfully');
       } else {
-        console.error('Response not ok:', response.status, response.statusText);
-        throw new Error('Failed to start scenario');
+        console.error('❌ Response not ok:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.error('❌ Error response body:', errorText);
+        throw new Error(`Failed to start scenario: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Error starting scenario:', error);
+      console.error('💥 Error starting scenario:', error);
+      console.error('💥 Error details:', error.message);
+      
+      // Set fallback message on error
+      const fallbackMessage = `Liebe/r ${userName}, ich brauche deine Unterstützung. Heute war ein schwieriger Tag und ich fühle mich wirklich überfordert.`;
+      setPartnerMessage(fallbackMessage);
+      setSessionData({
+        scenario: {
+          title: 'Training Szenario',
+          context: 'Empathie-Training',
+          learning_goals: ['Aktives Zuhören', 'Empathie zeigen']
+        }
+      });
+      setCurrentPhase('question');
     } finally {
       setLoading(false);
+      console.log('🏁 StartScenario function completed');
     }
   };
 
