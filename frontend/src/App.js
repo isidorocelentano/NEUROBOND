@@ -3179,14 +3179,33 @@ const EmpathyTrainingApp = () => {
 
         <header className="flex justify-between items-center p-6 mb-8 relative z-10">
           <h1 className="text-2xl font-bold text-white">Training Stufen</h1>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-white hover:bg-white/10"
-            onClick={() => setCurrentTab('home')}
-          >
-            <ArrowRight className="w-6 h-6 rotate-180" />
-          </Button>
+          <div className="flex items-center gap-3">
+            {/* PRO Upgrade Button - only show for free users */}
+            {(user?.subscription || userSubscription) === 'free' && (
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  console.log('🔴 PRO UPGRADE CLICKED - TRAINING');
+                  setShowPaymentPage(true);
+                }}
+                className="flex items-center gap-2 bg-gradient-to-r from-yellow-600 to-orange-600 text-white border-none hover:from-yellow-700 hover:to-orange-700"
+              >
+                <Crown className="w-4 h-4" />
+                <span className="hidden sm:inline">Upgrade zu PRO</span>
+                <span className="sm:hidden">PRO</span>
+              </Button>
+            )}
+            
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/10"
+              onClick={() => setCurrentTab('home')}
+            >
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </Button>
+          </div>
         </header>
 
         <div className="container mx-auto px-4 max-w-4xl relative z-10">
