@@ -1090,18 +1090,18 @@ const EmpathyTrainingApp = () => {
           </Button>
         </header>
 
-        <div className="container mx-auto px-4 max-w-2xl relative z-10">
-          <div className="text-center mb-12">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Crown className="w-12 h-12 text-white" />
+        <div className="container mx-auto px-4 max-w-2xl relative z-10 pb-8">
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
             </div>
-            <h2 className="text-4xl font-bold text-white mb-4">Upgrade zu NEUROBOND PRO</h2>
-            <p className="text-gray-300 text-lg mb-8">
+            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4">Upgrade zu NEUROBOND PRO</h2>
+            <p className="text-gray-300 text-base sm:text-lg mb-6 sm:mb-8 px-4">
               Erweitern Sie Ihr Empathie-Training mit unbegrenztem Zugang
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid gap-4 sm:gap-8 max-w-lg mx-auto">
             {/* Monthly Plan */}
             <Card className="bg-gray-800/60 backdrop-blur-sm border border-purple-500/50 hover:bg-gray-800/80 transition-all">
               <CardContent className="p-8">
