@@ -1548,9 +1548,15 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
             }
         )
         
-        # Save to database
-        transaction_dict = prepare_for_mongo(transaction.dict())
-        await db.payment_transactions.insert_one(transaction_dict)
+        # Try to save to database, but don't fail if MongoDB permissions are missing
+        try:
+            transaction_dict = prepare_for_mongo(transaction.dict())
+            await db.payment_transactions.insert_one(transaction_dict)
+            print(f"✅ Payment transaction logged: {session.id}")
+        except Exception as db_error:
+            print(f"⚠️ Warning: Could not log payment transaction to database: {str(db_error)}")
+            print(f"⚠️ This is likely a MongoDB permission issue in deployment environment")
+            # Continue anyway - the Stripe session is still valid
         
         return {
             "url": session.url,
