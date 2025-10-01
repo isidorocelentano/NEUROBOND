@@ -1,0 +1,166 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://neurobond.ch/#website",
+      "url": "https://neurobond.ch/",
+      "name": "NEUROBOND",
+      "description": "KI-gestütztes Empathie-Training für Paare zur Stärkung der Beziehung",
+      "inLanguage": "de-CH",
+      "publisher": {
+        "@id": "https://neurobond.ch/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://neurobond.ch/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://neurobond.ch/#organization",
+      "name": "NEUROBOND",
+      "url": "https://neurobond.ch/",
+      "description": "Pionier für KI-gestütztes Empathie-Training und Beziehungscoaching",
+      "sameAs": [
+        "https://neurobond.ch/"
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "Switzerland"
+      },
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": 46.8182,
+          "longitude": 8.2275
+        },
+        "geoRadius": "200000"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://neurobond.ch/#webapp",
+      "name": "NEUROBOND Empathie-Training",
+      "description": "Revolutionäres KI-gestütztes Training für bessere Paar-Kommunikation mit 17 realistischen Szenarien",
+      "url": "https://neurobond.ch/",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web Browser, iOS, Android",
+      "browserRequirements": "JavaScript, HTML5",
+      "softwareVersion": "2.0",
+      "datePublished": "2024-01-01",
+      "dateModified": "2024-12-01",
+      "inLanguage": "de-CH",
+      "author": {
+        "@id": "https://neurobond.ch/#organization"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Kostenlose Version",
+          "price": "0",
+          "priceCurrency": "CHF",
+          "description": "5 kostenlose Empathie-Trainings in Stufe 1",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-01-01"
+        },
+        {
+          "@type": "Offer",
+          "name": "PRO Version - Monatlich",
+          "price": "10.00",
+          "priceCurrency": "CHF",
+          "billingIncrement": "P1M",
+          "description": "Vollzugang zu allen 5 Training-Stufen mit 17 Szenarien",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-01-01"
+        },
+        {
+          "@type": "Offer",
+          "name": "PRO Version - Jährlich",
+          "price": "100.00",
+          "priceCurrency": "CHF", 
+          "billingIncrement": "P1Y",
+          "description": "Vollzugang zu allen Empathie-Trainings mit jährlicher Ersparnis",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-01-01"
+        }
+      ],
+      "featureList": [
+        "17 realistische KI-gestützte Beziehungsszenarien",
+        "5 strukturierte Empathie-Trainingsstufen", 
+        "Gefühlslexikon mit 29 wissenschaftlich fundierten Emotionen",
+        "Dialog-Coaching für bessere Paar-Kommunikation",
+        "Community Cases mit praktischen Fallstudien",
+        "Sofortiges AI-Feedback zu Empathie-Fähigkeiten",
+        "Basiert auf EFT und Gottman-Methode",
+        "Mobile-optimiert für Training unterwegs"
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Paare, die ihre Beziehung verbessern möchten",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "Switzerland"
+        }
+      }
+    },
+    {
+      "@type": "Course",
+      "name": "NEUROBOND Empathie-Training für Paare",
+      "description": "Umfassendes 5-stufiges Training zur Verbesserung der Empathie und Kommunikation in Beziehungen",
+      "provider": {
+        "@id": "https://neurobond.ch/#organization"
+      },
+      "hasCourseInstance": [
+        {
+          "@type": "CourseInstance",
+          "name": "Stufe 1: Grundlagen der Empathie",
+          "description": "Aktives Zuhören und Grundempathie in alltäglichen Beziehungssituationen",
+          "courseMode": "online",
+          "inLanguage": "de-CH"
+        },
+        {
+          "@type": "CourseInstance", 
+          "name": "Stufe 2: Komplexere Emotionen",
+          "description": "Mittelschwere Empathie-Übungen für emotional herausfordernde Situationen",
+          "courseMode": "online",
+          "inLanguage": "de-CH"
+        },
+        {
+          "@type": "CourseInstance",
+          "name": "Stufe 3: Konfliktsituationen", 
+          "description": "Schwierige Empathie-Szenarien für Konfliktlösung und Deeskalation",
+          "courseMode": "online",
+          "inLanguage": "de-CH"
+        },
+        {
+          "@type": "CourseInstance",
+          "name": "Stufe 4: Psychologische Tiefe",
+          "description": "Experten-Level Training für tiefgreifende psychologische Empathie-Konzepte",
+          "courseMode": "online", 
+          "inLanguage": "de-CH"
+        },
+        {
+          "@type": "CourseInstance",
+          "name": "Stufe 5: Beziehungsmeisterschaft",
+          "description": "Meister-Level für Beziehungsreife, Mentoring und Weisheitsweitergabe",
+          "courseMode": "online",
+          "inLanguage": "de-CH"
+        }
+      ],
+      "educationalLevel": "Beginner to Advanced",
+      "teaches": [
+        "Empathische Kommunikation",
+        "Aktives Zuhören",
+        "Emotionale Intelligenz", 
+        "Konfliktlösung",
+        "Beziehungsführung"
+      ]
+    }
+  ]
+}
