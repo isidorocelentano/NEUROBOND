@@ -1,0 +1,120 @@
+# NEUROBOND SEO & Performance Optimierungen
+# Empathie-Training für Paare | KI-gestütztes Beziehungscoaching
+
+# ===== COMPRESSION =====
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+# ===== CACHING =====
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Cache Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month" 
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    
+    # Cache CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    
+    # Cache Fonts
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Cache HTML
+    ExpiresByType text/html "access plus 1 day"
+    
+    # Cache XML (Sitemap)
+    ExpiresByType application/xml "access plus 1 week"
+    ExpiresByType text/xml "access plus 1 week"
+</IfModule>
+
+# ===== SECURITY HEADERS =====
+<IfModule mod_headers.c>
+    # Security Headers
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Remove Server Information
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# ===== REDIRECTS FOR SEO =====
+# Redirect non-www to www (oder umgekehrt je nach Präferenz)
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} ^neurobond\.ch [NC]
+# RewriteRule ^(.*)$ https://www.neurobond.ch/$1 [R=301,L]
+
+# ===== CUSTOM ERROR PAGES =====
+# ErrorDocument 404 /404.html
+# ErrorDocument 500 /500.html
+
+# ===== MIME TYPES =====
+<IfModule mod_mime.c>
+    # Web fonts
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/truetype .ttf
+    AddType font/opentype .otf
+    
+    # JSON
+    AddType application/json .json
+    
+    # Web App Manifest
+    AddType application/manifest+json .webmanifest
+    AddType application/x-web-app-manifest+json .webapp
+</IfModule>
+
+# ===== SPECIFIC SEO RULES =====
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Remove trailing slashes for better SEO
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [R=301,L]
+    
+    # Force HTTPS (if not handled by server)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ===== NEUROBOND SPECIFIC =====
+# Custom headers for NEUROBOND app
+<IfModule mod_headers.c>
+    # Add NEUROBOND branding header
+    Header set X-Application "NEUROBOND Empathie-Training"
+    Header set X-Version "2.0"
+    
+    # PWA Headers
+    Header set X-UA-Compatible "IE=edge,chrome=1"
+</IfModule>
