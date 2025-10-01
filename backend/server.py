@@ -1533,30 +1533,10 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
             }
         )
         
-        # Store transaction record
-        transaction = PaymentTransaction(
-            user_id="guest",  # Will be updated when we have user context
-            session_id=session.id,
-            amount=package["amount"],
-            currency=package["currency"],
-            package_type=checkout_request.package_type,
-            payment_status="pending",
-            metadata={
-                "package_type": checkout_request.package_type,
-                "package_name": package["name"],
-                "webhook_url": webhook_url
-            }
-        )
-        
-        # Try to save to database, but don't fail if MongoDB permissions are missing
-        try:
-            transaction_dict = prepare_for_mongo(transaction.dict())
-            await db.payment_transactions.insert_one(transaction_dict)
-            print(f"✅ Payment transaction logged: {session.id}")
-        except Exception as db_error:
-            print(f"⚠️ Warning: Could not log payment transaction to database: {str(db_error)}")
-            print(f"⚠️ This is likely a MongoDB permission issue in deployment environment")
-            # Continue anyway - the Stripe session is still valid
+        # TODO: Enable payment_transactions logging once MongoDB permissions are fixed in deployment
+        # Currently disabled due to: "not authorized on neurobond to execute command { insert: \"payment_transactions\" }"
+        print(f"✅ Stripe checkout session created: {session.id}")
+        print(f"🔗 Checkout URL: {session.url}")
         
         return {
             "url": session.url,
