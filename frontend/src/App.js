@@ -509,6 +509,29 @@ const EmpathyTrainingApp = () => {
                 Paartherapie (EFT & Gottman). Verbessert eure Kommunikation, löst Konflikte 
                 empathisch und baut eine tiefere emotionale Verbindung auf.
               </p>
+              
+              {/* SEO-reiche Unterstützende Inhalte */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8 text-left">
+                <h2 className="text-2xl font-bold text-white mb-4">Warum NEUROBOND das perfekte Empathie-Training für Ihre Beziehung ist:</h2>
+                <div className="grid md:grid-cols-2 gap-4 text-gray-300">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><strong>KI-gestützte Szenarien:</strong> 17 realistische Beziehungssituationen trainieren Ihre Empathie-Fähigkeiten nachhaltig</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><strong>Wissenschaftlich fundiert:</strong> Basiert auf EFT (Emotionally Focused Therapy) und Gottman-Methode für bewährte Ergebnisse</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><strong>Gefühlslexikon:</strong> Verstehen Sie 29+ Emotionen und lernen Sie empathische Kommunikation in der Schweiz</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><strong>Sofortige Ergebnisse:</strong> Bereits nach dem ersten Training verbesserte Paar-Kommunikation spürbar</p>
+                  </div>
+                </div>
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
                 <div className="text-center">
