@@ -1811,8 +1811,8 @@ const EmpathyTrainingApp = () => {
 
         <header className="flex justify-between items-center p-6 mb-8 relative z-10">
           <div>
-            <h1 className="text-2xl font-bold text-white">Gefühlslexikon</h1>
-            <p className="text-gray-400 text-sm">Wissenschaftlich fundierte Emotionsmuster verstehen</p>
+            <h1 className="text-2xl font-bold text-white">NEUROBOND Gefühlslexikon - Empathie lernen für Paare</h1>
+            <p className="text-gray-400 text-sm">29 wissenschaftlich fundierte Emotionsmuster verstehen und empathisch kommunizieren lernen</p>
           </div>
           <div className="flex items-center gap-2">
             <Button 
