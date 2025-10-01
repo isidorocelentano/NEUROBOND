@@ -5180,5 +5180,10 @@ if __name__ == "__main__":
             sys.exit(main_critical_debug())
         elif sys.argv[1] == "mongodb-fix":
             sys.exit(main_mongodb_fix_test())
+        elif sys.argv[1] == "mongodb":
+            # Run MongoDB and payment system tests
+            tester = EmpathyTrainingAPITester()
+            tester.run_mongodb_and_payment_tests()
+            sys.exit(0)
     else:
         sys.exit(main())
