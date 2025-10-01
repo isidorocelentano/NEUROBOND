@@ -3252,8 +3252,21 @@ const EmpathyTrainingApp = () => {
 
         <div className="container mx-auto px-4 max-w-4xl relative z-10">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-4">5 strukturierte Stufen</h2>
-            <p className="text-gray-300">Verbessern Sie Ihre Kommunikation Schritt für Schritt</p>
+            <h2 className="text-3xl font-bold text-white mb-4">5 strukturierte Empathie-Trainingsstufen für Paare</h2>
+            <p className="text-gray-300 mb-6">Verbessern Sie Ihre Kommunikation und Beziehung Schritt für Schritt mit KI-gestützten Szenarien</p>
+            
+            {/* SEO-reiche Beschreibung für Training */}
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-8 text-left max-w-4xl mx-auto">
+              <h3 className="text-xl font-bold text-white mb-3">Wissenschaftlich fundiertes Empathie-Training:</h3>
+              <div className="grid md:grid-cols-2 gap-4 text-gray-300 text-sm">
+                <div>🎯 <strong>17 realistische Szenarien</strong> aus dem Paar-Alltag</div>
+                <div>🤖 <strong>KI-gestützte Dialogpartner</strong> für authentische Übungen</div>
+                <div>📊 <strong>Sofortiges Feedback</strong> zu Ihrer Empathie-Leistung</div>
+                <div>🧠 <strong>Basiert auf EFT & Gottman-Methode</strong> für bewährte Ergebnisse</div>
+                <div>⏱️ <strong>15 Minuten täglich</strong> für nachhaltige Verbesserung</div>
+                <div>🇨🇭 <strong>Optimiert für Schweizer Paare</strong> mit lokalen Beispielen</div>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-6">
