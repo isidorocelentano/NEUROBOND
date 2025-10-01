@@ -20,12 +20,42 @@ import base64
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-# Use environment variable for database name to support managed MongoDB deployments
-db_name = os.environ.get('MONGO_DB_NAME', 'neurobond')
-db = client.get_database(db_name)
+# MongoDB Connection with improved error handling
+mongo_url = os.environ.get('MONGO_URL')
+if not mongo_url:
+    raise ValueError("MONGO_URL environment variable is required")
+
+print(f"🔍 MONGO_URL: {mongo_url}")
+
+try:
+    client = AsyncIOMotorClient(mongo_url)
+    
+    # Use environment variable for database name - CRITICAL for managed deployments
+    db_name = os.environ.get('MONGO_DB_NAME')
+    if not db_name:
+        print("⚠️ WARNING: MONGO_DB_NAME not set, this may cause authorization issues in managed MongoDB")
+        # Extract database name from MONGO_URL if possible
+        if mongo_url and '/' in mongo_url:
+            # Try to extract DB name from URL like mongodb://host:port/dbname
+            url_parts = mongo_url.rstrip('/').split('/')
+            if len(url_parts) > 3 and url_parts[-1]:
+                db_name = url_parts[-1]
+                print(f"🔍 Extracted database name from URL: {db_name}")
+            else:
+                # Last resort - use a safe default but warn
+                db_name = "app_db"
+                print(f"⚠️ Using fallback database name: {db_name}")
+        else:
+            db_name = "app_db"
+            print(f"⚠️ Using fallback database name: {db_name}")
+    
+    print(f"🔍 Using database: {db_name}")
+    db = client.get_database(db_name)
+    print("✅ MongoDB connection initialized successfully")
+    
+except Exception as e:
+    print(f"❌ MongoDB connection failed: {str(e)}")
+    raise
 
 # Create the main app without a prefix
 app = FastAPI()
