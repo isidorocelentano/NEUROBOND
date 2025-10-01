@@ -53,6 +53,38 @@ try:
     db = client.get_database(db_name)
     print("✅ MongoDB connection initialized successfully")
     
+    # Test database permissions
+    async def test_db_permissions():
+        try:
+            # Test basic read permission
+            await db.list_collection_names()
+            print("✅ Database read permissions confirmed")
+            
+            # Test write permission with a simple document
+            test_collection = db.connection_test
+            test_doc = {"test": True, "timestamp": datetime.now(timezone.utc)}
+            await test_collection.insert_one(test_doc)
+            print("✅ Database write permissions confirmed")
+            
+            # Clean up test document
+            await test_collection.delete_one({"test": True})
+            print("✅ Database delete permissions confirmed")
+            
+        except Exception as perm_error:
+            error_msg = str(perm_error).lower()
+            if "not authorized" in error_msg or "permission" in error_msg:
+                print(f"⚠️ Database permission limitations detected: {str(perm_error)}")
+                print("💡 Some features (payment logging) may be limited")
+            else:
+                print(f"⚠️ Database connection test failed: {str(perm_error)}")
+    
+    # Run permission test asynchronously when app starts
+    import asyncio
+    try:
+        asyncio.create_task(test_db_permissions())
+    except:
+        pass  # Don't block app startup on permission test
+    
 except Exception as e:
     print(f"❌ MongoDB connection failed: {str(e)}")
     raise
