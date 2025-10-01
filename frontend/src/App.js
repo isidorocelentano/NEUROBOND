@@ -4100,12 +4100,14 @@ const EmpathyTrainingApp = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                      <Heart className="w-6 h-6 text-white" />
-                    </div>
+                    <img 
+                      src="https://customer-assets.emergentagent.com/job_connect-emote/artifacts/oupuxjdj_NEUROBOND%20LOGO%2001.jpg" 
+                      alt="NEUROBOND Logo - KI-gestütztes Empathie-Training" 
+                      className="w-10 h-10 rounded-xl object-cover"
+                    />
                     <div>
                       <h1 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">NEUROBOND</h1>
-                      <p className="text-xs text-gray-400">Bindungstraining</p>
+                      <p className="text-xs text-gray-400">by MYSYMP AG</p>
                     </div>
                   </div>
                   
