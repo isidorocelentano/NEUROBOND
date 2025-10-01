@@ -4802,9 +4802,12 @@ def main_critical_debug():
 
 
 if __name__ == "__main__":
-    # Check if we should run critical debug tests
+    # Check if we should run specific test modes
     import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "debug":
-        sys.exit(main_critical_debug())
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "debug":
+            sys.exit(main_critical_debug())
+        elif sys.argv[1] == "mongodb-fix":
+            sys.exit(main_mongodb_fix_test())
     else:
         sys.exit(main())
