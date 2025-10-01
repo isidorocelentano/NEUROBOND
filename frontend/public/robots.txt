@@ -1,0 +1,66 @@
+# NEUROBOND SEO-optimierte robots.txt
+# Empathie-Training für Paare | KI-gestütztes Beziehungscoaching
+
+User-agent: *
+Allow: /
+
+# Hauptbereiche für Crawler zugänglich
+Allow: /training
+Allow: /gefuehlslexikon
+Allow: /community-cases
+Allow: /dialog-coaching
+Allow: /pro
+
+# Wichtige SEO-Seiten
+Allow: /empathie-training-schweiz
+Allow: /paartherapie-online  
+Allow: /ki-beziehungscoaching
+
+# Administrative Bereiche ausschließen
+Disallow: /admin
+Disallow: /api/
+Disallow: /dashboard/admin
+Disallow: /internal/
+
+# Temporäre oder Test-Bereiche
+Disallow: /test/
+Disallow: /dev/
+Disallow: /_dev/
+
+# Private Nutzerbereiche  
+Disallow: /user/
+Disallow: /profile/private/
+Disallow: /settings/private/
+
+# Session und Cache Dateien
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: *.json$
+Disallow: /*.log$
+
+# Sitemap Verweis
+Sitemap: https://neurobond.ch/sitemap.xml
+
+# Spezielle Suchmaschinen Anweisungen
+User-agent: Googlebot
+Crawl-delay: 1
+Allow: /
+
+User-agent: Bingbot  
+Crawl-delay: 1
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+# SEO-freundliche Anweisungen für wichtige Bereiche
+# NEUROBOND bietet:
+# - KI-gestütztes Empathie-Training für Paare
+# - 17 realistische Beziehungsszenarien  
+# - Wissenschaftlich fundierte Methoden (EFT & Gottman)
+# - Gefühlslexikon mit 29 detaillierten Emotionen
+# - Dialog-Coaching für bessere Kommunikation
+# - Community Cases für praktisches Lernen
