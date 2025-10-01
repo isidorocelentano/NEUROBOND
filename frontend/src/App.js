@@ -3220,7 +3220,7 @@ const EmpathyTrainingApp = () => {
         </div>
 
         <header className="flex justify-between items-center p-6 mb-8 relative z-10">
-          <h1 className="text-2xl font-bold text-white">Training Stufen</h1>
+          <h1 className="text-2xl font-bold text-white">NEUROBOND Empathie-Training: 5 KI-gestützte Stufen</h1>
           <div className="flex items-center gap-3">
             {/* PRO Upgrade Button - only show for free users */}
             {(user?.subscription || userSubscription) === 'free' && (
