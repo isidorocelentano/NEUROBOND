@@ -1842,11 +1842,26 @@ const EmpathyTrainingApp = () => {
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-bold text-white mb-4">
-                  Detaillierte Kategorien & Emotionen
+                  Empathie-Lexikon: 29 Gefühle verstehen und richtig darauf reagieren
                 </h2>
                 <p className="text-gray-300 text-lg mb-6">
-                  Jede Emotion mit Intensitäts-Skala, körperlichen Signalen und zugrundeliegenden Bedürfnissen
+                  Lernen Sie empathische Kommunikation: Jede Emotion mit Intensitäts-Skala, körperlichen Signalen und zugrundeliegenden Bedürfnissen. 
+                  Wissenschaftlich basiert auf EFT (Emotionally Focused Therapy) für bessere Paarbeziehungen in der Schweiz.
                 </p>
+                
+                {/* SEO-reiche Beschreibung für Gefühlslexikon */}
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-8 text-left max-w-4xl mx-auto">
+                  <h3 className="text-xl font-bold text-white mb-3">Was Sie im NEUROBOND Gefühlslexikon lernen:</h3>
+                  <div className="grid md:grid-cols-2 gap-4 text-gray-300">
+                    <div>• <strong>29 detaillierte Emotionen</strong> in 4 wissenschaftlichen Kategorien</div>
+                    <div>• <strong>Körperliche Signale</strong> jeder Emotion erkennen und verstehen</div>
+                    <div>• <strong>Zugrundeliegende Bedürfnisse</strong> hinter jedem Gefühl identifizieren</div>
+                    <div>• <strong>Empathische Kommunikation</strong> für jede Beziehungssituation lernen</div>
+                    <div>• <strong>Praktische Dialog-Beispiele</strong> aus dem echten Paar-Alltag</div>
+                    <div>• <strong>Deeskalations-Techniken</strong> für emotionale Konflikte</div>
+                  </div>
+                </div>
+                
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                   <Badge className="bg-red-600/20 text-red-200 px-4 py-2">🔴 Alarm-Modus</Badge>
                   <Badge className="bg-yellow-600/20 text-yellow-200 px-4 py-2">🟡 Rückzug-Modus</Badge>
