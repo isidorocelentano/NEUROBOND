@@ -1563,15 +1563,52 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
             }
         )
         
-        # TODO: Enable payment_transactions logging once MongoDB permissions are fixed in deployment
-        # Currently disabled due to: "not authorized on neurobond to execute command { insert: \"payment_transactions\" }"
+        # Smart payment transaction logging with error handling
+        payment_logged = False
+        try:
+            # Only attempt database logging if we have proper permissions
+            transaction = PaymentTransaction(
+                transaction_id=str(uuid.uuid4()),
+                session_id=session.id,
+                amount=package["amount"],
+                currency=package["currency"],
+                package_type=checkout_request.package_type,
+                payment_status="pending",
+                metadata={
+                    "package_type": checkout_request.package_type,
+                    "package_name": package["name"],
+                    "webhook_url": webhook_url
+                }
+            )
+            
+            transaction_dict = prepare_for_mongo(transaction.dict())
+            await db.payment_transactions.insert_one(transaction_dict)
+            payment_logged = True
+            print(f"✅ Payment transaction logged to database: {session.id}")
+            
+        except Exception as db_error:
+            error_message = str(db_error).lower()
+            if "not authorized" in error_message or "permission" in error_message:
+                print(f"⚠️ Database permission issue - payment logging skipped: {str(db_error)}")
+                print("💡 Consider configuring MONGO_DB_NAME for managed MongoDB deployment")
+            else:
+                print(f"⚠️ Unexpected database error - payment logging failed: {str(db_error)}")
+            
+            # Payment continues successfully even without database logging
+            print("✅ Payment processing continues - Stripe session created successfully")
+        
         print(f"✅ Stripe checkout session created: {session.id}")
         print(f"🔗 Checkout URL: {session.url}")
+        if payment_logged:
+            print("📝 Transaction logged to database")
+        else:
+            print("📝 Transaction logging skipped (database permissions)")
         
         return {
             "url": session.url,
             "session_id": session.id,
-            "success": True
+            "success": True,
+            "payment_logged": payment_logged
         }
         
     except Exception as e:
