@@ -4613,6 +4613,7 @@ const App = () => {
           <Route path="/" element={<EmpathyTrainingApp />} />
         </Routes>
       </BrowserRouter>
+      <NeurobondFooter />
     </div>
   );
 };
