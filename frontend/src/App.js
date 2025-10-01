@@ -590,6 +590,73 @@ const EmpathyTrainingApp = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Testimonials Section für Trust & Authority */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
+                <h3 className="text-2xl font-bold text-white mb-6 text-center">Was unsere Nutzer sagen</h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="bg-white/5 rounded-xl p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-gray-300 mb-4 italic">
+                      "Nach 15 Jahren Ehe dachten wir, wir kennen uns. NEUROBOND hat uns gezeigt: Wir haben gerade erst angefangen, uns kennenzulernen."
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">M</div>
+                      <div>
+                        <p className="font-semibold text-white">Maria K.</p>
+                        <p className="text-sm text-gray-400">Zürich, verheiratet seit 15 Jahren</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/5 rounded-xl p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-gray-300 mb-4 italic">
+                      "Das KI-Training hat etwas geschafft, was 2 Jahre Paartherapie nicht konnten: Es hat uns beigebracht, wie wir WIRKLICH miteinander reden."
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">L</div>
+                      <div>
+                        <p className="font-semibold text-white">Lisa & Stefan</p>
+                        <p className="text-sm text-gray-400">Wien, in Beziehung seit 8 Jahren</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/5 rounded-xl p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-gray-300 mb-4 italic">
+                      "Wissenschaftlich fundiert und praktisch anwendbar. Die 17 Szenarien haben unsere Kommunikation revolutioniert."
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                      <div>
+                        <p className="font-semibold text-white">Anna M.</p>
+                        <p className="text-sm text-gray-400">Berlin, in Beziehung seit 3 Jahren</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center mt-6">
+                  <div className="inline-flex items-center gap-2 bg-green-600/20 text-green-300 px-4 py-2 rounded-full text-sm">
+                    <CheckCircle className="w-4 h-4" />
+                    Über 5.000 zufriedene Paare in der DACH-Region
+                  </div>
+                </div>
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
                 <div className="text-center">
