@@ -1534,7 +1534,7 @@ const EmpathyTrainingApp = () => {
     const [selectedEmotion, setSelectedEmotion] = useState(null);
     const [showPracticalGuide, setShowPracticalGuide] = useState(false);
     
-    const emotions = [
+    const allEmotions = [
       // 🔴 KATEGORIE 1: HOHE AKTIVIERUNG / UNBEHAGEN (Der Alarm-Modus)
       {
         name: "Wut / Ärger",
