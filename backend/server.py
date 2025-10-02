@@ -619,6 +619,7 @@ class PaymentTransaction(BaseModel):
 class CheckoutRequest(BaseModel):
     package_type: str  # monthly or yearly
     origin_url: str
+    user_email: Optional[str] = None  # User email for subscription activation
 
 class TrainingStage(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
