@@ -1466,8 +1466,19 @@ Erstelle:
 
 @api_router.post("/create-community-case-direct")
 async def create_community_case_direct(request: CommunityCaseCreateDirect):
-    """Create community case directly from dialog messages"""
+    """Create community case directly from dialog messages - requires PRO subscription"""
     try:
+        # Check PRO access for creating own cases
+        if request.user_id:
+            user = await db.users.find_one({"id": request.user_id})
+            if user:
+                user_obj = User(**user)
+                if not check_feature_access(user_obj, "own_cases"):
+                    raise HTTPException(status_code=403, detail="Eigene Cases erstellen requires PRO subscription")
+        else:
+            # If no user_id provided, assume non-PRO access
+            raise HTTPException(status_code=403, detail="Eigene Cases erstellen requires PRO subscription")
+        
         # Anonymize the dialogue messages
         anonymized_messages = []
         for msg in request.messages:
