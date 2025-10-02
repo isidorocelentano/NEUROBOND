@@ -82,7 +82,7 @@ try:
     import asyncio
     try:
         asyncio.create_task(test_db_permissions())
-    except:
+    except Exception:
         pass  # Don't block app startup on permission test
     
 except Exception as e:
