@@ -1958,6 +1958,11 @@ const EmpathyTrainingApp = () => {
       }
     ];
 
+    // Apply freemium restrictions - show only first 5 emotions for free users
+    const emotions = hasProAccess() ? allEmotions : allEmotions.slice(0, 5);
+    const totalEmotions = allEmotions.length;
+    const availableEmotions = emotions.length;
+
     const categories = [...new Set(emotions.map(e => e.category))];
 
     // Practical Guide Component
