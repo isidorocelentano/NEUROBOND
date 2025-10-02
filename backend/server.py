@@ -720,6 +720,7 @@ class DialogMessage(BaseModel):
 class CommunityCaseCreateDirect(BaseModel):
     messages: List[DialogMessage]
     user_consent: bool = True
+    user_id: Optional[str] = None  # Add user_id for PRO access check
 
 class ContactFormRequest(BaseModel):
     name: str
