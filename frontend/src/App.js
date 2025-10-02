@@ -1311,6 +1311,8 @@ const EmpathyTrainingApp = () => {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('💳 MONTHLY payment button clicked');
+                    console.log('💳 Current user:', user);
+                    console.log('💳 BACKEND_URL:', BACKEND_URL);
                     
                     // iOS Safari specific optimization
                     if (window.navigator.userAgent.includes('iPhone') || window.navigator.userAgent.includes('iPad')) {
