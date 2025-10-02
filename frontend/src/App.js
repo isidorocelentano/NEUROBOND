@@ -1330,7 +1330,31 @@ const EmpathyTrainingApp = () => {
                           console.log('💳 Redirecting to Stripe:', data.url);
                           localStorage.setItem('pending_pro_upgrade', 'monthly');
                           localStorage.setItem('stripe_session_id', data.session_id);
-                          window.location.href = data.url;
+                          
+                          // iOS Safari specific redirect optimization
+                          const isIOSSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                          
+                          if (isIOSSafari) {
+                            console.log('📱 iOS Safari detected - using optimized redirect');
+                            
+                            // Method 1: Try window.open for iOS
+                            try {
+                              const newWindow = window.open(data.url, '_self');
+                              if (!newWindow || newWindow.closed) {
+                                throw new Error('Popup blocked');
+                              }
+                            } catch (popupError) {
+                              console.log('📱 iOS popup method failed, trying location.href');
+                              
+                              // Method 2: Direct location change with iOS optimization
+                              setTimeout(() => {
+                                window.location.href = data.url;
+                              }, 100); // Small delay for iOS Safari
+                            }
+                          } else {
+                            // Non-iOS browsers
+                            window.location.href = data.url;
+                          }
                         } else {
                           console.error('💳 No URL in response:', data);
                           showNotification('Keine Zahlungsseite erhalten. Bitte versuchen Sie es erneut.', 'error');
