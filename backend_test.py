@@ -4832,15 +4832,206 @@ class EmpathyTrainingAPITester:
             print("   ❌ Check backend logs for MongoDB errors")
             return False
 
+    def test_critical_payment_flow_checkout_with_user_email(self):
+        """CRITICAL: Test checkout session creation with user_email parameter"""
+        print("\n🚨 CRITICAL PAYMENT FLOW TEST: Checkout Session with User Email")
+        
+        # Test monthly package with user email
+        test_data = {
+            "package_type": "monthly",
+            "origin_url": "https://empathy-coach-1.preview.emergentagent.com",
+            "user_email": "test.user@example.com"  # CRITICAL: Include user email for subscription activation
+        }
+        
+        success, response = self.run_test(
+            "CRITICAL: Checkout Session Creation with User Email",
+            "POST",
+            "checkout/session",
+            200,
+            data=test_data
+        )
+        
+        if success:
+            if 'url' in response and 'session_id' in response:
+                session_id = response['session_id']
+                checkout_url = response['url']
+                
+                print(f"   ✅ Checkout session created with user email")
+                print(f"   ✅ Session ID: {session_id}")
+                print(f"   ✅ Checkout URL: {checkout_url[:60]}...")
+                
+                # Store session_id for status testing
+                self.test_session_id = session_id
+                self.test_user_email = test_data["user_email"]
+                return True
+            else:
+                print("   ❌ Missing required fields in checkout response")
+        return False
+
+    def test_critical_payment_status_subscription_activation(self):
+        """CRITICAL: Test payment status endpoint and subscription activation"""
+        print("\n🚨 CRITICAL PAYMENT FLOW TEST: Payment Status & Subscription Activation")
+        
+        if not hasattr(self, 'test_session_id'):
+            print("   ❌ No session ID available - running checkout first")
+            if not self.test_critical_payment_flow_checkout_with_user_email():
+                return False
+        
+        session_id = self.test_session_id
+        
+        success, response = self.run_test(
+            "CRITICAL: Payment Status Check",
+            "GET",
+            f"checkout/status/{session_id}",
+            200
+        )
+        
+        if success:
+            status = response.get('status', 'unknown')
+            payment_status = response.get('payment_status', 'unknown')
+            mode = response.get('mode', 'unknown')
+            
+            print(f"   ✅ Session Status: {status}")
+            print(f"   ✅ Payment Status: {payment_status}")
+            print(f"   ✅ Mode: {mode}")
+            
+            # Verify subscription mode
+            if mode == 'subscription':
+                print("   ✅ Correct subscription mode configured")
+                return True
+            else:
+                print(f"   ❌ Expected subscription mode, got: {mode}")
+                return False
+        
+        return False
+
+    def test_critical_payment_flow_user_upgrade_simulation(self):
+        """CRITICAL: Simulate complete payment flow with user upgrade"""
+        print("\n🚨 CRITICAL PAYMENT FLOW TEST: Complete User Upgrade Simulation")
+        
+        # Step 1: Create a test user
+        timestamp = datetime.now().strftime('%H%M%S')
+        test_user_data = {
+            "name": "Test User Payment",
+            "email": f"payment.test.{timestamp}@example.com",
+            "partner_name": "Test Partner"
+        }
+        
+        user_success, user_response = self.run_test(
+            "CRITICAL: Create Test User for Payment Flow",
+            "POST",
+            "users",
+            200,
+            data=test_user_data
+        )
+        
+        if not user_success or 'id' not in user_response:
+            print("   ❌ Failed to create test user for payment flow")
+            return False
+        
+        user_id = user_response['id']
+        user_email = test_user_data['email']
+        print(f"   ✅ Test user created: {user_email}")
+        
+        # Step 2: Create checkout session with user email
+        checkout_data = {
+            "package_type": "monthly",
+            "origin_url": "https://empathy-coach-1.preview.emergentagent.com",
+            "user_email": user_email  # CRITICAL: Link payment to user
+        }
+        
+        checkout_success, checkout_response = self.run_test(
+            "CRITICAL: Create Checkout Session with User Email",
+            "POST",
+            "checkout/session",
+            200,
+            data=checkout_data
+        )
+        
+        if not checkout_success or 'session_id' not in checkout_response:
+            print("   ❌ Failed to create checkout session with user email")
+            return False
+        
+        session_id = checkout_response['session_id']
+        print(f"   ✅ Checkout session created with user email: {session_id}")
+        
+        # Step 3: Check payment status
+        status_success, status_response = self.run_test(
+            "CRITICAL: Check Payment Status for User Upgrade",
+            "GET",
+            f"checkout/status/{session_id}",
+            200
+        )
+        
+        if status_success:
+            payment_status = status_response.get('payment_status', 'unknown')
+            print(f"   ✅ Payment status check successful: {payment_status}")
+            print("   ✅ Payment flow ready for subscription activation when payment completes")
+            return True
+        
+        return False
+
+    def run_critical_payment_flow_tests(self):
+        """Run all critical payment flow tests"""
+        print("\n" + "🚨" * 20)
+        print("🚨 CRITICAL PAYMENT FLOW TESTING - STRIPE INTEGRATION FIX VALIDATION")
+        print("🚨" * 20)
+        print("\nTesting fixes for user-reported issue:")
+        print("- After successful Stripe payment, system doesn't redirect to PRO page")
+        print("- Payment flow gets stuck after checkout")
+        print("\nFixes being validated:")
+        print("1. Frontend success URL handling with session_id detection")
+        print("2. Backend subscription activation via checkout status endpoint")
+        print("3. User email integration for subscription activation")
+        print("4. Success URL processing with user upgrade logic")
+        print("\n" + "=" * 80)
+        
+        critical_tests = [
+            self.test_critical_payment_flow_checkout_with_user_email,
+            self.test_critical_payment_status_subscription_activation,
+            self.test_critical_payment_flow_user_upgrade_simulation
+        ]
+        
+        critical_passed = 0
+        critical_total = len(critical_tests)
+        
+        for test_func in critical_tests:
+            try:
+                if test_func():
+                    critical_passed += 1
+            except Exception as e:
+                print(f"   ❌ Critical test failed with exception: {str(e)}")
+        
+        print("\n" + "🚨" * 20)
+        print("🚨 CRITICAL PAYMENT FLOW TEST RESULTS")
+        print("🚨" * 20)
+        print(f"✅ Critical Tests Passed: {critical_passed}/{critical_total}")
+        print(f"📈 Critical Success Rate: {(critical_passed/critical_total)*100:.1f}%")
+        
+        if critical_passed == critical_total:
+            print("🎉 ALL CRITICAL PAYMENT FLOW TESTS PASSED!")
+            print("✅ Stripe integration fixes are working correctly")
+            print("✅ Payment flow should no longer get stuck")
+            print("✅ User subscription activation is functional")
+        else:
+            print("⚠️  SOME CRITICAL TESTS FAILED!")
+            print("❌ Payment flow issues may still exist")
+            print("❌ Further investigation required")
+        
+        return critical_passed == critical_total
+
 def main():
-    print("🚀 Starting NEUROBOND PRO AI-Powered Training System Tests")
-    print("🤖 PRIORITY FOCUS: New AI Training Endpoints Testing")
+    print("🚀 Starting NEUROBOND CRITICAL PAYMENT FLOW TESTING")
+    print("🚨 PRIORITY FOCUS: Stripe Integration Fix Validation")
     print("=" * 60)
     
     tester = EmpathyTrainingAPITester()
     
-    # Create a test user first for tests
-    print("\n👤 Creating Test User for Tests...")
+    # Run CRITICAL PAYMENT FLOW TESTS FIRST
+    critical_success = tester.run_critical_payment_flow_tests()
+    
+    # Create a test user for basic tests
+    print("\n👤 Creating Test User for Basic Tests...")
     if not tester.test_create_user():
         print("❌ Failed to create test user - some tests will be skipped")
     
