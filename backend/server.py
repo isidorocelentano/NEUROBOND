@@ -1529,6 +1529,42 @@ def get_free_scenarios_limit(stage_number: int) -> int:
         return 5  # First 5 scenarios of stage 1 are free
     return 0  # All other stages require premium
 
+def get_free_emotions_limit() -> int:
+    """Get the number of free emotions available in Gefühlslexikon"""
+    return 5  # First 5 emotions are free, rest requires PRO
+
+def check_feature_access(user: User, feature: str) -> bool:
+    """Check if user has access to specific features"""
+    # Free features available to all users
+    free_features = [
+        "stage_1_training",  # Stage 1 training scenarios (limited to 5)
+        "basic_gefuehlslexikon",  # Basic emotions lexicon (limited to 5)
+        "onboarding",  # User registration and onboarding
+        "landing_page"  # Landing page access
+    ]
+    
+    # PRO features requiring premium subscription
+    pro_features = [
+        "dialog_coaching",  # Dialog-Coaching with AI analysis
+        "community_cases",  # Community Cases access
+        "own_cases",  # Create own cases
+        "partner_dashboard",  # Partner Dashboard
+        "full_gefuehlslexikon",  # Complete emotions lexicon
+        "stage_2_plus_training",  # Training stages 2-5
+        "advanced_features"  # Any other advanced features
+    ]
+    
+    # Check if feature is free
+    if feature in free_features:
+        return True
+    
+    # Check if feature requires PRO and user has premium access
+    if feature in pro_features:
+        return check_premium_access(user)
+    
+    # Default to requiring premium for unlisted features
+    return check_premium_access(user)
+
 # Payment Integration Functions
 async def initialize_stripe_checkout(request: Request):
     """Initialize Stripe checkout with webhook URL"""
