@@ -605,6 +605,7 @@ class UserCreate(BaseModel):
 class PaymentTransaction(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
+    user_email: Optional[str] = None  # Add user email for subscription activation
     session_id: str
     payment_id: Optional[str] = None
     amount: float
