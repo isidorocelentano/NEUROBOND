@@ -667,7 +667,7 @@ const EmpathyTrainingApp = () => {
                       setShowOnboarding(true);
                       setUserSubscription('free'); // Set as free user
                     }}
-                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3"
+                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 no-select"
                   >
                     <Play className="w-6 h-6 mr-3" />
                     Kostenlos ausprobieren
