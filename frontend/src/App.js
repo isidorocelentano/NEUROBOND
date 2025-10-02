@@ -1334,7 +1334,8 @@ const EmpathyTrainingApp = () => {
                       
                       const requestData = {
                         package_type: 'monthly',
-                        origin_url: window.location.origin
+                        origin_url: window.location.origin,
+                        user_email: user?.email || null
                       };
                       console.log('💳 Request data:', requestData);
 
