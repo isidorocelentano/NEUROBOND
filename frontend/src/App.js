@@ -2157,6 +2157,33 @@ const EmpathyTrainingApp = () => {
                   </div>
                 </div>
               ))}
+
+              {/* Upgrade prompt for free users after emotion grid */}
+              {!hasProAccess() && (
+                <div className="mt-8 bg-gradient-to-br from-yellow-600/20 to-orange-600/20 backdrop-blur-sm border border-yellow-500/30 rounded-xl p-6 text-center">
+                  <h3 className="text-xl font-bold text-white mb-3 flex items-center justify-center gap-2">
+                    <Crown className="w-6 h-6 text-yellow-400" />
+                    Noch {totalEmotions - availableEmotions} weitere Emotionen entdecken
+                  </h3>
+                  <p className="text-gray-300 mb-4">
+                    Lernen Sie empathische Kommunikation für alle Lebenssituationen mit unserem vollständigen Gefühlslexikon.
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-300 mb-4">
+                    <div>✨ Komplette Dialog-Beispiele</div>
+                    <div>🎯 Detaillierte Körpersignale</div>
+                    <div>💭 Empathische Antwortstrategien</div>
+                    <div>🔍 Zugrundeliegende Bedürfnisse</div>
+                  </div>
+                  <Button 
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+                    size="lg"
+                  >
+                    <Crown className="w-5 h-5 mr-2" />
+                    Jetzt PRO werden
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="max-w-4xl mx-auto">
