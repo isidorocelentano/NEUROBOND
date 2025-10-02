@@ -2086,6 +2086,28 @@ const EmpathyTrainingApp = () => {
                   <Badge className="bg-green-600/20 text-green-200 px-4 py-2">🟢 Wachstums-Modus</Badge>
                   <Badge className="bg-blue-600/20 text-blue-200 px-4 py-2">🔵 Reflektierte Ebene</Badge>
                 </div>
+
+                {/* Freemium Info Banner */}
+                {!hasProAccess() && (
+                  <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm border border-blue-500/30 rounded-xl p-6 mb-8 text-center">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Star className="w-6 h-6 text-blue-400" />
+                      <h3 className="text-xl font-bold text-white">Gefühlslexikon - Kostenloses Angebot</h3>
+                      <Crown className="w-6 h-6 text-yellow-400" />
+                    </div>
+                    <p className="text-gray-300 mb-4">
+                      Sie sehen aktuell <strong>{availableEmotions} von {totalEmotions}</strong> Emotionen. 
+                      Upgrade zu PRO für das vollständige Lexikon mit detaillierten Beispielen und Kommunikationstechniken.
+                    </p>
+                    <Button 
+                      onClick={() => setShowUpgradeModal(true)}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    >
+                      <Crown className="w-4 h-4 mr-2" />
+                      Vollständiges Lexikon freischalten
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {categories.map(category => (
