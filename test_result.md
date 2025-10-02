@@ -570,12 +570,12 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Comprehensive NEUROBOND Improvements Testing Completed"
-    - "All PRO upgrade buttons and mobile responsiveness verified"
-    - "Payment integration and freemium model working correctly"
+    - "iOS Mobile Payment Optimization Testing"
+    - "Backend iOS-specific Stripe configuration validation"
+    - "Frontend mobile UX improvements verification"
   stuck_tasks: []
   test_all: false
-  test_priority: "completed"
+  test_priority: "high_first"
 
 agent_communication:
     -agent: "main"
