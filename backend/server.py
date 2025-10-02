@@ -1778,7 +1778,7 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
         try:
             # Only attempt database logging if we have proper permissions
             transaction = PaymentTransaction(
-                transaction_id=str(uuid.uuid4()),
+                user_id="anonymous",  # We'll update this with actual user after payment
                 user_email=checkout_request.user_email,  # Store user email for subscription activation
                 session_id=session.id,
                 amount=package["amount"],
