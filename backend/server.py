@@ -648,6 +648,7 @@ class DialogAnalysisRequest(BaseModel):
     dialog_messages: List[dict]
     partner1_name: str
     partner2_name: str
+    user_id: Optional[str] = None  # Add user_id for PRO access check
 
 class DialogSession(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
