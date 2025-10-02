@@ -1849,8 +1849,33 @@ async def get_checkout_status(session_id: str, request: Request):
             
             # If payment is successful, activate subscription
             if payment_status == "paid":
-                # Here you would typically update the user's subscription status
-                # For now, we'll just mark the transaction as paid
+                # Update user subscription status to active
+                user_email = transaction.get("user_email") or session.customer_details.email
+                if user_email:
+                    print(f"💳 Activating PRO subscription for user: {user_email}")
+                    
+                    # Calculate subscription expiration (1 month or 1 year from now)
+                    package_type = transaction.get("package_type", "monthly")
+                    if package_type == "yearly":
+                        expires_at = datetime.now(timezone.utc).replace(year=datetime.now().year + 1)
+                    else:
+                        # Monthly subscription
+                        next_month = datetime.now(timezone.utc).replace(day=28) + timedelta(days=4)
+                        expires_at = next_month.replace(day=1) - timedelta(days=1)
+                        expires_at = expires_at.replace(day=min(datetime.now().day, expires_at.day))
+                    
+                    # Update user subscription status
+                    await db.users.update_one(
+                        {"email": user_email},
+                        {"$set": {
+                            "subscription_status": "active",
+                            "subscription_expires_at": expires_at,
+                            "subscription_type": package_type,
+                            "updated_at": datetime.now(timezone.utc)
+                        }}
+                    )
+                    print(f"✅ User {user_email} upgraded to PRO (expires: {expires_at})")
+                
                 update_data["payment_id"] = session_id
             
             await db.payment_transactions.update_one(
