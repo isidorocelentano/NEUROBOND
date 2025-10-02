@@ -4376,7 +4376,11 @@ const EmpathyTrainingApp = () => {
                 <CardContent>
                   <p className="text-gray-300 mb-4">50+ Emotionen verstehen und benennen</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary" className="bg-green-900/50 text-green-200">Kostenlos</Badge>
+                    {hasProAccess() ? (
+                      <Badge variant="secondary" className="bg-green-900/50 text-green-200">Vollständig</Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-blue-900/50 text-blue-200">5 kostenlos</Badge>
+                    )}
                     <Button size="sm" className="ml-auto bg-red-600 hover:bg-red-700">
                       <Star className="w-4 h-4 mr-1" />
                       Erkunden
