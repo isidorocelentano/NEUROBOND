@@ -1286,6 +1286,23 @@ const EmpathyTrainingApp = () => {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('💳 MONTHLY payment button clicked');
+                    
+                    // iOS Safari specific optimization
+                    if (window.navigator.userAgent.includes('iPhone') || window.navigator.userAgent.includes('iPad')) {
+                      console.log('📱 iOS device detected - applying iOS optimizations');
+                      
+                      // Prevent iOS Safari zoom on input focus
+                      const viewport = document.querySelector('meta[name=viewport]');
+                      if (viewport) {
+                        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                      }
+                      
+                      // iOS-specific memory cleanup
+                      if (window.performance && window.performance.memory) {
+                        console.log('📱 iOS Memory before payment:', window.performance.memory.usedJSHeapSize);
+                      }
+                    }
+                    
                     try {
                       console.log('💳 Sending payment request for monthly...');
                       console.log('💳 Backend URL:', BACKEND_URL);
