@@ -363,6 +363,17 @@ const EmpathyTrainingApp = () => {
     }, 4000);
   };
 
+  // Helper function to check if user has access to PRO features
+  const hasProAccess = () => {
+    return (user?.subscription || userSubscription) === 'pro';
+  };
+
+  // Helper function to show upgrade modal with specific message
+  const showUpgradeModalForFeature = (featureName) => {
+    showNotification(`${featureName} ist nur in der PRO Version verfügbar. Upgrade für vollständigen Zugang!`, 'info');
+    setShowUpgradeModal(true);
+  };
+
   // Enhanced user restoration with debugging and Pro payment check
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
