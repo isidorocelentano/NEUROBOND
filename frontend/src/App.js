@@ -4427,23 +4427,42 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => setCurrentTab('community-cases')}
+                className={`bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer ${!hasProAccess() ? 'opacity-75' : ''}`}
+                onClick={() => {
+                  if (hasProAccess()) {
+                    setCurrentTab('community-cases');
+                  } else {
+                    showUpgradeModalForFeature('Community Cases');
+                  }
+                }}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Users className="w-5 h-5 text-green-400" />
                     Community Cases
+                    {!hasProAccess() && <Crown className="w-4 h-4 text-yellow-400" />}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-300 mb-4">Anonyme Fälle aus der Community</p>
                   <div className="flex gap-2">
-                    <Badge variant="secondary" className="bg-green-900/50 text-green-200">Kostenlos</Badge>
-                    <Button size="sm" className="ml-auto bg-green-600 hover:bg-green-700">
-                      <Users className="w-4 h-4 mr-1" />
-                      Entdecken
-                    </Button>
+                    {hasProAccess() ? (
+                      <>
+                        <Badge variant="secondary" className="bg-green-900/50 text-green-200">Verfügbar</Badge>
+                        <Button size="sm" className="ml-auto bg-green-600 hover:bg-green-700">
+                          <Users className="w-4 h-4 mr-1" />
+                          Entdecken
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Badge variant="secondary" className="bg-yellow-900/50 text-yellow-200">PRO</Badge>
+                        <Button size="sm" className="ml-auto bg-yellow-600 hover:bg-yellow-700">
+                          <Crown className="w-4 h-4 mr-1" />
+                          Upgrade
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </CardContent>
               </Card>
