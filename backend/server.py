@@ -1070,8 +1070,19 @@ async def get_user_progress(user_id: str):
 
 @api_router.post("/analyze-dialog")
 async def analyze_dialog(request: DialogAnalysisRequest):
-    """Analyze couple's dialog patterns and provide real-time suggestions"""
+    """Analyze couple's dialog patterns and provide real-time suggestions - requires PRO subscription"""
     try:
+        # Check PRO access for dialog coaching
+        if request.user_id:
+            user = await db.users.find_one({"id": request.user_id})
+            if user:
+                user_obj = User(**user)
+                if not check_feature_access(user_obj, "dialog_coaching"):
+                    raise HTTPException(status_code=403, detail="Dialog-Coaching requires PRO subscription")
+        else:
+            # If no user_id provided, assume non-PRO access
+            raise HTTPException(status_code=403, detail="Dialog-Coaching requires PRO subscription")
+        
         # Format the dialog for AI analysis
         dialog_text = "\n".join([
             f"{msg['speaker']}: {msg['message']}" 
