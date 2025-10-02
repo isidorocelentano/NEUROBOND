@@ -37,16 +37,18 @@ try:
         # Extract database name from MONGO_URL if possible
         if mongo_url and '/' in mongo_url:
             # Try to extract DB name from URL like mongodb://host:port/dbname
-            url_parts = mongo_url.rstrip('/').split('/')
+            # Remove query parameters first
+            url_without_params = mongo_url.split('?')[0].rstrip('/')
+            url_parts = url_without_params.split('/')
             if len(url_parts) > 3 and url_parts[-1]:
                 db_name = url_parts[-1]
                 print(f"🔍 Extracted database name from URL: {db_name}")
             else:
                 # Last resort - use a safe default but warn
-                db_name = "app_db"
+                db_name = "neurobond"
                 print(f"⚠️ Using fallback database name: {db_name}")
         else:
-            db_name = "app_db"
+            db_name = "neurobond"
             print(f"⚠️ Using fallback database name: {db_name}")
     
     print(f"🔍 Using database: {db_name}")
