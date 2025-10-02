@@ -1589,8 +1589,8 @@ async def create_checkout_session(checkout_request: CheckoutRequest, request: Re
             locale='de',  # Set German language to fix "Cannot find module './en'" error
             payment_method_configuration=None,  # Use default configuration
             payment_method_options={
-                'customer_balance': {
-                    'redirect': 'always'  # iOS mobile optimization: ensure proper redirects
+                'card': {
+                    'request_three_d_secure': 'automatic'  # iOS mobile optimization: automatic 3DS for better mobile UX
                 }
             },
             metadata={
