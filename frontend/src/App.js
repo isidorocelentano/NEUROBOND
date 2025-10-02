@@ -4328,23 +4328,37 @@ const EmpathyTrainingApp = () => {
               </Card>
 
               <Card 
-                className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer"
-                onClick={() => setCurrentTab('dialog-coaching')}
+                className={`bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/80 hover:shadow-lg transition-all cursor-pointer ${!hasProAccess() ? 'opacity-75' : ''}`}
+                onClick={() => {
+                  if (hasProAccess()) {
+                    setCurrentTab('dialog-coaching');
+                  } else {
+                    showUpgradeModalForFeature('Dialog-Coaching');
+                  }
+                }}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Brain className="w-5 h-5 text-purple-400" />
                     Dialog-Coaching
+                    {!hasProAccess() && <Crown className="w-4 h-4 text-yellow-400" />}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-300 mb-4">KI-gestützte Kommunikationsanalyse</p>
                   <div className="flex gap-2">
                     <Badge variant="secondary" className="bg-purple-900/50 text-purple-200">Wissenschaftlich fundiert</Badge>
-                    <Button size="sm" className="ml-auto bg-purple-600 hover:bg-purple-700">
-                      <Brain className="w-4 h-4 mr-1" />
-                      Analysieren
-                    </Button>
+                    {hasProAccess() ? (
+                      <Button size="sm" className="ml-auto bg-purple-600 hover:bg-purple-700">
+                        <Brain className="w-4 h-4 mr-1" />
+                        Analysieren
+                      </Button>
+                    ) : (
+                      <Button size="sm" className="ml-auto bg-yellow-600 hover:bg-yellow-700">
+                        <Crown className="w-4 h-4 mr-1" />
+                        PRO
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
