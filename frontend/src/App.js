@@ -378,6 +378,20 @@ const EmpathyTrainingApp = () => {
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
     
+    // Check for Stripe success redirect from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    
+    if (sessionId) {
+      console.log('💳 NEUROBOND: Stripe success redirect detected with session_id:', sessionId);
+      localStorage.setItem('stripe_session_id', sessionId);
+      localStorage.setItem('pending_pro_upgrade', 'true');
+      
+      // Clear URL parameters to clean up the URL
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+    
     // Check for successful Pro payment first
     const checkProPaymentStatus = async () => {
       const pendingProUpgrade = localStorage.getItem('pending_pro_upgrade');
