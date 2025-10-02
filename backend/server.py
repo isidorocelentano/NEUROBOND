@@ -1427,11 +1427,24 @@ Erstelle:
         raise HTTPException(status_code=500, detail=f"Community case creation failed: {str(e)}")
 
 @api_router.get("/community-cases")
-async def get_community_cases():
-    """Get all community cases for learning"""
+async def get_community_cases(user_id: Optional[str] = None):
+    """Get community cases - requires PRO subscription"""
     try:
+        # Check PRO access for community cases
+        if user_id:
+            user = await db.users.find_one({"id": user_id})
+            if user:
+                user_obj = User(**user)
+                if not check_feature_access(user_obj, "community_cases"):
+                    raise HTTPException(status_code=403, detail="Community Cases require PRO subscription")
+        else:
+            # If no user_id provided, assume non-PRO access
+            raise HTTPException(status_code=403, detail="Community Cases require PRO subscription")
+        
         cases = await db.community_cases.find().sort("helpful_count", -1).to_list(length=50)
         return [CommunityCase(**case) for case in cases]
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch community cases: {str(e)}")
 
