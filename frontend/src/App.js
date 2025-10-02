@@ -1498,7 +1498,7 @@ const EmpathyTrainingApp = () => {
                       showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
                     }
                   }}
-                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 no-select"
                   size="lg"
                 >
                   <Sparkles className="w-5 h-5 mr-2" />
