@@ -687,7 +687,7 @@ const EmpathyTrainingApp = () => {
                       setShowPaymentPage(true);
                       console.log('🔴 showPaymentPage set to true');
                     }}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3"
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 no-select"
                   >
                     <Crown className="w-6 h-6 mr-3" />
                     PRO Version starten
