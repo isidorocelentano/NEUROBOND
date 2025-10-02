@@ -556,6 +556,18 @@ frontend:
         -agent: "testing"
         -comment: "✅ LOGIN SYSTEM FULLY FUNCTIONAL: Comprehensive testing of /api/user/by-email/{email} endpoint successful. Results: 3/3 login tests passed with 100% success rate. ✅ USER LOOKUP BY EMAIL: Endpoint working perfectly - created test users and successfully retrieved them by email address. Tested with multiple email formats (example.com, gmail.com, company.de) - all working correctly. ✅ ERROR HANDLING: Non-existent emails properly return 404 status with appropriate error message. ✅ DATA INTEGRITY: Returned user data matches created user data exactly (ID, name, email, partner_name, subscription status). ✅ RESPONSE FORMAT: All required fields present in response including avatar field (correctly null for new users). CONCLUSION: Login system is production-ready and working as designed. User reports of login being 'completely broken' are incorrect - the backend login functionality is fully operational."
 
+  - task: "iOS Mobile UI Optimizations"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js, /app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Completed iOS Safari-specific frontend optimizations to improve mobile user experience. Added comprehensive CSS optimizations including webkit touch callout disabling, tap highlight removal, user selection prevention, and touch action manipulation for all buttons. Implemented iOS-specific input styling with font-size 16px to prevent zoom, webkit-appearance none for native styling removal. Enhanced payment button interactions with iOS Safari detection, optimized redirect handling, and applied no-select classes. Added mobile-friendly touch targets with 44px minimum size and improved scrolling with webkit-overflow-scrolling touch. These optimizations specifically target iOS Safari behavioral issues and improve mobile payment flow reliability."
+
 test_plan:
   current_focus:
     - "Comprehensive NEUROBOND Improvements Testing Completed"
