@@ -1369,7 +1369,7 @@ const EmpathyTrainingApp = () => {
                       showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
                     }
                   }}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 no-select"
                   size="lg"
                 >
                   <Crown className="w-5 h-5 mr-2" />
