@@ -264,6 +264,18 @@ backend:
         -agent: "testing"
         -comment: "🎯 ROUND CHF PRICING VERIFICATION COMPLETED: Comprehensive testing of updated subscription pricing successful. CRITICAL VERIFICATION RESULTS: ✅ ROUND PRICING CONFIRMED: Monthly subscription exactly CHF 10.00 (1000 cents), Yearly subscription exactly CHF 100.00 (10000 cents) ✅ PAYMENT METHODS: Only 'card' and 'paypal' available (TWINT correctly removed for subscriptions) ✅ PACKAGE NAMES: Correct round prices displayed - 'NEUROBOND PRO Monthly (CHF 10.00 inkl. MWST)' and 'NEUROBOND PRO Yearly (CHF 100.00 inkl. MWST)' ✅ SWISS CURRENCY: CHF configured correctly with subscription mode ✅ BILLING ADDRESSES: Swiss billing addresses supported (DACH region: CH, DE, AT, FR, IT) ✅ TWINT REMOVAL: Properly removed due to Stripe subscription limitations (TWINT doesn't support recurring payments). VERIFICATION: 15/15 pricing tests passed with 100% success rate. Professional round pricing implementation complete - no more confusing decimal amounts (10.81, 108.10). Users now see clean CHF 10.00/100.00 pricing. PayPal + Credit Cards provide comprehensive payment coverage for Swiss customers."
 
+  - task: "iOS Mobile Payment Optimization"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py, /app/frontend/src/App.js, /app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: true
+        -agent: "main"
+        -comment: "Implemented comprehensive iOS Safari optimizations for mobile payment flow. Backend: Added payment_method_options with 'customer_balance.redirect=always' to ensure proper mobile redirects. Frontend: Added iOS-specific CSS (-webkit-touch-callout:none, -webkit-tap-highlight-color:transparent, user-select:none) and JavaScript optimizations (iOS Safari detection, optimized redirect handling with window.open fallback, 100ms delay for Safari). Applied 'no-select' class to payment buttons and ensured 44px minimum touch targets for mobile. These changes address reported iOS mobile payment issues proactively."
+
   - task: "Comprehensive Stripe Payment Integration Testing"
     implemented: true
     working: true
