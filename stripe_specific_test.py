@@ -9,7 +9,7 @@ import json
 def test_exact_request_format():
     """Test the exact request format specified in the review"""
     
-    base_url = "https://payment-debug-6.preview.emergentagent.com"
+    base_url = "https://empathy-coach-1.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     print("🔍 Testing EXACT request format from review...")
