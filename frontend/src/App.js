@@ -1394,6 +1394,13 @@ const EmpathyTrainingApp = () => {
                       }
                     } catch (error) {
                       console.error('💳 Payment error:', error);
+                      console.error('💳 Error details:', {
+                        message: error.message,
+                        stack: error.stack,
+                        name: error.name,
+                        user: user,
+                        userEmail: user?.email
+                      });
                       showNotification('Fehler beim Laden der Zahlungsseite. Bitte versuchen Sie es später erneut.', 'error');
                     }
                   }}
