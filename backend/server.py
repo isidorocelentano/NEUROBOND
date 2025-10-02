@@ -1190,7 +1190,7 @@ Fokussiere besonders auf:
             import json
             analysis_json = json.loads(response)
             return {"analysis": analysis_json, "success": True, "format": "json"}
-        except:
+        except (json.JSONDecodeError, ValueError):
             # If JSON parsing fails, return structured text
             return {"analysis": {"detailed_text": response}, "success": True, "format": "text"}
     
