@@ -1291,6 +1291,102 @@ async def save_weekly_progress(progress_data: WeeklyProgress):
     await db.weekly_progress.insert_one(progress_dict)
     return progress_data
 
+@api_router.get("/gefuehlslexikon")
+async def get_gefuehlslexikon(user_id: Optional[str] = None):
+    """Get emotions lexicon - limited for free users, full for PRO"""
+    try:
+        # Sample emotions data structure (this would typically come from database)
+        all_emotions = [
+            {
+                "id": 1,
+                "name": "Wut / Ärger",
+                "category": "🔴 Hohe Aktivierung / Unbehagen",
+                "intensity_scale": "Verärgert → Wütend → Zornig / Rasend",
+                "definition": "Intensive emotionale Reaktion auf wahrgenommene Ungerechtigkeit, Verletzung oder Frustration",
+                "communication_tip": "Statt 'Du machst mich wütend!' sagen Sie: 'Ich bin wütend, weil mein Bedürfnis nach Respekt verletzt wurde.'"
+            },
+            {
+                "id": 2,
+                "name": "Angst",
+                "category": "🔴 Hohe Aktivierung / Unbehagen",
+                "intensity_scale": "Besorgt → Ängstlich → Panisch",
+                "definition": "Emotionale Reaktion auf wahrgenommene Bedrohung oder Unsicherheit in der Zukunft",
+                "communication_tip": "Sprechen Sie konkrete Ängste aus: 'Ich habe Angst vor... Kannst du mir dabei helfen, mich sicherer zu fühlen?'"
+            },
+            {
+                "id": 3,
+                "name": "Stress / Überforderung",
+                "category": "🔴 Hohe Aktivierung / Unbehagen",
+                "intensity_scale": "Angespannt → Gestresst → Überwältigt",
+                "definition": "Reaktion auf zu hohe Anforderungen oder Zeitdruck",
+                "communication_tip": "Teilen Sie konkret mit: 'Ich bin überfordert mit... Kannst du mir helfen?'"
+            },
+            {
+                "id": 4,
+                "name": "Frustration",
+                "category": "🔴 Hohe Aktivierung / Unbehagen",
+                "intensity_scale": "Genervt → Frustriert → Verzweifelt",
+                "definition": "Entsteht wenn Erwartungen nicht erfüllt werden oder Hindernisse auftreten",
+                "communication_tip": "Erklären Sie die unerfüllte Erwartung: 'Ich bin frustriert, weil ich erwartet hatte...'"
+            },
+            {
+                "id": 5,
+                "name": "Enttäuschung",
+                "category": "🔴 Hohe Aktivierung / Unbehagen",
+                "intensity_scale": "Unzufrieden → Enttäuscht → Tief verletzt",
+                "definition": "Gefühl wenn Hoffnungen oder Erwartungen nicht erfüllt wurden",
+                "communication_tip": "Benennen Sie die enttäuschte Erwartung: 'Ich bin enttäuscht, weil ich gehofft hatte...'"
+            },
+            # PRO emotions (6 onwards)
+            {
+                "id": 6,
+                "name": "Traurigkeit",
+                "category": "🟡 Niedrige Aktivierung / Unbehagen",
+                "intensity_scale": "Melancholisch → Traurig → Tieftraurig",
+                "definition": "Natürliche Reaktion auf Verlust, Trennung oder unerfüllte Bedürfnisse",
+                "communication_tip": "Teilen Sie mit: 'Ich bin traurig über... Ich brauche...'"
+            },
+            {
+                "id": 7,
+                "name": "Einsamkeit",
+                "category": "🟡 Niedrige Aktivierung / Unbehagen",
+                "intensity_scale": "Allein → Einsam → Verlassen",
+                "definition": "Gefühl der Trennung und des Mangels an Verbindung zu anderen",
+                "communication_tip": "Sprechen Sie das Bedürfnis aus: 'Ich fühle mich einsam und brauche mehr Nähe zu dir.'"
+            }
+            # ... more emotions would be here
+        ]
+        
+        # Check user access level
+        has_pro_access = False
+        if user_id:
+            user = await db.users.find_one({"id": user_id})
+            if user:
+                user_obj = User(**user)
+                has_pro_access = check_feature_access(user_obj, "full_gefuehlslexikon")
+        
+        # Return limited or full lexicon based on subscription
+        if has_pro_access:
+            return {
+                "emotions": all_emotions,
+                "total_count": len(all_emotions),
+                "access_level": "pro",
+                "message": "Vollständiges Gefühlslexikon verfügbar"
+            }
+        else:
+            free_limit = get_free_emotions_limit()
+            limited_emotions = all_emotions[:free_limit]
+            return {
+                "emotions": limited_emotions,
+                "total_count": len(all_emotions),
+                "available_count": len(limited_emotions),
+                "access_level": "free",
+                "message": f"Basis Gefühlslexikon ({free_limit} von {len(all_emotions)} Emotionen). Upgrade zu PRO für vollständigen Zugang."
+            }
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch emotions lexicon: {str(e)}")
+
 @api_router.post("/create-community-case")
 async def create_community_case(request: CommunityCaseCreate):
     """Anonymize dialog session and create community case"""
