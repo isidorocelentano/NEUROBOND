@@ -6031,5 +6031,18 @@ if __name__ == "__main__":
             tester = EmpathyTrainingAPITester()
             tester.run_mongodb_and_payment_tests()
             sys.exit(0)
+        elif sys.argv[1] == "training":
+            # Run training scenario individualization tests
+            tester = EmpathyTrainingAPITester()
+            success = tester.run_training_scenario_individualization_tests()
+            sys.exit(0 if success else 1)
     else:
-        sys.exit(main())
+        # Default: Run training scenario individualization tests
+        tester = EmpathyTrainingAPITester()
+        print("🚀 Starting NEUROBOND Training Scenario Individualization Testing...")
+        print(f"🌐 Base URL: {tester.base_url}")
+        print(f"🔗 API URL: {tester.api_url}")
+        print("=" * 80)
+        
+        success = tester.run_training_scenario_individualization_tests()
+        sys.exit(0 if success else 1)
