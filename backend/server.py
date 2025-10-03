@@ -338,14 +338,32 @@ Current emotional state: You are feeling the stress/frustration described in the
         if not response_text or response_text.strip() == "" or len(response_text.strip()) < 10:
             # Scenario-specific fallback messages to ensure variety
             fallback_messages = {
+                # Stufe 1: Grundlagen
                 1: f"Puh, {request.user_name}, ich bin heute wirklich am Ende. Die Arbeit wird immer mehr und ich weiß nicht, wie ich das alles schaffen soll. Ich fühle mich so erschöpft...",
                 2: f"{request.user_name}, ich mache mir wirklich Sorgen wegen der Jobsuche. Was ist, wenn ich nichts Passendes finde? Die Ungewissheit macht mir richtig Angst.",
                 3: f"Ach {request.user_name}, Sarah und ich hatten wieder so eine Diskussion. Es ist echt kompliziert zwischen uns geworden und ich weiß nicht mehr, was ich machen soll.",
                 4: f"Mir geht's schon gut, {request.user_name}... nur ein bisschen müde heute. *seufzt und wirkt angespannt* Wirklich, es ist nichts Besonderes.",
                 5: f"{request.user_name}, ich hab die Beförderung nicht bekommen. Sie haben jemand anderen genommen. Ich bin so enttäuscht... ich hatte mir so viele Hoffnungen gemacht.",
+                
+                # Stufe 2: Konfliktlösung
                 6: f"{request.user_name}, du verstehst einfach nicht was ich brauche! Ich möchte endlich mal in die Berge, Ruhe haben. Warum muss es denn immer Strand sein?",
                 7: f"Ich fühle mich, als würde ich alles alleine machen, {request.user_name}. Deine Kritik von gestern hat mich richtig getroffen. Siehst du denn nicht, wie viel ich tue?",
-                8: f"Das ist meine Familie, {request.user_name}! Ich kann doch nicht nein sagen, wenn sie Hilfe brauchen. Warum verstehst du das nicht?"
+                8: f"Das ist meine Familie, {request.user_name}! Ich kann doch nicht nein sagen, wenn sie Hilfe brauchen. Warum verstehst du das nicht?",
+                
+                # Stufe 3: Emotionale Intelligenz
+                9: f"Ich kann das einfach nicht mehr ertragen, {request.user_name}. Du findest mich bestimmt nicht mehr attraktiv... ich erkenne mich selbst nicht mehr.",
+                10: f"{request.user_name}, diese Ängste lassen mich nicht schlafen. Ich schäme mich so dafür, aber ich kann sie einfach nicht abstellen. Bin ich schwach?",
+                11: f"Ich weiß, ich ziehe mich zurück, {request.user_name}. Nach dem was passiert ist, fällt es mir so schwer, dir zu vertrauen. Aber ich vermisse unsere Nähe so sehr.",
+                
+                # Stufe 4: Vertrauen & Intimität  
+                12: f"{request.user_name}, ich fühle mich so einsam in unserer Beziehung. Wir reden zwar, aber ich spüre keine echte Verbindung mehr. Liebst du mich noch?",
+                13: f"Ich will dir vertrauen, {request.user_name}, ich will es wirklich. Aber nach dem was passiert ist, habe ich solche Angst vor erneuter Enttäuschung.",
+                14: f"Manchmal frage ich mich, {request.user_name}, ob du überhaupt noch siehst, was ich alles für uns tue. Ich fühle mich so unsichtbar und unwichtig.",
+                
+                # Stufe 5: Lebenskrisen
+                15: f"{request.user_name}, ich frage mich, ob ich die richtigen Entscheidungen in meinem Leben getroffen habe. Ist das alles hier wirklich das, was ich wollte?",
+                16: f"Seit dem Verlust fühle ich mich wie betäubt, {request.user_name}. Die Trauer überwältigt mich und ich weiß nicht, wie ich damit umgehen soll.",
+                17: f"{request.user_name}, diese ganze Veränderung macht mir Angst. Was ist, wenn wir das nicht schaffen? Was ist, wenn alles schief geht?"
             }
             
             response_text = fallback_messages.get(request.scenario_id, scenario['partner_opening'])
