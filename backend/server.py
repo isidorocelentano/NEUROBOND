@@ -281,29 +281,59 @@ Current emotional state: You are feeling the stress/frustration described in the
             system_message=system_message
         ).with_model("openai", "gpt-4o")
 
-        # Generate the opening message from the partner
-        opening_message = UserMessage(text=f"Express your feelings and situation naturally as {request.partner_name}, based on this opening: '{scenario['partner_opening']}'. Remember: you need empathy from {request.user_name}, don't give empathy yourself.")
-        
-        response = await chat.send_message(opening_message)
-        
-        # Debug: Log the raw AI response
-        logging.info(f"Raw AI response for scenario {request.scenario_id}: '{response}' (type: {type(response)})")
-        
-        # Ensure response is converted to string properly
-        if hasattr(response, 'content'):
-            response_text = response.content
-        elif hasattr(response, 'text'):
-            response_text = response.text  
-        else:
-            response_text = str(response)
+        # Generate individual opening message for this specific scenario
+        try:
+            # Create scenario-specific prompts
+            scenario_prompts = {
+                1: f"Du bist {request.partner_name} und kommst erschöpft von einem stressigen Arbeitstag heim. Du fühlst dich überlastet und brauchst emotionale Unterstützung von {request.user_name}. Antworte in 2-3 Sätzen wie du dich fühlst.",
+                2: f"Du bist {request.partner_name} und machst dir Sorgen um deine Jobsuche. Du fühlst dich unsicher und ängstlich. Teile deine Bedenken mit {request.user_name} in 2-3 Sätzen.",
+                3: f"Du bist {request.partner_name} und hattest Probleme mit einer Freundin namens Sarah. Du bist frustriert und brauchst jemanden zum Reden. Erkläre {request.user_name} kurz was passiert ist.",
+                4: f"Du bist {request.partner_name} und versuchst zu verbergen, dass du gestresst bist, aber deine Körpersprache verrät dich. Antworte defensiv aber lass durchblicken, dass doch etwas nicht stimmt.",
+                5: f"Du bist {request.partner_name} und hast eine wichtige Beförderung nicht bekommen. Du bist enttäuscht und verletzt. Teile deine Gefühle mit {request.user_name}.",
+                6: f"Du bist {request.partner_name} und frustriert über die Urlaubsplanung. Du willst in die Berge, aber es ist immer Strand. Drücke deine Frustration aus.",
+                7: f"Du bist {request.partner_name} und fühlst dich überlastet mit dem Haushalt. Du bist verletzt von der gestrigen Kritik. Erkläre wie du dich fühlst.",
+                8: f"Du bist {request.partner_name} und verteidigst spontane Familienverpflichtungen. Du fühlst dich zwischen Familie und Partner hin- und hergerissen. Erkläre deine Position."
+            }
             
-        # Debug: Ensure response is not empty
-        if not response_text or response_text.strip() == "":
-            # Fallback to scenario's partner_opening if AI response is empty
-            response_text = scenario['partner_opening']
-            logging.warning(f"AI response was empty for scenario {request.scenario_id}, using fallback: {response_text}")
+            # Use scenario-specific prompt or general one
+            scenario_prompt = scenario_prompts.get(request.scenario_id, 
+                f"Du bist {request.partner_name} in der Situation: {scenario['context']}. Antworte emotinal wie beschrieben in 2-3 Sätzen.")
+            
+            opening_message = UserMessage(text=scenario_prompt)
+            response = await chat.send_message(opening_message)
+            
+            print(f"🎭 TRAINING: AI response for scenario {request.scenario_id}: '{response}' (type: {type(response)})")
+            
+            # Ensure response is converted to string properly
+            if hasattr(response, 'content'):
+                response_text = response.content
+            elif hasattr(response, 'text'):
+                response_text = response.text  
+            else:
+                response_text = str(response)
+                
+        except Exception as ai_error:
+            print(f"⚠️ TRAINING: AI generation failed for scenario {request.scenario_id}: {str(ai_error)}")
+            response_text = ""
+            
+        # Enhanced fallback logic - use different openings for each scenario
+        if not response_text or response_text.strip() == "" or len(response_text.strip()) < 10:
+            # Scenario-specific fallback messages to ensure variety
+            fallback_messages = {
+                1: f"Puh, {request.user_name}, ich bin heute wirklich am Ende. Die Arbeit wird immer mehr und ich weiß nicht, wie ich das alles schaffen soll. Ich fühle mich so erschöpft...",
+                2: f"{request.user_name}, ich mache mir wirklich Sorgen wegen der Jobsuche. Was ist, wenn ich nichts Passendes finde? Die Ungewissheit macht mir richtig Angst.",
+                3: f"Ach {request.user_name}, Sarah und ich hatten wieder so eine Diskussion. Es ist echt kompliziert zwischen uns geworden und ich weiß nicht mehr, was ich machen soll.",
+                4: f"Mir geht's schon gut, {request.user_name}... nur ein bisschen müde heute. *seufzt und wirkt angespannt* Wirklich, es ist nichts Besonderes.",
+                5: f"{request.user_name}, ich hab die Beförderung nicht bekommen. Sie haben jemand anderen genommen. Ich bin so enttäuscht... ich hatte mir so viele Hoffnungen gemacht.",
+                6: f"{request.user_name}, du verstehst einfach nicht was ich brauche! Ich möchte endlich mal in die Berge, Ruhe haben. Warum muss es denn immer Strand sein?",
+                7: f"Ich fühle mich, als würde ich alles alleine machen, {request.user_name}. Deine Kritik von gestern hat mich richtig getroffen. Siehst du denn nicht, wie viel ich tue?",
+                8: f"Das ist meine Familie, {request.user_name}! Ich kann doch nicht nein sagen, wenn sie Hilfe brauchen. Warum verstehst du das nicht?"
+            }
+            
+            response_text = fallback_messages.get(request.scenario_id, scenario['partner_opening'])
+            print(f"🔄 TRAINING: Using enhanced fallback for scenario {request.scenario_id}: {response_text[:50]}...")
         
-        logging.info(f"Training scenario {request.scenario_id} started with partner message: {response_text[:100]}...")
+        print(f"✅ TRAINING: Final message for scenario {request.scenario_id}: {response_text[:100]}...")
         
         # Store scenario session in database
         scenario_session = {
