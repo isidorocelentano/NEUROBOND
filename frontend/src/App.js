@@ -517,10 +517,7 @@ const EmpathyTrainingApp = () => {
                   <Button 
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      setShowLandingPage(false);
-                      setShowOnboarding(true);
-                    }}
+                    onClick={() => setShowLoginModal(true)}
                     className="text-gray-300 hover:text-white hover:bg-gray-800"
                   >
                     <User className="w-4 h-4 mr-2" />
@@ -534,8 +531,16 @@ const EmpathyTrainingApp = () => {
                     }}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
-                    <Rocket className="w-4 h-4 mr-2" />
-                    Jetzt starten
+                    <Star className="w-4 h-4 mr-2" />
+                    Kostenlos registrieren
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={() => setShowPaymentPage(true)}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    PRO Version starten
                   </Button>
                 </div>
               </div>
