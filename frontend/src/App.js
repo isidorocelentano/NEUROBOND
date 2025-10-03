@@ -374,6 +374,30 @@ const EmpathyTrainingApp = () => {
     setShowUpgradeModal(true);
   };
 
+  // Admin/Test Mode: Secret key combination for PRO access
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Secret combination: Ctrl + Shift + P for PRO test access
+      if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+        console.log('🔑 ADMIN: Activating PRO test mode...');
+        setUserSubscription('pro');
+        showNotification('🎉 ADMIN: PRO Test-Modus aktiviert! Alle Features freigeschaltet.', 'success');
+        e.preventDefault();
+      }
+      
+      // Secret combination: Ctrl + Shift + F for FREE mode
+      if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+        console.log('🔓 ADMIN: Switching to FREE mode...');
+        setUserSubscription('free');
+        showNotification('📝 ADMIN: FREE-Modus aktiviert. PRO Features gesperrt.', 'info');
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   // Enhanced user restoration with debugging and Pro payment check
   useEffect(() => {
     console.log('🔍 NEUROBOND: Initializing app...');
