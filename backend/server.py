@@ -44,12 +44,13 @@ try:
                 db_name = url_parts[-1]
                 print(f"🔍 Extracted database name from URL: {db_name}")
             else:
-                # Last resort - use a safe default but warn
-                db_name = "neurobond"
-                print(f"⚠️ Using fallback database name: {db_name}")
+                # Use environment fallback or empathy_training_db as last resort
+                db_name = os.environ.get('DB_NAME', 'empathy_training_db')
+                print(f"⚠️ Using environment fallback database name: {db_name}")
         else:
-            db_name = "neurobond"
-            print(f"⚠️ Using fallback database name: {db_name}")
+            # Use environment fallback or empathy_training_db as last resort
+            db_name = os.environ.get('DB_NAME', 'empathy_training_db')
+            print(f"⚠️ Using environment fallback database name: {db_name}")
     
     print(f"🔍 Using database: {db_name}")
     db = client.get_database(db_name)
