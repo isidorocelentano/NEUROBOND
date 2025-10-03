@@ -33,24 +33,10 @@ try:
     # Use environment variable for database name - CRITICAL for managed deployments
     db_name = os.environ.get('MONGO_DB_NAME')
     if not db_name:
-        print("⚠️ WARNING: MONGO_DB_NAME not set, this may cause authorization issues in managed MongoDB")
-        # Extract database name from MONGO_URL if possible
-        if mongo_url and '/' in mongo_url:
-            # Try to extract DB name from URL like mongodb://host:port/dbname
-            # Remove query parameters first
-            url_without_params = mongo_url.split('?')[0].rstrip('/')
-            url_parts = url_without_params.split('/')
-            if len(url_parts) > 3 and url_parts[-1]:
-                db_name = url_parts[-1]
-                print(f"🔍 Extracted database name from URL: {db_name}")
-            else:
-                # Use environment fallback or empathy_training_db as last resort
-                db_name = os.environ.get('DB_NAME', 'empathy_training_db')
-                print(f"⚠️ Using environment fallback database name: {db_name}")
-        else:
-            # Use environment fallback or empathy_training_db as last resort
-            db_name = os.environ.get('DB_NAME', 'empathy_training_db')
-            print(f"⚠️ Using environment fallback database name: {db_name}")
+        print("⚠️ WARNING: MONGO_DB_NAME not set, using automatic configuration for managed MongoDB")
+        # For managed MongoDB, use a generic database name that will be auto-created
+        db_name = "app_database"
+        print(f"🔧 Using managed MongoDB database: {db_name}")
     
     print(f"🔍 Using database: {db_name}")
     db = client.get_database(db_name)
