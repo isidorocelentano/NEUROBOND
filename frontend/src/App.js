@@ -4411,6 +4411,33 @@ const EmpathyTrainingApp = () => {
                   <div className="text-2xl font-bold text-purple-400">5</div>
                   <div className="text-sm text-gray-400">Stufen verfügbar</div>
                 </div>
+                {/* Admin Test Controls */}
+                <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-700/50">
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm"
+                      onClick={() => {
+                        setUserSubscription('pro');
+                        showNotification('🎉 PRO Test-Modus aktiviert!', 'success');
+                      }}
+                      className="bg-yellow-600 hover:bg-yellow-700 text-xs px-3 py-1"
+                    >
+                      <Crown className="w-3 h-3 mr-1" />
+                      PRO Test
+                    </Button>
+                    <Button 
+                      size="sm"
+                      onClick={() => {
+                        setUserSubscription('free');
+                        showNotification('📝 FREE-Modus aktiviert.', 'info');
+                      }}
+                      className="bg-gray-600 hover:bg-gray-700 text-xs px-3 py-1"
+                    >
+                      FREE Test
+                    </Button>
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">Test-Modus</div>
+                </div>
               </div>
             </div>
 
