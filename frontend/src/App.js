@@ -714,6 +714,89 @@ const EmpathyTrainingApp = () => {
                 </div>
               </div>
 
+              {/* Quick Login Section */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
+                <h3 className="text-xl font-semibold text-white mb-4 text-center">Bereits registriert? Schnell anmelden:</h3>
+                <div className="flex gap-3 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    placeholder="ihre@email.com"
+                    className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        document.getElementById('quickLoginBtn').click();
+                      }
+                    }}
+                  />
+                  <Button
+                    id="quickLoginBtn"
+                    onClick={async () => {
+                      if (!loginEmail) {
+                        showNotification('Bitte geben Sie eine Email-Adresse ein.', 'error');
+                        return;
+                      }
+                      
+                      try {
+                        console.log('🔍 QUICK LOGIN: Searching for user:', loginEmail);
+                        const response = await fetch(`${BACKEND_URL}/api/user/by-email/${loginEmail}`);
+                        
+                        if (response.ok) {
+                          const userData = await response.json();
+                          console.log('✅ QUICK LOGIN: User found:', userData);
+                          
+                          setUser(userData);
+                          setShowLandingPage(false);
+                          setShowOnboarding(false);
+                          
+                          if (userData.subscription_status === 'active') {
+                            setUserSubscription('pro');
+                            showNotification(`Willkommen ${userData.name}! PRO-Zugang aktiviert. 🎉`, 'success');
+                          } else {
+                            setUserSubscription('free');
+                            showNotification(`Willkommen ${userData.name}! 👋`, 'success');
+                          }
+                          
+                          localStorage.setItem('neurobond_user', JSON.stringify(userData));
+                        } else if (response.status === 404) {
+                          showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
+                        } else {
+                          showNotification('Login fehlgeschlagen.', 'error');
+                        }
+                      } catch (error) {
+                        console.error('QUICK LOGIN error:', error);
+                        showNotification('Verbindungsfehler.', 'error');
+                      }
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 px-6"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setUserSubscription('pro');
+                      setUser({ 
+                        name: 'PRO Test User', 
+                        email: loginEmail || 'pro@neurobond.ch', 
+                        partner_name: 'Test Partner',
+                        subscription_status: 'active'
+                      });
+                      setShowLandingPage(false);
+                      setShowOnboarding(false);
+                      showNotification('🎉 PRO Test-Zugang aktiviert!', 'success');
+                    }}
+                    className="bg-yellow-600 hover:bg-yellow-700 px-4"
+                  >
+                    <Crown className="w-4 h-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-400 text-center mt-2">
+                  Oder verwenden Sie den gelben PRO-Test Button für sofortigen Zugang
+                </p>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
                 <div className="text-center">
                   <Button 
@@ -726,7 +809,7 @@ const EmpathyTrainingApp = () => {
                     className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl transition-all duration-300 mb-3 no-select"
                   >
                     <Play className="w-6 h-6 mr-3" />
-                    Kostenlos ausprobieren
+                    Kostenlos registrieren
                   </Button>
                   <div className="text-sm text-gray-400">
                     <div>✓ 5 kostenlose Trainings</div>
