@@ -1296,6 +1296,48 @@ async def save_weekly_progress(progress_data: WeeklyProgress):
     await db.weekly_progress.insert_one(progress_dict)
     return progress_data
 
+@api_router.post("/admin/set-pro-status")
+async def set_user_pro_status(request: dict):
+    """Admin endpoint to manually set user PRO status for testing"""
+    try:
+        user_email = request.get("user_email")
+        status = request.get("status", "active")  # active or free
+        
+        if not user_email:
+            raise HTTPException(status_code=400, detail="user_email is required")
+        
+        # Set expiration based on status
+        if status == "active":
+            # Set to 1 year from now for test access
+            expires_at = datetime.now(timezone.utc).replace(year=datetime.now().year + 1)
+        else:
+            expires_at = None
+        
+        # Update user subscription status
+        result = await db.users.update_one(
+            {"email": user_email},
+            {"$set": {
+                "subscription_status": status,
+                "subscription_expires_at": expires_at,
+                "subscription_type": "test",
+                "updated_at": datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {
+            "success": True,
+            "message": f"User {user_email} subscription status updated to {status}",
+            "expires_at": expires_at.isoformat() if expires_at else None
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update user status: {str(e)}")
+
 @api_router.get("/gefuehlslexikon")
 async def get_gefuehlslexikon(user_id: Optional[str] = None):
     """Get emotions lexicon - limited for free users, full for PRO"""
