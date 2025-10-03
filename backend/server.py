@@ -285,14 +285,32 @@ Current emotional state: You are feeling the stress/frustration described in the
         try:
             # Create scenario-specific prompts
             scenario_prompts = {
+                # Stufe 1: Grundlagen
                 1: f"Du bist {request.partner_name} und kommst erschöpft von einem stressigen Arbeitstag heim. Du fühlst dich überlastet und brauchst emotionale Unterstützung von {request.user_name}. Antworte in 2-3 Sätzen wie du dich fühlst.",
                 2: f"Du bist {request.partner_name} und machst dir Sorgen um deine Jobsuche. Du fühlst dich unsicher und ängstlich. Teile deine Bedenken mit {request.user_name} in 2-3 Sätzen.",
                 3: f"Du bist {request.partner_name} und hattest Probleme mit einer Freundin namens Sarah. Du bist frustriert und brauchst jemanden zum Reden. Erkläre {request.user_name} kurz was passiert ist.",
                 4: f"Du bist {request.partner_name} und versuchst zu verbergen, dass du gestresst bist, aber deine Körpersprache verrät dich. Antworte defensiv aber lass durchblicken, dass doch etwas nicht stimmt.",
                 5: f"Du bist {request.partner_name} und hast eine wichtige Beförderung nicht bekommen. Du bist enttäuscht und verletzt. Teile deine Gefühle mit {request.user_name}.",
-                6: f"Du bist {request.partner_name} und frustriert über die Urlaubsplanung. Du willst in die Berge, aber es ist immer Strand. Drücke deine Frustration aus.",
-                7: f"Du bist {request.partner_name} und fühlst dich überlastet mit dem Haushalt. Du bist verletzt von der gestrigen Kritik. Erkläre wie du dich fühlst.",
-                8: f"Du bist {request.partner_name} und verteidigst spontane Familienverpflichtungen. Du fühlst dich zwischen Familie und Partner hin- und hergerissen. Erkläre deine Position."
+                
+                # Stufe 2: Konfliktlösung
+                6: f"Du bist {request.partner_name} und frustriert über die Urlaubsplanung. Du willst in die Berge, aber es ist immer Strand. Drücke deine Frustration aus und erkläre warum dir das so wichtig ist.",
+                7: f"Du bist {request.partner_name} und fühlst dich überlastet mit dem Haushalt. Du bist verletzt von der gestrigen Kritik. Erkläre wie du dich fühlst und was du brauchst.",
+                8: f"Du bist {request.partner_name} und verteidigst spontane Familienverpflichtungen. Du fühlst dich zwischen Familie und Partner hin- und hergerissen. Erkläre deine Position emotional.",
+                
+                # Stufe 3: Emotionale Intelligenz  
+                9: f"Du bist {request.partner_name} und kämpfst mit Selbstzweifeln bezüglich deines Körperbildes. Du fühlst dich unattraktiv und zweifelst an dir selbst. Teile deine verletzlichen Gefühle mit {request.user_name}.",
+                10: f"Du bist {request.partner_name} und leidest unter Ängsten, die dich nachts wach halten. Du schämst dich für deine Schwäche und brauchst Unterstützung von {request.user_name}.",
+                11: f"Du bist {request.partner_name} und hast Angst vor Nähe nach einer schlechten Erfahrung. Du ziehst dich zurück aber sehnst dich nach Verbindung mit {request.user_name}.",
+                
+                # Stufe 4: Vertrauen & Intimität
+                12: f"Du bist {request.partner_name} und fühlst dich emotional vernachlässigt in der Beziehung. Du sehnst dich nach mehr emotionaler Intimität mit {request.user_name}.",
+                13: f"Du bist {request.partner_name} und hast Vertrauensprobleme nach einer Enttäuschung. Du willst vertrauen, aber hast Angst vor erneuter Verletzung.",
+                14: f"Du bist {request.partner_name} und fühlst dich nicht genug wertgeschätzt. Du brauchst mehr Anerkennung und Aufmerksamkeit von {request.user_name}.",
+                
+                # Stufe 5: Lebenskrisen
+                15: f"Du bist {request.partner_name} und durchlebst eine Midlife-Crisis. Du zweifelst an deinen Lebensentscheidungen und brauchst Unterstützung von {request.user_name}.",
+                16: f"Du bist {request.partner_name} und trauerst um einen Verlust. Du bist überwältigt von Emotionen und brauchst {request.user_name} zum Halt finden.",
+                17: f"Du bist {request.partner_name} und stehst vor einer großen Lebensveränderung. Du hast Angst vor der Ungewissheit und brauchst Rückhalt von {request.user_name}."
             }
             
             # Use scenario-specific prompt or general one
