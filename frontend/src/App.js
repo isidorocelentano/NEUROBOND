@@ -410,6 +410,7 @@ const EmpathyTrainingAppContent = () => {
   const [showPaymentPage, setShowPaymentPage] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
