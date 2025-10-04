@@ -46,8 +46,6 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
     startScenario();
   }, []);
 
-  // Speech recognition functionality now handled by SpeechInput component
-
   // Get detailed scenario context based on scenario ID
   const getDetailedScenarioContext = (scenarioId) => {
     const scenarios = {
