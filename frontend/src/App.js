@@ -661,7 +661,7 @@ const EmpathyTrainingAppContent = () => {
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
                     <Star className="w-4 h-4 mr-2" />
-                    {t('register')}
+                    Kostenlos registrieren
                   </Button>
                   <Button 
                     size="sm"
