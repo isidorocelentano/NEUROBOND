@@ -688,7 +688,7 @@ const EmpathyTrainingAppContent = () => {
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-                {t('subtitle')}
+                Empathie lernen, Kommunikation verbessern, Verbindung vertiefen
               </p>
 
               {/* NOTFALL LOGIN-SEKTION - Garantiert funktionierend */}
