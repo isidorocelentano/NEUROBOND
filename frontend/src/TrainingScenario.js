@@ -258,7 +258,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, c
   );
 };
 
-const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onBack, t, currentLanguage }) => {
+const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onBack }) => {
   const [sessionData, setSessionData] = useState(null);
   const [partnerMessage, setPartnerMessage] = useState('');
   const [userResponse, setUserResponse] = useState('');
