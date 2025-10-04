@@ -501,7 +501,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                 
                 <div className="flex justify-between items-center">
                   <p className="text-gray-400 text-sm">
-                    💡 Tipp: Nutzen Sie das Mikrofon-Icon für Spracheingabe in 6 Sprachen
+                    💡 Tipp: Nehmen Sie sich Zeit für eine durchdachte, empathische Antwort
                   </p>
                   <Button
                     onClick={submitResponse}
