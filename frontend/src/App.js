@@ -818,16 +818,56 @@ const EmpathyTrainingAppContent = () => {
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
                 <h3 className="text-xl font-semibold text-white mb-4 text-center">{t('alreadyRegistered')}</h3>
                 <div className="flex gap-3 max-w-md mx-auto">
-                  <StableLoginInput
-                    value={loginEmail}
-                    onChange={setLoginEmail}
+                  <UltraStableLoginInput
                     placeholder={t('email') || "ihre@email.com"}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const loginBtn = document.getElementById('quickLoginBtn');
-                        if (loginBtn) loginBtn.click();
+                    onEmailChange={(email) => {
+                      // Only update state if really necessary - avoid re-renders
+                      if (loginEmail !== email) {
+                        setLoginEmail(email);
                       }
+                    }}
+                    onEnter={(email) => {
+                      // Perform login directly with email from input
+                      if (!email) {
+                        showNotification(t('enterEmail') || 'Bitte geben Sie eine Email-Adresse ein.', 'error');
+                        return;
+                      }
+                      
+                      // Direct login function without relying on state
+                      const performLogin = async () => {
+                        try {
+                          console.log('🔍 DIRECT LOGIN: Searching for user:', email);
+                          const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
+                          
+                          if (response.ok) {
+                            const userData = await response.json();
+                            console.log('✅ DIRECT LOGIN: User found:', userData);
+                            
+                            setUser(userData);
+                            setShowLandingPage(false);
+                            setShowOnboarding(false);
+                            
+                            if (userData.subscription_status === 'active') {
+                              setUserSubscription('pro');
+                              showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! ${t('proAccess') || 'PRO-Zugang aktiviert'} 🎉`, 'success');
+                            } else {
+                              setUserSubscription('free');
+                              showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! 👋`, 'success');
+                            }
+                            
+                            localStorage.setItem('neurobond_user', JSON.stringify(userData));
+                          } else if (response.status === 404) {
+                            showNotification(t('noAccountFound') || 'Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
+                          } else {
+                            showNotification(t('loginFailed') || 'Login fehlgeschlagen.', 'error');
+                          }
+                        } catch (error) {
+                          console.error('DIRECT LOGIN error:', error);
+                          showNotification(t('connectionError') || 'Verbindungsfehler.', 'error');
+                        }
+                      };
+                      
+                      performLogin();
                     }}
                   />
                   <Button
