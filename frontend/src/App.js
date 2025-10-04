@@ -12,36 +12,53 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Stable Login Input Component to prevent re-render issues
-const StableLoginInput = React.memo(({ value, onChange, placeholder, onKeyDown }) => {
-  const [internalValue, setInternalValue] = useState(value);
+// Ultra-Stable Login Input Component - completely isolated from parent re-renders
+const UltraStableLoginInput = ({ placeholder, onEnter, onEmailChange }) => {
+  const inputRef = useRef(null);
+  const valueRef = useRef('');
   
-  // Sync with parent only when value actually changes
-  useEffect(() => {
-    if (value !== internalValue) {
-      setInternalValue(value);
-    }
-  }, [value]);
-  
-  const handleChange = useCallback((e) => {
+  // Use direct DOM manipulation to avoid React re-render issues
+  const handleInputChange = (e) => {
     const newValue = e.target.value;
-    setInternalValue(newValue);
-    onChange(newValue);
-  }, [onChange]);
+    valueRef.current = newValue;
+    if (onEmailChange) {
+      // Use setTimeout to avoid potential re-render loops
+      setTimeout(() => onEmailChange(newValue), 0);
+    }
+  };
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (onEnter) {
+        onEnter(valueRef.current);
+      }
+    }
+  };
+  
+  // Initialize input value on mount only
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+      valueRef.current = '';
+    }
+  }, []);
 
   return (
     <input
+      ref={inputRef}
       type="email"
-      value={internalValue}
-      onChange={handleChange}
+      onChange={handleInputChange}
+      onKeyDown={handleKeyDown}
       placeholder={placeholder}
       className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-      onKeyDown={onKeyDown}
       autoComplete="email"
       spellCheck={false}
+      autoCorrect="off"
+      autoCapitalize="off"
     />
   );
-});
+};
 
 // Language Switcher Component  
 const LanguageSwitcher = () => {
