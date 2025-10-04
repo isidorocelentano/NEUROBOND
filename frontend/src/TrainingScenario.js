@@ -42,7 +42,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, c
           recognitionRef.current = new SpeechRecognition();
           recognitionRef.current.continuous = false;
           recognitionRef.current.interimResults = false;
-          recognitionRef.current.lang = currentLanguage;
+          recognitionRef.current.lang = currentSpeechLanguage;
 
           recognitionRef.current.onstart = () => {
             console.log('Speech recognition started');
@@ -296,7 +296,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
           recognitionRef.current = new SpeechRecognition();
           recognitionRef.current.continuous = false;
           recognitionRef.current.interimResults = false;
-          recognitionRef.current.lang = currentLanguage;
+          recognitionRef.current.lang = currentSpeechLanguage;
 
           recognitionRef.current.onstart = () => {
             console.log('Speech recognition started');
