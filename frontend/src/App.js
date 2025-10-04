@@ -636,6 +636,7 @@ const EmpathyTrainingAppContent = () => {
                       }}
                     />
                     <Button
+                      id="navbar-login-button"
                       size="sm" 
                       onClick={() => {
                         console.log('🔍 LOGIN: Button clicked');
