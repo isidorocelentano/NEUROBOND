@@ -153,89 +153,105 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, c
 
   return (
     <div className="relative">
-      <div className="relative">
+      {/* Main Input Container */}
+      <div className="relative bg-gray-700 border border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
         <Input
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`${className} pr-16`}
+          className={`${className} pr-24 bg-transparent border-0 focus:ring-0 text-white placeholder-gray-400`}
           onKeyPress={onKeyPress}
         />
-        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+        
+        {/* Enhanced Control Panel */}
+        <div className="absolute right-0 top-0 bottom-0 flex items-center bg-gray-800/50 border-l border-gray-600">
+          
+          {/* Language Selector */}
           <div className="relative">
             <Button
               type="button"
               variant="ghost"
               size="sm"
               onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-              className="h-8 w-8 p-0 hover:bg-gray-600 text-gray-300 hover:text-white"
-              title={`Sprache: ${languageOptions[currentLanguage]}`}
+              className="h-10 px-3 text-gray-300 hover:text-white hover:bg-gray-600 border-r border-gray-600 rounded-none"
+              title={`${t('language')}: ${speechLanguageOptions[currentSpeechLanguage]?.name}`}
             >
-              <Globe className="w-4 h-4" />
+              <Globe className="w-4 h-4 mr-1" />
+              <span className="text-xs font-medium">
+                {speechLanguageOptions[currentSpeechLanguage]?.flag}
+              </span>
             </Button>
+            
+            {/* Improved Language Dropdown */}
             {showLanguageMenu && (
-              <div className="absolute right-0 top-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-32">
-                {languages.map((lang) => (
+              <div className="absolute right-0 top-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 min-w-40 overflow-hidden">
+                <div className="px-3 py-2 bg-gray-700 border-b border-gray-600">
+                  <p className="text-xs font-medium text-gray-300">{t('speechLanguage') || 'Sprache auswählen'}</p>
+                </div>
+                {Object.entries(speechLanguageOptions).map(([langCode, langData]) => (
                   <button
-                    key={lang}
+                    key={langCode}
                     type="button"
                     onClick={() => {
-                      setCurrentLanguage(lang);
+                      setCurrentSpeechLanguage(langCode);
                       setShowLanguageMenu(false);
                       setError(''); // Clear error when language changes
                     }}
-                    className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-600 ${
-                      currentLanguage === lang ? 'bg-blue-600 text-white' : 'text-gray-200'
+                    className={`w-full flex items-center px-3 py-2 text-sm hover:bg-gray-700 transition-colors ${
+                      currentSpeechLanguage === langCode ? 'bg-blue-600 text-white' : 'text-gray-200'
                     }`}
                   >
-                    {languageOptions[lang]}
+                    <span className="mr-2 text-base">{langData.flag}</span>
+                    <span className="font-medium">{langData.name}</span>
+                    {currentSpeechLanguage === langCode && (
+                      <CheckCircle className="w-4 h-4 ml-auto text-white" />
+                    )}
                   </button>
                 ))}
               </div>
             )}
           </div>
+
+          {/* Microphone Button */}
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={isListening ? stopListening : startListening}
             disabled={!speechSupported}
-            title={
-              !speechSupported 
-                ? 'Spracherkennung nicht verfügbar' 
-                : isListening 
-                ? 'Aufnahme stoppen' 
-                : 'Spracheingabe starten'
-            }
-            className={`h-8 w-8 p-0 hover:bg-gray-600 ${
-              !speechSupported 
-                ? 'text-gray-500 cursor-not-allowed'
-                : isListening 
-                ? 'text-red-400 hover:text-red-300' 
-                : 'text-gray-300 hover:text-white'
-            }`}
+            className={`h-10 px-3 rounded-none transition-all ${
+              isListening 
+                ? 'text-red-400 hover:text-red-300 bg-red-900/20 animate-pulse' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-600'
+            } ${!speechSupported ? 'opacity-50 cursor-not-allowed' : ''}`}
+            title={isListening ? t('stopRecording') || 'Aufnahme stoppen' : t('startSpeechInput') || 'Spracheingabe starten'}
           >
             <Mic className={`w-4 h-4 ${isListening ? 'animate-pulse' : ''}`} />
+            {isListening && (
+              <div className="ml-1">
+                <div className="flex space-x-1">
+                  <div className="w-1 h-1 bg-red-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                  <div className="w-1 h-1 bg-red-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                  <div className="w-1 h-1 bg-red-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                </div>
+              </div>
+            )}
           </Button>
         </div>
       </div>
       
-      {/* Error Message */}
+      {/* Status & Error Messages */}
       {error && (
-        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-900/90 border border-red-700 rounded text-red-200 text-xs z-50">
+        <div className="mt-2 text-sm text-red-400 bg-red-900/20 border border-red-700/30 rounded-lg px-3 py-2 flex items-center">
+          <div className="w-2 h-2 bg-red-400 rounded-full mr-2 flex-shrink-0"></div>
           {error}
-          {error.includes('Berechtigung') && (
-            <div className="mt-1 text-xs">
-              💡 Tipp: Klicken Sie auf das Schloss-Symbol in der Adressleiste und erlauben Sie den Mikrofon-Zugriff.
-            </div>
-          )}
         </div>
       )}
       
-      {/* Listening Indicator */}
-      {isListening && (
-        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-green-900/90 border border-green-700 rounded text-green-200 text-xs z-50">
-          🎤 Sprechen Sie jetzt... (Sprache: {languageOptions[currentLanguage]})
+      {isListening && !error && (
+        <div className="mt-2 text-sm text-blue-400 bg-blue-900/20 border border-blue-700/30 rounded-lg px-3 py-2 flex items-center">
+          <div className="w-2 h-2 bg-blue-400 rounded-full mr-2 flex-shrink-0 animate-pulse"></div>
+          {t('listeningActive') || 'Zuhören aktiv... Sprechen Sie jetzt'}
         </div>
       )}
     </div>
