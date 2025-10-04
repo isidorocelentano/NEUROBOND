@@ -615,8 +615,77 @@ const EmpathyTrainingAppContent = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <LanguageSwitcher />
+                  
+                  {/* Simple Navbar Login */}
+                  <div className="flex items-center gap-2 bg-gray-800/50 rounded-lg px-3 py-1">
+                    <input
+                      type="email"
+                      placeholder={t('email') || "Email"}
+                      className="bg-transparent border-0 text-white placeholder-gray-400 text-sm w-40 focus:outline-none focus:ring-0"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const email = e.target.value.trim();
+                          if (!email) {
+                            showNotification(t('enterEmail') || 'Bitte Email eingeben', 'error');
+                            return;
+                          }
+                          
+                          // Quick login directly from navbar
+                          const quickNavLogin = async () => {
+                            try {
+                              const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
+                              if (response.ok) {
+                                const userData = await response.json();
+                                setUser(userData);
+                                setShowLandingPage(false);
+                                setShowOnboarding(false);
+                                
+                                if (userData.subscription_status === 'active') {
+                                  setUserSubscription('pro');
+                                  showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! PRO 🎉`, 'success');
+                                } else {
+                                  setUserSubscription('free');
+                                  showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! 👋`, 'success');
+                                }
+                                
+                                localStorage.setItem('neurobond_user', JSON.stringify(userData));
+                                e.target.value = ''; // Clear input after successful login
+                              } else if (response.status === 404) {
+                                showNotification(t('noAccountFound') || 'Kein Account gefunden', 'error');
+                              } else {
+                                showNotification(t('loginFailed') || 'Login fehlgeschlagen', 'error');
+                              }
+                            } catch (error) {
+                              showNotification(t('connectionError') || 'Verbindungsfehler', 'error');
+                            }
+                          };
+                          quickNavLogin();
+                        }
+                      }}
+                    />
+                    <Button
+                      size="sm" 
+                      onClick={() => {
+                        // PRO Test access
+                        setUserSubscription('pro');
+                        setUser({ 
+                          name: 'PRO Test User', 
+                          email: 'pro@test.ch', 
+                          partner_name: 'Test Partner',
+                          subscription_status: 'active'
+                        });
+                        setShowLandingPage(false);
+                        setShowOnboarding(false);
+                        showNotification('🎉 PRO Test-Zugang aktiviert!', 'success');
+                      }}
+                      className="bg-yellow-600 hover:bg-yellow-700 px-2"
+                    >
+                      <Crown className="w-3 h-3" />
+                    </Button>
+                  </div>
+
                   <Button 
                     variant="ghost"
                     size="sm"
