@@ -650,7 +650,7 @@ const EmpathyTrainingAppContent = () => {
                     className="text-gray-300 hover:text-white hover:bg-gray-800"
                   >
                     <User className="w-4 h-4 mr-2" />
-                    {t('login')}
+                    Anmelden
                   </Button>
                   <Button 
                     size="sm"
