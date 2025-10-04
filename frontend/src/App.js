@@ -669,7 +669,7 @@ const EmpathyTrainingAppContent = () => {
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
                     <Crown className="w-4 h-4 mr-2" />
-                    {t('proVersion')}
+                    PRO Version starten
                   </Button>
                 </div>
               </div>
