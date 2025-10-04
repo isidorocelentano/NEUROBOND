@@ -618,57 +618,73 @@ const EmpathyTrainingAppContent = () => {
                 <div className="flex items-center gap-2">
                   <LanguageSwitcher />
                   
-                  {/* Simple Navbar Login */}
-                  <div className="flex items-center gap-2 bg-gray-800/50 rounded-lg px-3 py-1">
+                  {/* Ultra-Simple Navbar Login */}
+                  <div className="flex items-center gap-2 bg-gray-800/50 rounded-lg px-3 py-2">
                     <input
+                      id="navbar-login-input"
                       type="email"
-                      placeholder={t('email') || "Email"}
+                      placeholder="Email für Login"
                       className="bg-transparent border-0 text-white placeholder-gray-400 text-sm w-40 focus:outline-none focus:ring-0"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          const email = e.target.value.trim();
-                          if (!email) {
-                            showNotification(t('enterEmail') || 'Bitte Email eingeben', 'error');
-                            return;
-                          }
-                          
-                          // Quick login directly from navbar
-                          const quickNavLogin = async () => {
-                            try {
-                              const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
-                              if (response.ok) {
-                                const userData = await response.json();
-                                setUser(userData);
-                                setShowLandingPage(false);
-                                setShowOnboarding(false);
-                                
-                                if (userData.subscription_status === 'active') {
-                                  setUserSubscription('pro');
-                                  showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! PRO 🎉`, 'success');
-                                } else {
-                                  setUserSubscription('free');
-                                  showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! 👋`, 'success');
-                                }
-                                
-                                localStorage.setItem('neurobond_user', JSON.stringify(userData));
-                                e.target.value = ''; // Clear input after successful login
-                              } else if (response.status === 404) {
-                                showNotification(t('noAccountFound') || 'Kein Account gefunden', 'error');
-                              } else {
-                                showNotification(t('loginFailed') || 'Login fehlgeschlagen', 'error');
-                              }
-                            } catch (error) {
-                              showNotification(t('connectionError') || 'Verbindungsfehler', 'error');
-                            }
-                          };
-                          quickNavLogin();
-                        }
-                      }}
                     />
                     <Button
                       size="sm" 
                       onClick={() => {
-                        // PRO Test access
+                        console.log('🔍 LOGIN: Button clicked');
+                        const input = document.getElementById('navbar-login-input');
+                        const email = input ? input.value.trim() : '';
+                        console.log('📧 LOGIN: Email from input:', email);
+                        
+                        if (!email) {
+                          showNotification('Bitte Email eingeben', 'error');
+                          return;
+                        }
+                        
+                        // Direct login function
+                        fetch(`${BACKEND_URL}/api/user/by-email/${email}`)
+                          .then(response => {
+                            console.log('📡 LOGIN: Response status:', response.status);
+                            if (response.ok) {
+                              return response.json();
+                            } else if (response.status === 404) {
+                              throw new Error('NOT_FOUND');
+                            } else {
+                              throw new Error('LOGIN_FAILED');
+                            }
+                          })
+                          .then(userData => {
+                            console.log('✅ LOGIN: User found:', userData);
+                            setUser(userData);
+                            setShowLandingPage(false);
+                            setShowOnboarding(false);
+                            
+                            if (userData.subscription_status === 'active') {
+                              setUserSubscription('pro');
+                              showNotification(`Willkommen ${userData.name}! PRO 🎉`, 'success');
+                            } else {
+                              setUserSubscription('free');
+                              showNotification(`Willkommen ${userData.name}! 👋`, 'success');
+                            }
+                            
+                            localStorage.setItem('neurobond_user', JSON.stringify(userData));
+                            input.value = ''; // Clear input
+                          })
+                          .catch(error => {
+                            console.error('❌ LOGIN: Error:', error.message);
+                            if (error.message === 'NOT_FOUND') {
+                              showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
+                            } else {
+                              showNotification('Login fehlgeschlagen. Bitte versuchen Sie es erneut.', 'error');
+                            }
+                          });
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 px-3"
+                    >
+                      <User className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      size="sm" 
+                      onClick={() => {
+                        console.log('👑 PRO TEST: Button clicked');
                         setUserSubscription('pro');
                         setUser({ 
                           name: 'PRO Test User', 
