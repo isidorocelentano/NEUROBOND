@@ -395,7 +395,9 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
   );
 };
 
-const EmpathyTrainingApp = () => {
+// Main App Component with Internationalization
+const EmpathyTrainingAppContent = () => {
+  const { t, currentLanguage } = useLanguage();
   const [user, setUser] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showLandingPage, setShowLandingPage] = useState(true);
