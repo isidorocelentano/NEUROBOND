@@ -767,19 +767,23 @@ const EmpathyTrainingAppContent = () => {
 
               {/* Quick Login Section */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4 text-center">Bereits registriert? Schnell anmelden:</h3>
+                <h3 className="text-xl font-semibold text-white mb-4 text-center">{t('alreadyRegistered')}</h3>
                 <div className="flex gap-3 max-w-md mx-auto">
-                  <input
+                  <Input
                     type="email"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="ihre@email.com"
+                    placeholder={t('email') || "ihre@email.com"}
                     className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                       if (e.key === 'Enter') {
-                        document.getElementById('quickLoginBtn').click();
+                        e.preventDefault();
+                        const loginBtn = document.getElementById('quickLoginBtn');
+                        if (loginBtn) loginBtn.click();
                       }
                     }}
+                    autoComplete="email"
+                    spellCheck={false}
                   />
                   <Button
                     id="quickLoginBtn"
