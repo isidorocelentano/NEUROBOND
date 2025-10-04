@@ -614,9 +614,7 @@ const EmpathyTrainingAppContent = () => {
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-                NEUROBOND kombiniert Neurowissenschaft mit bewährten Methoden der 
-                Paartherapie (EFT & Gottman). Verbessert eure Kommunikation, löst Konflikte 
-                empathisch und baut eine tiefere emotionale Verbindung auf.
+                {t('subtitle')}
               </p>
               
               {/* Company Trust & Authority Section */}
