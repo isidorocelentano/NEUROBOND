@@ -3716,6 +3716,12 @@ const EmpathyTrainingAppContent = () => {
             setActiveTraining(null);
             setSelectedScenario(null);
           }}
+          onHome={() => {
+            setActiveTraining(null);
+            setSelectedScenario(null);
+            setSelectedStage(null);
+            setCurrentTab('home');
+          }}
         />
       );
     }
