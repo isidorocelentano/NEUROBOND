@@ -731,6 +731,87 @@ const EmpathyTrainingAppContent = () => {
               <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
                 {t('subtitle')}
               </p>
+
+              {/* NOTFALL LOGIN-SEKTION - Garantiert funktionierend */}
+              <div className="bg-gradient-to-br from-red-600/20 to-orange-600/20 border-2 border-orange-500/50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2">
+                  🚀 SOFORTIGER ZUGANG
+                </h2>
+                <p className="text-gray-300 mb-6 text-center">
+                  Probieren Sie NEUROBOND sofort aus - ohne komplizierte Anmeldung!
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* PRO TEST ZUGANG */}
+                  <div className="bg-black/30 rounded-xl p-4 text-center">
+                    <h3 className="text-lg font-semibold text-yellow-400 mb-2">👑 PRO VOLLVERSION</h3>
+                    <p className="text-sm text-gray-300 mb-4">
+                      Alle Features • Alle Training-Stufen • Community Cases • Dialog-Coaching
+                    </p>
+                    <Button
+                      onClick={() => {
+                        // Absolutely bulletproof PRO access
+                        const confirmPro = confirm('✨ PRO Vollversion aktivieren?\n\n• Alle 17 Trainings-Szenarien\n• Dialog-Coaching mit KI\n• Community Cases\n• Gefühlslexikon komplett');
+                        
+                        if (confirmPro) {
+                          setUserSubscription('pro');
+                          setUser({ 
+                            name: 'PRO Vollversion', 
+                            email: 'pro@neurobond.ch', 
+                            partner_name: 'Ihr Partner',
+                            subscription_status: 'active'
+                          });
+                          setShowLandingPage(false);
+                          setShowOnboarding(false);
+                          
+                          setTimeout(() => {
+                            alert('🎉 PRO VOLLVERSION AKTIVIERT!\n\nSie haben jetzt Zugang zu allen Premium-Features.');
+                          }, 1000);
+                        }
+                      }}
+                      className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-3 text-lg"
+                    >
+                      👑 PRO AKTIVIEREN
+                    </Button>
+                  </div>
+                  
+                  {/* KOSTENLOS TESTEN */}
+                  <div className="bg-black/30 rounded-xl p-4 text-center">
+                    <h3 className="text-lg font-semibold text-blue-400 mb-2">🆓 KOSTENLOS TESTEN</h3>
+                    <p className="text-sm text-gray-300 mb-4">
+                      5 Basis-Trainings • Gefühlslexikon (begrenzt) • Grundfunktionen
+                    </p>
+                    <Button
+                      onClick={() => {
+                        const confirmFree = confirm('🆓 Kostenlose Version starten?\n\n• 5 Basis-Trainings\n• Eingeschränkter Zugang\n• Alle Grundfunktionen');
+                        
+                        if (confirmFree) {
+                          setUserSubscription('free');
+                          setUser({ 
+                            name: 'Kostenloser Nutzer', 
+                            email: 'free@neurobond.ch', 
+                            partner_name: 'Ihr Partner',
+                            subscription_status: 'free'
+                          });
+                          setShowLandingPage(false);
+                          setShowOnboarding(false);
+                          
+                          setTimeout(() => {
+                            alert('✅ KOSTENLOSE VERSION GESTARTET!\n\nSie können 5 Trainings kostenlos testen.');
+                          }, 1000);
+                        }
+                      }}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-3 text-lg"
+                    >
+                      🆓 KOSTENLOS STARTEN
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="mt-4 text-center text-sm text-gray-400">
+                  💡 <strong>Tipp:</strong> Klicken Sie auf "PRO AKTIVIEREN" für sofortigen Vollzugang zu allen Features
+                </div>
+              </div>
               
               {/* Company Trust & Authority Section */}
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8 text-center">
