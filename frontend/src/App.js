@@ -610,9 +610,7 @@ const EmpathyTrainingAppContent = () => {
               </div>
               
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Stärke deine 
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"> Beziehung </span>
-                mit KI-gestütztem Training
+                {t('title')}
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
