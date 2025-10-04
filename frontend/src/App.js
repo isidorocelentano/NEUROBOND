@@ -575,7 +575,7 @@ const EmpathyTrainingAppContent = () => {
                 </div>
                 
                 <div className="flex items-center gap-3">
-                  <LanguageSwitcher />
+                  <LanguageDisplay />
                   
                   {/* SOFORT-ZUGANG BUTTONS - Garantiert funktionierend */}
                   <div className="flex items-center gap-2">
