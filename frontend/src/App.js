@@ -925,7 +925,7 @@ const EmpathyTrainingAppContent = () => {
                 <h3 className="text-xl font-semibold text-white mb-4 text-center">Bereits registriert? Schnell anmelden:</h3>
                 <div className="flex gap-3 max-w-md mx-auto">
                   <UltraStableLoginInput
-                    placeholder={t('email') || "ihre@email.com"}
+                    placeholder="ihre@email.com"
                     onEmailChange={(email) => {
                       // Only update state if really necessary - avoid re-renders
                       if (loginEmail !== email) {
