@@ -12,6 +12,37 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Stable Login Input Component to prevent re-render issues
+const StableLoginInput = React.memo(({ value, onChange, placeholder, onKeyDown }) => {
+  const [internalValue, setInternalValue] = useState(value);
+  
+  // Sync with parent only when value actually changes
+  useEffect(() => {
+    if (value !== internalValue) {
+      setInternalValue(value);
+    }
+  }, [value]);
+  
+  const handleChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setInternalValue(newValue);
+    onChange(newValue);
+  }, [onChange]);
+
+  return (
+    <input
+      type="email"
+      value={internalValue}
+      onChange={handleChange}
+      placeholder={placeholder}
+      className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+      onKeyDown={onKeyDown}
+      autoComplete="email"
+      spellCheck={false}
+    />
+  );
+});
+
 // Language Switcher Component  
 const LanguageSwitcher = () => {
   const { currentLanguage, switchLanguage, availableLanguages } = useLanguage();
