@@ -866,94 +866,15 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                 </div>
 
                 <div className="mb-4">
-                  <div className="relative">
-                    <textarea
-                      value={userResponse}
-                      onChange={(e) => setUserResponse(e.target.value)}
-                      placeholder={`Wie antworten Sie als ${userName} empathisch auf ${partnerName}? Zum Beispiel: "Liebe/r ${partnerName}, ich sehe dass du..." Denken Sie daran: Gefühle erkennen, validieren, Unterstützung anbieten.`}
-                      className="w-full min-h-32 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-blue-500 p-4 text-base leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                      rows={4}
-                      onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submitResponse()}
-                    />
-                    
-                    {/* Speech Input Buttons */}
-                    <div className="absolute right-2 top-2 flex items-center gap-1">
-                      <div className="relative">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                          className="h-8 w-8 p-0 hover:bg-gray-600 text-gray-300 hover:text-white"
-                          title={`Sprache: ${languageOptions[currentLanguage]}`}
-                        >
-                          <Globe className="w-4 h-4" />
-                        </Button>
-                        {showLanguageMenu && (
-                          <div className="absolute right-0 top-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-32">
-                            {['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'].map((lang) => (
-                              <button
-                                key={lang}
-                                type="button"
-                                onClick={() => {
-                                  setCurrentLanguage(lang);
-                                  setShowLanguageMenu(false);
-                                  setError(''); // Clear error when language changes
-                                }}
-                                className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-600 ${
-                                  currentLanguage === lang ? 'bg-blue-600 text-white' : 'text-gray-200'
-                                }`}
-                              >
-                                {languageOptions[lang]}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={isListening ? stopListening : startListening}
-                        disabled={!speechSupported}
-                        title={
-                          !speechSupported 
-                            ? 'Spracherkennung nicht verfügbar' 
-                            : isListening 
-                            ? 'Aufnahme stoppen' 
-                            : 'Spracheingabe starten'
-                        }
-                        className={`h-8 w-8 p-0 hover:bg-gray-600 ${
-                          !speechSupported 
-                            ? 'text-gray-500 cursor-not-allowed'
-                            : isListening 
-                            ? 'text-red-400 hover:text-red-300' 
-                            : 'text-gray-300 hover:text-white'
-                        }`}
-                      >
-                        <Mic className={`w-4 h-4 ${isListening ? 'animate-pulse' : ''}`} />
-                      </Button>
-                    </div>
-                    
-                    {/* Error Message */}
-                    {error && (
-                      <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-900/90 border border-red-700 rounded text-red-200 text-xs z-50">
-                        {error}
-                        {error.includes('Berechtigung') && (
-                          <div className="mt-1 text-xs">
-                            💡 Tipp: Klicken Sie auf das Schloss-Symbol in der Adressleiste und erlauben Sie den Mikrofon-Zugriff.
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    
-                    {/* Listening Indicator */}
-                    {isListening && (
-                      <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-green-900/90 border border-green-700 rounded text-green-200 text-xs z-50">
-                        🎤 Sprechen Sie jetzt... (Sprache: {languageOptions[currentLanguage]})
-                      </div>
-                    )}
-                  </div>
+                  <SpeechInput
+                    value={userResponse}
+                    onChange={(e) => setUserResponse(e.target.value)}
+                    placeholder={`Wie antworten Sie als ${userName} empathisch auf ${partnerName}? Zum Beispiel: "Liebe/r ${partnerName}, ich sehe dass du..." Denken Sie daran: Gefühle erkennen, validieren, Unterstützung anbieten.`}
+                    className="w-full min-h-32 text-base leading-relaxed resize-none"
+                    onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && submitResponse()}
+                    t={t}
+                    currentAppLanguage={currentLanguage}
+                  />
                 </div>
                 
                 <div className="flex justify-between items-center">
