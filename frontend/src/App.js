@@ -3716,8 +3716,6 @@ const EmpathyTrainingAppContent = () => {
             setActiveTraining(null);
             setSelectedScenario(null);
           }}
-          t={t}
-          currentLanguage={currentLanguage}
         />
       );
     }
