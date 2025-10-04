@@ -5060,7 +5060,7 @@ const EmpathyTrainingAppContent = () => {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  {t('email')}
+                  Email-Adresse
                 </label>
                 <input
                   type="email"
