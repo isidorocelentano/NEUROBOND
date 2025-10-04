@@ -625,6 +625,15 @@ const EmpathyTrainingAppContent = () => {
                       type="email"
                       placeholder="Email für Login"
                       className="bg-transparent border-0 text-white placeholder-gray-400 text-sm w-40 focus:outline-none focus:ring-0"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          console.log('⌨️ LOGIN: Enter key pressed');
+                          const loginButton = document.getElementById('navbar-login-button');
+                          if (loginButton) {
+                            loginButton.click();
+                          }
+                        }
+                      }}
                     />
                     <Button
                       size="sm" 
