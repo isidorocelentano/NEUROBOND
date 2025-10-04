@@ -70,19 +70,19 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, c
             
             switch (event.error) {
               case 'not-allowed':
-                setError('Mikrofon-Berechtigung verweigert. Bitte erlauben Sie den Mikrofon-Zugriff.');
+                setError(t('microphonePermission'));
                 break;
               case 'no-speech':
-                setError('Keine Sprache erkannt. Bitte sprechen Sie deutlicher.');
+                setError(t('noSpeechDetected'));
                 break;
               case 'audio-capture':
-                setError('Kein Mikrofon gefunden. Bitte überprüfen Sie Ihr Mikrofon.');
+                setError(t('noMicrophone'));
                 break;
               case 'network':
-                setError('Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.');
+                setError(t('networkError'));
                 break;
               default:
-                setError(`Spracherkennung Fehler: ${event.error}`);
+                setError(`${t('error')}: ${event.error}`);
             }
           };
 
@@ -324,19 +324,19 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
             
             switch (event.error) {
               case 'not-allowed':
-                setError('Mikrofon-Berechtigung verweigert. Bitte erlauben Sie den Mikrofon-Zugriff.');
+                setError(t('microphonePermission'));
                 break;
               case 'no-speech':
-                setError('Keine Sprache erkannt. Bitte sprechen Sie deutlicher.');
+                setError(t('noSpeechDetected'));
                 break;
               case 'audio-capture':
-                setError('Kein Mikrofon gefunden. Bitte überprüfen Sie Ihr Mikrofon.');
+                setError(t('noMicrophone'));
                 break;
               case 'network':
-                setError('Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.');
+                setError(t('networkError'));
                 break;
               default:
-                setError(`Spracherkennung Fehler: ${event.error}`);
+                setError(`${t('error')}: ${event.error}`);
             }
           };
 
