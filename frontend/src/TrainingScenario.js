@@ -274,14 +274,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
   const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
 
-  const languageOptions = {
-    'de-DE': 'Deutsch',
-    'de-CH': 'Schweizerdeutsch', 
-    'en-US': 'English',
-    'fr-FR': 'Français',
-    'es-ES': 'Español',
-    'it-IT': 'Italiano'
-  };
+  // Language options now handled by SpeechInput component
 
   // Proper notification function
   const showNotification = (message, type = 'info') => {
