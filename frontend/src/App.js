@@ -615,100 +615,72 @@ const EmpathyTrainingAppContent = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <LanguageSwitcher />
                   
-                  {/* Ultra-Simple Navbar Login */}
-                  <div className="flex items-center gap-2 bg-gray-800/50 rounded-lg px-3 py-2">
-                    <input
-                      id="navbar-login-input"
-                      type="email"
-                      placeholder="Email für Login"
-                      className="bg-transparent border-0 text-white placeholder-gray-400 text-sm w-40 focus:outline-none focus:ring-0"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          console.log('⌨️ LOGIN: Enter key pressed');
-                          const loginButton = document.getElementById('navbar-login-button');
-                          if (loginButton) {
-                            loginButton.click();
-                          }
-                        }
-                      }}
-                    />
+                  {/* SOFORT-ZUGANG BUTTONS - Garantiert funktionierend */}
+                  <div className="flex items-center gap-2">
+                    {/* PRO SOFORT-ZUGANG */}
                     <Button
-                      id="navbar-login-button"
-                      size="sm" 
                       onClick={() => {
-                        console.log('🔍 LOGIN: Button clicked');
-                        const input = document.getElementById('navbar-login-input');
-                        const email = input ? input.value.trim() : '';
-                        console.log('📧 LOGIN: Email from input:', email);
-                        
-                        if (!email) {
-                          showNotification('Bitte Email eingeben', 'error');
-                          return;
-                        }
-                        
-                        // Direct login function
-                        fetch(`${BACKEND_URL}/api/user/by-email/${email}`)
-                          .then(response => {
-                            console.log('📡 LOGIN: Response status:', response.status);
-                            if (response.ok) {
-                              return response.json();
-                            } else if (response.status === 404) {
-                              throw new Error('NOT_FOUND');
-                            } else {
-                              throw new Error('LOGIN_FAILED');
-                            }
-                          })
-                          .then(userData => {
-                            console.log('✅ LOGIN: User found:', userData);
-                            setUser(userData);
-                            setShowLandingPage(false);
-                            setShowOnboarding(false);
-                            
-                            if (userData.subscription_status === 'active') {
-                              setUserSubscription('pro');
-                              showNotification(`Willkommen ${userData.name}! PRO 🎉`, 'success');
-                            } else {
-                              setUserSubscription('free');
-                              showNotification(`Willkommen ${userData.name}! 👋`, 'success');
-                            }
-                            
-                            localStorage.setItem('neurobond_user', JSON.stringify(userData));
-                            input.value = ''; // Clear input
-                          })
-                          .catch(error => {
-                            console.error('❌ LOGIN: Error:', error.message);
-                            if (error.message === 'NOT_FOUND') {
-                              showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
-                            } else {
-                              showNotification('Login fehlgeschlagen. Bitte versuchen Sie es erneut.', 'error');
-                            }
+                        alert('PRO Test wird aktiviert...');
+                        setTimeout(() => {
+                          setUserSubscription('pro');
+                          setUser({ 
+                            name: 'PRO Tester', 
+                            email: 'pro@neurobond.ch', 
+                            partner_name: 'Partner',
+                            subscription_status: 'active'
                           });
+                          setShowLandingPage(false);
+                          setShowOnboarding(false);
+                          alert('✅ PRO Test-Zugang aktiviert! Dashboard wird geladen...');
+                        }, 500);
                       }}
-                      className="bg-blue-600 hover:bg-blue-700 px-3"
+                      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-4 py-2 font-semibold"
                     >
-                      <User className="w-3 h-3" />
+                      👑 PRO TESTEN
                     </Button>
+                    
+                    {/* DEMO-USER LOGIN */}
                     <Button
-                      size="sm" 
                       onClick={() => {
-                        console.log('👑 PRO TEST: Button clicked');
-                        setUserSubscription('pro');
-                        setUser({ 
-                          name: 'PRO Test User', 
-                          email: 'pro@test.ch', 
-                          partner_name: 'Test Partner',
-                          subscription_status: 'active'
-                        });
-                        setShowLandingPage(false);
-                        setShowOnboarding(false);
-                        showNotification('🎉 PRO Test-Zugang aktiviert!', 'success');
+                        const email = prompt('Email für Login eingeben (z.B. demo@test.com):');
+                        if (email && email.includes('@')) {
+                          alert(`Login wird versucht mit: ${email}`);
+                          
+                          fetch(`${BACKEND_URL}/api/user/by-email/${email}`)
+                            .then(response => {
+                              if (response.ok) {
+                                return response.json();
+                              } else {
+                                throw new Error('User nicht gefunden');
+                              }
+                            })
+                            .then(userData => {
+                              alert(`✅ Login erfolgreich! Willkommen ${userData.name}`);
+                              setUser(userData);
+                              setShowLandingPage(false);
+                              setShowOnboarding(false);
+                              
+                              if (userData.subscription_status === 'active') {
+                                setUserSubscription('pro');
+                              } else {
+                                setUserSubscription('free');
+                              }
+                              
+                              localStorage.setItem('neurobond_user', JSON.stringify(userData));
+                            })
+                            .catch(error => {
+                              alert(`❌ Login fehlgeschlagen: ${error.message}\n\nTipp: Verwenden Sie 'PRO TESTEN' für sofortigen Zugang`);
+                            });
+                        } else {
+                          alert('❌ Bitte gültige Email eingeben');
+                        }
                       }}
-                      className="bg-yellow-600 hover:bg-yellow-700 px-2"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3"
                     >
-                      <Crown className="w-3 h-3" />
+                      📧 LOGIN
                     </Button>
                   </div>
 
