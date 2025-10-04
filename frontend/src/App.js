@@ -870,50 +870,10 @@ const EmpathyTrainingAppContent = () => {
                       performLogin();
                     }}
                   />
-                  <Button
-                    id="quickLoginBtn"
-                    onClick={async () => {
-                      if (!loginEmail) {
-                        showNotification('Bitte geben Sie eine Email-Adresse ein.', 'error');
-                        return;
-                      }
-                      
-                      try {
-                        console.log('🔍 QUICK LOGIN: Searching for user:', loginEmail);
-                        const response = await fetch(`${BACKEND_URL}/api/user/by-email/${loginEmail}`);
-                        
-                        if (response.ok) {
-                          const userData = await response.json();
-                          console.log('✅ QUICK LOGIN: User found:', userData);
-                          
-                          setUser(userData);
-                          setShowLandingPage(false);
-                          setShowOnboarding(false);
-                          
-                          if (userData.subscription_status === 'active') {
-                            setUserSubscription('pro');
-                            showNotification(`Willkommen ${userData.name}! PRO-Zugang aktiviert. 🎉`, 'success');
-                          } else {
-                            setUserSubscription('free');
-                            showNotification(`Willkommen ${userData.name}! 👋`, 'success');
-                          }
-                          
-                          localStorage.setItem('neurobond_user', JSON.stringify(userData));
-                        } else if (response.status === 404) {
-                          showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
-                        } else {
-                          showNotification('Login fehlgeschlagen.', 'error');
-                        }
-                      } catch (error) {
-                        console.error('QUICK LOGIN error:', error);
-                        showNotification('Verbindungsfehler.', 'error');
-                      }
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 px-6"
-                  >
-                    <User className="w-4 h-4 mr-2" />
-                    Login
-                  </Button>
+                  <div className="text-xs text-gray-400 px-3 py-3 flex items-center">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></div>
+                    Enter drücken
+                  </div>
                   <Button
                     onClick={() => {
                       setUserSubscription('pro');
