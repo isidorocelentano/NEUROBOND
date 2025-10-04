@@ -5290,13 +5290,9 @@ const NeurobondFooter = () => {
   );
 };
 
-// Wrapper Component with Language Provider
+// Main App Component
 const EmpathyTrainingApp = () => {
-  return (
-    <LanguageProvider>
-      <EmpathyTrainingAppContent />
-    </LanguageProvider>
-  );
+  return <EmpathyTrainingAppContent />;
 };
 
 const App = () => {
