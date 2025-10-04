@@ -60,53 +60,13 @@ const UltraStableLoginInput = ({ placeholder, onEnter, onEmailChange }) => {
   );
 };
 
-// Language Switcher Component  
-const LanguageSwitcher = () => {
-  const { currentLanguage, switchLanguage, availableLanguages } = useLanguage();
-  const [showMenu, setShowMenu] = useState(false);
-
+// Simple Language Display (Static German)
+const LanguageDisplay = () => {
   return (
-    <div className="relative">
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setShowMenu(!showMenu)}
-        className="text-gray-300 hover:text-white hover:bg-gray-800 flex items-center gap-2"
-      >
-        <Languages className="w-4 h-4" />
-        <span className="text-xl">
-          {availableLanguages.find(lang => lang.code === currentLanguage)?.flag}
-        </span>
-        <span className="hidden md:inline font-medium">
-          {availableLanguages.find(lang => lang.code === currentLanguage)?.name}
-        </span>
-      </Button>
-
-      {showMenu && (
-        <div className="absolute right-0 top-full mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 min-w-36 overflow-hidden">
-          <div className="px-3 py-2 bg-gray-700 border-b border-gray-600">
-            <p className="text-xs font-medium text-gray-300">Language / Sprache</p>
-          </div>
-          {availableLanguages.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => {
-                switchLanguage(lang.code);
-                setShowMenu(false);
-              }}
-              className={`w-full flex items-center px-3 py-2 text-sm hover:bg-gray-700 transition-colors ${
-                currentLanguage === lang.code ? 'bg-blue-600 text-white' : 'text-gray-200'
-              }`}
-            >
-              <span className="mr-3 text-base">{lang.flag}</span>
-              <span className="font-medium">{lang.name}</span>
-              {currentLanguage === lang.code && (
-                <CheckCircle className="w-4 h-4 ml-auto text-white" />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+    <div className="flex items-center gap-2 text-gray-300">
+      <Languages className="w-4 h-4" />
+      <span className="text-xl">🇩🇪</span>
+      <span className="hidden md:inline font-medium">Deutsch</span>
     </div>
   );
 };
