@@ -568,6 +568,7 @@ const EmpathyTrainingAppContent = () => {
                 </div>
                 
                 <div className="flex items-center gap-3">
+                  <LanguageSwitcher />
                   <Button 
                     variant="ghost"
                     size="sm"
@@ -575,7 +576,7 @@ const EmpathyTrainingAppContent = () => {
                     className="text-gray-300 hover:text-white hover:bg-gray-800"
                   >
                     <User className="w-4 h-4 mr-2" />
-                    Anmelden
+                    {t('login')}
                   </Button>
                   <Button 
                     size="sm"
@@ -586,7 +587,7 @@ const EmpathyTrainingAppContent = () => {
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
                     <Star className="w-4 h-4 mr-2" />
-                    Kostenlos registrieren
+                    {t('register')}
                   </Button>
                   <Button 
                     size="sm"
@@ -594,7 +595,7 @@ const EmpathyTrainingAppContent = () => {
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all"
                   >
                     <Crown className="w-4 h-4 mr-2" />
-                    PRO Version starten
+                    {t('proVersion')}
                   </Button>
                 </div>
               </div>
