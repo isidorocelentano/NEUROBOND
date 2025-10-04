@@ -955,7 +955,7 @@ const EmpathyTrainingAppContent = () => {
                             
                             if (userData.subscription_status === 'active') {
                               setUserSubscription('pro');
-                              showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! ${t('proAccess') || 'PRO-Zugang aktiviert'} 🎉`, 'success');
+                              showNotification(`Willkommen ${userData.name}! PRO-Zugang aktiviert 🎉`, 'success');
                             } else {
                               setUserSubscription('free');
                               showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! 👋`, 'success');
