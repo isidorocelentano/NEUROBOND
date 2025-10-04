@@ -5167,6 +5167,15 @@ const NeurobondFooter = () => {
   );
 };
 
+// Wrapper Component with Language Provider
+const EmpathyTrainingApp = () => {
+  return (
+    <LanguageProvider>
+      <EmpathyTrainingAppContent />
+    </LanguageProvider>
+  );
+};
+
 const App = () => {
   return (
     <div className="App">
