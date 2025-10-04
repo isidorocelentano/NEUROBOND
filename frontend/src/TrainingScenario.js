@@ -6,23 +6,31 @@ import { ArrowRight, Send, User, MessageCircle, Target, CheckCircle, Star, Mic, 
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Enhanced SpeechInput Component for Training with Better Error Handling
-const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, languages = ['de-DE', 'de-CH', 'en-US', 'fr-FR', 'es-ES', 'it-IT'] }) => {
+// Enhanced SpeechInput Component with improved UI and internationalization
+const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, currentAppLanguage }) => {
   const [isListening, setIsListening] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState('de-DE');
+  const [currentSpeechLanguage, setCurrentSpeechLanguage] = useState(currentAppLanguage === 'en' ? 'en-US' : 'de-DE');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [error, setError] = useState('');
   const recognitionRef = useRef(null);
 
-  const languageOptions = {
-    'de-DE': 'Deutsch',
-    'de-CH': 'Schweizerdeutsch', 
-    'en-US': 'English',
-    'fr-FR': 'Français',
-    'es-ES': 'Español',
-    'it-IT': 'Italiano'
+  // Simplified speech languages based on app language
+  const speechLanguageOptions = {
+    'de-DE': { name: t('languageGerman'), flag: '🇩🇪' },
+    'de-CH': { name: t('languageSwissGerman'), flag: '🇨🇭' }, 
+    'en-US': { name: t('languageEnglish'), flag: '🇺🇸' },
+    'en-GB': { name: 'English (UK)', flag: '🇬🇧' }
   };
+
+  // Auto-adjust speech language when app language changes
+  useEffect(() => {
+    if (currentAppLanguage === 'en' && currentSpeechLanguage.startsWith('de')) {
+      setCurrentSpeechLanguage('en-US');
+    } else if (currentAppLanguage === 'de' && currentSpeechLanguage.startsWith('en')) {
+      setCurrentSpeechLanguage('de-DE');
+    }
+  }, [currentAppLanguage]);
 
   useEffect(() => {
     // Check for Speech Recognition support
