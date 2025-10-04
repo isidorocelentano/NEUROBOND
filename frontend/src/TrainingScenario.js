@@ -30,13 +30,9 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
   const [evaluation, setEvaluation] = useState(null);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'info' });
   
-  // Speech recognition now handled by SpeechInput component
-  
   // Load avatars from localStorage
   const [userAvatar, setUserAvatar] = useState(localStorage.getItem('user_avatar'));
   const [partnerAvatar, setPartnerAvatar] = useState(localStorage.getItem('partner_avatar'));
-
-  // Language options now handled by SpeechInput component
 
   // Proper notification function
   const showNotification = (message, type = 'info') => {
