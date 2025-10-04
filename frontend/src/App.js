@@ -457,8 +457,7 @@ const EmpathyTrainingAppContent = () => {
   const [userSubscription, setUserSubscription] = useState('free');
   const [showPaymentPage, setShowPaymentPage] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [loginEmail, setLoginEmail] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [loginEmail, setLoginEmail] = useState(''); // Keep minimal state for fallback
 
   // Helper function to show notifications
   const showNotification = (message, type = 'info') => {
