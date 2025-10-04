@@ -958,7 +958,7 @@ const EmpathyTrainingAppContent = () => {
                               showNotification(`Willkommen ${userData.name}! PRO-Zugang aktiviert 🎉`, 'success');
                             } else {
                               setUserSubscription('free');
-                              showNotification(`${t('welcome') || 'Willkommen'} ${userData.name}! 👋`, 'success');
+                              showNotification(`Willkommen ${userData.name}! 👋`, 'success');
                             }
                             
                             localStorage.setItem('neurobond_user', JSON.stringify(userData));
