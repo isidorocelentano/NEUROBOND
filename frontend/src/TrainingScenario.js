@@ -133,7 +133,7 @@ const SpeechInput = ({ value, onChange, placeholder, className, onKeyPress, t, c
     try {
       setIsListening(true);
       setError('');
-      recognitionRef.current.lang = currentLanguage;
+      recognitionRef.current.lang = currentSpeechLanguage;
       recognitionRef.current.start();
       console.log('Starting speech recognition with language:', currentLanguage);
     } catch (err) {
@@ -387,7 +387,7 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
     try {
       setIsListening(true);
       setError('');
-      recognitionRef.current.lang = currentLanguage;
+      recognitionRef.current.lang = currentSpeechLanguage;
       recognitionRef.current.start();
       console.log('Starting speech recognition with language:', currentLanguage);
     } catch (err) {
