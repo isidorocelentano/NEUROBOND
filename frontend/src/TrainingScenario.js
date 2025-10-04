@@ -497,12 +497,11 @@ const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplet
                 </div>
 
                 <div className="mb-4">
-                  <textarea
+                  <SimpleInput
                     value={userResponse}
                     onChange={(e) => setUserResponse(e.target.value)}
                     placeholder={`Wie antworten Sie als ${userName} empathisch auf ${partnerName}? Zum Beispiel: "Liebe/r ${partnerName}, ich sehe dass du..." Denken Sie daran: Gefühle erkennen, validieren, Unterstützung anbieten.`}
-                    className="w-full bg-gray-700/50 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 p-3 min-h-20 resize-none"
-                    rows={3}
+                    className="w-full"
                   />
                 </div>
                 
