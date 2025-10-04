@@ -801,18 +801,10 @@ const EmpathyTrainingAppContent = () => {
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
                 <h3 className="text-xl font-semibold text-white mb-4 text-center">{t('alreadyRegistered')}</h3>
                 <div className="flex gap-3 max-w-md mx-auto">
-                  <input
-                    key="stable-login-input"
-                    type="email"
+                  <StableLoginInput
                     value={loginEmail}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      setLoginEmail(e.target.value);
-                    }}
-                    onFocus={() => setIsInputFocused(true)}
-                    onBlur={() => setIsInputFocused(false)}
+                    onChange={setLoginEmail}
                     placeholder={t('email') || "ihre@email.com"}
-                    className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
@@ -820,9 +812,6 @@ const EmpathyTrainingAppContent = () => {
                         if (loginBtn) loginBtn.click();
                       }
                     }}
-                    autoComplete="email"
-                    spellCheck={false}
-                    disabled={false}
                   />
                   <Button
                     id="quickLoginBtn"
