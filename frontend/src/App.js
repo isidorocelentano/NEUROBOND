@@ -922,7 +922,7 @@ const EmpathyTrainingAppContent = () => {
 
               {/* Quick Login Section */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4 text-center">{t('alreadyRegistered')}</h3>
+                <h3 className="text-xl font-semibold text-white mb-4 text-center">Bereits registriert? Schnell anmelden:</h3>
                 <div className="flex gap-3 max-w-md mx-auto">
                   <UltraStableLoginInput
                     placeholder={t('email') || "ihre@email.com"}
