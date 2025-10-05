@@ -3998,6 +3998,12 @@ const EmpathyTrainingAppContent = () => {
             setSelectedStage(null);
             setCurrentTab('home');
           }}
+          onNext={() => {
+            // Handle next step in training scenario
+            console.log('🎯 TRAINING: Next step requested');
+            // You can add logic here to move to the next stage or scenario
+            showNotification('Nächster Schritt wird geladen...', 'info');
+          }}
         />
       );
     }
