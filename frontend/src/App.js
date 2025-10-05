@@ -5264,89 +5264,47 @@ const EmpathyTrainingAppContent = () => {
               </Button>
             </div>
             
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email-Adresse
-                </label>
-                <input
-                  type="email"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="ihre@email.com"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div className="flex gap-3">
-                <Button
-                  onClick={async () => {
-                    if (!loginEmail) {
-                      showNotification('Bitte geben Sie eine Email-Adresse ein.', 'error');
-                      return;
-                    }
-                    
-                    try {
-                      console.log('🔍 LOGIN: Searching for user:', loginEmail);
-                      const response = await fetch(`${BACKEND_URL}/api/user/by-email/${loginEmail}`);
-                      
-                      if (response.ok) {
-                        const userData = await response.json();
-                        console.log('✅ LOGIN: User found:', userData);
-                        
-                        // Set user data
-                        setUser(userData);
-                        setShowLandingPage(false);
-                        setShowOnboarding(false);
-                        setShowLoginModal(false);
-                        
-                        // Check if user has PRO subscription
-                        if (userData.subscription_status === 'active') {
-                          setUserSubscription('pro');
-                          showNotification(`Willkommen zurück, ${userData.name}! PRO-Zugang aktiviert. 🎉`, 'success');
-                        } else {
-                          setUserSubscription('free');
-                          showNotification(`Willkommen zurück, ${userData.name}! 👋`, 'success');
-                        }
-                        
-                        // Save to localStorage
-                        localStorage.setItem('neurobond_user', JSON.stringify(userData));
-                      } else if (response.status === 404) {
-                        showNotification('Kein Account mit dieser Email gefunden. Bitte registrieren Sie sich zuerst.', 'error');
-                      } else {
-                        showNotification('Login fehlgeschlagen. Bitte versuchen Sie es erneut.', 'error');
-                      }
-                    } catch (error) {
-                      console.error('LOGIN error:', error);
-                      showNotification('Verbindungsfehler. Bitte versuchen Sie es erneut.', 'error');
-                    }
-                  }}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Anmelden
-                </Button>
-                <Button
-                  onClick={() => {
-                    // Quick PRO test access
-                    setUserSubscription('pro');
-                    setUser({ 
-                      name: 'Test User', 
-                      email: loginEmail || 'test@neurobond.ch', 
-                      partner_name: 'Test Partner',
-                      subscription_status: 'active'
-                    });
-                    setShowLandingPage(false);
-                    setShowOnboarding(false);
-                    setShowLoginModal(false);
-                    showNotification('🎉 PRO Test-Zugang aktiviert!', 'success');
-                  }}
-                  className="bg-yellow-600 hover:bg-yellow-700"
-                >
-                  <Crown className="w-4 h-4 mr-2" />
-                  PRO Test
-                </Button>
-              </div>
+            <AdvancedLoginComponent
+              onLoginSuccess={(userData) => {
+                setUser(userData);
+                setShowLandingPage(false);
+                setShowOnboarding(false);
+                setShowLoginModal(false);
+                
+                if (userData.subscription_status === 'active') {
+                  setUserSubscription('pro');
+                  showNotification(`Willkommen zurück, ${userData.name}! PRO-Zugang aktiviert. 🎉`, 'success');
+                } else {
+                  setUserSubscription('free');
+                  showNotification(`Willkommen zurück, ${userData.name}! 👋`, 'success');
+                }
+                
+                localStorage.setItem('neurobond_user', JSON.stringify(userData));
+              }}
+            />
+            
+            <div className="mt-4 pt-4 border-t border-gray-700">
+              <Button
+                onClick={() => {
+                  // Quick PRO test access
+                  setUserSubscription('pro');
+                  setUser({ 
+                    name: 'Test User', 
+                    email: 'test@neurobond.ch', 
+                    partner_name: 'Test Partner',
+                    subscription_status: 'active'
+                  });
+                  setShowLandingPage(false);
+                  setShowOnboarding(false);
+                  setShowLoginModal(false);
+                  showNotification('🎉 PRO Test-Zugang aktiviert!', 'success');
+                }}
+                className="w-full bg-yellow-600 hover:bg-yellow-700"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                PRO Test-Zugang
+              </Button>
+            </div>
               
               <div className="text-center text-sm text-gray-400 mt-4">
                 Noch kein Account? 
