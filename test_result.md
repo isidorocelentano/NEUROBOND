@@ -627,16 +627,14 @@ frontend:
 
 test_plan:
   current_focus:
-    - "iOS Mobile Payment Optimization Testing - COMPLETED ✅"
-    - "Backend iOS-specific Stripe configuration validation - COMPLETED ✅"
-    - "Frontend mobile UX improvements verification - COMPLETED ✅"
-    - "Complete Payment Flow Testing - COMPLETED ✅"
-    - "User Journey & Onboarding Testing - COMPLETED ✅"
-    - "Mobile Responsiveness Testing - COMPLETED ✅"
-    - "Freemium Model PRO Features Testing - COMPLETED ✅"
-  stuck_tasks: []
+    - "Training Scenario API Endpoints Testing - COMPLETED ✅"
+    - "Training Session 1 Functionality Verification - COMPLETED ✅"
+    - "Analyze-Dialog Endpoint Testing - COMPLETED ✅"
+    - "Training Flow JavaScript Error Investigation - COMPLETED ✅"
+  stuck_tasks:
+    - "Training Scenario API Endpoints Testing"
   test_all: false
-  test_priority: "high_first"
+  test_priority: "critical_first"
 
     -agent: "testing"
   - task: "Authentication System Implementation"
