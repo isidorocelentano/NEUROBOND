@@ -4845,23 +4845,23 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name Ihres Partners
                   </label>
-                  <BulletproofNameInput
+                  <UltraDirectNameInput
                     initialValue={user?.partner_name || ''}
                     placeholder="Geben Sie den Namen Ihres Partners ein"
                     onNameChange={(newPartnerName) => {
-                      // MINIMAL parent update - heavily debounced
-                      setTimeout(() => {
-                        if (user?.partner_name !== newPartnerName) {
-                          setUser(prev => ({
-                            ...prev,
-                            partner_name: newPartnerName
-                          }));
-                          const updatedUser = { ...user, partner_name: newPartnerName };
-                          localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
-                        }
-                      }, 1000); // 1 second debounce to prevent re-renders during typing
+                      // SUPER DELAYED parent update - no interference
+                      console.log('🔄 ULTRA-DIRECT: Partner change callback delayed:', newPartnerName);
+                      if (user?.partner_name !== newPartnerName) {
+                        setUser(prev => ({
+                          ...prev,
+                          partner_name: newPartnerName
+                        }));
+                        const updatedUser = { ...user, partner_name: newPartnerName };
+                        localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                      }
                     }}
                     onBlur={async (partnerName) => {
+                      console.log('💾 ULTRA-DIRECT: Partner blur save triggered for:', partnerName);
                       if (user?.email && partnerName.trim()) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
@@ -4875,9 +4875,9 @@ const EmpathyTrainingAppContent = () => {
                               partner_name: partnerName.trim()
                             })
                           });
-                          console.log('✅ Partner name saved:', partnerName);
+                          console.log('✅ Partner name saved to backend:', partnerName);
                         } catch (error) {
-                          console.error('Save failed (ignored):', error);
+                          console.error('Save failed (will retry later):', error);
                         }
                       }
                     }}
