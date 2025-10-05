@@ -4678,15 +4678,15 @@ const EmpathyTrainingAppContent = () => {
         </header>
 
         <div className="flex flex-col items-center px-6 relative z-10">
-          <h2 className="text-3xl font-bold mb-8 text-center">Wähle dein Profil</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Erstelle eure Profile</h2>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl w-full">
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl w-full">
             {/* Main User */}
             <Card 
               className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all"
             >
-              <CardContent className="p-8 text-center">
-                <div className="mb-6">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
                   <AvatarUpload
                     currentAvatar={userAvatar}
                     onAvatarChange={setUserAvatar}
@@ -4695,9 +4695,33 @@ const EmpathyTrainingAppContent = () => {
                   />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-2">{user && user.name || 'Sophia'}</h3>
-                <p className="text-gray-300 mb-3">Level 3</p>
-                <Badge className="bg-blue-600">Hauptnutzer</Badge>
+                {/* Name Input Field for Main User */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Ihr Name
+                  </label>
+                  <input
+                    type="text"
+                    value={user?.name || ''}
+                    onChange={(e) => {
+                      const newName = e.target.value;
+                      setUser(prev => ({
+                        ...prev,
+                        name: newName
+                      }));
+                      // Also save to localStorage
+                      const updatedUser = { ...user, name: newName };
+                      localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                    }}
+                    placeholder="Geben Sie Ihren Namen ein"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  />
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-gray-300 mb-3">Level 3</p>
+                  <Badge className="bg-blue-600">Hauptnutzer</Badge>
+                </div>
               </CardContent>
             </Card>
 
@@ -4705,8 +4729,8 @@ const EmpathyTrainingAppContent = () => {
             <Card 
               className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all"
             >
-              <CardContent className="p-8 text-center">
-                <div className="mb-6">
+              <CardContent className="p-8">
+                <div className="text-center mb-6">
                   <AvatarUpload
                     currentAvatar={partnerAvatar}
                     onAvatarChange={handlePartnerAvatarChange}
@@ -4715,9 +4739,33 @@ const EmpathyTrainingAppContent = () => {
                   />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-2">{user && user.partner_name || 'Max'}</h3>
-                <p className="text-gray-300 mb-3">Level 3</p>
-                <Badge className="bg-purple-600">Partner</Badge>
+                {/* Name Input Field for Partner */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Name Ihres Partners
+                  </label>
+                  <input
+                    type="text"
+                    value={user?.partner_name || ''}
+                    onChange={(e) => {
+                      const newPartnerName = e.target.value;
+                      setUser(prev => ({
+                        ...prev,
+                        partner_name: newPartnerName
+                      }));
+                      // Also save to localStorage
+                      const updatedUser = { ...user, partner_name: newPartnerName };
+                      localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                    }}
+                    placeholder="Geben Sie den Namen Ihres Partners ein"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  />
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-gray-300 mb-3">Level 3</p>
+                  <Badge className="bg-purple-600">Partner</Badge>
+                </div>
               </CardContent>
             </Card>
           </div>
