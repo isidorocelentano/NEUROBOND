@@ -4695,16 +4695,15 @@ const EmpathyTrainingAppContent = () => {
                   />
                 </div>
                 
-                {/* Name Input Field for Main User */}
+                {/* Stable Name Input Field for Main User */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Ihr Name
                   </label>
-                  <input
-                    type="text"
-                    value={user?.name || ''}
-                    onChange={(e) => {
-                      const newName = e.target.value;
+                  <StableNameInput
+                    initialValue={user?.name || ''}
+                    placeholder="Geben Sie Ihren Namen ein"
+                    onNameChange={(newName) => {
                       setUser(prev => ({
                         ...prev,
                         name: newName
@@ -4713,9 +4712,9 @@ const EmpathyTrainingAppContent = () => {
                       const updatedUser = { ...user, name: newName };
                       localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
                     }}
-                    onBlur={async () => {
+                    onBlur={async (name) => {
                       // Save to backend when user finishes editing
-                      if (user?.email && user?.name) {
+                      if (user?.email && name) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
                             method: 'PUT',
@@ -4724,7 +4723,7 @@ const EmpathyTrainingAppContent = () => {
                             },
                             body: JSON.stringify({
                               email: user.email,
-                              name: user.name,
+                              name: name,
                               partner_name: user.partner_name
                             })
                           });
@@ -4733,7 +4732,6 @@ const EmpathyTrainingAppContent = () => {
                         }
                       }
                     }}
-                    placeholder="Geben Sie Ihren Namen ein"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                   />
                 </div>
