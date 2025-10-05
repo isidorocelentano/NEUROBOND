@@ -963,7 +963,7 @@ const EmpathyTrainingAppContent = () => {
                             
                             localStorage.setItem('neurobond_user', JSON.stringify(userData));
                           } else if (response.status === 404) {
-                            showNotification(t('noAccountFound') || 'Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
+                            showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
                           } else {
                             showNotification(t('loginFailed') || 'Login fehlgeschlagen.', 'error');
                           }
