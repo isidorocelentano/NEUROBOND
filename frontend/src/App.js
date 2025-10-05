@@ -12,53 +12,33 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Ultra-Stable Login Input Component - completely isolated from parent re-renders
-const UltraStableLoginInput = ({ placeholder, onEnter, onEmailChange }) => {
-  const inputRef = useRef(null);
-  const valueRef = useRef('');
-  const [inputValue, setInputValue] = useState('');
+// Simple and Reliable Login Input Component
+const SimpleLoginInput = ({ placeholder, onEnter }) => {
+  const [email, setEmail] = useState('');
   
-  // Use direct DOM manipulation to avoid React re-render issues
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const newValue = e.target.value;
-    valueRef.current = newValue;
-    setInputValue(newValue);
-    console.log('🔄 LOGIN INPUT: Value changed to:', newValue);
-    
-    if (onEmailChange) {
-      // Use setTimeout to avoid potential re-render loops
-      setTimeout(() => onEmailChange(newValue), 0);
-    }
+    setEmail(newValue);
+    console.log('📧 LOGIN: Email changed to:', newValue);
   };
   
-  const handleKeyDown = (e) => {
-    console.log('⌨️ LOGIN INPUT: Key pressed:', e.key);
+  const handleKeyPress = (e) => {
+    console.log('⌨️ LOGIN: Key pressed:', e.key);
     if (e.key === 'Enter') {
       e.preventDefault();
-      console.log('🚀 LOGIN INPUT: Enter pressed, calling onEnter with:', valueRef.current);
+      console.log('🚀 LOGIN: Enter pressed with email:', email);
       if (onEnter) {
-        onEnter(valueRef.current);
+        onEnter(email);
       }
     }
   };
-  
-  // Initialize only once on mount
-  useEffect(() => {
-    console.log('🏗️ LOGIN INPUT: Component mounted');
-    if (inputRef.current) {
-      inputRef.current.value = '';
-      valueRef.current = '';
-      setInputValue('');
-    }
-  }, []); // Empty dependency array means this runs only once
 
   return (
     <input
-      ref={inputRef}
       type="email"
-      value={inputValue}
-      onChange={handleInputChange}
-      onKeyDown={handleKeyDown}
+      value={email}
+      onChange={handleChange}
+      onKeyPress={handleKeyPress}
       placeholder={placeholder}
       className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
       autoComplete="email"
