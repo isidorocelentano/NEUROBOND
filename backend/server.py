@@ -2331,7 +2331,7 @@ async def get_user_avatar(user_id: str):
 
 @api_router.get("/user/by-email/{email}")
 async def get_user_by_email(email: str):
-    """Get user by email address for login"""
+    """Get user by email address for login (backward compatibility)"""
     try:
         user = await db.users.find_one({"email": email})
         
@@ -2347,6 +2347,147 @@ async def get_user_by_email(email: str):
     except Exception as e:
         logger.error(f"Get user by email error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to get user: {str(e)}")
+
+@api_router.post("/auth/login")
+async def login(user_login: UserLogin):
+    """Login with email and password"""
+    try:
+        # Find user by email
+        user = await db.users.find_one({"email": user_login.email})
+        
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Check if user has a password (for backward compatibility)
+        if not user.get("password_hash"):
+            raise HTTPException(status_code=400, detail="Account needs password setup. Please use password reset.")
+        
+        # Verify password
+        if not verify_password(user_login.password, user["password_hash"]):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Convert MongoDB document to User model (exclude password_hash)
+        user_data = User(**user)
+        user_dict = user_data.dict()
+        user_dict.pop("password_hash", None)  # Don't send password hash to frontend
+        
+        return {"user": user_dict, "message": "Login successful"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Login error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Login failed: {str(e)}")
+
+@api_router.post("/auth/register")
+async def register(user_create: UserCreate):
+    """Register a new user"""
+    try:
+        # Check if user already exists
+        existing_user = await db.users.find_one({"email": user_create.email})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        
+        # Hash password
+        password_hash = hash_password(user_create.password)
+        
+        # Create new user
+        new_user = User(
+            name=user_create.name,
+            email=user_create.email,
+            password_hash=password_hash,
+            partner_name=user_create.partner_name
+        )
+        
+        # Insert into database
+        user_dict = new_user.dict()
+        await db.users.insert_one(user_dict)
+        
+        # Return user data (exclude password_hash)
+        user_dict.pop("password_hash", None)
+        
+        return {"user": user_dict, "message": "Registration successful"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Registration error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+
+@api_router.post("/auth/password-reset")
+async def request_password_reset(reset_request: PasswordReset):
+    """Request password reset"""
+    try:
+        # Find user by email
+        user = await db.users.find_one({"email": reset_request.email})
+        
+        if not user:
+            # Don't reveal if email exists or not
+            return {"message": "If the email exists, a reset link has been sent"}
+        
+        # Generate reset token
+        reset_token = generate_reset_token()
+        reset_expires = datetime.now(timezone.utc) + timedelta(hours=1)  # 1 hour expiry
+        
+        # Update user with reset token
+        await db.users.update_one(
+            {"email": reset_request.email},
+            {
+                "$set": {
+                    "password_reset_token": reset_token,
+                    "password_reset_expires": reset_expires
+                }
+            }
+        )
+        
+        # In a real app, you would send an email here
+        # For testing, we'll return the token (remove this in production)
+        logger.info(f"Password reset token for {reset_request.email}: {reset_token}")
+        
+        return {
+            "message": "If the email exists, a reset link has been sent",
+            "reset_token": reset_token  # Only for testing - remove in production
+        }
+        
+    except Exception as e:
+        logger.error(f"Password reset request error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Password reset failed: {str(e)}")
+
+@api_router.post("/auth/password-reset/confirm")
+async def confirm_password_reset(reset_confirm: PasswordResetConfirm):
+    """Confirm password reset with token"""
+    try:
+        # Find user by reset token
+        user = await db.users.find_one({
+            "password_reset_token": reset_confirm.token,
+            "password_reset_expires": {"$gt": datetime.now(timezone.utc)}
+        })
+        
+        if not user:
+            raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+        
+        # Hash new password
+        new_password_hash = hash_password(reset_confirm.new_password)
+        
+        # Update user password and clear reset token
+        await db.users.update_one(
+            {"_id": user["_id"]},
+            {
+                "$set": {"password_hash": new_password_hash},
+                "$unset": {
+                    "password_reset_token": "",
+                    "password_reset_expires": ""
+                }
+            }
+        )
+        
+        return {"message": "Password reset successful"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Password reset confirm error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Password reset confirmation failed: {str(e)}")
 
 # Include the router in the main app
 app.include_router(api_router)
