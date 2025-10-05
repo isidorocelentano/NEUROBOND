@@ -786,14 +786,13 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Comprehensive SEO Feature Pages Testing - ALL 5 PAGES ⚠️"
-    - "Footer Links Functionality Verification - CRITICAL ⚠️"
-    - "Legal Compliance Pages Testing - AGB + External Links ⚠️"
-    - "Backend API Functionality After Updates - REQUIRED ⚠️" 
-    - "End-to-End User Journey Testing - COMPLETE FLOW ⚠️"
-  stuck_tasks: []
-  test_all: true
-  test_priority: "comprehensive_all"
+    - "SEO Feature Info Pages Routing Implementation"
+    - "AGB Page Routing Implementation"
+  stuck_tasks:
+    - "Dialog Coaching userName Variable Error Fix"
+    - "Own Cases Blank Screen Bug (Same as Dialog Coaching)"
+  test_all: false
+  test_priority: "high_first"
 
 agent_communication:
     -agent: "main"
