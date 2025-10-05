@@ -12,61 +12,64 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Ultra-Stable Name Input - Direct DOM Manipulation (NO React State)
-const UltraStableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
+// Bulletproof Name Input - Zero React State, Pure DOM
+const BulletproofNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
   const inputRef = useRef(null);
-  const valueRef = useRef(initialValue || '');
-  const callbackTimeoutRef = useRef(null);
+  const lastValueRef = useRef(initialValue || '');
+  const isInitializedRef = useRef(false);
   
-  // Initialize once on mount - NO state, NO re-renders
+  // Initialize ONCE - never again
   useEffect(() => {
-    if (inputRef.current) {
+    if (!isInitializedRef.current && inputRef.current) {
       inputRef.current.value = initialValue || '';
-      valueRef.current = initialValue || '';
+      lastValueRef.current = initialValue || '';
+      isInitializedRef.current = true;
+      console.log('🔧 BULLETPROOF NAME INPUT: Initialized ONCE with:', initialValue);
     }
-    console.log('🏗️ ULTRA STABLE NAME INPUT: Initialized with:', initialValue);
-  }, []); // Empty dependency array - only runs once!
+  }, []);
   
-  // Direct DOM event handling - NO React state updates
-  const handleInputChange = (e) => {
-    const newValue = e.target.value;
-    valueRef.current = newValue;
-    console.log('📝 ULTRA STABLE: Direct DOM value changed to:', newValue);
+  // Pure DOM event handler - ZERO React involvement
+  const handleInput = (e) => {
+    const currentValue = e.target.value;
+    lastValueRef.current = currentValue;
+    console.log('📝 BULLETPROOF: Pure DOM input ->', currentValue);
     
-    // Debounce parent callback to prevent re-render loops
-    if (callbackTimeoutRef.current) {
-      clearTimeout(callbackTimeoutRef.current);
-    }
-    
-    callbackTimeoutRef.current = setTimeout(() => {
-      if (onNameChange) {
-        onNameChange(newValue);
+    // Minimal callback - no state changes
+    if (onNameChange && typeof onNameChange === 'function') {
+      try {
+        onNameChange(currentValue);
+      } catch (error) {
+        console.error('Callback error (ignored):', error);
       }
-    }, 500); // 500ms debounce
-  };
-  
-  const handleBlur = () => {
-    const currentValue = valueRef.current;
-    console.log('💾 ULTRA STABLE: Blur event, saving:', currentValue);
-    
-    // Clear any pending callbacks
-    if (callbackTimeoutRef.current) {
-      clearTimeout(callbackTimeoutRef.current);
-    }
-    
-    // Immediate save on blur
-    if (onBlur) {
-      onBlur(currentValue);
     }
   };
   
-  const handleFocus = (e) => {
-    console.log('🎯 ULTRA STABLE: Focus event on input');
-    // Ensure cursor position is maintained
+  const handleBlurEvent = (e) => {
+    const finalValue = e.target.value;
+    console.log('💾 BULLETPROOF: Blur with value:', finalValue);
+    
+    if (onBlur && typeof onBlur === 'function') {
+      try {
+        onBlur(finalValue);
+      } catch (error) {
+        console.error('Blur callback error (ignored):', error);
+      }
+    }
+  };
+  
+  const handleFocusEvent = (e) => {
     const input = e.target;
-    const length = input.value.length;
+    console.log('🎯 BULLETPROOF: Focus event - maintaining cursor');
+    
+    // Force cursor to end after any potential interruption
     setTimeout(() => {
-      input.setSelectionRange(length, length);
+      try {
+        const length = input.value.length;
+        input.setSelectionRange(length, length);
+        input.scrollLeft = input.scrollWidth;
+      } catch (error) {
+        console.log('Cursor positioning skipped (mobile)');
+      }
     }, 0);
   };
   
@@ -74,15 +77,16 @@ const UltraStableNameInput = ({ initialValue, placeholder, onNameChange, onBlur,
     <input
       ref={inputRef}
       type="text"
-      onChange={handleInputChange}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
+      onInput={handleInput}
+      onBlur={handleBlurEvent}
+      onFocus={handleFocusEvent}
       placeholder={placeholder}
       className={className}
-      autoComplete="off"
-      spellCheck="false"
+      autoComplete="name"
+      spellCheck={false}
       autoCorrect="off"
-      autoCapitalize="off"
+      autoCapitalize="words"
+      data-testid="bulletproof-name-input"
     />
   );
 };
