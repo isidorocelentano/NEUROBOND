@@ -5368,6 +5368,27 @@ const EmpathyTrainingAppContent = () => {
     return <TrainingStufen />;
   }
 
+  // SEO Feature Information Pages
+  if (currentTab === 'empathie-training-info') {
+    return <EmpathieTrainingInfoPage />;
+  }
+
+  if (currentTab === 'gefuehlslexikon-info') {
+    return <GefuehlslexikonInfoPage />;
+  }
+
+  if (currentTab === 'dialog-coaching-info') {
+    return <DialogCoachingInfoPage />;
+  }
+
+  if (currentTab === 'community-cases-info') {
+    return <CommunityCasesInfoPage />;
+  }
+
+  if (currentTab === 'pro-version-info') {
+    return <ProVersionInfoPage />;
+  }
+
   return (
     <>
       <Dashboard />
