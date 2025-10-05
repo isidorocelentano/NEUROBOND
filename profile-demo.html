@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEUROBOND - Profil Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1f2937, #374151, #1f2937);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .profile-card {
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-card:hover {
+            background: rgba(55, 65, 81, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .avatar-area {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #6b7280, #9ca3af);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .avatar-area:hover {
+            transform: scale(1.05);
+        }
+        
+        .camera-icon {
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+        
+        .upload-btn {
+            background: #4b5563;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 16px 0;
+            transition: background 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: #6b7280;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 16px;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .name-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(156, 163, 175, 0.2);
+            border-radius: 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .hauptnutzer-badge {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .partner-badge {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .demo-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 24px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .back-button {
+            background: #4b5563;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 24px auto;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .back-button:hover {
+            background: #6b7280;
+        }
+        
+        @media (max-width: 768px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Erstelle eure Profile</h1>
+            <p style="color: #9ca3af; font-size: 1.1rem;">Personalisiert eure NEUROBOND Erfahrung</p>
+        </div>
+        
+        <div class="profiles-grid">
+            <!-- Hauptnutzer Profil -->
+            <div class="profile-card">
+                <div class="avatar-area" onclick="alert('Profilbild hochladen Funktion')">
+                    <span class="camera-icon">📷</span>
+                </div>
+                
+                <button class="upload-btn" onclick="alert('Bild hochladen')">
+                    📤 Bild hochladen
+                </button>
+                
+                <label style="display: block; font-weight: 600; color: #d1d5db; margin-bottom: 8px; text-align: left;">
+                    Ihr Name
+                </label>
+                <input 
+                    type="text" 
+                    class="name-input" 
+                    placeholder="Geben Sie Ihren Namen ein"
+                    value="Isi Cel"
+                    onchange="updateName(this, 'user')"
+                />
+                
+                <div class="level-badge">Level 3</div>
+                <div class="role-badge hauptnutzer-badge">Hauptnutzer</div>
+            </div>
+            
+            <!-- Partner Profil -->
+            <div class="profile-card">
+                <div class="avatar-area" onclick="alert('Partner Profilbild hochladen Funktion')">
+                    <span class="camera-icon">📷</span>
+                </div>
+                
+                <button class="upload-btn" onclick="alert('Partner Bild hochladen')">
+                    📤 Bild hochladen
+                </button>
+                
+                <label style="display: block; font-weight: 600; color: #d1d5db; margin-bottom: 8px; text-align: left;">
+                    Name Ihres Partners
+                </label>
+                <input 
+                    type="text" 
+                    class="name-input" 
+                    placeholder="Geben Sie den Namen Ihres Partners ein"
+                    value="Max Mustermann"
+                    onchange="updateName(this, 'partner')"
+                />
+                
+                <div class="level-badge">Level 3</div>
+                <div class="role-badge partner-badge">Partner</div>
+            </div>
+        </div>
+        
+        <div class="demo-info">
+            <h3 style="color: #3b82f6; margin-top: 0;">✨ Neue Features</h3>
+            <p><strong>Namenseingabe:</strong> Jetzt können Sie Ihren eigenen Namen und den Namen Ihres Partners direkt eingeben und bearbeiten.</p>
+            <p><strong>Profilbilder:</strong> Laden Sie individuelle Profilbilder für beide Profile hoch.</p>
+            <p><strong>Live-Speicherung:</strong> Alle Änderungen werden automatisch gespeichert.</p>
+        </div>
+        
+        <a href="http://localhost:3000" class="back-button">
+            ← Zurück zur Hauptanwendung
+        </a>
+    </div>
+    
+    <script>
+        function updateName(input, type) {
+            console.log(`${type} Name geändert zu: ${input.value}`);
+            
+            // Hier würde normalerweise die API aufgerufen werden
+            // fetch('/api/user/profile/names', { ... })
+            
+            // Visual feedback
+            input.style.borderColor = '#10b981';
+            setTimeout(() => {
+                input.style.borderColor = '#4b5563';
+            }, 1000);
+        }
+        
+        // Demo animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.profile-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
