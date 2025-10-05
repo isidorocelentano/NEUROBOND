@@ -16,11 +16,15 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const UltraStableLoginInput = ({ placeholder, onEnter, onEmailChange }) => {
   const inputRef = useRef(null);
   const valueRef = useRef('');
+  const [inputValue, setInputValue] = useState('');
   
   // Use direct DOM manipulation to avoid React re-render issues
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     valueRef.current = newValue;
+    setInputValue(newValue);
+    console.log('🔄 LOGIN INPUT: Value changed to:', newValue);
+    
     if (onEmailChange) {
       // Use setTimeout to avoid potential re-render loops
       setTimeout(() => onEmailChange(newValue), 0);
@@ -28,26 +32,31 @@ const UltraStableLoginInput = ({ placeholder, onEnter, onEmailChange }) => {
   };
   
   const handleKeyDown = (e) => {
+    console.log('⌨️ LOGIN INPUT: Key pressed:', e.key);
     if (e.key === 'Enter') {
       e.preventDefault();
+      console.log('🚀 LOGIN INPUT: Enter pressed, calling onEnter with:', valueRef.current);
       if (onEnter) {
         onEnter(valueRef.current);
       }
     }
   };
   
-  // Initialize input value on mount only
+  // Initialize only once on mount
   useEffect(() => {
+    console.log('🏗️ LOGIN INPUT: Component mounted');
     if (inputRef.current) {
       inputRef.current.value = '';
       valueRef.current = '';
+      setInputValue('');
     }
-  }, []);
+  }, []); // Empty dependency array means this runs only once
 
   return (
     <input
       ref={inputRef}
       type="email"
+      value={inputValue}
       onChange={handleInputChange}
       onKeyDown={handleKeyDown}
       placeholder={placeholder}
