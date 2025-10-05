@@ -5456,6 +5456,59 @@ const EmpathyTrainingAppContent = () => {
             </div>
           </header>
 
+          {/* SEO Feature Navigation */}
+          <div className="bg-gray-800/30 backdrop-blur-sm border-b border-gray-700/30">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setCurrentTab('empathie-training-info')}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-blue-600/20"
+                >
+                  <Target className="w-4 h-4" />
+                  Empathie-Training
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setCurrentTab('gefuehlslexikon-info')}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-red-600/20"
+                >
+                  <Heart className="w-4 h-4" />
+                  Gefühlslexikon
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setCurrentTab('dialog-coaching-info')}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-green-600/20"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Dialog-Coaching
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setCurrentTab('community-cases-info')}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-purple-600/20"
+                >
+                  <Users className="w-4 h-4" />
+                  Community Cases
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setCurrentTab('pro-version-info')}
+                  className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-600/20 font-medium"
+                >
+                  <Crown className="w-4 h-4" />
+                  PRO Version
+                </Button>
+              </div>
+            </div>
+          </div>
+
           <div className="container mx-auto px-4 py-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
