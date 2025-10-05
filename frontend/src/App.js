@@ -6711,11 +6711,11 @@ const NeurobondFooter = () => {
           <div>
             <h4 className="font-semibold text-white mb-4">Features</h4>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#training" className="hover:text-white transition-colors">Empathie-Training</a></li>
-              <li><a href="#lexikon" className="hover:text-white transition-colors">Gefühlslexikon</a></li>
-              <li><a href="#coaching" className="hover:text-white transition-colors">Dialog-Coaching</a></li>
-              <li><a href="#community" className="hover:text-white transition-colors">Community Cases</a></li>
-              <li><a href="#pro" className="hover:text-white transition-colors">PRO Version</a></li>
+              <li><a href="/empathie-training-info" className="hover:text-blue-400 transition-colors">Empathie-Training</a></li>
+              <li><a href="/gefuehlslexikon-info" className="hover:text-red-400 transition-colors">Gefühlslexikon</a></li>
+              <li><a href="/dialog-coaching-info" className="hover:text-green-400 transition-colors">Dialog-Coaching</a></li>
+              <li><a href="/community-cases-info" className="hover:text-purple-400 transition-colors">Community Cases</a></li>
+              <li><a href="/pro-version-info" className="hover:text-yellow-400 transition-colors">PRO Version</a></li>
             </ul>
           </div>
 
@@ -6723,11 +6723,10 @@ const NeurobondFooter = () => {
           <div>
             <h4 className="font-semibold text-white mb-4">Rechtliches</h4>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#datenschutz" className="hover:text-white transition-colors">Datenschutz</a></li>
-              <li><a href="#impressum" className="hover:text-white transition-colors">Impressum</a></li>
-              <li><a href="#agb" className="hover:text-white transition-colors">AGB</a></li>
-              <li><a href="#widerruf" className="hover:text-white transition-colors">Widerrufsrecht</a></li>
-              <li><a href="#kontakt" className="hover:text-white transition-colors">Kontakt</a></li>
+              <li><a href="https://mysymp.ch/datenschutzerklaerung/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">Datenschutz</a></li>
+              <li><a href="https://mysymp.ch/impressum/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">Impressum</a></li>
+              <li><a href="/agb" className="hover:text-blue-400 transition-colors">AGB & Widerrufsrecht</a></li>
+              <li><a href="mailto:info@neurobond.ch" className="hover:text-blue-400 transition-colors">Kontakt</a></li>
             </ul>
           </div>
 
