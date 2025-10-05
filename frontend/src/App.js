@@ -4757,16 +4757,15 @@ const EmpathyTrainingAppContent = () => {
                   />
                 </div>
                 
-                {/* Name Input Field for Partner */}
+                {/* Stable Name Input Field for Partner */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name Ihres Partners
                   </label>
-                  <input
-                    type="text"
-                    value={user?.partner_name || ''}
-                    onChange={(e) => {
-                      const newPartnerName = e.target.value;
+                  <StableNameInput
+                    initialValue={user?.partner_name || ''}
+                    placeholder="Geben Sie den Namen Ihres Partners ein"
+                    onNameChange={(newPartnerName) => {
                       setUser(prev => ({
                         ...prev,
                         partner_name: newPartnerName
@@ -4775,9 +4774,9 @@ const EmpathyTrainingAppContent = () => {
                       const updatedUser = { ...user, partner_name: newPartnerName };
                       localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
                     }}
-                    onBlur={async () => {
+                    onBlur={async (partnerName) => {
                       // Save to backend when user finishes editing
-                      if (user?.email && user?.partner_name) {
+                      if (user?.email && partnerName) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
                             method: 'PUT',
@@ -4787,7 +4786,7 @@ const EmpathyTrainingAppContent = () => {
                             body: JSON.stringify({
                               email: user.email,
                               name: user.name,
-                              partner_name: user.partner_name
+                              partner_name: partnerName
                             })
                           });
                         } catch (error) {
@@ -4795,7 +4794,6 @@ const EmpathyTrainingAppContent = () => {
                         }
                       }
                     }}
-                    placeholder="Geben Sie den Namen Ihres Partners ein"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                   />
                 </div>
