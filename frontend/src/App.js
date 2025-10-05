@@ -4779,23 +4779,23 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Ihr Name
                   </label>
-                  <BulletproofNameInput
+                  <UltraDirectNameInput
                     initialValue={user?.name || ''}
                     placeholder="Geben Sie Ihren Namen ein"
                     onNameChange={(newName) => {
-                      // MINIMAL parent update - debounced
-                      setTimeout(() => {
-                        if (user?.name !== newName) {
-                          setUser(prev => ({
-                            ...prev,
-                            name: newName
-                          }));
-                          const updatedUser = { ...user, name: newName };
-                          localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
-                        }
-                      }, 1000); // 1 second debounce to prevent re-renders during typing
+                      // SUPER DELAYED parent update - no interference
+                      console.log('🔄 ULTRA-DIRECT: Name change callback delayed:', newName);
+                      if (user?.name !== newName) {
+                        setUser(prev => ({
+                          ...prev,
+                          name: newName
+                        }));
+                        const updatedUser = { ...user, name: newName };
+                        localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                      }
                     }}
                     onBlur={async (name) => {
+                      console.log('💾 ULTRA-DIRECT: Blur save triggered for:', name);
                       if (user?.email && name.trim()) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
@@ -4809,9 +4809,9 @@ const EmpathyTrainingAppContent = () => {
                               partner_name: user.partner_name
                             })
                           });
-                          console.log('✅ User name saved:', name);
+                          console.log('✅ User name saved to backend:', name);
                         } catch (error) {
-                          console.error('Save failed (ignored):', error);
+                          console.error('Save failed (will retry later):', error);
                         }
                       }
                     }}
