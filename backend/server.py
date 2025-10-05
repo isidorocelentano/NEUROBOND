@@ -2414,10 +2414,11 @@ async def register(user_create: UserCreate):
         
         # Insert into database
         user_dict = new_user.dict()
-        await db.users.insert_one(user_dict)
+        result = await db.users.insert_one(user_dict)
         
-        # Return user data (exclude password_hash)
+        # Return user data (exclude password_hash and MongoDB _id)
         user_dict.pop("password_hash", None)
+        user_dict.pop("_id", None)  # Remove MongoDB ObjectId
         
         return {"user": user_dict, "message": "Registration successful"}
         
