@@ -8,7 +8,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from emergentintegrations.payments.stripe.checkout import StripeCheckout
 import stripe
@@ -16,6 +16,9 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from PIL import Image
 import io
 import base64
+from passlib.context import CryptContext
+from passlib.hash import bcrypt
+import secrets
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
