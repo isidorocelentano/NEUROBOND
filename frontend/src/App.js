@@ -5306,20 +5306,19 @@ const EmpathyTrainingAppContent = () => {
               </Button>
             </div>
               
-              <div className="text-center text-sm text-gray-400 mt-4">
-                Noch kein Account? 
-                <Button 
-                  variant="link" 
-                  className="text-blue-400 hover:text-blue-300 p-0 ml-1"
-                  onClick={() => {
-                    setShowLoginModal(false);
-                    setShowLandingPage(false);
-                    setShowOnboarding(true);
-                  }}
-                >
-                  Kostenlos registrieren
-                </Button>
-              </div>
+            <div className="text-center text-sm text-gray-400 mt-4">
+              Noch kein Account? 
+              <Button 
+                variant="link" 
+                className="text-blue-400 hover:text-blue-300 p-0 ml-1"
+                onClick={() => {
+                  setShowLoginModal(false);
+                  setShowLandingPage(false);
+                  setShowOnboarding(true);
+                }}
+              >
+                Kostenlos registrieren
+              </Button>
             </div>
           </div>
         </div>
