@@ -4817,12 +4817,11 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name Ihres Partners
                   </label>
-                  <UltraDirectNameInput
-                    initialValue={user?.partner_name || ''}
+                  <StableNameInput
+                    value={user?.partner_name || ''}
                     placeholder="Geben Sie den Namen Ihres Partners ein"
-                    onNameChange={(newPartnerName) => {
-                      // SUPER DELAYED parent update - no interference
-                      console.log('🔄 ULTRA-DIRECT: Partner change callback delayed:', newPartnerName);
+                    onChange={(newPartnerName) => {
+                      console.log('🔄 STABLE: Partner change callback:', newPartnerName);
                       if (user?.partner_name !== newPartnerName) {
                         setUser(prev => ({
                           ...prev,
@@ -4833,7 +4832,7 @@ const EmpathyTrainingAppContent = () => {
                       }
                     }}
                     onBlur={async (partnerName) => {
-                      console.log('💾 ULTRA-DIRECT: Partner blur save triggered for:', partnerName);
+                      console.log('💾 STABLE: Partner blur save triggered for:', partnerName);
                       if (user?.email && partnerName.trim()) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
