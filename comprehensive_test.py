@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 
 class ComprehensiveBackendTester:
-    def __init__(self, base_url="https://couplesai.preview.emergentagent.com"):
+    def __init__(self, base_url="https://neurobond-cursor.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -192,7 +192,7 @@ class ComprehensiveBackendTester:
         # Test monthly package
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couplesai.preview.emergentagent.com"
+            "origin_url": "https://neurobond-cursor.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -237,7 +237,7 @@ class ComprehensiveBackendTester:
         # Test that the system continues to work even with potential MongoDB permission issues
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://couplesai.preview.emergentagent.com"
+            "origin_url": "https://neurobond-cursor.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -298,7 +298,7 @@ class ComprehensiveBackendTester:
         # Test iOS optimization (already verified working)
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://couplesai.preview.emergentagent.com"
+            "origin_url": "https://neurobond-cursor.preview.emergentagent.com"
         }
         
         success, response = self.run_test(

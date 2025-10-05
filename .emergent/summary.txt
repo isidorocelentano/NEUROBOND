@@ -1,59 +1,77 @@
 <analysis>
-The previous AI engineer initially focused on debugging the Stripe payment flow for the PRO Version starten feature. After persistent issues with a modal-based payment display (Chat Messages 275-345 in the original trajectory), the approach shifted to a dedicated  component. This new page successfully rendered, but upon clicking monthly/yearly payment options, the user reported a white screen (Chat Message 50). The engineer investigated  for the  implementation (Chat Message 11, 39-42), checking  configuration (Chat Message 15, 47) and  for the Stripe checkout endpoint (Chat Message 19-35). Error handling and logging were added to  (Chat Messages 43, 45). The current state is that the white screen persists, indicating a JavaScript error or a backend API issue with Stripe integration. The engineer concluded that a JavaScript error is crashing the app and plans to test the backend.
+The AI engineer focused on resolving critical UI/UX and authentication issues for the NEUROBOND application. Initially,  and  JavaScript errors in  were addressed by ensuring props were correctly passed from  and replacing  with . A recurring cursor jump problem in login and profile name input fields () consumed significant effort. Multiple iterations, including  and  with direct DOM manipulation and , were attempted. While temporary demo pages showed success, the issue persisted in the main application. A full authentication system (registration, login, password reset) was also implemented and tested, along with profile name update backend/frontend functionality. The last interaction reported the cursor jump issue persisting in the preview.
 </analysis>
 
 <product_requirements>
-The NEUROBOND application aims to provide empathy training for couples using 17 AI-powered scenarios across five Training Stufen, offering AI feedback. Core features include a Gefühlslexikon, Dialog-Coaching, Wöchentliche Trainingspläne, Community Cases, and contact forms. It operates on a freemium model, with a PRO subscription available at CHF 10.00/month or CHF 100.00/year via Stripe, including Swiss VAT. Recent developments focused on a dark-themed partner dashboard, dynamic daily goals, improved navigation, and user avatar uploads. The AI engineer has established interactive training scenarios, resolved critical UI/UX issues, and implemented data persistence. The current Gefühlslexikon is expanded with detailed emotional categories and practical examples. Community Cases was developed into a feature with 20 core therapy questions and database integration. The Pro-Version upgrade now utilizes a dedicated  for Stripe transactions.
+The NEUROBOND application is an AI-powered empathy training platform for couples, featuring a freemium model. A PRO subscription (CHF 10.00/month or CHF 100.00/year via Stripe) unlocks premium features like Dialog Coaching, Own Cases, Community Cases, and Partner Dashboard, with the Gefühlslexikon having limited access for free users. Key features include 17 AI-powered training scenarios, a searchable emotion encyclopedia, 20 anonymized community cases, and a user dashboard. Recent development has focused on iOS optimizations, freemium model redesign with PRO access checks and UI locks, creation of PRO test access mechanisms, and significant improvements to the login flow. Furthermore, fixes for training scenarios (AI prompts), an attempt at bilingual support (reverted), resolution of a persistent login input field issue (multiple attempts), and deployment blockers (MongoDB auth, still pending) were undertaken. The latest focus includes fixing navigation errors in training scenarios, adding user and partner name input to profiles, and stabilizing these input fields.
 </product_requirements>
 
 <key_technical_concepts>
-
--   **Full-stack:** React (frontend), FastAPI (backend), MongoDB (database).
--   **UI/UX:** Shadcn UI, Tailwind CSS.
--   **AI:** OpenAI GPT-4o for dialogue and assessment.
--   **Payment:** Stripe for subscriptions.
--   **Data Persistence:** .
--   **Deployment:** Kubernetes, Supervisor.
+-   **Full-stack:** React.js (frontend) and Python's FastAPI (backend).
+-   **Database:** MongoDB.
+-   **UI/UX:** Tailwind CSS and Shadcn UI components.
+-   **AI Integration:** OpenAI's GPT-4o.
+-   **Payments:** Stripe.
+-   **Deployment:** Kubernetes-based environment.
+-   **Architecture:** Single Page Application (SPA).
 </key_technical_concepts>
 
 <code_architecture>
+The application follows a standard monolithic full-stack architecture with a React frontend and a FastAPI backend.
 
 
--   **/app/backend/server.py**:
-    -   **Summary:** Main FastAPI application for AI, data processing, and API endpoints, including Stripe integration.
+
+-   **/app/backend/server.py**
+    -   **Importance:** Core backend, handles API endpoints, authentication, OpenAI interactions, Stripe payments, and MongoDB operations.
     -   **Changes:**
-        -   Fixed  for partner dialogues.
-        -   Corrected AI  for  and  to maintain proper role-playing.
-        -   Added  environment variable for deployment.
-        -   Contains the  endpoint for Stripe payment session creation (lines 1505, 1530).
--   **/app/frontend/src/App.js**:
-    -   **Summary:** Central React component for application state, routing, and UI. Manages the overall structure, including the .
+        -   Password hashing with  was introduced.
+        -   New authentication endpoints for , , , and  were added.
+        -   User and Partner name fields were added to the  Pydantic model.
+        -   An API endpoint () was added to allow users to update their  and .
+        -   Stripe webhook logic was updated for subscription activation.
+        -   AI prompts for training scenarios were enhanced.
+
+-   **/app/frontend/src/App.js**
+    -   **Importance:** Monolithic component managing frontend routing, global state, and rendering.
     -   **Changes:**
-        -   Implemented Gefühlslexikon with categories and examples.
-        -   Removed theoretical elements from Gefühlslexikon.
-        -   Implemented Community Cases with 20 questions and search.
-        -   Introduced Kostenlos ausprobieren and PRO Version starten buttons.
-        -   Added  state and dashboard indicator.
-        -   Refactored Pro-Version onboarding from a modal to a dedicated  component.
-        -   Introduced state-based navigation for .
-        -   Recently, error handling and logging were added to the  component (lines 1137-1162 and 1209-1235) to debug the white screen issue.
-        -   Confirms  is accessible (line 12).
--   **/app/frontend/src/TrainingScenario.js**:
-    -   **Summary:** React component for AI-powered training sessions.
+        -   Login flow was significantly reworked, including a Navbar login, a dedicated Login Modal, and a Landing Page login.
+        -    and  components (or similar logic) were attempted to fix cursor jump issues, ultimately leading to direct DOM manipulation approaches.
+        -   Internationalization () system was introduced and later completely removed due to JavaScript errors, reverting to static German text.
+        -    and  props were added to  to handle navigation.
+        -    and  modals were integrated.
+        -   Profile editing functionality was added to allow users to input  and .
+        -    and  components were integrated into the profile section for display.
+
+-   **/app/frontend/src/TrainingScenario.js**
+    -   **Importance:** Manages state and UI for interactive AI training sessions.
     -   **Changes:**
-        -   Fixed ESLint error, refactored for structured training flow, integrated avatars, corrected input labels, and improved  handling to fix missing .
+        -   Accepted  and  as props to enable proper navigation.
+        -   Problematic  component replaced with a standard .
+
+-   **/app/frontend/src/App.css**
+    -   **Importance:** Main stylesheet for the frontend.
+    -   **Changes:** iOS-specific CSS was added.
+
+-   **/app/frontend/src/i18n/translations.js** (and associated directory)
+    -   **Importance:** (Initially created) To hold translations.
+    -   **Changes:** Created, then later completely removed.
 </code_architecture>
 
 <pending_tasks>
--   Fully implement and test the Stripe Payment flow (PayPal, Credit Cards) in the preview environment for the Pro-Version upgrade. (Payment options click leads to white screen).
--   Configure SMTP credentials (, ) in  for actual email sending functionality.
--   Investigate why clicking monthly/yearly payment options on  leads to a white screen, focusing on  and Stripe API call.
+-   **Redeploy the Application:** Numerous fixes and features are implemented but not yet live on .
+-   **Configure SMTP Credentials:** The  file still requires valid  and .
+-   **Resolve Database Authorization Issues on Deployment:** The deployer agent consistently reports authorization errors with the managed MongoDB instance.
+-   **Stabilize Profile Name Input Fields:** The cursor jump issue persists in the profile name input fields in the main application.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was debugging the PRO Version starten flow. After facing persistent issues with a modal for payment options, the strategy was changed to use a dedicated  component, which successfully rendered. However, the user reported a white screen upon clicking the monatlich (monthly) or jährlich (yearly) payment options on this . This indicates a JavaScript error in the frontend or an issue with the Stripe checkout session creation API call. The engineer investigated  to locate the  component's button handlers (lines 1137-1162 and 1209-1235) and added error handling and logging to these sections. The  in  was confirmed, and the backend  endpoint in  was examined. The AI engineer's last explicit action was to check the accessibility of the  within , confirming it was defined at line 12. The user's latest feedback (Chat Message 50) re-confirmed the white screen issue, leading the AI to conclude it's a JavaScript error crashing the app, and the next step involves thoroughly testing the backend.
+Immediately before this summary, the AI engineer was attempting to fix a persistent cursor jump issue in the profile name input fields, which was reported by the user after previous attempts at stabilization (using , , and direct DOM manipulation demos) failed to fully resolve the problem in the actual application preview.
+
+The engineer's latest approach involved a radical solution, using an Ultra-Direct Pure DOM method within  (or related input components within App.js) to manage the input fields completely outside of React's state control, relying solely on direct browser events and DOM manipulation. This involved removing React State management for input values and using  to interact directly with the DOM element.
+
+The engineer created a test page () to demonstrate this solution, which showed success in a controlled environment, confirming that the input fields could be stabilized. The goal was to eliminate the cursor jump problem permanently. However, despite these efforts and the successful demonstration on a standalone test page, the user reported that Der cursor jumps immer noch (The cursor still jumps) in the preview version of the main application, indicating the issue remains unresolved within the integrated frontend.
 </current_work>
 
 <optional_next_step>
-Test the backend Stripe API endpoint () to diagnose the white screen issue.
+Investigate why the Ultra-Direct Pure DOM solution for cursor jump issue isn't working in the main  preview.
 </optional_next_step>
