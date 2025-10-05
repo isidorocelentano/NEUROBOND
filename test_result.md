@@ -747,12 +747,17 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Profile Input Field Duplication Fix - TESTING COMPLETED ✅"
-    - "Profile Input Field Cursor Stability Verification - COMPLETED ✅"
-    - "Profile Name Save to Backend Functionality - VERIFIED ✅"
+    - "SEO Feature Navigation Testing"
+    - "Empathie-Training Info Page Testing"
+    - "Gefühlslexikon Info Page Testing"
+    - "Dialog-Coaching Info Page Testing"
+    - "Community Cases Info Page Testing"
+    - "PRO Version Info Page Testing"
+    - "Footer Legal Links Testing"
+    - "AGB Page Testing"
   stuck_tasks: []
   test_all: false
-  test_priority: "critical_first"
+  test_priority: "high_first"
 
 agent_communication:
     -agent: "main"
