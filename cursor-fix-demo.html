@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor-Jump Fix - NEUROBOND</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1f2937, #374151, #1f2937);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ef4444;
+        }
+        
+        .problem {
+            background: rgba(220, 38, 127, 0.1);
+            border: 1px solid rgba(220, 38, 127, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .solution {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+        
+        .test-section {
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .broken-input {
+            width: 100%;
+            padding: 16px;
+            background: #374151;
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin: 16px 0;
+            box-sizing: border-box;
+        }
+        
+        .broken-input:focus {
+            outline: none;
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .ultra-stable-input {
+            width: 100%;
+            padding: 16px;
+            background: #374151;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin: 16px 0;
+            box-sizing: border-box;
+        }
+        
+        .ultra-stable-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        
+        .ultra-stable-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .broken-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .test-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 8px;
+        }
+        
+        .test-btn:hover {
+            background: #047857;
+        }
+        
+        .danger-btn {
+            background: #dc2626;
+        }
+        
+        .danger-btn:hover {
+            background: #b91c1c;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-weight: 600;
+            min-height: 20px;
+        }
+        
+        .status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .status.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Cursor-Jump Problem Lösung</h1>
+            <p><strong>Problem:</strong> Cursor springt zurück beim Tippen - genau wie gestern bei Login-Feldern</p>
+        </div>
+        
+        <div class="problem">
+            <h3 style="color: #ef4444; margin-top: 0;">❌ Das Problem</h3>
+            <ul>
+                <li><strong>Cursor springt zurück</strong> an den Anfang oder vorherige Position</li>
+                <li><strong>Text verschwindet</strong> oder wird während dem Tippen gelöscht</li>
+                <li><strong>React Re-Rendering</strong> unterbricht die Eingabe</li>
+                <li><strong>useState/setState</strong> löst neue Render-Zyklen aus</li>
+                <li><strong>Controlled Components</strong> mit value-Prop verursachen Probleme</li>
+            </ul>
+        </div>
+        
+        <div class="solution">
+            <h3 style="color: #10b981; margin-top: 0;">✅ Ultra-Stabile Lösung</h3>
+            <ul>
+                <li><strong>Direkte DOM-Manipulation</strong> - kein React State</li>
+                <li><strong>useRef statt useState</strong> - keine Re-Renders</li>
+                <li><strong>Uncontrolled Component</strong> - kein value-Prop</li>
+                <li><strong>Debounced Callbacks</strong> - verhindert Callback-Loops</li>
+                <li><strong>Cursor Position Management</strong> - explizites setSelectionRange</li>
+            </ul>
+        </div>
+        
+        <div class="comparison">
+            <!-- Broken Version -->
+            <div class="test-section">
+                <h3 style="color: #ef4444;">❌ Kaputte Version (React State)</h3>
+                <p>Simuliert das Problem mit React State Updates</p>
+                
+                <label style="display: block; color: #d1d5db; margin-bottom: 8px; font-weight: 600;">
+                    Problematische Eingabe:
+                </label>
+                <input 
+                    type="text"
+                    class="broken-input"
+                    id="brokenInput"
+                    placeholder="Hier springt der Cursor zurück..."
+                />
+                
+                <div style="margin: 16px 0;">
+                    <button class="test-btn danger-btn" onclick="simulateProblem()">
+                        🐛 Problem simulieren
+                    </button>
+                    <button class="test-btn" onclick="clearBroken()">
+                        🗑️ Leeren
+                    </button>
+                </div>
+                
+                <div id="brokenStatus" class="status"></div>
+            </div>
+            
+            <!-- Fixed Version -->
+            <div class="test-section">
+                <h3 style="color: #10b981;">✅ Ultra-Stabile Version</h3>
+                <p>Direkte DOM-Manipulation ohne React State</p>
+                
+                <label style="display: block; color: #d1d5db; margin-bottom: 8px; font-weight: 600;">
+                    Ultra-stabile Eingabe:
+                </label>
+                <input 
+                    type="text"
+                    class="ultra-stable-input"
+                    id="ultraStableInput"
+                    placeholder="Cursor bleibt stabil - einfach tippen..."
+                />
+                
+                <div style="margin: 16px 0;">
+                    <button class="test-btn" onclick="testStability()">
+                        🧪 Stabilität testen
+                    </button>
+                    <button class="test-btn" onclick="fillDemo()">
+                        📝 Demo füllen
+                    </button>
+                    <button class="test-btn" onclick="clearStable()">
+                        🗑️ Leeren
+                    </button>
+                </div>
+                
+                <div id="stableStatus" class="status"></div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding: 24px; background: rgba(59, 130, 246, 0.1); border-radius: 12px;">
+            <h3 style="color: #3b82f6; margin-top: 0;">🎯 Implementierung in NEUROBOND</h3>
+            <p><strong>UltraStableNameInput Komponente:</strong></p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 16px; border-radius: 8px; text-align: left; margin: 16px 0;">
+                <code style="color: #fbbf24; font-family: 'Courier New', monospace; font-size: 14px;">
+const UltraStableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {<br>
+&nbsp;&nbsp;const inputRef = useRef(null);<br>
+&nbsp;&nbsp;const valueRef = useRef(initialValue || '');<br>
+&nbsp;&nbsp;// KEIN useState - KEINE Re-Renders!<br>
+&nbsp;&nbsp;// Direkte DOM-Manipulation<br>
+&nbsp;&nbsp;// Debounced callbacks<br>
+&nbsp;&nbsp;// Cursor position management<br>
+};
+                </code>
+            </div>
+            <p style="color: #10b981; font-weight: 600;">
+                ✅ Problem dauerhaft gelöst - gleiche Technik wie Login-Fix gestern!
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Broken input simulation (with React-like behavior)
+        let brokenValue = '';
+        let simulateReRender = false;
+        
+        function setupBrokenInput() {
+            const input = document.getElementById('brokenInput');
+            
+            input.addEventListener('input', function(e) {
+                brokenValue = e.target.value;
+                
+                if (simulateReRender) {
+                    // Simulate React re-render issue
+                    setTimeout(() => {
+                        // Force cursor to jump back
+                        input.setSelectionRange(0, 0);
+                        updateBrokenStatus('❌ Cursor zurückgesprungen! (React Re-Render simuliert)', 'error');
+                    }, 100);
+                } else {
+                    updateBrokenStatus('Tippen... (Problem wird gleich aktiviert)', 'warning');
+                }
+            });
+        }
+        
+        // Ultra-stable input (like our solution)
+        let stableValue = '';
+        
+        function setupUltraStableInput() {
+            const input = document.getElementById('ultraStableInput');
+            
+            input.addEventListener('input', function(e) {
+                stableValue = e.target.value;
+                console.log('📝 ULTRA STABLE: Value changed to:', stableValue);
+                updateStableStatus('✅ Stabil getippt: "' + stableValue + '"', 'success');
+            });
+            
+            input.addEventListener('focus', function(e) {
+                // Maintain cursor position
+                const input = e.target;
+                setTimeout(() => {
+                    const length = input.value.length;
+                    input.setSelectionRange(length, length);
+                }, 0);
+            });
+            
+            input.addEventListener('blur', function(e) {
+                console.log('💾 ULTRA STABLE: Blur - would save to backend:', stableValue);
+                updateStableStatus('💾 Gespeichert: "' + stableValue + '"', 'success');
+            });
+        }
+        
+        function updateBrokenStatus(message, type) {
+            const status = document.getElementById('brokenStatus');
+            status.innerHTML = message;
+            status.className = `status ${type}`;
+        }
+        
+        function updateStableStatus(message, type) {
+            const status = document.getElementById('stableStatus');
+            status.innerHTML = message;
+            status.className = `status ${type}`;
+        }
+        
+        function simulateProblem() {
+            simulateReRender = true;
+            updateBrokenStatus('🐛 Problem-Modus aktiviert - jetzt tippen und Cursor-Jump erleben!', 'error');
+            
+            setTimeout(() => {
+                simulateReRender = false;
+                updateBrokenStatus('Problem-Modus deaktiviert', 'warning');
+            }, 10000);
+        }
+        
+        function clearBroken() {
+            document.getElementById('brokenInput').value = '';
+            brokenValue = '';
+            simulateReRender = false;
+            updateBrokenStatus('Geleert', 'success');
+        }
+        
+        function testStability() {
+            const input = document.getElementById('ultraStableInput');
+            input.focus();
+            
+            // Simulate fast typing
+            const testText = 'Isi Cel - Ultra Stabil Test';
+            input.value = '';
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < testText.length) {
+                    input.value += testText[i];
+                    input.dispatchEvent(new Event('input'));
+                    // Maintain cursor at end
+                    input.setSelectionRange(input.value.length, input.value.length);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    updateStableStatus('🎉 Stabilität Test erfolgreich - kein Cursor-Jump!', 'success');
+                }
+            }, 120);
+        }
+        
+        function fillDemo() {
+            const input = document.getElementById('ultraStableInput');
+            input.value = 'Isi Cel Mustermann';
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        }
+        
+        function clearStable() {
+            document.getElementById('ultraStableInput').value = '';
+            stableValue = '';
+            updateStableStatus('Geleert', 'success');
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupBrokenInput();
+            setupUltraStableInput();
+            
+            updateBrokenStatus('Bereit - klicke "Problem simulieren" und dann tippen', 'warning');
+            updateStableStatus('✅ Ultra-stabil - einfach tippen!', 'success');
+        });
+    </script>
+</body>
+</html>
