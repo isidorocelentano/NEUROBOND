@@ -646,11 +646,14 @@ class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     email: str
+    password_hash: Optional[str] = None  # Hashed password
     partner_name: Optional[str] = None
     avatar: Optional[str] = None  # Base64 encoded image or URL
     subscription_status: str = "free"  # free, active, cancelled, expired
     subscription_type: Optional[str] = None  # monthly, yearly
     subscription_expires_at: Optional[datetime] = None
+    password_reset_token: Optional[str] = None  # For password reset
+    password_reset_expires: Optional[datetime] = None  # Token expiration
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserCreate(BaseModel):
