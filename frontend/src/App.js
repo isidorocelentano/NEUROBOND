@@ -954,6 +954,7 @@ const EmpathyTrainingAppContent = () => {
                           }
                         } catch (error) {
                           console.error('DIRECT LOGIN error:', error);
+                          alert('DEBUG: Connection error occurred');
                           showNotification('Verbindungsfehler.', 'error');
                         }
                       };
