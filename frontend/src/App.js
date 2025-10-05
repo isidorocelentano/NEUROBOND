@@ -6006,6 +6006,11 @@ const EmpathyTrainingAppContent = () => {
     return <ProVersionInfoPage />;
   }
 
+  // Legal Pages
+  if (currentTab === 'agb') {
+    return <AGBPage />;
+  }
+
   return (
     <>
       <Dashboard />
