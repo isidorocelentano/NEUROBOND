@@ -6807,7 +6807,7 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<EmpathyTrainingApp />} />
+          <Route path="/" element={<><EmpathyTrainingApp /><NeurobondFooter /></>} />
           <Route path="/empathie-training-info" element={<EmpathieTrainingInfoPageStandalone />} />
           <Route path="/gefuehlslexikon-info" element={<GefuehlslexikonInfoPageStandalone />} />
           <Route path="/dialog-coaching-info" element={<DialogCoachingInfoPageStandalone />} />
@@ -6816,7 +6816,6 @@ const App = () => {
           <Route path="/agb" element={<AGBPageStandalone />} />
         </Routes>
       </BrowserRouter>
-      <NeurobondFooter />
     </div>
   );
 };
