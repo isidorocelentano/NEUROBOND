@@ -965,7 +965,7 @@ const EmpathyTrainingAppContent = () => {
                           } else if (response.status === 404) {
                             showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
                           } else {
-                            showNotification(t('loginFailed') || 'Login fehlgeschlagen.', 'error');
+                            showNotification('Login fehlgeschlagen.', 'error');
                           }
                         } catch (error) {
                           console.error('DIRECT LOGIN error:', error);
