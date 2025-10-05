@@ -415,6 +415,102 @@ metadata:
   run_ui: false
 
 frontend:
+  - task: "SEO Feature Navigation Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "New feature navigation with 5 buttons needs comprehensive testing"
+
+  - task: "Empathie-Training Info Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "SEO-optimized feature description page (~500 words, blue theme) needs testing"
+
+  - task: "Gefühlslexikon Info Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "SEO-optimized feature description page (~500 words, red theme) needs testing"
+
+  - task: "Dialog-Coaching Info Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "SEO-optimized feature description page (~500 words, green theme) needs testing"
+
+  - task: "Community Cases Info Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "SEO-optimized feature description page (~500 words, purple theme) needs testing"
+
+  - task: "PRO Version Info Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "SEO-optimized feature description page (~500 words, yellow theme) needs testing"
+
+  - task: "Footer Legal Links Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "3-column footer with contact, features, and legal links needs testing"
+
+  - task: "AGB Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Complete AGB page with terms and conditions needs testing"
+
   - task: "Post-LoginModal Fix Comprehensive Frontend Testing"
     implemented: true
     working: true
