@@ -648,12 +648,11 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Training Scenario API Endpoints Testing - COMPLETED ✅"
-    - "Training Session 1 Functionality Verification - COMPLETED ✅"
-    - "Analyze-Dialog Endpoint Testing - COMPLETED ✅"
-    - "Training Flow JavaScript Error Investigation - COMPLETED ✅"
+    - "Profile Input Field Duplication Fix - TESTING REQUIRED ⚠️"
+    - "Profile Input Field Cursor Stability Verification"
+    - "Profile Name Save to Backend Functionality"
   stuck_tasks:
-    - "Training Scenario API Endpoints Testing"
+    - "Profile Input Field Stability (previously cursor jumping, now duplication)"
   test_all: false
   test_priority: "critical_first"
 
