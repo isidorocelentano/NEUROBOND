@@ -6387,6 +6387,12 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<EmpathyTrainingApp />} />
+          <Route path="/empathie-training-info" element={<EmpathieTrainingInfoPageStandalone />} />
+          <Route path="/gefuehlslexikon-info" element={<GefuehlslexikonInfoPageStandalone />} />
+          <Route path="/dialog-coaching-info" element={<DialogCoachingInfoPageStandalone />} />
+          <Route path="/community-cases-info" element={<CommunityCasesInfoPageStandalone />} />
+          <Route path="/pro-version-info" element={<ProVersionInfoPageStandalone />} />
+          <Route path="/agb" element={<AGBPageStandalone />} />
         </Routes>
       </BrowserRouter>
       <NeurobondFooter />
