@@ -935,7 +935,7 @@ const EmpathyTrainingAppContent = () => {
                     onEnter={(email) => {
                       // Perform login directly with email from input
                       if (!email) {
-                        showNotification(t('enterEmail') || 'Bitte geben Sie eine Email-Adresse ein.', 'error');
+                        showNotification('Bitte geben Sie eine Email-Adresse ein.', 'error');
                         return;
                       }
                       
