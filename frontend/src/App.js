@@ -12,58 +12,77 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Stable Name Input Component - Prevents React Re-render Issues
-const StableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
+// Ultra-Stable Name Input - Direct DOM Manipulation (NO React State)
+const UltraStableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
   const inputRef = useRef(null);
   const valueRef = useRef(initialValue || '');
-  const [displayValue, setDisplayValue] = useState(initialValue || '');
+  const callbackTimeoutRef = useRef(null);
   
-  // Update display value when initial value changes
+  // Initialize once on mount - NO state, NO re-renders
   useEffect(() => {
-    if (initialValue !== displayValue) {
-      setDisplayValue(initialValue || '');
+    if (inputRef.current) {
+      inputRef.current.value = initialValue || '';
       valueRef.current = initialValue || '';
-      if (inputRef.current) {
-        inputRef.current.value = initialValue || '';
-      }
     }
-  }, [initialValue]);
+    console.log('🏗️ ULTRA STABLE NAME INPUT: Initialized with:', initialValue);
+  }, []); // Empty dependency array - only runs once!
   
-  const handleChange = (e) => {
+  // Direct DOM event handling - NO React state updates
+  const handleInputChange = (e) => {
     const newValue = e.target.value;
     valueRef.current = newValue;
-    setDisplayValue(newValue);
-    console.log('📝 NAME INPUT: Value changed to:', newValue);
+    console.log('📝 ULTRA STABLE: Direct DOM value changed to:', newValue);
     
-    if (onNameChange) {
-      // Debounce the callback to avoid excessive calls
-      setTimeout(() => onNameChange(newValue), 0);
+    // Debounce parent callback to prevent re-render loops
+    if (callbackTimeoutRef.current) {
+      clearTimeout(callbackTimeoutRef.current);
     }
+    
+    callbackTimeoutRef.current = setTimeout(() => {
+      if (onNameChange) {
+        onNameChange(newValue);
+      }
+    }, 500); // 500ms debounce
   };
   
   const handleBlur = () => {
-    console.log('💾 NAME INPUT: Blur event, saving:', valueRef.current);
+    const currentValue = valueRef.current;
+    console.log('💾 ULTRA STABLE: Blur event, saving:', currentValue);
+    
+    // Clear any pending callbacks
+    if (callbackTimeoutRef.current) {
+      clearTimeout(callbackTimeoutRef.current);
+    }
+    
+    // Immediate save on blur
     if (onBlur) {
-      onBlur(valueRef.current);
+      onBlur(currentValue);
     }
   };
   
-  const handleFocus = () => {
-    console.log('🎯 NAME INPUT: Focus event');
+  const handleFocus = (e) => {
+    console.log('🎯 ULTRA STABLE: Focus event on input');
+    // Ensure cursor position is maintained
+    const input = e.target;
+    const length = input.value.length;
+    setTimeout(() => {
+      input.setSelectionRange(length, length);
+    }, 0);
   };
   
   return (
     <input
       ref={inputRef}
       type="text"
-      value={displayValue}
-      onChange={handleChange}
+      onChange={handleInputChange}
       onBlur={handleBlur}
       onFocus={handleFocus}
       placeholder={placeholder}
       className={className}
-      autoComplete="name"
-      spellCheck={false}
+      autoComplete="off"
+      spellCheck="false"
+      autoCorrect="off"
+      autoCapitalize="off"
     />
   );
 };
