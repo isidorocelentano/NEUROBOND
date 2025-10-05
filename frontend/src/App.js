@@ -40,7 +40,7 @@ const SimpleLoginInput = ({ placeholder, onEnter }) => {
       type="email"
       value={email}
       onChange={handleChange}
-      onKeyPress={handleKeyPress}
+      onKeyDown={handleKeyPress}
       placeholder={placeholder}
       className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
       autoComplete="email"
