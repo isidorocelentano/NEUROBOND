@@ -271,7 +271,7 @@ class AuthenticationTester:
             print("❌ Skipping password reset confirm test - no reset token available")
             return False
             
-        new_password = "NewTestPassword456"
+        new_password = "NewTestPass456"
         test_data = {
             "token": self.test_reset_token,
             "new_password": new_password
