@@ -65,7 +65,7 @@ class AuthenticationTester:
         test_data = {
             "name": "Isi Cel",
             "email": "isicel@bluewin.ch",
-            "password": "TestPass123",
+            "password": "Test123",
             "partner_name": "Test Partner"
         }
         
