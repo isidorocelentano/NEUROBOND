@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Fix critical LoginModal is not defined JavaScript runtime error that prevents NEUROBOND app from loading. Verify all existing functionality remains working after the fix."
+user_problem_statement: "SEO & RECHTLICHE VERBESSERUNGEN TESTING - Test new feature descriptions and footer links implementation including 5 SEO-optimized feature pages, feature navigation, and legal compliance footer."
 
 backend:
   - task: "Fix ESLint Alert Errors"
