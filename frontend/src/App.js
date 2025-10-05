@@ -948,14 +948,12 @@ const EmpathyTrainingAppContent = () => {
                             
                             localStorage.setItem('neurobond_user', JSON.stringify(userData));
                           } else if (response.status === 404) {
-                            alert('DEBUG: 404 - User not found');
                             showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
                           } else {
                             showNotification('Login fehlgeschlagen.', 'error');
                           }
                         } catch (error) {
                           console.error('DIRECT LOGIN error:', error);
-                          alert('DEBUG: Connection error occurred');
                           showNotification('Verbindungsfehler.', 'error');
                         }
                       };
