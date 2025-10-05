@@ -27,8 +27,6 @@ const SimpleLoginInput = ({ placeholder, onEnter }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       console.log('🚀 LOGIN: Enter pressed with email:', email);
-      // Add alert for debugging
-      alert(`DEBUG: Enter pressed with email: ${email}`);
       if (onEnter) {
         onEnter(email);
       }
