@@ -969,7 +969,7 @@ const EmpathyTrainingAppContent = () => {
                           }
                         } catch (error) {
                           console.error('DIRECT LOGIN error:', error);
-                          showNotification(t('connectionError') || 'Verbindungsfehler.', 'error');
+                          showNotification('Verbindungsfehler.', 'error');
                         }
                       };
                       
