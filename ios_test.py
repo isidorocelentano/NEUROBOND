@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 
 class iOSOptimizationTester:
-    def __init__(self, base_url="https://empathy-coach-1.preview.emergentagent.com"):
+    def __init__(self, base_url="https://couplesai.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -61,7 +61,7 @@ class iOSOptimizationTester:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -102,7 +102,7 @@ class iOSOptimizationTester:
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -146,12 +146,12 @@ class iOSOptimizationTester:
             {
                 "name": "iOS Safari Mobile",
                 "package_type": "monthly",
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             },
             {
                 "name": "iOS Safari Desktop",
                 "package_type": "yearly", 
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             }
         ]
         

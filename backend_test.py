@@ -8,7 +8,7 @@ import io
 from PIL import Image
 
 class EmpathyTrainingAPITester:
-    def __init__(self, base_url="https://empathy-coach-1.preview.emergentagent.com"):
+    def __init__(self, base_url="https://couplesai.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -216,7 +216,7 @@ class EmpathyTrainingAPITester:
         """Test Stripe checkout session creation for monthly subscription"""
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -240,7 +240,7 @@ class EmpathyTrainingAPITester:
         """Test Stripe checkout session creation for yearly subscription"""
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -264,7 +264,7 @@ class EmpathyTrainingAPITester:
         """Test Stripe checkout with invalid package type"""
         test_data = {
             "package_type": "invalid_package",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         # Note: Backend returns 500 instead of 400 due to exception handling
@@ -304,12 +304,12 @@ class EmpathyTrainingAPITester:
         # We'll verify this by checking the actual API response
         monthly_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         yearly_data = {
             "package_type": "yearly", 
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         # Test monthly pricing
@@ -342,7 +342,7 @@ class EmpathyTrainingAPITester:
         # First create a checkout session
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -1403,7 +1403,7 @@ class EmpathyTrainingAPITester:
         # Test by creating a checkout session and checking for proper error handling
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -1430,7 +1430,7 @@ class EmpathyTrainingAPITester:
         # Test keys should start with sk_test_ for secret key
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -1459,7 +1459,7 @@ class EmpathyTrainingAPITester:
         """Test if Stripe accepts preview domain for success/cancel URLs"""
         print("\n🔍 Testing Stripe Preview Domain Acceptance...")
         
-        preview_url = "https://empathy-coach-1.preview.emergentagent.com"
+        preview_url = "https://couplesai.preview.emergentagent.com"
         
         test_data = {
             "package_type": "monthly",
@@ -1502,7 +1502,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -1600,7 +1600,7 @@ class EmpathyTrainingAPITester:
         for package_type in package_types:
             test_data = {
                 "package_type": package_type,
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             }
             
             success, response = self.run_test(
@@ -1629,7 +1629,7 @@ class EmpathyTrainingAPITester:
         """Test if Stripe can handle redirects back to preview URLs"""
         print("\n🔍 Testing Stripe Redirect URLs Preview Compatibility...")
         
-        preview_base = "https://empathy-coach-1.preview.emergentagent.com"
+        preview_base = "https://couplesai.preview.emergentagent.com"
         
         test_data = {
             "package_type": "monthly",
@@ -1679,7 +1679,7 @@ class EmpathyTrainingAPITester:
         # Test the complete flow: create session -> check status -> verify configuration
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         # Step 1: Create checkout session
@@ -2060,7 +2060,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -2109,7 +2109,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -2149,7 +2149,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -2203,7 +2203,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -2234,7 +2234,7 @@ class EmpathyTrainingAPITester:
         for package_type in package_types:
             test_data = {
                 "package_type": package_type,
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             }
             
             success, response = self.run_test(
@@ -3197,7 +3197,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -3258,7 +3258,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -3302,7 +3302,7 @@ class EmpathyTrainingAPITester:
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -3354,7 +3354,7 @@ class EmpathyTrainingAPITester:
         print("\n📋 STEP 1: Testing Backend API Functionality")
         monthly_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success_monthly, response_monthly = self.run_test(
@@ -3367,7 +3367,7 @@ class EmpathyTrainingAPITester:
         
         yearly_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success_yearly, response_yearly = self.run_test(
@@ -3724,8 +3724,8 @@ class EmpathyTrainingAPITester:
         test_scenarios = [
             {"package_type": "monthly", "origin_url": "https://neurobond.ch", "name": "Monthly with neurobond.ch"},
             {"package_type": "yearly", "origin_url": "https://neurobond.ch", "name": "Yearly with neurobond.ch"},
-            {"package_type": "monthly", "origin_url": "https://empathy-coach-1.preview.emergentagent.com", "name": "Monthly with preview URL"},
-            {"package_type": "yearly", "origin_url": "https://empathy-coach-1.preview.emergentagent.com", "name": "Yearly with preview URL"}
+            {"package_type": "monthly", "origin_url": "https://couplesai.preview.emergentagent.com", "name": "Monthly with preview URL"},
+            {"package_type": "yearly", "origin_url": "https://couplesai.preview.emergentagent.com", "name": "Yearly with preview URL"}
         ]
         
         all_successful = True
@@ -4839,7 +4839,7 @@ class EmpathyTrainingAPITester:
         # Test monthly package with user email
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com",
+            "origin_url": "https://couplesai.preview.emergentagent.com",
             "user_email": "test.user@example.com"  # CRITICAL: Include user email for subscription activation
         }
         
@@ -4936,7 +4936,7 @@ class EmpathyTrainingAPITester:
         # Step 2: Create checkout session with user email
         checkout_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com",
+            "origin_url": "https://couplesai.preview.emergentagent.com",
             "user_email": user_email  # CRITICAL: Link payment to user
         }
         
@@ -5665,7 +5665,7 @@ def main_critical_debug():
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -5706,7 +5706,7 @@ def main_critical_debug():
         
         test_data = {
             "package_type": "yearly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -5750,12 +5750,12 @@ def main_critical_debug():
             {
                 "name": "iOS Safari Mobile",
                 "package_type": "monthly",
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             },
             {
                 "name": "iOS Safari Desktop",
                 "package_type": "yearly", 
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             }
         ]
         
@@ -5795,7 +5795,7 @@ def main_critical_debug():
         # Test with mobile-specific origin URL patterns
         mobile_test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -5843,7 +5843,7 @@ def main_critical_debug():
         
         test_data = {
             "package_type": "monthly",
-            "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+            "origin_url": "https://couplesai.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
@@ -5927,7 +5927,7 @@ def main_critical_debug():
             
             test_data = {
                 "package_type": scenario["package"],
-                "origin_url": "https://empathy-coach-1.preview.emergentagent.com"
+                "origin_url": "https://couplesai.preview.emergentagent.com"
             }
             
             # Step 1: Create checkout session
