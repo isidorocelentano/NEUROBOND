@@ -4752,12 +4752,11 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Ihr Name
                   </label>
-                  <UltraDirectNameInput
-                    initialValue={user?.name || ''}
+                  <StableNameInput
+                    value={user?.name || ''}
                     placeholder="Geben Sie Ihren Namen ein"
-                    onNameChange={(newName) => {
-                      // SUPER DELAYED parent update - no interference
-                      console.log('🔄 ULTRA-DIRECT: Name change callback delayed:', newName);
+                    onChange={(newName) => {
+                      console.log('🔄 STABLE: Name change callback:', newName);
                       if (user?.name !== newName) {
                         setUser(prev => ({
                           ...prev,
@@ -4768,7 +4767,7 @@ const EmpathyTrainingAppContent = () => {
                       }
                     }}
                     onBlur={async (name) => {
-                      console.log('💾 ULTRA-DIRECT: Blur save triggered for:', name);
+                      console.log('💾 STABLE: Blur save triggered for:', name);
                       if (user?.email && name.trim()) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
