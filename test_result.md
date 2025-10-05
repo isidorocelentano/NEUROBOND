@@ -631,6 +631,21 @@ frontend:
         -agent: "testing"
         -comment: "✅ iOS MOBILE OPTIMIZATIONS FULLY VERIFIED: Comprehensive testing on mobile viewport (375x812) confirms all iOS optimizations working perfectly. RESULTS: ✅ TOUCH TARGET COMPLIANCE: PRO Version button meets iOS 44px minimum requirement (251x84px) ✅ CSS OPTIMIZATIONS ACTIVE: 4 buttons with tap highlight removal, 4 buttons with user-select prevention, 4 buttons with touch action optimization ✅ PAYMENT FLOW OPTIMIZED: iOS Safari detection working, payment buttons respond correctly without unwanted callouts or zoom ✅ MOBILE RESPONSIVENESS: Tested across iPhone X (375x812), iPhone 12 (390x844), and iPad (768x1024) - all viewports display correctly ✅ COMPLETE PAYMENT INTEGRATION: PRO button → PaymentPage → Stripe checkout flow works seamlessly on mobile ✅ STRIPE MOBILE COMPATIBILITY: Successfully redirected to Stripe with 427,688 characters of content, payment form elements functional ✅ USER EXPERIENCE: No iOS zoom issues, smooth scrolling, proper touch interactions. iOS mobile payment optimizations are production-ready and significantly improve mobile user experience."
 
+  - task: "Profile Input Field Duplication Fix"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "user"
+        -comment: "User reported duplicated input fields in profile section: 'jetzt wird es interessanter: das eingabefeld ist doppelt vorhanden. Nach dem ausfüllen des Namens wird auch die untere Zeile automatisch ausgefüllt' (Now it gets interesting: the input field is duplicated. After filling in the name, the lower line is also automatically filled)"
+        -working: true
+        -agent: "main"
+        -comment: "🔧 PROFILE INPUT DUPLICATION ISSUE FIXED: Completely replaced problematic UltraDirectNameInput component that was causing duplicated input fields. PROBLEM IDENTIFIED: UltraDirectNameInput used direct DOM manipulation with createElement/appendChild, causing multiple DOM elements to be created without proper cleanup. SOLUTION IMPLEMENTED: ✅ REPLACED WITH StableNameInput: Clean React component using standard useState and useCallback patterns ✅ ELIMINATED DOM MANIPULATION: No more direct DOM element creation that was causing duplication ✅ PROPER REACT PATTERNS: Uses controlled components with debounced onChange (300ms) to prevent cursor jumping ✅ MAINTAINED FUNCTIONALITY: All saving to backend and localStorage preserved ✅ CURSOR STABILITY: React.memo and useCallback prevent unnecessary re-renders. TECHNICAL CHANGES: 1) Removed complex UltraDirectNameInput with 70+ lines of DOM manipulation code 2) Implemented clean 30-line StableNameInput component 3) Applied to both 'Ihr Name' and 'Name Ihres Partners' fields 4) Maintained all existing onBlur saving functionality. Profile input fields should now display as single, stable inputs without duplication or cursor jumping issues."
+
 test_plan:
   current_focus:
     - "Training Scenario API Endpoints Testing - COMPLETED ✅"
