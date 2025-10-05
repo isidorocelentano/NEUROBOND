@@ -6290,8 +6290,7 @@ def main_critical_debug():
         
         return self.tests_passed == self.tests_run
 
-
-    # ===== NEW COMPREHENSIVE SEO REGRESSION TEST METHODS =====
+if __name__ == "__main__":
     
     def test_user_profile_names(self):
         """Test user profile names endpoint"""
