@@ -1147,6 +1147,145 @@ const ProVersionInfoPage = () => {
   );
 };
 
+// Legal Pages
+const AGBPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4">Allgemeine Geschäftsbedingungen & Widerrufsrecht</h1>
+          <p className="text-xl text-gray-300">NEUROBOND by MYSYMP AG</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700">
+            <CardContent className="p-8">
+              <div className="prose prose-lg text-gray-300 max-w-none">
+                
+                <h2 className="text-2xl font-bold text-white mb-6">Allgemeine Geschäftsbedingungen für NEUROBOND</h2>
+                
+                <div className="space-y-8">
+                  <div className="bg-gray-700/30 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-white mb-4">Inhaltsverzeichnis</h3>
+                    <ol className="list-decimal list-inside space-y-1 text-gray-300">
+                      <li>Geltungsbereich</li>
+                      <li>Vertragspartner</li>
+                      <li>Vertragsschluss</li>
+                      <li>Widerrufsrecht</li>
+                      <li>Preise und Versandkosten</li>
+                      <li>Lieferung</li>
+                      <li>Zahlung</li>
+                      <li>Eigentumsvorbehalt</li>
+                      <li>Sachmängelgewährleistung</li>
+                      <li>Streitbeilegung</li>
+                    </ol>
+                  </div>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">1. Geltungsbereich</h3>
+                    <p>Für alle Lieferungen von MYSYMP AG (nachfolgend MYSYMP) an Verbraucher gelten diese Allgemeinen Geschäftsbedingungen (AGB).</p>
+                    <p>Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu einem Zwecke abschliesst, der überwiegend weder ihrer gewerblichen noch ihrer selbstständigen beruflichen Tätigkeit zugerechnet werden kann.</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">2. Vertragspartner</h3>
+                    <p>Der Kaufvertrag kommt zustande mit MYSYMP AG, CH-6207 Nottwil</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">3. Vertragsschluss</h3>
+                    <div className="space-y-3">
+                      <p><strong>3.1.</strong> Die Darstellung der Produkte im Online-Shop stellt kein rechtlich bindendes Angebot, sondern nur eine Aufforderung zur Bestellung dar.</p>
+                      <p><strong>3.2.</strong> Durch Anklicken des Buttons [Kaufen/kostenpflichtig bestellen] geben Sie eine verbindliche Bestellung der auf der Bestellseite aufgelisteten Waren ab. Ihr Kaufvertrag kommt zustande, wenn wir Ihre Bestellung durch eine Auftragsbestätigung per E-Mail unmittelbar nach dem Erhalt Ihrer Bestellung annehmen.</p>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">4. Widerrufsrecht</h3>
+                    <div className="space-y-3">
+                      <p><strong>4.1.</strong> Wenn Sie Verbraucher sind (also eine natürliche Person, die die Bestellung zu einem Zweck abgibt, der weder Ihrer gewerblichen oder selbständigen beruflichen Tätigkeit zugerechnet werden kann), steht Ihnen nach Massgabe der gesetzlichen Bestimmungen ein Widerrufsrecht zu.</p>
+                      <p><strong>4.2.</strong> Machen Sie als Verbraucher von Ihrem Widerrufsrecht nach Ziffer 4.1 Gebrauch, so haben Sie die regelmässigen Kosten der Rücksendung zu tragen.</p>
+                      <p><strong>4.3.</strong> Im Übrigen gelten für das Widerrufsrecht die Regelungen, die im Einzelnen wiedergegeben sind in der folgenden</p>
+                      
+                      <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6 mt-4">
+                        <h4 className="text-lg font-semibold text-blue-300 mb-3">Widerrufsbelehrung</h4>
+                        <h5 className="font-semibold text-white mb-2">Widerrufsrecht</h5>
+                        <p>Sie haben das Recht, diesen Vertrag auf Ende der gewählten Laufzeit ohne Kosten zu widerrufen.</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">5. Preise und Versandkosten</h3>
+                    <p><strong>5.1.</strong> Die auf den Produktseiten genannten Preise enthalten die gesetzliche Mehrwertsteuer und sonstige Preisbestandteile.</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">6. Lieferung</h3>
+                    <div className="space-y-3">
+                      <p><strong>6.1.</strong> Die Lieferung erfolgt durch erfolgreiche Zahlung</p>
+                      <p><strong>6.2.</strong> [Weitere Lieferbestimmungen nach Bedarf]</p>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">7. Zahlung</h3>
+                    <p><strong>7.1.</strong> Die Zahlung erfolgt wahlweise per Kreditkarte.</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">8. Eigentumsvorbehalt</h3>
+                    <p>Bis zur vollständigen Zahlung bleibt die Ware unser Eigentum.</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">9. Sachmängelgewährleistung</h3>
+                    <p>MYSYMP haftet für Sachmängel nach den hierfür geltenden gesetzlichen Vorschriften, insbesondere §§ 434 ff Bürgerliches Gesetzbuch.</p>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-semibold text-white mb-3">10. Streitbeilegung</h3>
+                    <div className="space-y-3">
+                      <p>Die EU-Kommission hat eine Internetplattform zur Online-Beilegung von Streitigkeiten geschaffen. Die Plattform dient als Anlaufstelle zur aussergerichtlichen Beilegung von Streitigkeiten betreffend vertragliche Verpflichtungen, die aus Online-Kaufverträgen erwachsen.</p>
+                      <p>Nähere Informationen sind unter dem folgenden Link verfügbar: 
+                        <a href="http://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 ml-1">
+                          http://ec.europa.eu/consumers/odr
+                        </a>
+                      </p>
+                      <p>Zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle sind wir weder bereit noch verpflichtet.</p>
+                    </div>
+                  </section>
+
+                  <div className="bg-gray-700/30 rounded-lg p-6 mt-8">
+                    <h3 className="text-lg font-semibold text-white mb-3">Kontaktinformationen</h3>
+                    <div className="text-gray-300 space-y-1">
+                      <p><strong>MYSYMP AG</strong></p>
+                      <p>CH-6207 Nottwil</p>
+                      <p>Schweiz</p>
+                      <p>E-Mail: <a href="mailto:info@neurobond.ch" className="text-blue-400 hover:text-blue-300">info@neurobond.ch</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Main App Component (German Static)
 const EmpathyTrainingAppContent = () => {
   const [user, setUser] = useState(null);
