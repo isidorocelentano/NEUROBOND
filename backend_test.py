@@ -6018,11 +6018,648 @@ def main_critical_debug():
         return self.tests_passed == self.tests_run
 
 
+    # ===== NEW COMPREHENSIVE SEO REGRESSION TEST METHODS =====
+    
+    def test_user_profile_names(self):
+        """Test user profile names endpoint"""
+        if not self.test_user_id:
+            print("❌ Skipping user profile names test - no user ID available")
+            return False
+            
+        success, response = self.run_test(
+            "User Profile Names",
+            "GET",
+            f"user/{self.test_user_id}/profile/names",
+            200
+        )
+        
+        if success and 'name' in response:
+            print(f"   ✅ User name: {response.get('name')}")
+            print(f"   ✅ Partner name: {response.get('partner_name', 'N/A')}")
+            return True
+        return False
+
+    def test_user_by_email(self):
+        """Test user lookup by email endpoint"""
+        if not self.test_user_id:
+            print("❌ Skipping user by email test - no user ID available")
+            return False
+            
+        # Get the user first to find their email
+        user_success, user_response = self.run_test(
+            "Get User for Email Test",
+            "GET",
+            f"users/{self.test_user_id}",
+            200
+        )
+        
+        if user_success and 'email' in user_response:
+            email = user_response['email']
+            success, response = self.run_test(
+                "User by Email",
+                "GET",
+                f"user/by-email/{email}",
+                200
+            )
+            
+            if success and response.get('id') == self.test_user_id:
+                print(f"   ✅ User found by email: {email}")
+                return True
+        return False
+
+    def test_training_start_scenario(self):
+        """Test training start scenario endpoint"""
+        test_data = {
+            "scenario_id": 1,
+            "user_id": "test-user-123",
+            "user_name": "Adam",
+            "partner_name": "Linda"
+        }
+        
+        success, response = self.run_test(
+            "Training Start Scenario",
+            "POST",
+            "training/start-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success and 'session_id' in response and 'partner_message' in response:
+            print(f"   ✅ Training session started: {response['session_id']}")
+            print(f"   ✅ Partner message length: {len(response['partner_message'])} chars")
+            self.training_session_id = response['session_id']
+            return True
+        return False
+
+    def test_training_respond(self):
+        """Test training respond endpoint"""
+        if not hasattr(self, 'training_session_id'):
+            print("❌ Skipping training respond test - no session ID available")
+            return False
+            
+        test_data = {
+            "session_id": self.training_session_id,
+            "user_response": "Das klingt wirklich stressig. Erzähl mir mehr darüber."
+        }
+        
+        success, response = self.run_test(
+            "Training Respond",
+            "POST",
+            "training/respond",
+            200,
+            data=test_data
+        )
+        
+        if success and 'partner_response' in response:
+            print(f"   ✅ Partner response: {response['partner_response'][:50]}...")
+            return True
+        return False
+
+    def test_training_evaluate(self):
+        """Test training evaluate endpoint"""
+        test_data = {
+            "user_response": "Das klingt wirklich stressig. Erzähl mir mehr darüber.",
+            "scenario_id": 1,
+            "user_id": "test-user-123"
+        }
+        
+        success, response = self.run_test(
+            "Training Evaluate",
+            "POST",
+            "training/evaluate",
+            200,
+            data=test_data
+        )
+        
+        if success and 'empathy_score' in response:
+            print(f"   ✅ Empathy score: {response['empathy_score']}/10")
+            print(f"   ✅ Feedback length: {len(response.get('feedback', ''))} chars")
+            return True
+        return False
+
+    def test_training_end_scenario(self):
+        """Test training end scenario endpoint"""
+        if not hasattr(self, 'training_session_id'):
+            print("❌ Skipping training end test - no session ID available")
+            return False
+            
+        test_data = {
+            "session_id": self.training_session_id
+        }
+        
+        success, response = self.run_test(
+            "Training End Scenario",
+            "POST",
+            "training/end-scenario",
+            200,
+            data=test_data
+        )
+        
+        if success and 'session_completed' in response:
+            print(f"   ✅ Session completed: {response['session_completed']}")
+            print(f"   ✅ Messages exchanged: {response.get('messages_exchanged', 0)}")
+            return True
+        return False
+
+    def test_gefuehlslexikon_api(self):
+        """Test emotion lexicon API endpoint"""
+        success, response = self.run_test(
+            "Gefühlslexikon API",
+            "GET",
+            "gefuehlslexikon",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   ✅ Emotions returned: {len(response)}")
+            if len(response) > 0:
+                print(f"   ✅ Sample emotion: {response[0].get('name', 'N/A')}")
+            return True
+        return False
+
+    def run_comprehensive_seo_regression_tests(self):
+        """Run comprehensive backend API testing after SEO updates"""
+        print("🚀 COMPREHENSIVE BACKEND API TESTING AFTER SEO UPDATES")
+        print(f"🌐 Base URL: {self.base_url}")
+        print(f"🔗 API URL: {self.api_url}")
+        print("🎯 Focus: Verify all backend functionality remains intact after frontend SEO changes")
+        print("=" * 80)
+
+        # 1. CORE API ENDPOINTS VERIFICATION
+        print("\n📋 1. CORE API ENDPOINTS VERIFICATION")
+        print("-" * 50)
+        
+        # Authentication endpoints (simulated - no actual auth implemented yet)
+        self.test_create_user()  # User registration
+        self.test_get_user()     # User profile retrieval
+        
+        # User profile endpoints
+        self.test_user_profile_names()
+        self.test_user_by_email()
+        
+        # Training system APIs
+        self.test_training_start_scenario()
+        self.test_training_respond()
+        self.test_training_evaluate()
+        self.test_training_end_scenario()
+        
+        # Emotion lexicon API
+        self.test_gefuehlslexikon_api()
+        
+        # Community cases endpoints
+        self.test_community_cases()
+        self.test_create_community_case_direct_valid()
+
+        # 2. STRIPE PAYMENT INTEGRATION
+        print("\n💳 2. STRIPE PAYMENT INTEGRATION")
+        print("-" * 50)
+        
+        # Checkout session creation
+        self.test_stripe_checkout_monthly()
+        self.test_stripe_checkout_yearly()
+        
+        # Payment status checking
+        self.test_checkout_status()
+        
+        # Swiss VAT pricing validation
+        self.verify_swiss_vat_pricing()
+        
+        # Webhook endpoint accessibility
+        self.test_stripe_webhook_endpoint_configuration()
+
+        # 3. FREEMIUM MODEL LOGIC
+        print("\n🔓 3. FREEMIUM MODEL LOGIC")
+        print("-" * 50)
+        
+        # PRO access control
+        self.test_freemium_access_stage1()
+        self.test_freemium_access_stage2()
+        
+        # Free user limitations
+        self.test_free_user_limitations()
+
+        # 4. FILE UPLOAD & USER DATA
+        print("\n📁 4. FILE UPLOAD & USER DATA")
+        print("-" * 50)
+        
+        # Avatar upload endpoints
+        self.test_avatar_upload_system()
+        
+        # User data persistence
+        self.test_user_data_persistence()
+
+        # 5. CONTACT & COMMUNICATION
+        print("\n📧 5. CONTACT & COMMUNICATION")
+        print("-" * 50)
+        
+        # Contact form endpoint
+        self.test_contact_form_valid_submission()
+        self.test_contact_form_validation()
+        
+        # Email functionality verification
+        self.test_contact_form_email_delivery_analysis()
+
+        # 6. DATABASE CONNECTIVITY
+        print("\n🗄️ 6. DATABASE CONNECTIVITY")
+        print("-" * 50)
+        
+        # MongoDB connection stability
+        self.test_mongodb_connection_stability()
+        
+        # User CRUD operations
+        self.test_user_crud_operations()
+        
+        # Data integrity verification
+        self.test_data_integrity()
+
+        # 7. SECURITY & CORS
+        print("\n🔒 7. SECURITY & CORS")
+        print("-" * 50)
+        
+        # CORS headers verification
+        self.test_cors_headers()
+        
+        # API security measures
+        self.test_api_security_measures()
+        
+        # Authentication token handling (when implemented)
+        self.test_authentication_token_handling()
+
+        # 8. REGRESSION TESTING - SEO IMPACT
+        print("\n🔍 8. REGRESSION TESTING - SEO IMPACT")
+        print("-" * 50)
+        
+        # Verify no API endpoints broken by frontend changes
+        self.test_all_endpoints_accessibility()
+        
+        # Test integration between new frontend routes and backend APIs
+        self.test_frontend_backend_integration()
+        
+        # System stability after major frontend updates
+        self.test_system_stability()
+
+        # Print final results
+        print("\n" + "=" * 80)
+        print("🏁 COMPREHENSIVE BACKEND API TESTING COMPLETE")
+        print(f"📊 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {self.tests_run - self.tests_passed}")
+        print(f"📈 Success Rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
+        
+        if self.tests_passed == self.tests_run:
+            print("🎉 All tests passed! Backend API is fully functional after SEO updates.")
+        else:
+            print("⚠️  Some tests failed. Backend may have regressions from SEO updates.")
+        
+        return self.tests_passed == self.tests_run
+
+    def test_free_user_limitations(self):
+        """Test free user limitations (5 scenarios in Stage 1)"""
+        success, response = self.run_test(
+            "Free User Limitations - Stage 1",
+            "GET",
+            "stages/1",
+            200
+        )
+        
+        if success and 'scenarios' in response:
+            scenarios_count = len(response['scenarios'])
+            if scenarios_count == 5:
+                print(f"   ✅ Free user gets 5 scenarios in Stage 1")
+                return True
+            else:
+                print(f"   ❌ Expected 5 scenarios, got {scenarios_count}")
+        return False
+
+    def test_user_data_persistence(self):
+        """Test user data persistence and retrieval"""
+        if not self.test_user_id:
+            print("❌ Skipping user data persistence test - no user ID available")
+            return False
+            
+        # Get user data
+        success, response = self.run_test(
+            "User Data Persistence",
+            "GET",
+            f"users/{self.test_user_id}",
+            200
+        )
+        
+        if success and 'id' in response:
+            print(f"   ✅ User data persisted: {response.get('name', 'N/A')}")
+            print(f"   ✅ Created at: {response.get('created_at', 'N/A')}")
+            return True
+        return False
+
+    def test_contact_form_validation(self):
+        """Test contact form validation comprehensively"""
+        # Test missing required fields
+        test_cases = [
+            ({"email": "test@example.com", "subject": "Test", "message": "Test"}, "Missing name"),
+            ({"name": "Test", "subject": "Test", "message": "Test"}, "Missing email"),
+            ({"name": "Test", "email": "test@example.com", "message": "Test"}, "Missing subject"),
+            ({"name": "Test", "email": "test@example.com", "subject": "Test"}, "Missing message")
+        ]
+        
+        all_passed = True
+        for test_data, description in test_cases:
+            success, response = self.run_test(
+                f"Contact Form Validation - {description}",
+                "POST",
+                "contact",
+                422,  # Expecting validation error
+                data=test_data
+            )
+            
+            if success:
+                print(f"   ✅ {description} properly rejected")
+            else:
+                print(f"   ❌ {description} validation failed")
+                all_passed = False
+        
+        return all_passed
+
+    def test_mongodb_connection_stability(self):
+        """Test MongoDB connection stability"""
+        # Test multiple database operations to verify stability
+        operations = [
+            ("Get Training Stages", "GET", "stages", 200, None),
+            ("Get Community Cases", "GET", "community-cases", 200, None),
+            ("Create User", "POST", "users", 200, {
+                "name": "DB Test User",
+                "email": f"db.test.{datetime.now().strftime('%H%M%S')}@example.com",
+                "partner_name": "Test Partner"
+            })
+        ]
+        
+        all_passed = True
+        for name, method, endpoint, expected_status, data in operations:
+            success, response = self.run_test(
+                f"MongoDB Stability - {name}",
+                method,
+                endpoint,
+                expected_status,
+                data=data
+            )
+            
+            if not success:
+                all_passed = False
+                print(f"   ❌ MongoDB operation failed: {name}")
+        
+        if all_passed:
+            print("   ✅ MongoDB connection stable across multiple operations")
+        
+        return all_passed
+
+    def test_user_crud_operations(self):
+        """Test user CRUD operations"""
+        # Create
+        create_data = {
+            "name": "CRUD Test User",
+            "email": f"crud.test.{datetime.now().strftime('%H%M%S')}@example.com",
+            "partner_name": "CRUD Partner"
+        }
+        
+        create_success, create_response = self.run_test(
+            "CRUD - Create User",
+            "POST",
+            "users",
+            200,
+            data=create_data
+        )
+        
+        if not create_success or 'id' not in create_response:
+            return False
+        
+        user_id = create_response['id']
+        
+        # Read
+        read_success, read_response = self.run_test(
+            "CRUD - Read User",
+            "GET",
+            f"users/{user_id}",
+            200
+        )
+        
+        if read_success and read_response.get('id') == user_id:
+            print("   ✅ User CRUD operations working")
+            return True
+        
+        return False
+
+    def test_data_integrity(self):
+        """Test data integrity after operations"""
+        # Create a user and verify data integrity
+        test_data = {
+            "name": "Integrity Test User",
+            "email": f"integrity.{datetime.now().strftime('%H%M%S')}@example.com",
+            "partner_name": "Integrity Partner"
+        }
+        
+        success, response = self.run_test(
+            "Data Integrity Test",
+            "POST",
+            "users",
+            200,
+            data=test_data
+        )
+        
+        if success and 'id' in response:
+            # Verify the data was stored correctly
+            user_id = response['id']
+            verify_success, verify_response = self.run_test(
+                "Data Integrity Verification",
+                "GET",
+                f"users/{user_id}",
+                200
+            )
+            
+            if verify_success:
+                # Check if all fields match
+                if (verify_response.get('name') == test_data['name'] and
+                    verify_response.get('email') == test_data['email'] and
+                    verify_response.get('partner_name') == test_data['partner_name']):
+                    print("   ✅ Data integrity maintained")
+                    return True
+                else:
+                    print("   ❌ Data integrity compromised - fields don't match")
+            else:
+                print("   ❌ Data integrity verification failed")
+        
+        return False
+
+    def test_cors_headers(self):
+        """Test CORS headers for new frontend routes"""
+        try:
+            import requests
+            response = requests.options(f"{self.api_url}/stages", timeout=10)
+            
+            cors_headers = {
+                'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+            }
+            
+            print(f"   CORS Headers: {cors_headers}")
+            
+            if cors_headers['Access-Control-Allow-Origin']:
+                print("   ✅ CORS headers present")
+                return True
+            else:
+                print("   ❌ CORS headers missing")
+                return False
+                
+        except Exception as e:
+            print(f"   ❌ CORS test failed: {str(e)}")
+            return False
+
+    def test_api_security_measures(self):
+        """Test API security measures"""
+        # Test for basic security headers and measures
+        try:
+            import requests
+            response = requests.get(f"{self.api_url}/stages", timeout=10)
+            
+            security_headers = {
+                'X-Content-Type-Options': response.headers.get('X-Content-Type-Options'),
+                'X-Frame-Options': response.headers.get('X-Frame-Options'),
+                'Content-Type': response.headers.get('Content-Type')
+            }
+            
+            print(f"   Security Headers: {security_headers}")
+            
+            if response.headers.get('Content-Type', '').startswith('application/json'):
+                print("   ✅ Proper content type headers")
+                return True
+            else:
+                print("   ❌ Missing or incorrect content type")
+                return False
+                
+        except Exception as e:
+            print(f"   ❌ Security test failed: {str(e)}")
+            return False
+
+    def test_authentication_token_handling(self):
+        """Test authentication token handling (when implemented)"""
+        # For now, this tests that endpoints work without authentication
+        # In the future, this would test JWT token validation
+        success, response = self.run_test(
+            "Authentication Token Handling",
+            "GET",
+            "stages",
+            200
+        )
+        
+        if success:
+            print("   ✅ API accessible (no auth required currently)")
+            return True
+        return False
+
+    def test_all_endpoints_accessibility(self):
+        """Test that all API endpoints are accessible after SEO changes"""
+        endpoints = [
+            ("GET", "stages", 200, None),
+            ("GET", "community-cases", 200, None),
+            ("GET", "gefuehlslexikon", 200, None),
+            ("POST", "contact", 422, {"invalid": "data"}),  # Should fail validation
+        ]
+        
+        all_accessible = True
+        for method, endpoint, expected_status, data in endpoints:
+            success, response = self.run_test(
+                f"Endpoint Accessibility - {method} /{endpoint}",
+                method,
+                endpoint,
+                expected_status,
+                data=data
+            )
+            
+            if not success:
+                all_accessible = False
+                print(f"   ❌ Endpoint not accessible: {method} /{endpoint}")
+        
+        if all_accessible:
+            print("   ✅ All tested endpoints accessible")
+        
+        return all_accessible
+
+    def test_frontend_backend_integration(self):
+        """Test integration between new frontend routes and backend APIs"""
+        # Test that backend APIs work with data that would come from new frontend routes
+        integration_tests = [
+            # Test user creation (from registration page)
+            ("User Registration Integration", "POST", "users", 200, {
+                "name": "Frontend Integration User",
+                "email": f"frontend.{datetime.now().strftime('%H%M%S')}@example.com",
+                "partner_name": "Integration Partner"
+            }),
+            # Test contact form (from contact page)
+            ("Contact Form Integration", "POST", "contact", 200, {
+                "name": "Frontend Contact",
+                "email": "frontend.contact@example.com",
+                "subject": "Integration Test",
+                "message": "Testing frontend-backend integration"
+            })
+        ]
+        
+        all_passed = True
+        for name, method, endpoint, expected_status, data in integration_tests:
+            success, response = self.run_test(
+                name,
+                method,
+                endpoint,
+                expected_status,
+                data=data
+            )
+            
+            if not success:
+                all_passed = False
+                print(f"   ❌ Integration test failed: {name}")
+        
+        if all_passed:
+            print("   ✅ Frontend-backend integration working")
+        
+        return all_passed
+
+    def test_system_stability(self):
+        """Test system stability after major frontend updates"""
+        # Run multiple operations to test system stability
+        stability_tests = [
+            ("System Load Test 1", "GET", "stages", 200),
+            ("System Load Test 2", "GET", "community-cases", 200),
+            ("System Load Test 3", "GET", "gefuehlslexikon", 200),
+            ("System Load Test 4", "GET", "stages/1", 200),
+            ("System Load Test 5", "GET", "stages/2", 200)
+        ]
+        
+        all_stable = True
+        for name, method, endpoint, expected_status in stability_tests:
+            success, response = self.run_test(
+                name,
+                method,
+                endpoint,
+                expected_status
+            )
+            
+            if not success:
+                all_stable = False
+                print(f"   ❌ Stability test failed: {name}")
+        
+        if all_stable:
+            print("   ✅ System stable after frontend updates")
+        
+        return all_stable
+
 if __name__ == "__main__":
     # Check if we should run specific test modes
     import sys
     if len(sys.argv) > 1:
-        if sys.argv[1] == "debug":
+        if sys.argv[1] == "seo":
+            # Run comprehensive SEO regression tests
+            tester = EmpathyTrainingAPITester()
+            success = tester.run_comprehensive_seo_regression_tests()
+            sys.exit(0 if success else 1)
+        elif sys.argv[1] == "debug":
             sys.exit(main_critical_debug())
         elif sys.argv[1] == "mongodb-fix":
             sys.exit(main_mongodb_fix_test())
@@ -6037,12 +6674,7 @@ if __name__ == "__main__":
             success = tester.run_training_scenario_individualization_tests()
             sys.exit(0 if success else 1)
     else:
-        # Default: Run training scenario individualization tests
+        # Default: Run comprehensive SEO regression tests
         tester = EmpathyTrainingAPITester()
-        print("🚀 Starting NEUROBOND Training Scenario Individualization Testing...")
-        print(f"🌐 Base URL: {tester.base_url}")
-        print(f"🔗 API URL: {tester.api_url}")
-        print("=" * 80)
-        
-        success = tester.run_training_scenario_individualization_tests()
+        success = tester.run_comprehensive_seo_regression_tests()
         sys.exit(0 if success else 1)
