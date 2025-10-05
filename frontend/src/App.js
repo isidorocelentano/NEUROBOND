@@ -689,6 +689,464 @@ const AvatarUpload = ({ currentAvatar, onAvatarChange, user, storageKey = 'user_
   );
 };
 
+// SEO-Optimized Feature Information Pages
+const EmpathieTrainingInfoPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4">Empathie-Training</h1>
+          <p className="text-xl text-gray-300">KI-gestütztes Beziehungstraining für stärkere emotionale Verbindungen</p>
+        </header>
+
+        {/* SEO-optimized content */}
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700 mb-8">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">Was ist Empathie-Training?</h2>
+              <div className="prose prose-lg text-gray-300 space-y-4">
+                <p>
+                  Unser revolutionäres <strong>Empathie-Training</strong> nutzt künstliche Intelligenz, um Ihnen realistische Kommunikationsszenarien zu bieten. 
+                  Mit über <strong>17 verschiedenen KI-Trainingsszenarien</strong> lernen Sie, empathischer zu kommunizieren und Ihre Beziehungsfähigkeiten zu stärken.
+                </p>
+                <p>
+                  Das Training basiert auf wissenschaftlich fundierten Methoden der <strong>Kommunikationspsychologie</strong> und <strong>emotionalen Intelligenz</strong>. 
+                  Jedes Szenario wurde von Beziehungsexperten entwickelt, um realistische Situationen zu simulieren, die in Partnerschaften auftreten können.
+                </p>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Fünf Trainingsstufen für optimale Lernkurve:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Stufe 1 - Aktives Zuhören:</strong> Grundlagen der empathischen Kommunikation</li>
+                  <li><strong>Stufe 2 - Gefühle spiegeln:</strong> Emotionales Verständnis entwickeln</li>
+                  <li><strong>Stufe 3 - Nachfragen stellen:</strong> Tiefere Gespräche führen</li>
+                  <li><strong>Stufe 4 - Körpersprache lesen:</strong> Nonverbale Signale verstehen</li>
+                  <li><strong>Stufe 5 - Empathische Antworten:</strong> Meisterhafte Empathie in der Praxis</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">KI-gestützte Personalisierung:</h3>
+                <p>
+                  Die <strong>GPT-4 Technologie</strong> passt sich an Ihre Lerngeschwindigkeit an und bietet individuelles Feedback. 
+                  Jede Trainingseinheit wird auf Basis Ihrer vorherigen Leistungen optimiert, um maximale Lerneffekte zu erzielen.
+                </p>
+                <p>
+                  Unser System analysiert Ihre Antworten in Echtzeit und gibt Ihnen sofortiges, konstruktives Feedback zu Ihrer 
+                  <strong>emotionalen Intelligenz</strong>, <strong>Kommunikationseffektivität</strong> und <strong>empathischen Reaktionsfähigkeit</strong>.
+                </p>
+              </div>
+              
+              {/* CTA Buttons */}
+              <div className="mt-8 flex gap-4">
+                <Button 
+                  onClick={() => setCurrentTab('training-stufen')}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3"
+                >
+                  <Play className="w-5 h-5 mr-2" />
+                  Training starten
+                </Button>
+                <Button 
+                  onClick={() => setCurrentTab('pro-version-info')}
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-6 py-3"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  PRO Version entdecken
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GefuehlslexikonInfoPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-red-900 to-pink-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4">Gefühlslexikon</h1>
+          <p className="text-xl text-gray-300">Umfassende Emotions-Datenbank für besseres emotionales Verständnis</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700 mb-8">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">Emotionale Intelligenz durch Wissen stärken</h2>
+              <div className="prose prose-lg text-gray-300 space-y-4">
+                <p>
+                  Das <strong>NEUROBOND Gefühlslexikon</strong> ist eine wissenschaftlich fundierte Sammlung von über 
+                  <strong>100 Emotionen und Gefühlszuständen</strong>. Verstehen Sie die Nuancen menschlicher Emotionen 
+                  und lernen Sie, diese in Ihren Beziehungen zu erkennen und angemessen darauf zu reagieren.
+                </p>
+                <p>
+                  Basierend auf der <strong>Emotionsforschung</strong> von Paul Ekman und anderen Pionieren der 
+                  <strong>Affektpsychologie</strong> bietet unser Lexikon detaillierte Beschreibungen, Auslöser 
+                  und Bewältigungsstrategien für jede Emotion.
+                </p>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Funktionen des Gefühlslexikons:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Emotionale Kategorisierung:</strong> Primäre, sekundäre und komplexe Emotionen</li>
+                  <li><strong>Suchfunktion:</strong> Schnelles Auffinden spezifischer Gefühlszustände</li>
+                  <li><strong>Körperliche Manifestationen:</strong> Wie sich Emotionen körperlich zeigen</li>
+                  <li><strong>Auslöser-Analyse:</strong> Was löst bestimmte Emotionen aus</li>
+                  <li><strong>Bewältigungsstrategien:</strong> Gesunde Umgangsmethoden mit Gefühlen</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Für wen ist das Gefühlslexikon?</h3>
+                <p>
+                  Ideal für alle, die ihre <strong>emotionale Kompetenz</strong> verbessern möchten: Paare, Einzelpersonen, 
+                  Therapeuten, Coaches und alle, die tiefere <strong>zwischenmenschliche Beziehungen</strong> aufbauen möchten. 
+                  Das Lexikon hilft bei der <strong>Selbstreflexion</strong> und dem Verständnis für die Emotionen des Partners.
+                </p>
+                <p>
+                  In der kostenlosen Version haben Sie Zugang zu <strong>5 Basis-Emotionen</strong>. 
+                  PRO-Mitglieder erhalten Zugriff auf das vollständige Lexikon mit allen Emotionen, 
+                  erweiterten Beschreibungen und personalisierten Empfehlungen.
+                </p>
+              </div>
+              
+              <div className="mt-8 flex gap-4">
+                <Button 
+                  onClick={() => setCurrentTab('gefuehlslexikon')}
+                  className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-6 py-3"
+                >
+                  <Heart className="w-5 h-5 mr-2" />
+                  Lexikon öffnen
+                </Button>
+                <Button 
+                  onClick={() => setCurrentTab('pro-version-info')}
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-6 py-3"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  Vollzugang mit PRO
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DialogCoachingInfoPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-teal-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4">Dialog-Coaching</h1>
+          <p className="text-xl text-gray-300">KI-gestütztes Personal-Coaching für bessere Gesprächsführung</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700 mb-8">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">Ihr persönlicher KI-Gesprächscoach</h2>
+              <div className="prose prose-lg text-gray-300 space-y-4">
+                <p>
+                  Das <strong>Dialog-Coaching</strong> von NEUROBOND nutzt fortschrittliche <strong>KI-Technologie</strong>, 
+                  um Ihnen personalisiertes Feedback zu Ihren Gesprächsfähigkeiten zu geben. Trainieren Sie schwierige Gespräche 
+                  in einem sicheren Umfeld und erhalten Sie professionelles Coaching auf Abruf.
+                </p>
+                <p>
+                  Unser System basiert auf bewährten <strong>Gesprächsführungstechniken</strong> aus der 
+                  <strong>systemischen Therapie</strong>, <strong>gewaltfreien Kommunikation</strong> nach Marshall Rosenberg 
+                  und modernen <strong>Coaching-Methoden</strong>.
+                </p>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Was bietet das Dialog-Coaching?</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Realistische Gesprächssimulationen:</strong> Üben Sie schwierige Situationen</li>
+                  <li><strong>Sofortiges KI-Feedback:</strong> Verbesserungsvorschläge in Echtzeit</li>
+                  <li><strong>Persönlichkeitserkennung:</strong> Anpassung an Ihren Kommunikationsstil</li>
+                  <li><strong>Konfliktlösungsstrategien:</strong> Bewährte Techniken für Problemgespräche</li>
+                  <li><strong>Fortschritts-Tracking:</strong> Verfolgen Sie Ihre Entwicklung über Zeit</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Typische Coaching-Szenarien:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Partnerschaftskonflikte:</strong> Konstruktive Streitgespräche führen</li>
+                  <li><strong>Emotionale Gespräche:</strong> Gefühle angemessen ausdrücken</li>
+                  <li><strong>Grenzen kommunizieren:</strong> Respektvoll Nein sagen lernen</li>
+                  <li><strong>Versöhnung nach Streit:</strong> Wege zur Wiederannäherung finden</li>
+                  <li><strong>Zukunftsgespräche:</strong> Gemeinsame Ziele definieren und besprechen</li>
+                </ul>
+                <p>
+                  Das <strong>Dialog-Coaching</strong> ist exklusiv für <strong>PRO-Mitglieder</strong> verfügbar 
+                  und bietet unbegrenzten Zugang zu personalisierten Coaching-Sessions. Die KI lernt aus jedem Gespräch 
+                  und wird dadurch immer besser darin, Ihnen maßgeschneiderte Unterstützung zu bieten.
+                </p>
+              </div>
+              
+              <div className="mt-8 flex gap-4">
+                <Button 
+                  onClick={() => setCurrentTab('dialog-coaching')}
+                  className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white px-6 py-3"
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Coaching starten
+                </Button>
+                <Button 
+                  onClick={() => setCurrentTab('pro-version-info')}
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-6 py-3"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  PRO werden
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CommunityCasesInfoPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4">Community Cases</h1>
+          <p className="text-xl text-gray-300">Echte Beziehungsgeschichten - anonymisiert und lehrreich</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700 mb-8">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">Lernen Sie aus echten Beziehungssituationen</h2>
+              <div className="prose prose-lg text-gray-300 space-y-4">
+                <p>
+                  Die <strong>NEUROBOND Community Cases</strong> bieten Ihnen Zugang zu über <strong>20 anonymisierten, 
+                  echten Beziehungsgeschichten</strong>. Diese Fälle wurden von Paaren eingereicht und von unseren 
+                  Beziehungsexperten analysiert, um wertvolle Lernmöglichkeiten zu schaffen.
+                </p>
+                <p>
+                  Jeder Case ist eine <strong>reale Beziehungssituation</strong>, die andere Paare durchlebt haben. 
+                  Sie erhalten Einblick in verschiedene Kommunikationsstile, Konfliktlösungsansätze und 
+                  Beziehungsdynamiken, ohne dabei die Privatsphäre der beteiligten Personen zu verletzen.
+                </p>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Was finden Sie in den Community Cases?</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Anonymisierte Dialoge:</strong> Authentische Gespräche zwischen Partnern</li>
+                  <li><strong>Expertenanalyse:</strong> Professionelle Bewertung der Kommunikationsmuster</li>
+                  <li><strong>Lösungsvorschläge:</strong> KI-generierte Verbesserungsideen</li>
+                  <li><strong>Schwierigkeitsgrade:</strong> Von einfachen bis zu komplexen Beziehungssituationen</li>
+                  <li><strong>Kategorien:</strong> Sortiert nach Themen wie Konflikte, Intimität, Zukunft</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Vorteile für Ihr Beziehungslernen:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Perspektivenwechsel:</strong> Sehen Sie Situationen aus verschiedenen Blickwinkeln</li>
+                  <li><strong>Mustererkennung:</strong> Identifizieren Sie häufige Beziehungsfallen</li>
+                  <li><strong>Inspiration:</strong> Entdecken Sie neue Lösungsansätze für eigene Probleme</li>
+                  <li><strong>Empathie-Training:</strong> Verstehen Sie verschiedene emotionale Reaktionen</li>
+                  <li><strong>Prävention:</strong> Lernen Sie aus den Fehlern anderer</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Datenschutz und Anonymität:</h3>
+                <p>
+                  Alle Cases werden vollständig <strong>anonymisiert</strong> und persönliche Informationen entfernt. 
+                  Namen werden durch generische Bezeichnungen ersetzt, und alle identifizierenden Details werden 
+                  vor der Veröffentlichung sorgfältig entfernt. Ihre Privatsphäre und die aller Community-Mitglieder 
+                  hat höchste Priorität.
+                </p>
+                <p>
+                  <strong>Community Cases</strong> sind ein exklusives Feature für PRO-Mitglieder und bieten eine 
+                  einzigartige Lernmöglichkeit durch die Erfahrungen anderer Paare.
+                </p>
+              </div>
+              
+              <div className="mt-8 flex gap-4">
+                <Button 
+                  onClick={() => setCurrentTab('community-cases')}
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 py-3"
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Cases durchsuchen
+                </Button>
+                <Button 
+                  onClick={() => setCurrentTab('pro-version-info')}
+                  variant="outline"
+                  className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-6 py-3"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  PRO Zugang erhalten
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ProVersionInfoPage = () => {
+  const [currentTab, setCurrentTab] = useState('home');
+  const [showPaymentPage, setShowPaymentPage] = useState(false);
+
+  if (showPaymentPage) {
+    setCurrentTab('payment');
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-yellow-900 to-orange-900">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10 mb-4"
+            onClick={() => setCurrentTab('home')}
+          >
+            <ArrowRight className="w-6 h-6 rotate-180" />
+            Zurück zum Hauptmenü
+          </Button>
+          <h1 className="text-4xl font-bold text-white mb-4 flex items-center gap-3">
+            <Crown className="w-10 h-10 text-yellow-500" />
+            NEUROBOND PRO
+          </h1>
+          <p className="text-xl text-gray-300">Schalten Sie das volle Potenzial Ihres Beziehungstrainings frei</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gray-800/50 border-gray-700 mb-8">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">Warum NEUROBOND PRO?</h2>
+              <div className="prose prose-lg text-gray-300 space-y-4">
+                <p>
+                  <strong>NEUROBOND PRO</strong> bietet Ihnen den vollständigen Zugang zu allen Premium-Features 
+                  unserer <strong>KI-gestützten Beziehungsplattform</strong>. Während die kostenlose Version einen 
+                  Einblick in unsere Technologie gibt, ermöglicht PRO das komplette Beziehungstraining.
+                </p>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">PRO Features im Überblick:</h3>
+                <div className="grid md:grid-cols-2 gap-6 my-6">
+                  <div className="bg-gray-700/50 rounded-lg p-4">
+                    <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-blue-400" />
+                      Vollständiges Empathie-Training
+                    </h4>
+                    <p className="text-sm">Zugang zu allen 17 KI-Trainingsszenarien in 5 Schwierigkeitsstufen</p>
+                  </div>
+                  <div className="bg-gray-700/50 rounded-lg p-4">
+                    <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-red-400" />
+                      Komplettes Gefühlslexikon
+                    </h4>
+                    <p className="text-sm">Über 100 Emotionen mit detaillierten Beschreibungen und Strategien</p>
+                  </div>
+                  <div className="bg-gray-700/50 rounded-lg p-4">
+                    <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5 text-green-400" />
+                      Dialog-Coaching
+                    </h4>
+                    <p className="text-sm">Unbegrenztes KI-gestütztes Coaching für bessere Gesprächsführung</p>
+                  </div>
+                  <div className="bg-gray-700/50 rounded-lg p-4">
+                    <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-purple-400" />
+                      Community Cases
+                    </h4>
+                    <p className="text-sm">20+ anonymisierte echte Beziehungsfälle zum Lernen</p>
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Zusätzliche PRO-Vorteile:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Personalisierte Lernpfade:</strong> KI passt Training an Ihre Bedürfnisse an</li>
+                  <li><strong>Fortschritts-Dashboard:</strong> Detaillierte Auswertung Ihrer Entwicklung</li>
+                  <li><strong>Partner-Einladungen:</strong> Gemeinsames Training mit Ihrem Partner</li>
+                  <li><strong>Erweiterte Statistiken:</strong> Tiefere Einblicke in Ihre Kommunikationsmuster</li>
+                  <li><strong>Prioritätssupport:</strong> Bevorzugter Kundenservice</li>
+                  <li><strong>Früher Zugang:</strong> Neue Features vor allen anderen testen</li>
+                </ul>
+                <h3 className="text-xl font-semibold text-white mt-6 mb-3">Transparente Preisgestaltung:</h3>
+                <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-6 border border-blue-500/30">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="text-center">
+                      <h4 className="text-lg font-semibold text-white mb-2">Monatlich</h4>
+                      <div className="text-3xl font-bold text-white mb-2">CHF 10.00</div>
+                      <p className="text-sm text-gray-300">pro Monat, jederzeit kündbar</p>
+                    </div>
+                    <div className="text-center bg-yellow-500/20 rounded-lg p-4 border border-yellow-500/50">
+                      <Badge className="bg-yellow-500 text-black mb-2">Beliebt</Badge>
+                      <h4 className="text-lg font-semibold text-white mb-2">Jährlich</h4>
+                      <div className="text-3xl font-bold text-white mb-2">CHF 100.00</div>
+                      <p className="text-sm text-gray-300">CHF 20.00 sparen pro Jahr!</p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-center mt-6">
+                  <strong>30 Tage Geld-zurück-Garantie</strong> - Testen Sie NEUROBOND PRO risikofrei!
+                </p>
+              </div>
+              
+              <div className="mt-8 flex gap-4 justify-center">
+                <Button 
+                  onClick={() => setShowPaymentPage(true)}
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold px-8 py-3 text-lg"
+                >
+                  <Crown className="w-6 h-6 mr-2" />
+                  Jetzt PRO werden
+                </Button>
+                <Button 
+                  onClick={() => setCurrentTab('empathie-training-info')}
+                  variant="outline"
+                  className="border-gray-400 text-gray-300 hover:bg-gray-700 px-6 py-3"
+                >
+                  Mehr über Features erfahren
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Main App Component (German Static)
 const EmpathyTrainingAppContent = () => {
   const [user, setUser] = useState(null);
