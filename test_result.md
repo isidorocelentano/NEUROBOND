@@ -656,7 +656,10 @@ test_plan:
   test_all: false
   test_priority: "critical_first"
 
-    -agent: "testing"
+agent_communication:
+    -agent: "main"
+    -message: "CRITICAL FIX IMPLEMENTED: Replaced problematic UltraDirectNameInput component causing duplicated input fields in profile section. User reported seeing duplicate fields for 'Ihr Name' and 'Name Ihres Partners' with auto-fill behavior between them. Root cause was DOM manipulation approach creating multiple elements without proper cleanup. Implemented clean StableNameInput component with proper React patterns, debounced onChange (300ms), and preserved all backend saving functionality. REQUIRES IMMEDIATE TESTING: Please test profile section specifically for: 1) Single input fields (no duplication) 2) Cursor stability (no jumping) 3) Auto-save functionality on blur 4) Proper form field behavior. Focus testing on profile editing page after user registration/login."
+
   - task: "Authentication System Implementation"
     implemented: true
     working: true
