@@ -2503,6 +2503,54 @@ async def confirm_password_reset(reset_confirm: PasswordResetConfirm):
         logger.error(f"Password reset confirm error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Password reset confirmation failed: {str(e)}")
 
+@api_router.put("/user/profile/names")
+async def update_user_names(request: Request):
+    """Update user and partner names"""
+    try:
+        body = await request.json()
+        user_email = body.get('email')
+        user_name = body.get('name')
+        partner_name = body.get('partner_name')
+        
+        if not user_email:
+            raise HTTPException(status_code=400, detail="Email is required")
+        
+        # Build update object
+        update_data = {}
+        if user_name is not None:
+            update_data['name'] = user_name
+        if partner_name is not None:
+            update_data['partner_name'] = partner_name
+        
+        if not update_data:
+            raise HTTPException(status_code=400, detail="At least one name field is required")
+        
+        # Update user in database
+        result = await db.users.update_one(
+            {"email": user_email},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Get updated user data
+        user = await db.users.find_one({"email": user_email})
+        user_data = User(**user)
+        user_dict = user_data.dict()
+        user_dict.pop("password_hash", None)  # Don't send password hash
+        
+        return {
+            "message": "Names updated successfully",
+            "user": user_dict
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update names error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update names: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
