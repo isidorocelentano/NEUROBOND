@@ -960,53 +960,6 @@ const EmpathyTrainingAppContent = () => {
                   <SimpleLoginComponent
                     placeholder="ihre@email.com"
                   />
-                      // Perform login directly with email from input
-                      if (!email) {
-                        showNotification('Bitte geben Sie eine Email-Adresse ein.', 'error');
-                        return;
-                      }
-                      
-                      // Direct login function without relying on state
-                      const performLogin = async () => {
-                        try {
-                          console.log('🔍 DIRECT LOGIN: Searching for user:', email);
-                          const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
-                          
-                          if (response.ok) {
-                            const userData = await response.json();
-                            console.log('✅ DIRECT LOGIN: User found:', userData);
-                            
-                            setUser(userData);
-                            setShowLandingPage(false);
-                            setShowOnboarding(false);
-                            
-                            if (userData.subscription_status === 'active') {
-                              setUserSubscription('pro');
-                              showNotification(`Willkommen ${userData.name}! PRO-Zugang aktiviert 🎉`, 'success');
-                            } else {
-                              setUserSubscription('free');
-                              showNotification(`Willkommen ${userData.name}! 👋`, 'success');
-                            }
-                            
-                            localStorage.setItem('neurobond_user', JSON.stringify(userData));
-                          } else if (response.status === 404) {
-                            showNotification('Kein Account gefunden. Bitte registrieren Sie sich zuerst.', 'error');
-                          } else {
-                            showNotification('Login fehlgeschlagen.', 'error');
-                          }
-                        } catch (error) {
-                          console.error('DIRECT LOGIN error:', error);
-                          showNotification('Verbindungsfehler.', 'error');
-                        }
-                      };
-                      
-                      performLogin();
-                    }}
-                  />
-                  <div className="text-xs text-gray-400 px-3 py-3 flex items-center">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></div>
-                    Enter drücken
-                  </div>
                   <Button
                     onClick={() => {
                       setUserSubscription('pro');
