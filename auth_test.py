@@ -62,10 +62,12 @@ class AuthenticationTester:
 
     def test_auth_register_valid(self):
         """Test user registration with valid data"""
+        # Use unique email for each test run
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         test_data = {
             "name": "Isi Cel",
-            "email": "isicel@bluewin.ch",
-            "password": "pass123",
+            "email": f"isicel_{timestamp}@bluewin.ch",
+            "password": "TestPassword123",
             "partner_name": "Test Partner"
         }
         
