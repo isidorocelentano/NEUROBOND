@@ -12,40 +12,84 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Simple and Reliable Login Input Component
-const SimpleLoginInput = ({ placeholder, onEnter }) => {
+// Simple Login Component with Built-in Feedback
+const SimpleLoginComponent = ({ placeholder }) => {
   const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setEmail(newValue);
-    console.log('📧 LOGIN: Email changed to:', newValue);
+  const handleLogin = async () => {
+    if (!email) {
+      setMessage('Bitte geben Sie eine Email-Adresse ein.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setMessage('Suche Benutzer...');
+    
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
+      
+      if (response.ok) {
+        const userData = await response.json();
+        setMessage(`✅ Willkommen ${userData.name}! Weiterleitung...`);
+        // Here would be the actual login logic
+        setTimeout(() => {
+          window.location.reload(); // Simple reload for now
+        }, 1500);
+      } else if (response.status === 404) {
+        setMessage('❌ Kein Account gefunden. Bitte registrieren Sie sich zuerst.');
+      } else {
+        setMessage('❌ Login fehlgeschlagen.');
+      }
+    } catch (error) {
+      setMessage('❌ Verbindungsfehler.');
+    }
+    
+    setIsLoading(false);
   };
   
   const handleKeyPress = (e) => {
-    console.log('⌨️ LOGIN: Key pressed:', e.key);
     if (e.key === 'Enter') {
       e.preventDefault();
-      console.log('🚀 LOGIN: Enter pressed with email:', email);
-      if (onEnter) {
-        onEnter(email);
-      }
+      handleLogin();
     }
   };
 
   return (
-    <input
-      type="email"
-      value={email}
-      onChange={handleChange}
-      onKeyDown={handleKeyPress}
-      placeholder={placeholder}
-      className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-      autoComplete="email"
-      spellCheck={false}
-      autoCorrect="off"
-      autoCapitalize="off"
-    />
+    <div className="space-y-3">
+      <div className="flex gap-3">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder={placeholder}
+          className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+          autoComplete="email"
+          disabled={isLoading}
+        />
+        <button
+          onClick={handleLogin}
+          disabled={isLoading}
+          className="px-6 py-3 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-400 text-white rounded-lg transition-colors"
+        >
+          {isLoading ? '...' : '→'}
+        </button>
+      </div>
+      {message && (
+        <div className={`text-sm px-3 py-2 rounded ${
+          message.includes('✅') ? 'text-green-400 bg-green-900/20' :
+          message.includes('❌') ? 'text-red-400 bg-red-900/20' :
+          'text-blue-400 bg-blue-900/20'
+        }`}>
+          {message}
+        </div>
+      )}
+      <div className="text-xs text-gray-400 text-center">
+        Enter drücken oder Button klicken
+      </div>
+    </div>
   );
 };
 
