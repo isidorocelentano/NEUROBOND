@@ -12,35 +12,54 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Simple Login Component with Built-in Feedback
-const SimpleLoginComponent = ({ placeholder }) => {
+// Advanced Login Component with Password Support and Reset
+const AdvancedLoginComponent = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetToken, setResetToken] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [resetStep, setResetStep] = useState(1); // 1: request, 2: confirm
   
   const handleLogin = async () => {
-    if (!email) {
-      setMessage('Bitte geben Sie eine Email-Adresse ein.');
+    if (!email || !password) {
+      setMessage('Bitte geben Sie Email und Passwort ein.');
       return;
     }
     
     setIsLoading(true);
-    setMessage('Suche Benutzer...');
+    setMessage('Anmeldung läuft...');
     
     try {
-      const response = await fetch(`${BACKEND_URL}/api/user/by-email/${email}`);
+      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+      
+      const data = await response.json();
       
       if (response.ok) {
-        const userData = await response.json();
-        setMessage(`✅ Willkommen ${userData.name}! Weiterleitung...`);
-        // Here would be the actual login logic
-        setTimeout(() => {
-          window.location.reload(); // Simple reload for now
-        }, 1500);
-      } else if (response.status === 404) {
-        setMessage('❌ Kein Account gefunden. Bitte registrieren Sie sich zuerst.');
+        setMessage(`✅ Willkommen ${data.user.name}! Anmeldung erfolgreich.`);
+        
+        // Call the success callback with user data
+        if (onLoginSuccess) {
+          onLoginSuccess(data.user);
+        }
+      } else if (response.status === 401) {
+        setMessage('❌ Ungültige Email oder Passwort. Passwort vergessen?');
+      } else if (response.status === 400) {
+        setMessage('❌ Konto benötigt Passwort-Setup. Bitte Passwort zurücksetzen.');
       } else {
-        setMessage('❌ Login fehlgeschlagen.');
+        setMessage('❌ Anmeldung fehlgeschlagen.');
       }
     } catch (error) {
       setMessage('❌ Verbindungsfehler.');
@@ -48,35 +67,222 @@ const SimpleLoginComponent = ({ placeholder }) => {
     
     setIsLoading(false);
   };
+
+  const handlePasswordReset = async () => {
+    if (!resetEmail) {
+      setMessage('Bitte geben Sie Ihre Email-Adresse ein.');
+      return;
+    }
+
+    setIsLoading(true);
+    setMessage('Passwort-Reset wird angefordert...');
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/auth/password-reset`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: resetEmail
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('✅ Reset-Link gesendet (falls Email existiert).');
+        // For demo purposes, show the token
+        if (data.reset_token) {
+          setResetToken(data.reset_token);
+          setResetStep(2);
+          setMessage(`✅ Reset-Token: ${data.reset_token.substring(0, 20)}...`);
+        }
+      } else {
+        setMessage('❌ Passwort-Reset fehlgeschlagen.');
+      }
+    } catch (error) {
+      setMessage('❌ Verbindungsfehler.');
+    }
+
+    setIsLoading(false);
+  };
+
+  const handlePasswordResetConfirm = async () => {
+    if (!resetToken || !newPassword) {
+      setMessage('Bitte geben Sie Token und neues Passwort ein.');
+      return;
+    }
+
+    setIsLoading(true);
+    setMessage('Neues Passwort wird gesetzt...');
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/auth/password-reset/confirm`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: resetToken,
+          new_password: newPassword
+        })
+      });
+
+      if (response.ok) {
+        setMessage('✅ Passwort erfolgreich geändert! Sie können sich jetzt anmelden.');
+        setShowPasswordReset(false);
+        setResetStep(1);
+        setPassword(newPassword); // Pre-fill new password
+        setEmail(resetEmail); // Pre-fill email
+      } else {
+        setMessage('❌ Ungültiger oder abgelaufener Token.');
+      }
+    } catch (error) {
+      setMessage('❌ Verbindungsfehler.');
+    }
+
+    setIsLoading(false);
+  };
   
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleLogin();
+      if (showPasswordReset) {
+        if (resetStep === 1) {
+          handlePasswordReset();
+        } else {
+          handlePasswordResetConfirm();
+        }
+      } else {
+        handleLogin();
+      }
     }
   };
 
   return (
-    <div className="space-y-3">
-      <div className="flex gap-3">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder={placeholder}
-          className="flex-1 px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-          autoComplete="email"
-          disabled={isLoading}
-        />
-        <button
-          onClick={handleLogin}
-          disabled={isLoading}
-          className="px-6 py-3 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-400 text-white rounded-lg transition-colors"
-        >
-          {isLoading ? '...' : '→'}
-        </button>
-      </div>
+    <div className="space-y-4">
+      {!showPasswordReset ? (
+        <>
+          {/* Login Form */}
+          <div className="space-y-3">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="ihre@email.com"
+              className="w-full px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              autoComplete="email"
+              disabled={isLoading}
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Passwort"
+              className="w-full px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              autoComplete="current-password"
+              disabled={isLoading}
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={handleLogin}
+                disabled={isLoading}
+                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition-colors"
+              >
+                {isLoading ? '...' : 'Anmelden'}
+              </button>
+            </div>
+          </div>
+
+          {/* Password Reset Link */}
+          <div className="text-center">
+            <button
+              onClick={() => {
+                setShowPasswordReset(true);
+                setResetEmail(email);
+                setMessage('');
+              }}
+              className="text-sm text-blue-400 hover:text-blue-300 underline"
+            >
+              Passwort vergessen?
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Password Reset Form */}
+          <div className="space-y-3">
+            <h4 className="text-lg font-semibold text-white">Passwort zurücksetzen</h4>
+            
+            {resetStep === 1 ? (
+              <>
+                <input
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="ihre@email.com"
+                  className="w-full px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  disabled={isLoading}
+                />
+                <button
+                  onClick={handlePasswordReset}
+                  disabled={isLoading}
+                  className="w-full px-6 py-3 bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400 text-white rounded-lg transition-colors"
+                >
+                  {isLoading ? '...' : 'Reset anfordern'}
+                </button>
+              </>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={resetToken}
+                  onChange={(e) => setResetToken(e.target.value)}
+                  placeholder="Reset-Token"
+                  className="w-full px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  disabled={isLoading}
+                />
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Neues Passwort"
+                  className="w-full px-4 py-3 bg-gray-800/60 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  disabled={isLoading}
+                />
+                <button
+                  onClick={handlePasswordResetConfirm}
+                  disabled={isLoading}
+                  className="w-full px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white rounded-lg transition-colors"
+                >
+                  {isLoading ? '...' : 'Passwort ändern'}
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Back to Login */}
+          <div className="text-center">
+            <button
+              onClick={() => {
+                setShowPasswordReset(false);
+                setMessage('');
+                setResetStep(1);
+              }}
+              className="text-sm text-gray-400 hover:text-gray-300 underline"
+            >
+              Zurück zur Anmeldung
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* Message Display */}
       {message && (
         <div className={`text-sm px-3 py-2 rounded ${
           message.includes('✅') ? 'text-green-400 bg-green-900/20' :
@@ -86,8 +292,9 @@ const SimpleLoginComponent = ({ placeholder }) => {
           {message}
         </div>
       )}
+
       <div className="text-xs text-gray-400 text-center">
-        Enter drücken oder Button klicken
+        Test Account: isicel@bluewin.ch / NeurobondTest123!
       </div>
     </div>
   );
