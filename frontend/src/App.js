@@ -12,78 +12,51 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Ultra-Direct Name Input - NO REACT WHATSOEVER 
-const UltraDirectNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
-  const containerRef = useRef(null);
+// Simple Stable Name Input - Clean React Implementation
+const StableNameInput = React.memo(({ value, placeholder, onChange, onBlur, className }) => {
+  const [localValue, setLocalValue] = useState(value || '');
+  const inputRef = useRef(null);
   
+  // Sync with parent value changes
   useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // Create input with pure DOM - NO React control
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = initialValue || '';
-    input.placeholder = placeholder;
-    input.className = className;
-    input.setAttribute('autocomplete', 'name');
-    input.setAttribute('spellcheck', 'false');
-    input.setAttribute('autocorrect', 'off');
-    
-    console.log('🔧 ULTRA-DIRECT: Created pure DOM input with:', initialValue);
-    
-    // Pure DOM event listeners - ZERO React involvement
-    input.addEventListener('input', (e) => {
-      const value = e.target.value;
-      console.log('📝 ULTRA-DIRECT: Pure DOM input event ->', value);
-      
-      // Super delayed callback to prevent ANY interference
-      if (onNameChange) {
-        setTimeout(() => {
-          try {
-            onNameChange(value);
-          } catch (err) {
-            console.log('Callback ignored:', err);
-          }
-        }, 2000); // 2 second delay
-      }
-    });
-    
-    input.addEventListener('blur', (e) => {
-      const value = e.target.value;
-      console.log('💾 ULTRA-DIRECT: Blur event ->', value);
-      
-      if (onBlur) {
-        setTimeout(() => {
-          try {
-            onBlur(value);
-          } catch (err) {
-            console.log('Blur callback ignored:', err);
-          }
-        }, 100);
-      }
-    });
-    
-    input.addEventListener('focus', (e) => {
-      console.log('🎯 ULTRA-DIRECT: Focus - cursor to end');
-      setTimeout(() => {
-        const length = e.target.value.length;
-        e.target.setSelectionRange(length, length);
-      }, 0);
-    });
-    
-    // Mount to DOM
-    containerRef.current.appendChild(input);
-    
-    // Cleanup function
-    return () => {
-      if (containerRef.current && input.parentNode) {
-        containerRef.current.removeChild(input);
-      }
-    };
-  }, []); // Empty deps - mount once only
+    setLocalValue(value || '');
+  }, [value]);
   
-  return <div ref={containerRef} style={{ width: '100%' }} />;
-};
+  const handleChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setLocalValue(newValue);
+    
+    // Debounced callback to prevent cursor jumping
+    if (onChange) {
+      clearTimeout(handleChange.timeoutId);
+      handleChange.timeoutId = setTimeout(() => {
+        onChange(newValue);
+      }, 300);
+    }
+  }, [onChange]);
+  
+  const handleBlur = useCallback((e) => {
+    const finalValue = e.target.value;
+    if (onBlur) {
+      onBlur(finalValue);
+    }
+  }, [onBlur]);
+  
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      value={localValue}
+      placeholder={placeholder}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className={className}
+      autoComplete="name"
+      spellCheck={false}
+      autoCorrect="off"
+    />
+  );
+});
 
 // Advanced Login Component with Password Support and Reset
 const AdvancedLoginComponent = ({ onLoginSuccess }) => {
