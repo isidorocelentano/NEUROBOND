@@ -606,6 +606,9 @@ frontend:
         -working: false
         -agent: "user"
         -comment: "User reported: 'das anmeldefeld funktioniert immer noch nicht' (the login field still doesn't work)"
+        -working: false
+        -agent: "user"
+        -comment: "User reported: 'jetzt wird es interessanter: das eingabefeld ist doppelt vorhanden. Nach dem ausfüllen des Namens wird auch die untere Zeile automatisch ausgefüllt' (Now it gets interesting: the input field is duplicated. After filling in the name, the lower line is also automatically filled)"
         -working: true
         -agent: "main"
         -comment: "🎯 LOGIN FIELD ISSUE COMPLETELY RESOLVED: Fixed critical JavaScript errors in login functionality by removing remaining internationalization function calls (t() functions) that were causing runtime errors. Replaced complex UltraStableLoginInput component with simplified SimpleLoginInput component using standard React state management. VERIFICATION RESULTS: ✅ LOGIN FIELD HOLDS VALUES: Field successfully accepts and retains email input 'test@neurobond.ch' ✅ ENTER KEY TRIGGERS LOGIN: API call made to /api/user/by-email/{email} when Enter pressed ✅ PROPER API INTEGRATION: Backend responds with expected 404 for non-existent users ✅ NO JAVASCRIPT ERRORS: All t() function calls removed, no more runtime errors ✅ SIMPLIFIED COMPONENT: Replaced complex input component with reliable React useState implementation. TECHNICAL FIXES: 1) Removed all t('translationKey') calls causing undefined function errors 2) Simplified login input component architecture 3) Added proper state management and event handling 4) Confirmed API calls working correctly. LOGIN FIELD NOW FULLY FUNCTIONAL - User can type email addresses and press Enter to trigger login successfully."
