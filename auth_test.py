@@ -106,7 +106,7 @@ class AuthenticationTester:
         test_data = {
             "name": "Duplicate User",
             "email": "isicel@bluewin.ch",  # Same email as previous test
-            "password": "AnotherPass123",
+            "password": "Another123",
             "partner_name": "Another Partner"
         }
         
