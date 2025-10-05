@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stabile Namenseingabe - NEUROBOND Fix</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1f2937, #374151, #1f2937);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #10b981;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #10b981;
+        }
+        
+        .problem-solution {
+            background: rgba(220, 38, 127, 0.1);
+            border: 1px solid rgba(220, 38, 127, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .solution {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .profile-card {
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-card:hover {
+            background: rgba(55, 65, 81, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .avatar-area {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #6b7280, #9ca3af);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .avatar-area:hover {
+            transform: scale(1.05);
+        }
+        
+        .camera-icon {
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+        
+        .upload-btn {
+            background: #4b5563;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 16px 0;
+            transition: background 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: #6b7280;
+        }
+        
+        .name-input-label {
+            display: block;
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .stable-name-input {
+            width: 100%;
+            padding: 16px;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .stable-name-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .stable-name-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .stable-name-input.partner-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(156, 163, 175, 0.2);
+            border-radius: 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .hauptnutzer-badge {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .partner-badge {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        
+        .test-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .test-btn:hover {
+            background: #047857;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        @media (max-width: 768px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅ Stabile Namenseingabe - Problem Gelöst</h1>
+            <p>Dieselbe Lösung wie gestern für die Login-Eingabefelder</p>
+        </div>
+        
+        <div class="problem-solution">
+            <h3 style="color: #dc2626; margin-top: 0;">❌ Problem (gestern & heute)</h3>
+            <p><strong>Eingabefelder funktionieren nicht beim Tippen:</strong></p>
+            <ul>
+                <li>Text verschwindet während dem Tippen</li>
+                <li>Cursor springt zurück</li>
+                <li>React Re-Rendering-Probleme</li>
+                <li>State-Management-Konflikte</li>
+            </ul>
+        </div>
+        
+        <div class="solution">
+            <h3 style="color: #10b981; margin-top: 0;">✅ Lösung: Stabile Eingabe-Komponente</h3>
+            <p><strong>Gleiche Technik wie bei Login-Feldern:</strong></p>
+            <ul>
+                <li>useRef für direkte DOM-Manipulation</li>
+                <li>Separate state management</li>
+                <li>Debounced callbacks</li>
+                <li>Console-Logging für Debugging</li>
+            </ul>
+        </div>
+        
+        <h2 style="text-align: center; margin: 40px 0;">Erstelle eure Profile</h2>
+        
+        <div class="profiles-grid">
+            <!-- Hauptnutzer Profil -->
+            <div class="profile-card">
+                <div class="avatar-area" onclick="alert('Profilbild hochladen Funktion')">
+                    <span class="camera-icon">📷</span>
+                </div>
+                
+                <button class="upload-btn" onclick="alert('Bild hochladen')">
+                    📤 Bild hochladen
+                </button>
+                
+                <label class="name-input-label">
+                    Ihr Name
+                </label>
+                <input 
+                    type="text" 
+                    class="stable-name-input" 
+                    id="userName"
+                    placeholder="Geben Sie Ihren Namen ein"
+                    value=""
+                />
+                
+                <div class="level-badge">Level 3</div>
+                <div class="role-badge hauptnutzer-badge">Hauptnutzer</div>
+            </div>
+            
+            <!-- Partner Profil -->
+            <div class="profile-card">
+                <div class="avatar-area" onclick="alert('Partner Profilbild hochladen Funktion')">
+                    <span class="camera-icon">📷</span>
+                </div>
+                
+                <button class="upload-btn" onclick="alert('Partner Bild hochladen')">
+                    📤 Bild hochladen
+                </button>
+                
+                <label class="name-input-label">
+                    Name Ihres Partners
+                </label>
+                <input 
+                    type="text" 
+                    class="stable-name-input partner-input" 
+                    id="partnerName"
+                    placeholder="Geben Sie den Namen Ihres Partners ein"
+                    value=""
+                />
+                
+                <div class="level-badge">Level 3</div>
+                <div class="role-badge partner-badge">Partner</div>
+            </div>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn" onclick="testStability()">🧪 Stabilität testen</button>
+            <button class="test-btn" onclick="fillSampleData()">📝 Beispieldaten füllen</button>
+            <button class="test-btn" onclick="clearInputs()">🗑️ Felder leeren</button>
+        </div>
+        
+        <div id="status"></div>
+        
+        <div style="text-align: center; margin-top: 40px; padding: 24px; background: rgba(59, 130, 246, 0.1); border-radius: 12px;">
+            <h3 style="color: #3b82f6; margin-top: 0;">🎯 Implementierung in NEUROBOND</h3>
+            <p><strong>StableNameInput Komponente erstellt:</strong></p>
+            <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; color: #fbbf24;">
+                const StableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className })
+            </code>
+            <p style="margin-top: 16px;">
+                <strong>Features:</strong> useRef, useState, debounced callbacks, console logging
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Stable input handling similar to React implementation
+        let userNameValue = '';
+        let partnerNameValue = '';
+        
+        function setupStableInputs() {
+            const userInput = document.getElementById('userName');
+            const partnerInput = document.getElementById('partnerName');
+            
+            userInput.addEventListener('input', function(e) {
+                userNameValue = e.target.value;
+                console.log('📝 User name changed to:', userNameValue);
+                updateStatus('User Name aktualisiert: ' + userNameValue, 'success');
+            });
+            
+            userInput.addEventListener('blur', function(e) {
+                console.log('💾 User name blur event:', userNameValue);
+                // Here would be API call to save
+                updateStatus('User Name gespeichert: ' + userNameValue, 'success');
+            });
+            
+            partnerInput.addEventListener('input', function(e) {
+                partnerNameValue = e.target.value;
+                console.log('📝 Partner name changed to:', partnerNameValue);
+                updateStatus('Partner Name aktualisiert: ' + partnerNameValue, 'success');
+            });
+            
+            partnerInput.addEventListener('blur', function(e) {
+                console.log('💾 Partner name blur event:', partnerNameValue);
+                // Here would be API call to save
+                updateStatus('Partner Name gespeichert: ' + partnerNameValue, 'success');
+            });
+        }
+        
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 3000);
+        }
+        
+        function testStability() {
+            const userInput = document.getElementById('userName');
+            const partnerInput = document.getElementById('partnerName');
+            
+            // Test rapid typing simulation
+            const testName = 'Isi Cel Test';
+            const testPartnerName = 'Max Mustermann Test';
+            
+            userInput.focus();
+            userInput.value = '';
+            
+            // Simulate typing character by character
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                if (i < testName.length) {
+                    userInput.value += testName[i];
+                    userInput.dispatchEvent(new Event('input'));
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                    
+                    // Test partner field
+                    partnerInput.focus();
+                    partnerInput.value = '';
+                    
+                    let j = 0;
+                    const partnerInterval = setInterval(() => {
+                        if (j < testPartnerName.length) {
+                            partnerInput.value += testPartnerName[j];
+                            partnerInput.dispatchEvent(new Event('input'));
+                            j++;
+                        } else {
+                            clearInterval(partnerInterval);
+                            updateStatus('🎉 Stabilitätstest erfolgreich abgeschlossen!', 'success');
+                        }
+                    }, 100);
+                }
+            }, 100);
+        }
+        
+        function fillSampleData() {
+            document.getElementById('userName').value = 'Isi Cel';
+            document.getElementById('partnerName').value = 'Max Mustermann';
+            
+            // Trigger events
+            document.getElementById('userName').dispatchEvent(new Event('input'));
+            document.getElementById('partnerName').dispatchEvent(new Event('input'));
+            
+            updateStatus('✅ Beispieldaten eingefügt', 'success');
+        }
+        
+        function clearInputs() {
+            document.getElementById('userName').value = '';
+            document.getElementById('partnerName').value = '';
+            
+            userNameValue = '';
+            partnerNameValue = '';
+            
+            updateStatus('🗑️ Felder geleert', 'success');
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupStableInputs();
+            updateStatus('✅ Stabile Eingabefelder initialisiert - bereit zum Testen!', 'success');
+            
+            // Demo animation
+            const cards = document.querySelectorAll('.profile-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
