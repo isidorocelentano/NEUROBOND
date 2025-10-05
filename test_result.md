@@ -1072,6 +1072,30 @@ agent_communication:
         -working: false
         -agent: "user"
         -comment: "User reported same blank screen problem now occurring in Own Cases feature after text entry"
+  - task: "SEO Feature Info Pages Routing Implementation"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "testing"
+        -comment: "CRITICAL SEO ROUTING ISSUE IDENTIFIED: Feature info pages (/empathie-training-info, /gefuehlslexikon-info, /dialog-coaching-info, /community-cases-info, /pro-version-info) are not implemented as separate routes. Direct URL access redirects to landing page, preventing SEO indexing and direct linking. These pages exist as React components but need React Router implementation for standalone access. Required for complete SEO optimization and user experience."
+
+  - task: "AGB Page Routing Implementation"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "testing"
+        -comment: "LEGAL COMPLIANCE ROUTING ISSUE: /agb route not properly configured - redirects to landing page instead of showing AGB content. AGB component exists in code but needs React Router implementation for standalone access. Critical for legal compliance and footer link functionality."
+
   - task: "Critical Registration Flow Bug - Returns to Landing Page"
     implemented: true
     working: true
