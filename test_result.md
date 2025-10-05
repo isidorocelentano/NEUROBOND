@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "SEO & RECHTLICHE VERBESSERUNGEN TESTING - Test new feature descriptions and footer links implementation including 5 SEO-optimized feature pages, feature navigation, and legal compliance footer."
+user_problem_statement: "COMPREHENSIVE SEO & LEGAL COMPLIANCE TESTING - Complete verification of all implemented SEO feature pages, footer navigation, legal links, standalone routes, and overall system functionality after major updates."
 
 backend:
   - task: "Fix ESLint Alert Errors"
