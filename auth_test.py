@@ -107,8 +107,8 @@ class AuthenticationTester:
         """Test registration with duplicate email"""
         test_data = {
             "name": "Duplicate User",
-            "email": "isicel@bluewin.ch",  # Same email as previous test
-            "password": "Another123",
+            "email": self.test_auth_email,  # Same email as previous test
+            "password": "AnotherPassword123",
             "partner_name": "Another Partner"
         }
         
