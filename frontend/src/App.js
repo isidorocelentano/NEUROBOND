@@ -12,6 +12,62 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Stable Name Input Component - Prevents React Re-render Issues
+const StableNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
+  const inputRef = useRef(null);
+  const valueRef = useRef(initialValue || '');
+  const [displayValue, setDisplayValue] = useState(initialValue || '');
+  
+  // Update display value when initial value changes
+  useEffect(() => {
+    if (initialValue !== displayValue) {
+      setDisplayValue(initialValue || '');
+      valueRef.current = initialValue || '';
+      if (inputRef.current) {
+        inputRef.current.value = initialValue || '';
+      }
+    }
+  }, [initialValue]);
+  
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    valueRef.current = newValue;
+    setDisplayValue(newValue);
+    console.log('📝 NAME INPUT: Value changed to:', newValue);
+    
+    if (onNameChange) {
+      // Debounce the callback to avoid excessive calls
+      setTimeout(() => onNameChange(newValue), 0);
+    }
+  };
+  
+  const handleBlur = () => {
+    console.log('💾 NAME INPUT: Blur event, saving:', valueRef.current);
+    if (onBlur) {
+      onBlur(valueRef.current);
+    }
+  };
+  
+  const handleFocus = () => {
+    console.log('🎯 NAME INPUT: Focus event');
+  };
+  
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      value={displayValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
+      placeholder={placeholder}
+      className={className}
+      autoComplete="name"
+      spellCheck={false}
+    />
+  );
+};
+
 // Advanced Login Component with Password Support and Reset
 const AdvancedLoginComponent = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
