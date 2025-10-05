@@ -4841,17 +4841,20 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name Ihres Partners
                   </label>
-                  <StableNameInput
+                  <UltraStableNameInput
                     initialValue={user?.partner_name || ''}
                     placeholder="Geben Sie den Namen Ihres Partners ein"
                     onNameChange={(newPartnerName) => {
-                      setUser(prev => ({
-                        ...prev,
-                        partner_name: newPartnerName
-                      }));
-                      // Also save to localStorage
-                      const updatedUser = { ...user, partner_name: newPartnerName };
-                      localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                      // Minimal state update - only when necessary
+                      if (user?.partner_name !== newPartnerName) {
+                        setUser(prev => ({
+                          ...prev,
+                          partner_name: newPartnerName
+                        }));
+                        // Also save to localStorage
+                        const updatedUser = { ...user, partner_name: newPartnerName };
+                        localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                      }
                     }}
                     onBlur={async (partnerName) => {
                       // Save to backend when user finishes editing
@@ -4868,6 +4871,7 @@ const EmpathyTrainingAppContent = () => {
                               partner_name: partnerName
                             })
                           });
+                          console.log('✅ Partner name saved to backend:', partnerName);
                         } catch (error) {
                           console.error('Failed to update partner name:', error);
                         }
