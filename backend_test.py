@@ -6291,8 +6291,6 @@ def main_critical_debug():
         return self.tests_passed == self.tests_run
 
 if __name__ == "__main__":
-    
-    def test_user_profile_names(self):
         """Test user profile names endpoint"""
         if not self.test_user_id:
             print("❌ Skipping user profile names test - no user ID available")
