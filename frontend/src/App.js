@@ -4851,24 +4851,24 @@ const EmpathyTrainingAppContent = () => {
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name Ihres Partners
                   </label>
-                  <UltraStableNameInput
+                  <BulletproofNameInput
                     initialValue={user?.partner_name || ''}
                     placeholder="Geben Sie den Namen Ihres Partners ein"
                     onNameChange={(newPartnerName) => {
-                      // Minimal state update - only when necessary
-                      if (user?.partner_name !== newPartnerName) {
-                        setUser(prev => ({
-                          ...prev,
-                          partner_name: newPartnerName
-                        }));
-                        // Also save to localStorage
-                        const updatedUser = { ...user, partner_name: newPartnerName };
-                        localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
-                      }
+                      // MINIMAL parent update - heavily debounced
+                      setTimeout(() => {
+                        if (user?.partner_name !== newPartnerName) {
+                          setUser(prev => ({
+                            ...prev,
+                            partner_name: newPartnerName
+                          }));
+                          const updatedUser = { ...user, partner_name: newPartnerName };
+                          localStorage.setItem('neurobond_user', JSON.stringify(updatedUser));
+                        }
+                      }, 1000); // 1 second debounce to prevent re-renders during typing
                     }}
                     onBlur={async (partnerName) => {
-                      // Save to backend when user finishes editing
-                      if (user?.email && partnerName) {
+                      if (user?.email && partnerName.trim()) {
                         try {
                           await fetch(`${BACKEND_URL}/api/user/profile/names`, {
                             method: 'PUT',
@@ -4878,12 +4878,12 @@ const EmpathyTrainingAppContent = () => {
                             body: JSON.stringify({
                               email: user.email,
                               name: user.name,
-                              partner_name: partnerName
+                              partner_name: partnerName.trim()
                             })
                           });
-                          console.log('✅ Partner name saved to backend:', partnerName);
+                          console.log('✅ Partner name saved:', partnerName);
                         } catch (error) {
-                          console.error('Failed to update partner name:', error);
+                          console.error('Save failed (ignored):', error);
                         }
                       }
                     }}
