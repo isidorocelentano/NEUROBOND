@@ -771,17 +771,14 @@ frontend:
 
 test_plan:
   current_focus:
-    - "SEO Feature Navigation Testing"
-    - "Empathie-Training Info Page Testing"
-    - "Gefühlslexikon Info Page Testing"
-    - "Dialog-Coaching Info Page Testing"
-    - "Community Cases Info Page Testing"
-    - "PRO Version Info Page Testing"
-    - "Footer Legal Links Testing"
-    - "AGB Page Testing"
+    - "Comprehensive SEO Feature Pages Testing - ALL 5 PAGES ⚠️"
+    - "Footer Links Functionality Verification - CRITICAL ⚠️"
+    - "Legal Compliance Pages Testing - AGB + External Links ⚠️"
+    - "Backend API Functionality After Updates - REQUIRED ⚠️" 
+    - "End-to-End User Journey Testing - COMPLETE FLOW ⚠️"
   stuck_tasks: []
-  test_all: false
-  test_priority: "high_first"
+  test_all: true
+  test_priority: "comprehensive_all"
 
 agent_communication:
     -agent: "main"
