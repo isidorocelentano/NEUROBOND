@@ -20,7 +20,7 @@ const SimpleInput = ({ value, onChange, placeholder, className, onKeyPress }) =>
   );
 };
 
-const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onBack, onHome }) => {
+const TrainingScenario = ({ scenarioId, userId, userName, partnerName, onComplete, onBack, onHome, onNext }) => {
   const [sessionData, setSessionData] = useState(null);
   const [partnerMessage, setPartnerMessage] = useState('');
   const [userResponse, setUserResponse] = useState('');
