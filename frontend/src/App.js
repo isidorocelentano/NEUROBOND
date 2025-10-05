@@ -12,83 +12,77 @@ import TrainingScenario from './TrainingScenario';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Bulletproof Name Input - Zero React State, Pure DOM
-const BulletproofNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
-  const inputRef = useRef(null);
-  const lastValueRef = useRef(initialValue || '');
-  const isInitializedRef = useRef(false);
+// Ultra-Direct Name Input - NO REACT WHATSOEVER 
+const UltraDirectNameInput = ({ initialValue, placeholder, onNameChange, onBlur, className }) => {
+  const containerRef = useRef(null);
   
-  // Initialize ONCE - never again
   useEffect(() => {
-    if (!isInitializedRef.current && inputRef.current) {
-      inputRef.current.value = initialValue || '';
-      lastValueRef.current = initialValue || '';
-      isInitializedRef.current = true;
-      console.log('🔧 BULLETPROOF NAME INPUT: Initialized ONCE with:', initialValue);
-    }
-  }, []);
-  
-  // Pure DOM event handler - ZERO React involvement
-  const handleInput = (e) => {
-    const currentValue = e.target.value;
-    lastValueRef.current = currentValue;
-    console.log('📝 BULLETPROOF: Pure DOM input ->', currentValue);
+    if (!containerRef.current) return;
     
-    // Minimal callback - no state changes
-    if (onNameChange && typeof onNameChange === 'function') {
-      try {
-        onNameChange(currentValue);
-      } catch (error) {
-        console.error('Callback error (ignored):', error);
-      }
-    }
-  };
-  
-  const handleBlurEvent = (e) => {
-    const finalValue = e.target.value;
-    console.log('💾 BULLETPROOF: Blur with value:', finalValue);
+    // Create input with pure DOM - NO React control
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = initialValue || '';
+    input.placeholder = placeholder;
+    input.className = className;
+    input.setAttribute('autocomplete', 'name');
+    input.setAttribute('spellcheck', 'false');
+    input.setAttribute('autocorrect', 'off');
     
-    if (onBlur && typeof onBlur === 'function') {
-      try {
-        onBlur(finalValue);
-      } catch (error) {
-        console.error('Blur callback error (ignored):', error);
-      }
-    }
-  };
-  
-  const handleFocusEvent = (e) => {
-    const input = e.target;
-    console.log('🎯 BULLETPROOF: Focus event - maintaining cursor');
+    console.log('🔧 ULTRA-DIRECT: Created pure DOM input with:', initialValue);
     
-    // Force cursor to end after any potential interruption
-    setTimeout(() => {
-      try {
-        const length = input.value.length;
-        input.setSelectionRange(length, length);
-        input.scrollLeft = input.scrollWidth;
-      } catch (error) {
-        console.log('Cursor positioning skipped (mobile)');
+    // Pure DOM event listeners - ZERO React involvement
+    input.addEventListener('input', (e) => {
+      const value = e.target.value;
+      console.log('📝 ULTRA-DIRECT: Pure DOM input event ->', value);
+      
+      // Super delayed callback to prevent ANY interference
+      if (onNameChange) {
+        setTimeout(() => {
+          try {
+            onNameChange(value);
+          } catch (err) {
+            console.log('Callback ignored:', err);
+          }
+        }, 2000); // 2 second delay
       }
-    }, 0);
-  };
+    });
+    
+    input.addEventListener('blur', (e) => {
+      const value = e.target.value;
+      console.log('💾 ULTRA-DIRECT: Blur event ->', value);
+      
+      if (onBlur) {
+        setTimeout(() => {
+          try {
+            onBlur(value);
+          } catch (err) {
+            console.log('Blur callback ignored:', err);
+          }
+        }, 100);
+      }
+    });
+    
+    input.addEventListener('focus', (e) => {
+      console.log('🎯 ULTRA-DIRECT: Focus - cursor to end');
+      setTimeout(() => {
+        const length = e.target.value.length;
+        e.target.setSelectionRange(length, length);
+      }, 0);
+    });
+    
+    // Mount to DOM
+    containerRef.current.appendChild(input);
+    
+    // Cleanup function
+    return () => {
+      if (containerRef.current && input.parentNode) {
+        containerRef.current.removeChild(input);
+      }
+    };
+  }, []); // Empty deps - mount once only
   
-  return (
-    <input
-      ref={inputRef}
-      type="text"
-      onInput={handleInput}
-      onBlur={handleBlurEvent}
-      onFocus={handleFocusEvent}
-      placeholder={placeholder}
-      className={className}
-      autoComplete="name"
-      spellCheck={false}
-      autoCorrect="off"
-      autoCapitalize="words"
-      data-testid="bulletproof-name-input"
-    />
-  );
+  return <div ref={containerRef} style={{ width: '100%' }} />;
 };
 
 // Advanced Login Component with Password Support and Reset
