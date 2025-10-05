@@ -5772,6 +5772,112 @@ const EmpathyTrainingAppContent = () => {
               </Card>
             </div>
           </div>
+          
+          {/* Footer mit rechtlichen Links */}
+          <footer className="bg-gray-900/80 border-t border-gray-700/50 mt-16">
+            <div className="container mx-auto px-4 py-8">
+              <div className="grid md:grid-cols-3 gap-8">
+                {/* Kontakt Info */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Kontakt</h3>
+                  <div className="text-gray-300 space-y-2">
+                    <p><strong>MYSYMP AG</strong></p>
+                    <p>CH-6207 Nottwil</p>
+                    <p>Schweiz</p>
+                    <p>
+                      <Mail className="w-4 h-4 inline mr-2" />
+                      <a href="mailto:info@neurobond.ch" className="hover:text-blue-400 transition-colors">
+                        info@neurobond.ch
+                      </a>
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Features */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Features</h3>
+                  <div className="space-y-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('empathie-training-info')}
+                      className="justify-start text-gray-300 hover:text-blue-400 p-0 h-auto"
+                    >
+                      Empathie-Training
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('gefuehlslexikon-info')}
+                      className="justify-start text-gray-300 hover:text-red-400 p-0 h-auto"
+                    >
+                      Gefühlslexikon
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('dialog-coaching-info')}
+                      className="justify-start text-gray-300 hover:text-green-400 p-0 h-auto"
+                    >
+                      Dialog-Coaching
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('community-cases-info')}
+                      className="justify-start text-gray-300 hover:text-purple-400 p-0 h-auto"
+                    >
+                      Community Cases
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('pro-version-info')}
+                      className="justify-start text-yellow-400 hover:text-yellow-300 p-0 h-auto"
+                    >
+                      PRO Version
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Rechtliches */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Rechtliches</h3>
+                  <div className="space-y-2">
+                    <a 
+                      href="https://mysymp.ch/datenschutzerklaerung/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="block text-gray-300 hover:text-blue-400 transition-colors text-sm"
+                    >
+                      Datenschutz
+                    </a>
+                    <a 
+                      href="https://mysymp.ch/impressum/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="block text-gray-300 hover:text-blue-400 transition-colors text-sm"
+                    >
+                      Impressum
+                    </a>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setCurrentTab('agb')}
+                      className="justify-start text-gray-300 hover:text-blue-400 p-0 h-auto text-sm"
+                    >
+                      AGB & Widerrufsrecht
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Copyright */}
+              <div className="border-t border-gray-700/50 mt-8 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2024 MYSYMP AG. Alle Rechte vorbehalten. | NEUROBOND - KI-gestütztes Empathie-Training für Paare</p>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     );
